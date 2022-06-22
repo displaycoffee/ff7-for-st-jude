@@ -67,7 +67,7 @@ const webpCommonConfig = {
 				generator: {
 					filename: webpPathConfig.dist.images,
 				},
-			},
+			}
 		],
 	},
 	resolve: {

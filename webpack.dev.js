@@ -8,6 +8,12 @@ const webpDevConfig = {
 	mode: 'development',
 };
 
+// Add raw-loader for dev
+webpCommonConfig.module.rules.push({ 
+	test: /\.txt$/, 
+	use: 'raw-loader' 
+});
+
 // Add browserstack for dev testing
 webpCommonConfig.plugins.push(
 	new BrowserSyncPlugin({
