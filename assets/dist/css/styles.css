@@ -319,4 +319,10 @@ blockquote {
 
 body {
   background: #fdfdfd;
+  padding: 50px;
+}
+
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
 }

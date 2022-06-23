@@ -2,9 +2,15 @@
 @use '../helpers/_mixins';
 @use '../theme/_theme';
 
-//// BODY
+//// BASE
 //// --------------------------------------------------------------------------
 
 body {
 	background: theme.$color-02;
+	padding: 50px;
+}
+
+.wrapper {
+	max-width: 1000px;
+	margin: 0 auto;
 }
