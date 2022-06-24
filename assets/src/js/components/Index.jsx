@@ -1,5 +1,4 @@
 /* react imports */
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 /* local script imports */
@@ -9,14 +8,19 @@ import { utils } from '../scripts/utils';
 /* local component imports */
 import Campaign from './Campaign';
 import Donations from './Donations';
+import Rewards from './Rewards';
 
 /* setup cache of campaigns */ 
-const localCache = {};
+const localCache = {
+	campaign : {},
+	donations : {}
+};
 
 const Index = () => {
 	// react variables
 	let [campaign, setCampaign] = useState({});
 	let [donations, setDonations] = useState({});
+	let [rewards, setRewards] = useState({});
 
 	useEffect(() => {
 		requestCampaigns();
@@ -24,68 +28,76 @@ const Index = () => {
 
 	async function requestCampaigns() {
 		// get data of supporting campaigns
-		const supportingResponse = await fetch(tiltify.api.supporting(tiltify.campaign), tiltify.fetchParams);
+		const supportingResponse = await fetch(`https://tiltify.com/api/v3/campaigns/${tiltify.campaign}/supporting-campaigns`, tiltify.fetchParams);
 		const supportingJson = await supportingResponse.json();
 
 		if (supportingJson && supportingJson.data) {
-			// initial lists to set responses later
-			let donationsList = {};
+			// initial configs to set responses later
+			let campaignConfig = {};
+			let donationsConfig = {};
+			let rewardsConfig = {};
+			
+			if (Object.keys(localCache.campaign).length > 0) {
+				// get campaignAmount from supportingJson to see if we should request the campaign again
+				let campaignAmount = utils.values.getTotal(localCache.campaign.amountRaised, supportingJson.data, 'amountRaised');
 
-			// get data of base campaign to include donations
-			const campaignResponse = await fetch(tiltify.api.campaign(tiltify.campaign), tiltify.fetchParams);
-			const campaignJson = await campaignResponse.json();	
-
-			if (campaignJson && campaignJson.data) {
-				// update user data of campaign
-				campaignJson.data.url = campaignJson.data.team.url;
-				campaignJson.data.user = {
-					username : campaignJson.data.name,
-					url : campaignJson.data.team.url
-				};
-
-				// push data to supporting campaigns
-				supportingJson.data.push(campaignJson.data);
-
-				// set state for base campaign
-				campaign = campaignJson.data;
-				setCampaign(campaign);		
+				if (campaignAmount != localCache.campaign.totalAmountRaised) {
+					// request campaignConfig from api if amount has changed
+					campaignConfig = await tiltify.request.campaign();
+				} else {
+					// get campaignConfig from cache instead
+					campaignConfig = localCache.campaign;
+				}
+			} else {
+				// set initial campaignConfig from response
+				campaignConfig = await tiltify.request.campaign();
+				
+				// add campaignConfig into localCache
+				localCache.campaign = campaignConfig;			
 			}
 
+			// push data to supporting campaigns to include in donations
+			supportingJson.data.push(campaignConfig);
+
+			// set state for base campaign
+			campaign = campaignConfig;
+			setCampaign(campaign);	
+
+			// loop through supportingJson to fetch donations
 			for (let i = 0; i < supportingJson.data.length; i++) {
 				let currentData = supportingJson.data[i];
 				let currentId = currentData.id;
 				
-				if (!localCache[currentId]) {
-					// add supporting campaign data into cache
-					localCache[currentId] = currentData;
+				if (localCache.donations[currentId]) {
+					// get donationAmount from localCache.donations to see if we should request donations again
+					let donationAmount = utils.values.getTotal(0, localCache.donations[currentId], 'amount');
 
-					// request donations from api
-					donationsList[currentId] = await requestDonations(currentId, currentData);
-				} else {
-					if (localCache[currentId].amountRaised != currentData.amountRaised) {
-						// request donations from api if amount has changed
-						donationsList[currentId] = await requestDonations(currentId, currentData);
+					if (donationAmount != currentData.amountRaised) {
+						// request donationsConfig from api if amount has changed
+						donationsConfig[currentId] = await tiltify.request.donations(currentId, currentData);
+					} else {
+						// get donationsConfig from cache instead
+						donationsConfig[currentId] = localCache.donations[currentId];
 					}
+				} else {					
+					// set initial donationsConfig from response
+					donationsConfig[currentId] = await tiltify.request.donations(currentId, currentData);
+					
+					// add donationsConfig into localCache
+					localCache.donations[currentId] = donationsConfig[currentId];
 				}
-			}
 
+				// set initial rewardsConfig from response (no localCache for rewards :()
+				rewardsConfig[currentId] = await tiltify.request.rewards(currentId, currentData);
+			}
+			
 			// set donations
-			donations = donationsList;
+			donations = donationsConfig;
 			setDonations(donations);
-		}
 
-		async function requestDonations(id,  data) {
-			const donationsResponse = await fetch(tiltify.api.donations(id), tiltify.fetchParams);		
-			const donationsJson = await donationsResponse.json();
-			if (donationsJson && donationsJson.data) {
-				// add user data to donation
-				donationsJson.data = donationsJson.data.map((donation) => {
-					donation.slug = data.slug;
-					donation.user = data.user;
-					return donation;
-				});
-				return donationsJson.data;
-			}
+			// set rewards
+			rewards = rewardsConfig;
+			setRewards(rewards);
 		}
 	}
 
@@ -94,13 +106,24 @@ const Index = () => {
 			<h1>{(campaign && campaign.name) ? campaign.name : 'FF7 No-Slots for St. Jude'}</h1>
 
 			<main className="layout">
+				<button type="button" onClick={e => {
+					e.preventDefault();
+					requestCampaigns();
+				}}>
+					I'll try spinning. That's a good trick.
+				</button>
+
 				{campaign && (
 					<Campaign campaign={campaign} />
 				)}
-				
+
 				{donations && (
 					<Donations donations={donations} utils={utils} />
 				)}
+
+				{rewards && (
+					<Rewards rewards={rewards} utils={utils} />
+				)}				
 			</main>
 		</div>
 	);

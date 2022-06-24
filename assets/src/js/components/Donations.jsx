@@ -14,12 +14,12 @@ const Donations = (props) => {
 				{donationsMerged.map((donation) => {
 					return (
 						<div key={donation.id}>
-							<strong>Amount:</strong> ${donation.amount}<br />
+							<strong>Amount:</strong> ${donation.amount.toFixed(2)}<br />
 							<strong>From:</strong> {donation.name}<br />
 							{donation.comment && (
 								<><strong>Comment:</strong> {donation.comment}<br /></>
 							)}
-							<strong>Campaign:</strong> {donation.user.url}/{donation.slug}<br />
+							<strong>Campaign:</strong> {donation.user.campaign}<br />
 							<strong>Runner:</strong> {donation.user.username} -- {donation.user.url}<br /><br />
 						</div>
 					)

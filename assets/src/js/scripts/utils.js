@@ -14,7 +14,14 @@ export let utils = {
 		return array.reduce((merge, next) => merge.concat(next), []);
 	},
 	values: {
-		// functions for manipulating values
+		// functions for manipulating values,
+		getTotal : (starting, data, field) => {
+			let total = starting;
+			data.filter((d) => {
+				total += d[field];
+			});
+			return total;
+		},
 		sort : (list, type, field, direction) => {
 			// sort values in a list based on type, field, and direction
 			list.sort((a, b) => {
