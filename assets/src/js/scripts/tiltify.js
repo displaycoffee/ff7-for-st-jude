@@ -47,7 +47,7 @@ export const tiltify = {
 			}			
 		},
 		rewards : async (id, data) => {
-			const response = await fetch(`https://tiltify.com/api/v3/campaigns/${id}/rewards?count=10`, tiltify.fetchParams);		
+			const response = await fetch(`https://tiltify.com/api/v3/campaigns/${id}/rewards`, tiltify.fetchParams);		
 			const json = await response.json();
 	
 			if (json && json.data) {

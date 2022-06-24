@@ -15,7 +15,15 @@ export let utils = {
 	},
 	values: {
 		// functions for manipulating values,
+		getTime : (time) => {
+			// get date and time from unix timestamp
+			return new Intl.DateTimeFormat(navigator.language, {
+				dateStyle : 'full',
+				timeStyle : 'long'
+			}).format(time);
+		},
 		getTotal : (starting, data, field) => {
+			// get total amount for checking if prices have changed
 			let total = starting;
 			data.filter((d) => {
 				total += d[field];

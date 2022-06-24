@@ -13,7 +13,8 @@ import Rewards from './Rewards';
 /* setup cache of campaigns */ 
 const localCache = {
 	campaign : {},
-	donations : {}
+	donations : {},
+	rewards : {}
 };
 
 const Index = () => {
@@ -69,26 +70,27 @@ const Index = () => {
 				let currentId = currentData.id;
 				
 				if (localCache.donations[currentId]) {
-					// get donationAmount from localCache.donations to see if we should request donations again
-					let donationAmount = utils.values.getTotal(0, localCache.donations[currentId], 'amount');
+					// get totalAmount from localCache.donations to see if we should request configs again
+					let totalAmount = utils.values.getTotal(0, localCache.donations[currentId], 'amount');
 
-					if (donationAmount != currentData.amountRaised) {
-						// request donationsConfig from api if amount has changed
+					if (totalAmount != currentData.amountRaised) {
+						// request configs from api if amount has changed
 						donationsConfig[currentId] = await tiltify.request.donations(currentId, currentData);
+						rewardsConfig[currentId] = await tiltify.request.rewards(currentId, currentData);
 					} else {
-						// get donationsConfig from cache instead
+						// get configs from cache instead
 						donationsConfig[currentId] = localCache.donations[currentId];
+						rewardsConfig[currentId] = localCache.rewards[currentId];
 					}
 				} else {					
-					// set initial donationsConfig from response
+					// set initial configs from response
 					donationsConfig[currentId] = await tiltify.request.donations(currentId, currentData);
+					rewardsConfig[currentId] = await tiltify.request.rewards(currentId, currentData);
 					
-					// add donationsConfig into localCache
+					// add configs into localCache
 					localCache.donations[currentId] = donationsConfig[currentId];
-				}
-
-				// set initial rewardsConfig from response (no localCache for rewards :()
-				rewardsConfig[currentId] = await tiltify.request.rewards(currentId, currentData);
+					localCache.rewards[currentId] = rewardsConfig[currentId];
+				}				
 			}
 			
 			// set donations
