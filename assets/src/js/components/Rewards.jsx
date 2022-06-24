@@ -19,6 +19,7 @@ const Rewards = (props) => {
 								<><strong>Description:</strong> {reward.description}<br /></>
 							)}
 							<strong>Cost:</strong> ${reward.amount.toFixed(2)}<br />
+							<strong>Ends At:</strong> {utils.values.getTime(reward.endsAt)}<br />
 							<strong>Campaign:</strong> {reward.user.campaign}<br />
 							<strong>Runner:</strong> {reward.user.username} -- {reward.user.url}<br /><br />
 						</div>
