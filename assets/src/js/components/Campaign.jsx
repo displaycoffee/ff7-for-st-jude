@@ -5,9 +5,7 @@ const Campaign = (props) => {
 	let { campaign, utils } = props;
 	const campaignUrl = `${campaign.url}/${campaign.slug}`;
 	const campaignSize = utils.size(campaign);
-
-	console.log(campaign)
-
+	
 	return (
 		<section className="detail detail-campaign">	
 			<h3 className="detail-title">About this campaign</h3>
