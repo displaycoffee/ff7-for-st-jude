@@ -9,12 +9,14 @@ import { utils } from '../scripts/utils';
 import Campaign from './Campaign';
 import Donations from './Donations';
 import Rewards from './Rewards';
+import Challenges from './Challenges';
 
 /* setup cache of campaigns */ 
 const localCache = {
 	campaign : {},
 	donations : {},
-	rewards : {}
+	rewards : {},
+	challenges : {}
 };
 
 const Index = () => {
@@ -22,6 +24,7 @@ const Index = () => {
 	let [campaign, setCampaign] = useState({});
 	let [donations, setDonations] = useState({});
 	let [rewards, setRewards] = useState({});
+	let [challenges, setChallenges] = useState({});
 
 	useEffect(() => {
 		requestCampaigns();
@@ -37,6 +40,7 @@ const Index = () => {
 			let campaignConfig = {};
 			let donationsConfig = {};
 			let rewardsConfig = {};
+			let challengesConfig = {};
 			
 			if (Object.keys(localCache.campaign).length > 0) {
 				// get campaignAmount from supportingJson to see if we should request the campaign again
@@ -77,20 +81,24 @@ const Index = () => {
 						// request configs from api if amount has changed
 						donationsConfig[currentId] = await tiltify.request.donations(currentId, currentData);
 						rewardsConfig[currentId] = await tiltify.request.rewards(currentId, currentData);
+						challengesConfig[currentId] = await tiltify.request.challenges(currentId, currentData);
 					} else {
 						// get configs from cache instead
 						donationsConfig[currentId] = localCache.donations[currentId];
 						rewardsConfig[currentId] = localCache.rewards[currentId];
+						challengesConfig[currentId] = localCache.challenges[currentId];
 					}
 				} else {					
 					// set initial configs from response
 					donationsConfig[currentId] = await tiltify.request.donations(currentId, currentData);
 					rewardsConfig[currentId] = await tiltify.request.rewards(currentId, currentData);
+					challengesConfig[currentId] = await tiltify.request.challenges(currentId, currentData);
 					
 					// add configs into localCache
 					localCache.donations[currentId] = donationsConfig[currentId];
 					localCache.rewards[currentId] = rewardsConfig[currentId];
-				}				
+					localCache.challenges[currentId] = challengesConfig[currentId];
+				}
 			}
 			
 			// set donations
@@ -100,32 +108,52 @@ const Index = () => {
 			// set rewards
 			rewards = rewardsConfig;
 			setRewards(rewards);
+
+			// set challenges
+			challenges = challengesConfig;
+			setChallenges(challenges);
 		}
 	}
 
 	return (
 		<div className="wrapper">
-			<h1>{(campaign && campaign.name) ? campaign.name : 'FF7 No-Slots for St. Jude'}</h1>
+			<main id="top" className="layout">
+				<header className="header flex-wrap flex-align-center">
+					<h1 className="header-title">{(campaign && campaign.name) ? campaign.name : 'FF7 No-Slots for St. Jude'}</h1>
 
-			<main className="layout">
-				<button type="button" onClick={e => {
-					e.preventDefault();
-					requestCampaigns();
-				}}>
-					I'll try spinning. That's a good trick.
-				</button>
+					<button className="header-button pointer" type="button" onClick={e => {
+						e.preventDefault();
+						requestCampaigns();
+					}}>
+						I'll try spinning. That's a good trick.
+					</button>
+				</header>
 
-				{campaign && (
-					<Campaign campaign={campaign} />
-				)}
+				<Campaign campaign={campaign} utils={utils} />
 
-				{donations && (
-					<Donations donations={donations} utils={utils} />
-				)}
+				<nav className="navigation">
+					<a 
+						onClick={(e) => utils.scrollTo(e, 'donations')} 
+						className="pointer">
+						Donations
+					</a>&nbsp;-&nbsp; 
+					<a 
+						onClick={(e) => utils.scrollTo(e, 'rewards')} 
+						className="pointer">
+						Rewards
+					</a>&nbsp;-&nbsp;
+					<a 
+						onClick={(e) => utils.scrollTo(e, 'challenges')} 
+						className="pointer">
+						Challenges
+					</a>
+				</nav>
 
-				{rewards && (
-					<Rewards rewards={rewards} utils={utils} />
-				)}				
+				<Donations donations={donations} utils={utils} />
+
+				<Rewards rewards={rewards} utils={utils} />
+
+				<Challenges challenges={challenges} utils={utils} />				
 			</main>
 		</div>
 	);

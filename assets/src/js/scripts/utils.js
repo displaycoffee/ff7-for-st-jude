@@ -13,6 +13,15 @@ export let utils = {
 		// merge array of arrays
 		return array.reduce((merge, next) => merge.concat(next), []);
 	},
+	size : (config) => {
+		return Object.keys(config).length;
+	},
+	scrollTo : (e, id) => {
+		e.preventDefault();
+		document.querySelector(`#${id}`).scrollIntoView({
+			behavior : 'smooth'
+		});
+	},
 	values: {
 		// functions for manipulating values,
 		getTime : (time) => {

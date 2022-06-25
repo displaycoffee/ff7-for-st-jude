@@ -1,31 +1,47 @@
+/* local component imports */
+import Skeleton from './Skeleton';
+
 const Donations = (props) => {
 	let { donations, utils } = props;
+	const donationsSize = utils.size(donations);
 
 	// flatten, merge, and re-sort donations
 	const donationsFlattened = utils.flatten(donations);
 	const donationsMerged = utils.merge(donationsFlattened);
-	utils.values.sort(donationsMerged, 'integer', 'updatedAt', 'desc');
+	utils.values.sort(donationsMerged, 'integer', 'completedAt', 'desc');
 
 	return (
-		(donationsMerged && donationsMerged.length > 0) && (
-			<>
-				<h3>Donations</h3>
+		<section id="donations" className="detail detail-donations">	
+			<h3 className="detail-title">Donations</h3>
 
-				{donationsMerged.map((donation) => {
-					return (
-						<div key={donation.id}>
-							<strong>Amount:</strong> ${donation.amount.toFixed(2)}<br />
-							<strong>From:</strong> {donation.name}<br />
-							{donation.comment && (
-								<><strong>Comment:</strong> {donation.comment}<br /></>
-							)}
-							<strong>Campaign:</strong> {donation.user.campaign}<br />
-							<strong>Runner:</strong> {donation.user.username} -- {donation.user.url}<br /><br />
-						</div>
-					)
-				})}
-			</>
-		)
+			<div className={`detail-row${donationsSize ? ' detail-row-loaded' : ''} flex-wrap`}>
+				<Skeleton columns={12} paragraphs={2} />
+
+				{donationsSize ? (
+					donationsMerged.map((donation) => {
+						return (
+							<div className="detail-column" key={donation.id}>
+								<div className="detail-column-inner">
+									<p>
+										<strong>Donation:</strong> ${donation.amount.toFixed(2)} from {donation.name} to&nbsp;
+										<a href={donation.user.campaign} target="_blank">{donation.user.username}</a>
+									</p>
+									{donation.comment && (
+										<p><strong>Comment:</strong> {donation.comment}</p>
+									)}
+								</div>
+							</div>
+						)
+					})
+				) : (null)}
+			</div>
+
+			<a 
+				onClick={(e) => utils.scrollTo(e, 'top')} 
+				className="to-top pointer">
+				^ Back to top
+			</a>
+		</section>
 	);
 };
 

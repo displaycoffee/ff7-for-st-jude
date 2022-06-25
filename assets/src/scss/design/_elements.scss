@@ -1,0 +1,117 @@
+// Use helpers and theme variables
+@use '../helpers/_mixins';
+@use '../theme/_theme';
+
+//// FLEX
+//// --------------------------------------------------------------------------
+
+.flex-wrap {
+	@include mixins.flex-layout(row wrap);
+}
+
+.flex-nowrap {
+	@include mixins.flex-layout(row nowrap);
+}
+
+.flex-align-center {
+	@include mixins.flex-parent(align-items, center);
+}
+
+.flex-justify-center {
+	@include mixins.flex-parent(justify-content, center);
+}
+
+//// HEADER
+//// --------------------------------------------------------------------------
+
+.header {
+	margin: 0 0 theme.$spacing-x12 0;
+	.header-title, .header-button {
+		@include mixins.flex(0 1 auto);
+	}
+	.header-title {
+		width: 100%;
+		margin: 0 0 theme.$spacing-x3 0;
+	}
+}
+
+//// NAVIGATION
+//// --------------------------------------------------------------------------
+
+.navigation {
+	margin: 0 0 theme.$spacing-x12 0;
+}
+
+.to-top {
+	margin: theme.$spacing-x6 0 0 0;
+	display: inline-block;
+}
+
+//// DETAIL LAYOUT
+//// --------------------------------------------------------------------------
+
+.detail {
+	margin: 0 0 theme.$spacing-x12 0;
+	&.detail-campaign {
+		.detail-row {
+			.detail-column {
+				width: 100%;
+			}
+		}
+	}
+	.detail-row {
+		margin: 0 -#{theme.$spacing-x3} -#{theme.$spacing-x6} -#{theme.$spacing-x3};
+		.detail-column {
+			padding: 0 theme.$spacing-x3;
+			margin: 0 0 theme.$spacing-x6;
+			@include mixins.flex(0 1 auto);
+			width: 100%;
+			.detail-column-inner {
+				border: 3px solid theme.$color-03;
+				border-radius: 10px;
+				padding: theme.$spacing-x3;
+				height: 100%;
+			}
+			p {
+				margin: 0 0 theme.$spacing-x2 0;
+				word-break: break-word;
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+
+//// SKELETON
+//// --------------------------------------------------------------------------
+
+.detail {
+	.detail-row {
+		&.detail-row-loaded {
+			.detail-column-skeleton {
+				display: none;
+			}
+		}
+		.detail-column-skeleton {
+			p {
+				background-color: theme.$color-03;
+				width: 80%;
+				opacity: 0.8;
+				@include mixins.transition(opacity 0.3s ease);
+				&:nth-child(2) {
+					width: 60%;
+				}
+				&:nth-child(3) {
+					width: 40%;
+				}
+				&:nth-child(4) {
+					width: 75%;
+				}
+				&:nth-child(5) {
+					width: 50%;
+				}
+			}
+		}
+	}
+}

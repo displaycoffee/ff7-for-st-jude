@@ -62,6 +62,22 @@ export const tiltify = {
 
 				return json.data;
 			}
+		},
+		challenges : async (id, data) => {
+			const response = await fetch(`https://tiltify.com/api/v3/campaigns/${id}/challenges`, tiltify.fetchParams);		
+			const json = await response.json();
+	
+			if (json && json.data) {
+				// filter out challenges that have been met
+				json.data = json.data.filter((data) => {
+					return data.active && data.totalAmountRaised < data.amount;
+				});
+
+				// add user data to challenge
+				tiltify.addUser(json.data, data);
+
+				return json.data;
+			}
 		}
 	}
 };
