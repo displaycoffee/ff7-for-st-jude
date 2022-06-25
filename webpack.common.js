@@ -33,6 +33,10 @@ const webpCommonConfig = {
 	],
 	module: {
 		rules: [
+			{ 
+				test: /\.txt$/, 
+				use: 'raw-loader' 
+			},
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /(node_modules|bower_components)/,
