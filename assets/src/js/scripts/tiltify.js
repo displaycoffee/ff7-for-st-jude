@@ -51,10 +51,14 @@ export const tiltify = {
 			const json = await response.json();
 	
 			if (json && json.data) {
+				// get time for checking if rewards have expired
+				const currentTime = Date.now();
+
 				// filter out remaining and null rewards
 				json.data = json.data.filter((data) => {
-					data.remaining = typeof data.remaining != 'number' ? 0 : data.remaining;
-					return data.remaining !== 0 && data.active && !data.alwaysActive;
+					const rewardExpired = data.endsAt < currentTime;
+					data.remaining = typeof data.remaining != 'number' ? 0 : data.remaining;					
+					return !rewardExpired && data.remaining !== 0 && data.active && !data.alwaysActive;
 				});
 
 				// add user data to reward
@@ -68,9 +72,13 @@ export const tiltify = {
 			const json = await response.json();
 	
 			if (json && json.data) {
+				// get time for checking if challenges have expired
+				const currentTime = Date.now();
+
 				// filter out challenges that have been met
 				json.data = json.data.filter((data) => {
-					return data.active && data.totalAmountRaised < data.amount;
+					const challengeExpired = data.endsAt < currentTime;
+					return !challengeExpired && (data.totalAmountRaised < data.amount);
 				});
 
 				// add user data to challenge

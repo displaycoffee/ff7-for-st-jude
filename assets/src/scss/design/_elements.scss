@@ -33,7 +33,28 @@
 		width: 100%;
 		margin: 0 0 theme.$spacing-x3 0;
 	}
+	.header-button {
+		&.spinning {
+			@include mixins.animate(animate-spin 1s infinite linear);
+		}
+		&.spinning-complete {
+			.header-button-label-01 {
+				display: none;
+			}
+			.header-button-label-02 {
+				display: inline;
+			}			
+		}
+		.header-button-label-01 {
+			
+		}
+		.header-button-label-02 {
+			display: none;
+		}
+	}
 }
+
+@include mixins.animate-spin;
 
 //// NAVIGATION
 //// --------------------------------------------------------------------------
