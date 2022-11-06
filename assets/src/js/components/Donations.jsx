@@ -1,8 +1,9 @@
 /* local component imports */
 import Skeleton from './Skeleton';
+import UserLink from './UserLink';
 
 const Donations = (props) => {
-	let { donations, utils } = props;
+	let { supporting, donations, utils } = props;
 	const donationsSize = utils.size(donations);
 
 	// flatten, merge, and re-sort donations
@@ -11,7 +12,7 @@ const Donations = (props) => {
 	utils.values.sort(donationsMerged, 'integer', 'completedAt', 'desc');
 
 	return (
-		<section id="donations" className="detail detail-donations">	
+		<section id="donations" className="detail detail-donations">
 			<h3 className="detail-title">Donations</h3>
 
 			<div className={`detail-row${donationsSize ? ' detail-row-loaded' : ''} flex-wrap`}>
@@ -24,7 +25,7 @@ const Donations = (props) => {
 								<div className="detail-column-inner">
 									<p>
 										<strong>Donation:</strong> ${donation.amount.toFixed(2)} from {donation.name} to&nbsp;
-										<a href={donation.user.campaign} target="_blank">{donation.user.username}</a>
+										<UserLink wrapper={false} campaign={supporting[donation.campaignId]} />
 									</p>
 									{donation.comment && (
 										<p><strong>Comment:</strong> {donation.comment}</p>
@@ -36,8 +37,8 @@ const Donations = (props) => {
 				) : (null)}
 			</div>
 
-			<a 
-				onClick={(e) => utils.scrollTo(e, 'top')} 
+			<a
+				onClick={(e) => utils.scrollTo(e, 'top')}
 				className="to-top pointer">
 				^ Back to top
 			</a>

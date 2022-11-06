@@ -4,6 +4,7 @@ import secret from '../../../../secret.txt';
 export const tiltify = {
 	token : secret,
 	campaign : 169251,
+	api : 'https://tiltify.com/api/v3/campaigns/',
 	fetchParams : {
 		method: 'GET',
 		headers: {
@@ -11,17 +12,26 @@ export const tiltify = {
 			'Content-Type' : `application/json`
 		}
 	},
-	addUser : (list, data) => {
-		// add user data to responses
-		list = list.map((l) => {
-			l.user = data.user;
-			l.user.campaign = `${data.user.url}/${data.slug}`;
-			return l;
-		});
+	filterContent : (content, data) => {
+		// get time for checking if content has expired
+		const currentTime = Date.now();
+
+		// variables for checking if content should be returned
+		const isExpired = data.endsAt < currentTime;
+		
+		// set state for checks
+		let contentActive = true;
+		if (content == 'reward') {
+			const isRemaining = typeof data.remaining == 'number' && data.remaining > 0 ? true : false;
+			contentActive = !isExpired && isRemaining && (data.active && !data.alwaysActive);
+		} else if (content == 'challenge') {
+			contentActive = !isExpired && (data.totalAmountRaised < data.amount);
+		}
+		return contentActive;
 	},
 	request : {
 		campaign : async () => {
-			const response = await fetch(`https://tiltify.com/api/v3/campaigns/${tiltify.campaign}`, tiltify.fetchParams);
+			const response = await fetch(`${tiltify.api}${tiltify.campaign}`, tiltify.fetchParams);
 			const json = await response.json();	
 	
 			if (json && json.data) {
@@ -35,57 +45,62 @@ export const tiltify = {
 				return json.data;
 			}			
 		},
-		donations : async (id, data) => {
-			const response = await fetch(`https://tiltify.com/api/v3/campaigns/${id}/donations?count=50`, tiltify.fetchParams);		
-			const json = await response.json();
-	
-			if (json && json.data) {
-				// add user data to donation
-				tiltify.addUser(json.data, data);
+		content : async (id) => {
+			// empty content config to fetch and store data in
+			let contentConfig = {
+				donations : [],
+				rewards : [],
+				challenges : []
+			};
 
-				return json.data;
-			}			
-		},
-		rewards : async (id, data) => {
-			const response = await fetch(`https://tiltify.com/api/v3/campaigns/${id}/rewards`, tiltify.fetchParams);		
-			const json = await response.json();
-	
-			if (json && json.data) {
-				// get time for checking if rewards have expired
-				const currentTime = Date.now();
+			// fetch donations, rewards, and challenges from tiltify using promises
+			let [donations, rewards, challenges] = await Promise.all([
+				fetch(`${tiltify.api}${id}/donations?count=50`, tiltify.fetchParams),
+				fetch(`${tiltify.api}${id}/rewards`, tiltify.fetchParams),
+				fetch(`${tiltify.api}${id}/challenges`, tiltify.fetchParams)
+			]);
 
-				// filter out remaining and null rewards
-				json.data = json.data.filter((data) => {
-					const rewardExpired = data.endsAt < currentTime;
-					data.remaining = typeof data.remaining != 'number' ? 0 : data.remaining;					
-					return !rewardExpired && data.remaining !== 0 && data.active && !data.alwaysActive;
+			// get json from response
+			let [donationsJson, rewardsJson, challengesJson] = await Promise.all([
+				donations.json(),
+				rewards.json(),
+				challenges.json()
+			]);
+
+			if (donationsJson && donationsJson.data) {
+				// add campaignId to donations
+				donationsJson.data = donationsJson.data.filter((data) => {
+					data.campaignId = id;
+					return data;
 				});
 
-				// add user data to reward
-				tiltify.addUser(json.data, data);
-
-				return json.data;
+				// then add donations to contentConfig
+				contentConfig.donations = donationsJson.data;
 			}
-		},
-		challenges : async (id, data) => {
-			const response = await fetch(`https://tiltify.com/api/v3/campaigns/${id}/challenges`, tiltify.fetchParams);		
-			const json = await response.json();
-	
-			if (json && json.data) {
-				// get time for checking if challenges have expired
-				const currentTime = Date.now();
 
-				// filter out challenges that have been met
-				json.data = json.data.filter((data) => {
-					const challengeExpired = data.endsAt < currentTime;
-					return !challengeExpired && (data.totalAmountRaised < data.amount);
+			if (rewardsJson && rewardsJson.data) {
+				// add campaignId and filter out inactive rewards
+				rewardsJson.data = rewardsJson.data.filter((data) => {
+					data.campaignId = id;
+					return tiltify.filterContent('reward', data);
 				});
 
-				// add user data to challenge
-				tiltify.addUser(json.data, data);
-
-				return json.data;
+				// then add rewards to contentConfig
+				contentConfig.rewards = rewardsJson.data;
 			}
+
+			if (challengesJson && challengesJson.data) {
+				// add campaignId and filter out inactive challenges
+				challengesJson.data = challengesJson.data.filter((data) => {
+					data.campaignId = id;
+					return tiltify.filterContent('challenge', data);
+				});
+
+				// then add challenges to contentConfig
+				contentConfig.challenges = challengesJson.data;
+			}
+
+			return contentConfig;
 		}
 	}
 };

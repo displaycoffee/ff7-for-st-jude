@@ -1,17 +1,18 @@
 /* local component imports */
 import Skeleton from './Skeleton';
+import UserLink from './UserLink';
 
 const Rewards = (props) => {
-	let { rewards, utils } = props;
+	let { supporting, rewards, utils } = props;
 	const rewardsSize = utils.size(rewards);
 
 	// flatten, merge, and re-sort rewards
 	const rewardsFlattened = utils.flatten(rewards);
 	const rewardsMerged = utils.merge(rewardsFlattened);
 	utils.values.sort(rewardsMerged, 'integer', 'endsAt', 'asc');
-	
+
 	return (
-		<section id="rewards" className="detail detail-rewards">	
+		<section id="rewards" className="detail detail-rewards">
 			<h3 className="detail-title">Rewards ending soon</h3>
 
 			<div className={`detail-row${rewardsSize ? ' detail-row-loaded' : ''} flex-wrap`}>
@@ -28,7 +29,7 @@ const Rewards = (props) => {
 									)}
 									<p><strong>Cost:</strong> ${reward.amount.toFixed(2)}</p>
 									<p><strong>Ends:</strong> {utils.values.getTime(reward.endsAt)}</p>
-									<p><a href={reward.user.campaign} target="_blank">Redeem at {reward.user.username}</a></p>
+									<UserLink wrapper={true} campaign={supporting[reward.campaignId]} label={'Redeem at'} />
 								</div>
 							</div>
 						)
@@ -36,8 +37,8 @@ const Rewards = (props) => {
 				) : (null)}
 			</div>
 
-			<a 
-				onClick={(e) => utils.scrollTo(e, 'top')} 
+			<a
+				onClick={(e) => utils.scrollTo(e, 'top')}
 				className="to-top pointer">
 				^ Back to top
 			</a>

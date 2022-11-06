@@ -11,16 +11,18 @@ import Donations from './Donations';
 import Rewards from './Rewards';
 import Challenges from './Challenges';
 
-/* setup cache of campaigns */ 
+/* setup cache of campaigns */
 const localCache = {
-	campaign : {},
-	donations : {},
-	rewards : {},
-	challenges : {}
+	supporting: {},
+	campaign: {},
+	donations: {},
+	rewards: {},
+	challenges: {}
 };
 
 const Index = () => {
 	// react variables
+	let [supporting, setSupporting] = useState({});
 	let [campaign, setCampaign] = useState({});
 	let [donations, setDonations] = useState({});
 	let [rewards, setRewards] = useState({});
@@ -32,85 +34,79 @@ const Index = () => {
 
 	async function requestCampaigns() {
 		// get data of supporting campaigns
-		const supportingResponse = await fetch(`https://tiltify.com/api/v3/campaigns/${tiltify.campaign}/supporting-campaigns`, tiltify.fetchParams);
+		const supportingResponse = await fetch(`${tiltify.api}${tiltify.campaign}/supporting-campaigns`, tiltify.fetchParams);
 		const supportingJson = await supportingResponse.json();
 
 		if (supportingJson && supportingJson.data) {
-			// initial configs to set responses later
-			let campaignConfig = {};
-			let donationsConfig = {};
-			let rewardsConfig = {};
-			let challengesConfig = {};
-			
 			if (Object.keys(localCache.campaign).length > 0) {
-				// get campaignAmount from supportingJson to see if we should request the campaign again
-				let campaignAmount = utils.values.getTotal(localCache.campaign.amountRaised, supportingJson.data, 'amountRaised');
+				const campaignAmount = utils.values.getTotal(localCache.campaign.amountRaised, supportingJson.data, 'amountRaised');
 
-				if (campaignAmount != localCache.campaign.totalAmountRaised) {
-					// request campaignConfig from api if amount has changed
-					campaignConfig = await tiltify.request.campaign();
-				} else {
-					// get campaignConfig from cache instead
-					campaignConfig = localCache.campaign;
+				// only request campaign from api if amount has changed and add into localCache
+				if (utils.values.convertDecimal(campaignAmount) != utils.values.convertDecimal(localCache.campaign.totalAmountRaised)) {
+					localCache.campaign = await tiltify.request.campaign();
 				}
 			} else {
-				// set initial campaignConfig from response
-				campaignConfig = await tiltify.request.campaign();
-				
-				// add campaignConfig into localCache
-				localCache.campaign = campaignConfig;			
+				// initially add campaignConfig into localCache
+				localCache.campaign = await tiltify.request.campaign();
 			}
 
-			// push data to supporting campaigns to include in donations
-			supportingJson.data.push(campaignConfig);
-
-			// set state for base campaign
-			campaign = campaignConfig;
-			setCampaign(campaign);	
-
-			// loop through supportingJson to fetch donations
+			// loop through supportingJson to add supporting campaigns
 			for (let i = 0; i < supportingJson.data.length; i++) {
-				let currentData = supportingJson.data[i];
-				let currentId = currentData.id;
-				
-				if (localCache.donations[currentId]) {
-					// get totalAmount from localCache.donations to see if we should request configs again
-					let totalAmount = utils.values.getTotal(0, localCache.donations[currentId], 'amount');
+				const data = supportingJson.data[i];
+				const id = data.id;
 
-					if (totalAmount != currentData.amountRaised) {
-						// request configs from api if amount has changed
-						donationsConfig[currentId] = await tiltify.request.donations(currentId, currentData);
-						rewardsConfig[currentId] = await tiltify.request.rewards(currentId, currentData);
-						challengesConfig[currentId] = await tiltify.request.challenges(currentId, currentData);
-					} else {
-						// get configs from cache instead
-						donationsConfig[currentId] = localCache.donations[currentId];
-						rewardsConfig[currentId] = localCache.rewards[currentId];
-						challengesConfig[currentId] = localCache.challenges[currentId];
-					}
-				} else {					
-					// set initial configs from response
-					donationsConfig[currentId] = await tiltify.request.donations(currentId, currentData);
-					rewardsConfig[currentId] = await tiltify.request.rewards(currentId, currentData);
-					challengesConfig[currentId] = await tiltify.request.challenges(currentId, currentData);
-					
-					// add configs into localCache
-					localCache.donations[currentId] = donationsConfig[currentId];
-					localCache.rewards[currentId] = rewardsConfig[currentId];
-					localCache.challenges[currentId] = challengesConfig[currentId];
+				if (!localCache.supporting[id]) {
+					// add supporting campaigns to localCache
+					data.username = data.user.username;
+					data.campaign = `${data.user.url}/${data.slug}`;
+					data.twitch = data?.livestream?.type == 'twitch' ? `https://${data.livestream.type}.tv/${data.livestream.channel}` : false;
+					localCache.supporting[id] = data;
 				}
 			}
-			
+
+			// set base campaign
+			campaign = localCache.campaign;
+			setCampaign(campaign);
+
+			// set supporting campaigns
+			supporting = localCache.supporting;
+			setSupporting(supporting);
+
+			// loop through supportingJson to fetch content
+			for (let j = 0; j < supportingJson.data.length; j++) {
+				const data = supportingJson.data[j];
+				const id = data.id;
+
+				if (localCache.donations[id]) {
+					// get totalAmount from localCache.donations to see if we should request content again
+					const totalAmount = utils.values.getTotal(0, localCache.donations[id], 'amount');
+
+					// only request content from api if amount has changed and add into localCache
+					if (utils.values.convertDecimal(totalAmount) != utils.values.convertDecimal(data.amountRaised)) {
+						const content = await tiltify.request.content(id);
+						localCache.donations[id] = content.donations;
+						localCache.rewards[id] = content.rewards;
+						localCache.challenges[id] = content.challenges;
+					}
+				} else {
+					// initially add content into localCache
+					const content = await tiltify.request.content(id);
+					localCache.donations[id] = content.donations;
+					localCache.rewards[id] = content.rewards;
+					localCache.challenges[id] = content.challenges;
+				}
+			}
+
 			// set donations
-			donations = donationsConfig;
+			donations = localCache.donations;
 			setDonations(donations);
 
 			// set rewards
-			rewards = rewardsConfig;
+			rewards = localCache.rewards;
 			setRewards(rewards);
 
 			// set challenges
-			challenges = challengesConfig;
+			challenges = localCache.challenges;
 			setChallenges(challenges);
 		}
 	}
@@ -152,28 +148,28 @@ const Index = () => {
 				<Campaign campaign={campaign} utils={utils} />
 
 				<nav className="navigation">
-					<a 
-						onClick={(e) => utils.scrollTo(e, 'donations')} 
+					<a
+						onClick={(e) => utils.scrollTo(e, 'donations')}
 						className="pointer">
 						Donations
-					</a>&nbsp;-&nbsp; 
-					<a 
-						onClick={(e) => utils.scrollTo(e, 'rewards')} 
+					</a>&nbsp;-&nbsp;
+					<a
+						onClick={(e) => utils.scrollTo(e, 'rewards')}
 						className="pointer">
 						Rewards
 					</a>&nbsp;-&nbsp;
-					<a 
-						onClick={(e) => utils.scrollTo(e, 'challenges')} 
+					<a
+						onClick={(e) => utils.scrollTo(e, 'challenges')}
 						className="pointer">
 						Challenges
 					</a>
 				</nav>
 
-				<Donations donations={donations} utils={utils} />
+				<Donations supporting={supporting} donations={donations} utils={utils} />
 
-				<Rewards rewards={rewards} utils={utils} />
+				<Rewards supporting={supporting} rewards={rewards} utils={utils} />
 
-				<Challenges challenges={challenges} utils={utils} />				
+				<Challenges supporting={supporting} challenges={challenges} utils={utils} />
 			</main>
 		</div>
 	);

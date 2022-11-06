@@ -24,6 +24,10 @@ export let utils = {
 	},
 	values: {
 		// functions for manipulating values,
+		convertDecimal : (number) => {
+			// convert number to two decimal places
+			return Math.round(number * 100) / 100;
+		},
 		getTime : (time) => {
 			// get date and time from unix timestamp
 			return new Intl.DateTimeFormat(navigator.language, {
