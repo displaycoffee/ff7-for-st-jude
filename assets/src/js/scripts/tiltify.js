@@ -1,9 +1,15 @@
 /* local imports */ 
 import secret from '../../../../secret.txt';
 
+/* st. jude ff7 campaign ids */ 
+const campaignIds = {
+	4 : 169251,
+	5 : 463822
+};
+
 export const tiltify = {
 	token : secret,
-	campaign : 169251,
+	campaign : campaignIds[5],
 	api : 'https://tiltify.com/api/v3/campaigns/',
 	fetchParams : {
 		method: 'GET',

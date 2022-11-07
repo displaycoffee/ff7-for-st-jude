@@ -1,6 +1,6 @@
 /* local component imports */
-import Skeleton from './Skeleton';
-import UserLink from './UserLink';
+import Skeleton from '../layout/Skeleton';
+import UserLink from '../layout/UserLink';
 
 const Donations = (props) => {
 	let { supporting, donations, utils } = props;

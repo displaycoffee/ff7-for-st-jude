@@ -1,6 +1,6 @@
 /* local component imports */
-import Skeleton from './Skeleton';
-import UserLink from './UserLink';
+import Skeleton from '../layout/Skeleton';
+import UserLink from '../layout/UserLink';
 
 const Rewards = (props) => {
 	let { supporting, rewards, utils } = props;

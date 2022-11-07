@@ -1,15 +1,15 @@
 /* local component imports */
-import Skeleton from './Skeleton';
+import Skeleton from '../layout/Skeleton';
 
 const Campaign = (props) => {
 	let { campaign, utils } = props;
 	const campaignUrl = `${campaign.url}/${campaign.slug}`;
 	const campaignSize = utils.size(campaign);
-	
+
 	return (
-		<section className="detail detail-campaign">	
+		<section className="detail detail-campaign">
 			<h3 className="detail-title">About this campaign</h3>
-			
+
 			<div className={`detail-row${campaignSize ? ' detail-row-loaded' : ''} flex-wrap`}>
 				<Skeleton columns={1} paragraphs={4} />
 
