@@ -12,31 +12,35 @@ const Challenges = (props) => {
 	utils.values.sort(challengesMerged, 'integer', 'endsAt', 'asc');
 
 	return (
-		<section id="challenges" className="detail detail-challenges">
-			<h3 className="detail-title">Challenges ending soon</h3>
+		<section id='challenges' className='detail detail-challenges'>
+			<h3 className='detail-title'>Challenges ending soon</h3>
 
 			<div className={`detail-row${challengesSize ? ' detail-row-loaded' : ''} flex-wrap`}>
 				<Skeleton columns={12} paragraphs={4} />
 
-				{challengesSize ? (
-					challengesMerged.map((challenge) => {
-						return (
-							<div className="detail-column" key={challenge.id}>
-								<div className="detail-column-inner">
-									<p><strong>Challenge:</strong> {challenge.name}</p>
-									<p><strong>Cost:</strong> ${challenge.amount.toFixed(2)}</p>
-									<p><strong>Ends:</strong> {utils.values.getTime(challenge.endsAt)}</p>
-									<UserLink wrapper={true} campaign={supporting[challenge.campaignId]} label={'Participate at'} />
+				{challengesSize
+					? challengesMerged.map((challenge) => {
+							return (
+								<div className='detail-column' key={challenge.id}>
+									<div className='detail-column-inner'>
+										<p>
+											<strong>Challenge:</strong> {challenge.name}
+										</p>
+										<p>
+											<strong>Cost:</strong> ${challenge.amount.toFixed(2)}
+										</p>
+										<p>
+											<strong>Ends:</strong> {utils.values.getTime(challenge.endsAt)}
+										</p>
+										<UserLink wrapper={true} campaign={supporting[challenge.campaignId]} label={'Participate at'} />
+									</div>
 								</div>
-							</div>
-						)
-					})
-				) : (null)}
+							);
+					  })
+					: null}
 			</div>
 
-			<a
-				onClick={(e) => utils.scrollTo(e, 'top')}
-				className="to-top pointer">
+			<a onClick={(e) => utils.scrollTo(e, 'top')} className='to-top pointer'>
 				^ Back to top
 			</a>
 		</section>

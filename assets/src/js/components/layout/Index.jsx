@@ -7,8 +7,8 @@ import { tiltify } from '../../scripts/tiltify';
 import { utils } from '../../scripts/utils';
 
 /* local component imports */
-import Header from './Header';
-import Content from '../content/Content';
+import NewGame from '../content/NewGame';
+import Continue from '../content/Continue';
 
 /* setup cache of campaigns */
 let localCache = {
@@ -16,7 +16,7 @@ let localCache = {
 	campaign: {},
 	donations: {},
 	rewards: {},
-	challenges: {}
+	challenges: {},
 };
 
 const Index = () => {
@@ -67,32 +67,30 @@ const Index = () => {
 			// set supporting campaigns
 			supporting = localCache.supporting;
 			setSupporting(supporting);
-
-			// since we have base campaign information, update document title tag
-			if (campaign && campaign.name) {
-				document.title = campaign.name;
-			}
 		}
 	}
 
-	// set up layouts for routes
-	let indexLayout = <Header localCache={localCache} buttonClick={requestCampaigns} utils={utils} />;
-	let contentLayout = <></>;
-	if (supporting) {
-		contentLayout = (<Content localCache={localCache} utils={utils} />);
-	}
-
 	return (
-		<div className="wrapper">
-			<main id="top" className="layout">
+		<div className='wrapper'>
+			<main id='top' className='layout'>
 				<Router>
-					<nav className="navigation">
-						<Link to="/">Index</Link>&nbsp;-&nbsp;<Link to="/content">Content</Link>
+					<nav className='navigation'>
+						<Link to='/'>NEW GAME</Link>
+						<span className='navigation-separator'></span>
+						<Link to='/continue'>Continue?</Link>
 					</nav>
 
 					<Routes>
-						<Route path="/content" element={contentLayout} />
-						<Route path="/" element={indexLayout} />
+						<Route
+							path='/continue'
+							element={
+								supporting ? <Continue supporting={supporting} campaign={campaign} localCache={localCache} utils={utils} /> : null
+							}
+						/>
+						<Route
+							path='/'
+							element={<NewGame supporting={supporting} campaign={campaign} buttonClick={requestCampaigns} utils={utils} />}
+						/>
 					</Routes>
 				</Router>
 			</main>

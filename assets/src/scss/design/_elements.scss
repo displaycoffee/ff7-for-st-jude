@@ -1,3 +1,4 @@
+/* prettier-ignore */
 // Use helpers and theme variables
 @use '../helpers/_mixins';
 @use '../theme/_theme';
@@ -43,10 +44,9 @@
 			}
 			.header-button-label-02 {
 				display: inline;
-			}			
+			}
 		}
 		.header-button-label-01 {
-			
 		}
 		.header-button-label-02 {
 			display: none;
@@ -61,6 +61,12 @@
 
 .navigation {
 	margin: 0 0 theme.$spacing-x12 0;
+	.navigation-separator {
+		&:before {
+			content: '-';
+			padding: 0 theme.$spacing-x2;
+		}
+	}
 }
 
 .to-top {
@@ -68,18 +74,19 @@
 	display: inline-block;
 }
 
+//// MISSION STATEMENT
+//// --------------------------------------------------------------------------
+
+.mission-statement {
+	text-align: center;
+	font-style: italic;
+}
+
 //// DETAIL LAYOUT
 //// --------------------------------------------------------------------------
 
 .detail {
 	margin: 0 0 theme.$spacing-x12 0;
-	&.detail-campaign {
-		.detail-row {
-			.detail-column {
-				width: 100%;
-			}
-		}
-	}
 	.detail-row {
 		margin: 0 -#{theme.$spacing-x3} -#{theme.$spacing-x6} -#{theme.$spacing-x3};
 		.detail-column {

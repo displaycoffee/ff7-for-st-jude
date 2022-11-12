@@ -23,7 +23,8 @@
 		"husky": "^7.0.4",
 		"lint-staged": "^12.3.7",
 		"mini-css-extract-plugin": "^2.6.0",
-	    "raw-loader": "^4.0.2",
+		"prettier": "^2.7.1",
+		"raw-loader": "^4.0.2",
 		"sass": "^1.49.9",
 		"sass-loader": "^12.6.0",
 		"webpack": "^5.70.0",
@@ -39,7 +40,8 @@
 		"prod": "webpack --config webpack.prod.js",
 		"lint": "eslint \"./assets/src/js/*.{js,jsx}\" --quiet",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"format": "prettier --write \"assets/src/**/*.{js,jsx}\""
 	},
 	"repository": {
 		"type": "git",

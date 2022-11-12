@@ -1,41 +1,45 @@
 export let utils = {
-	handleize : (value) => {
+	handleize: (value) => {
 		// format value for html classes
-		return value.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s/g, '-').trim();
+		return value
+			.toLowerCase()
+			.replace(/[^\w\s]/g, '')
+			.replace(/\s/g, '-')
+			.trim();
 	},
-	flatten : (object) => {
+	flatten: (object) => {
 		// flatten object into array
 		return Object.keys(object).map((value) => {
 			return object[value];
 		});
 	},
-	merge : (array) => {
+	merge: (array) => {
 		// merge array of arrays
 		return array.reduce((merge, next) => merge.concat(next), []);
 	},
-	size : (config) => {
+	size: (config) => {
 		return Object.keys(config).length;
 	},
-	scrollTo : (e, id) => {
+	scrollTo: (e, id) => {
 		e.preventDefault();
 		document.querySelector(`#${id}`).scrollIntoView({
-			behavior : 'smooth'
+			behavior: 'smooth',
 		});
 	},
 	values: {
 		// functions for manipulating values,
-		convertDecimal : (number) => {
+		convertDecimal: (number) => {
 			// convert number to two decimal places
 			return Math.round(number * 100) / 100;
 		},
-		getTime : (time) => {
+		getTime: (time) => {
 			// get date and time from unix timestamp
 			return new Intl.DateTimeFormat(navigator.language, {
-				dateStyle : 'full',
-				timeStyle : 'long'
+				dateStyle: 'full',
+				timeStyle: 'long',
 			}).format(time);
 		},
-		getTotal : (starting, data, field) => {
+		getTotal: (starting, data, field) => {
 			// get total amount for checking if prices have changed
 			let total = starting;
 			data.filter((d) => {
@@ -43,7 +47,7 @@ export let utils = {
 			});
 			return total;
 		},
-		sort : (list, type, field, direction) => {
+		sort: (list, type, field, direction) => {
 			// sort values in a list based on type, field, and direction
 			list.sort((a, b) => {
 				let sortValueA = a[field];

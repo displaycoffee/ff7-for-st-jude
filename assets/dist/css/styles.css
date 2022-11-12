@@ -279,6 +279,7 @@ button {
   color: #000000;
 }
 
+/* prettier-ignore */
 .flex-wrap {
   display: -webkit-box;
   display: -webkit-flex;
@@ -363,17 +364,23 @@ button {
 .navigation {
   margin: 0 0 60px 0;
 }
+.navigation .navigation-separator:before {
+  content: "-";
+  padding: 0 10px;
+}
 
 .to-top {
   margin: 30px 0 0 0;
   display: inline-block;
 }
 
+.mission-statement {
+  text-align: center;
+  font-style: italic;
+}
+
 .detail {
   margin: 0 0 60px 0;
-}
-.detail.detail-campaign .detail-row .detail-column {
-  width: 100%;
 }
 .detail .detail-row {
   margin: 0 -15px -30px -15px;
@@ -428,12 +435,12 @@ button {
 }
 
 @media only screen and (min-width: 768px) {
-  .detail .detail-row .detail-column {
+  .detail .detail-row .detail-column:not(.detail-column-whole) {
     width: 50%;
   }
 }
 @media only screen and (min-width: 992px) {
-  .detail .detail-row .detail-column {
+  .detail .detail-row .detail-column:not(.detail-column-whole) {
     width: 33.3333%;
   }
 }
@@ -445,7 +452,7 @@ button {
   .header .header-button {
     margin: 0 0 0 auto;
   }
-  .detail .detail-row .detail-column {
+  .detail .detail-row .detail-column:not(.detail-column-whole) {
     width: 25%;
   }
 }

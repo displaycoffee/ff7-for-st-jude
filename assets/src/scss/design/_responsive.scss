@@ -6,7 +6,7 @@
 //// --------------------------------------------------------------------------
 
 @include mixins.respond-min(theme.$bp-02) {
-	.detail .detail-row .detail-column {
+	.detail .detail-row .detail-column:not(.detail-column-whole) {
 		width: 50%;
 	}
 }
@@ -15,7 +15,7 @@
 //// --------------------------------------------------------------------------
 
 @include mixins.respond-min(theme.$bp-03) {
-	.detail .detail-row .detail-column {
+	.detail .detail-row .detail-column:not(.detail-column-whole) {
 		width: 33.3333%;
 	}
 }
@@ -33,7 +33,7 @@
 			margin: 0 0 0 auto;
 		}
 	}
-	.detail .detail-row .detail-column {
+	.detail .detail-row .detail-column:not(.detail-column-whole) {
 		width: 25%;
 	}
 }
