@@ -1,5 +1,5 @@
 const Skeleton = (props) => {
-	let { columns, paragraphs } = props;
+	let { columns, perRow, paragraphs } = props;
 
 	// function to build details in skeleton
 	const buildSkeleton = (length) => {
@@ -15,8 +15,8 @@ const Skeleton = (props) => {
 	const skeletonParagraphs = buildSkeleton(paragraphs);
 
 	return skeletonColumns.map((c, index) => (
-		<div className={`detail-column${columns == 1 ? ' detail-column-whole' : ''} detail-column-skeleton`} key={c + index}>
-			<div className='detail-column-inner'>
+		<div className={`detail-column detail-column-${perRow} detail-column-skeleton`} key={c + index}>
+			<div className="detail-column-inner">
 				{skeletonParagraphs.map((p, index) => {
 					return <p key={p + index}>&nbsp;</p>;
 				})}

@@ -1,6 +1,6 @@
 /* local component imports */
-import Skeleton from '../layout/Skeleton';
-import UserLink from '../layout/UserLink';
+import Skeleton from '../elements/Skeleton';
+import UserLink from '../elements/UserLink';
 
 const Rewards = (props) => {
 	let { supporting, rewards, utils } = props;
@@ -12,32 +12,38 @@ const Rewards = (props) => {
 	utils.values.sort(rewardsMerged, 'integer', 'endsAt', 'asc');
 
 	return (
-		<section id='rewards' className='detail detail-rewards'>
-			<h3 className='detail-title'>Rewards ending soon</h3>
+		<section id="detail-rewards" className="detail detail-rewards">
+			<h3 className="detail-title">Rewards ending soon</h3>
 
 			<div className={`detail-row${rewardsSize ? ' detail-row-loaded' : ''} flex-wrap`}>
-				<Skeleton columns={12} paragraphs={5} />
+				<Skeleton columns={12} perRow={'quarter'} paragraphs={5} />
 
 				{rewardsSize
-					? rewardsMerged.map((reward) => {
+					? rewardsMerged.map((reward, index) => {
 							return (
-								<div className='detail-column' key={reward.id}>
-									<div className='detail-column-inner'>
+								<div className={`detail-column detail-column-quarter detail-column-${index}`} key={reward.id}>
+									<div className="detail-column-inner">
 										<p>
 											<strong>Reward:</strong> {reward.name}
 										</p>
+
 										{reward.description && (
 											<p>
 												<strong>Description:</strong> {reward.description}
 											</p>
 										)}
+
 										<p>
 											<strong>Cost:</strong> ${reward.amount.toFixed(2)}
 										</p>
+
 										<p>
 											<strong>Ends:</strong> {utils.values.getTime(reward.endsAt)}
 										</p>
-										<UserLink wrapper={true} campaign={supporting[reward.campaignId]} label={'Redeem at'} />
+
+										<div className="detail-links">
+											<UserLink wrapper={true} campaign={supporting[reward.campaignId]} label={'Redeem at'} />
+										</div>
 									</div>
 								</div>
 							);
@@ -45,7 +51,7 @@ const Rewards = (props) => {
 					: null}
 			</div>
 
-			<a onClick={(e) => utils.scrollTo(e, 'top')} className='to-top pointer'>
+			<a onClick={(e) => utils.scrollTo(e, 'top')} className="to-top pointer">
 				^ Back to top
 			</a>
 		</section>

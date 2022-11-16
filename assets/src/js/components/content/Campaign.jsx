@@ -1,5 +1,5 @@
 /* local component imports */
-import Skeleton from '../layout/Skeleton';
+import Skeleton from '../elements/Skeleton';
 
 const Campaign = (props) => {
 	let { campaign, utils } = props;
@@ -7,32 +7,38 @@ const Campaign = (props) => {
 	const campaignSize = utils.size(campaign);
 
 	return (
-		<section className='detail detail-campaign'>
-			<h3 className='detail-title'>Current campaign</h3>
+		<section className="detail detail-campaign">
+			<h3 className="detail-title">Current campaign</h3>
 
 			<div className={`detail-row${campaignSize ? ' detail-row-loaded' : ''} flex-wrap`}>
-				<Skeleton columns={1} paragraphs={4} />
+				<Skeleton columns={1} perRow={'whole'} paragraphs={4} />
 
 				{campaignSize ? (
-					<div className='detail-column detail-column-whole'>
-						<div className='detail-column-inner'>
+					<div className="detail-column detail-column-whole detail-column-0">
+						<div className="detail-column-inner">
 							<p>
 								<strong>Name:</strong> {campaign.name}
 							</p>
+
 							<p>
-								<strong>Total Raised:</strong> ${campaign.totalAmountRaised.toFixed(2)}
+								<strong>Raised:</strong> ${campaign.totalAmountRaised.toFixed(2)}
 							</p>
+
 							<p>
-								<strong>Current Goal:</strong> ${campaign.fundraiserGoalAmount.toFixed(2)}
+								<strong>Goal:</strong> ${campaign.fundraiserGoalAmount.toFixed(2)}
 							</p>
+
 							<p>
 								<strong>About:</strong> {campaign.description}
 							</p>
-							<p>
-								<a href={campaignUrl} target='_blank'>
-									{campaignUrl.replace('https://', '')}
-								</a>
-							</p>
+
+							<div className="detail-links">
+								<p>
+									<a href={campaignUrl} target="_blank">
+										{campaignUrl.replace('https://', '')}
+									</a>
+								</p>
+							</div>
 						</div>
 					</div>
 				) : null}

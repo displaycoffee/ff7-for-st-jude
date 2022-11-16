@@ -1,6 +1,6 @@
 /* local component imports */
-import Skeleton from '../layout/Skeleton';
-import UserLink from '../layout/UserLink';
+import Skeleton from '../elements/Skeleton';
+import UserLink from '../elements/UserLink';
 
 const Donations = (props) => {
 	let { supporting, donations, utils } = props;
@@ -12,21 +12,22 @@ const Donations = (props) => {
 	utils.values.sort(donationsMerged, 'integer', 'completedAt', 'desc');
 
 	return (
-		<section id='donations' className='detail detail-donations'>
-			<h3 className='detail-title'>Donations</h3>
+		<section id="detail-donations" className="detail detail-donations">
+			<h3 className="detail-title">Donations</h3>
 
 			<div className={`detail-row${donationsSize ? ' detail-row-loaded' : ''} flex-wrap`}>
-				<Skeleton columns={12} paragraphs={2} />
+				<Skeleton columns={12} perRow={'quarter'} paragraphs={2} />
 
 				{donationsSize
-					? donationsMerged.map((donation) => {
+					? donationsMerged.map((donation, index) => {
 							return (
-								<div className='detail-column' key={donation.id}>
-									<div className='detail-column-inner'>
+								<div className={`detail-column detail-column-quarter detail-column-${index}`} key={donation.id}>
+									<div className="detail-column-inner">
 										<p>
 											<strong>Donation:</strong> ${donation.amount.toFixed(2)} from {donation.name} to&nbsp;
 											<UserLink wrapper={false} campaign={supporting[donation.campaignId]} />
 										</p>
+
 										{donation.comment && (
 											<p>
 												<strong>Comment:</strong> {donation.comment}
@@ -39,7 +40,7 @@ const Donations = (props) => {
 					: null}
 			</div>
 
-			<a onClick={(e) => utils.scrollTo(e, 'top')} className='to-top pointer'>
+			<a onClick={(e) => utils.scrollTo(e, 'top')} className="to-top pointer">
 				^ Back to top
 			</a>
 		</section>

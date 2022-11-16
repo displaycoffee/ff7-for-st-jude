@@ -1,7 +1,8 @@
 const UserLink = (props) => {
 	let { wrapper, campaign, label } = props;
+
 	const link = (
-		<a href={campaign.campaign} target='_blank'>
+		<a href={campaign.campaign} target="_blank">
 			{label ? `${label} ` : ``}
 			{campaign.username}
 		</a>

@@ -5,12 +5,12 @@ import { useState, useEffect } from 'react';
 import { tiltify } from '../../scripts/tiltify';
 
 /* local component imports */
-import Header from '../layout/Header';
-import Navigation from '../layout/Navigation';
-import Campaign from './Campaign';
-import Donations from './Donations';
-import Rewards from './Rewards';
-import Challenges from './Challenges';
+import Header from '../elements/Header';
+import Navigation from '../elements/Navigation';
+import Campaign from '../content/Campaign';
+import Challenges from '../content/Challenges';
+import Donations from '../content/Donations';
+import Rewards from '../content/Rewards';
 
 const Continue = (props) => {
 	let { localCache, supporting, campaign, utils } = props;
@@ -67,21 +67,21 @@ const Continue = (props) => {
 		{
 			label: 'Donations',
 			attributes: {
-				onClick: (e) => utils.scrollTo(e, 'donations'),
+				onClick: (e) => utils.scrollTo(e, 'detail-donations'),
 				className: 'pointer',
 			},
 		},
 		{
 			label: 'Rewards',
 			attributes: {
-				onClick: (e) => utils.scrollTo(e, 'rewards'),
+				onClick: (e) => utils.scrollTo(e, 'detail-rewards'),
 				className: 'pointer',
 			},
 		},
 		{
 			label: 'Challenges',
 			attributes: {
-				onClick: (e) => utils.scrollTo(e, 'challenges'),
+				onClick: (e) => utils.scrollTo(e, 'detail-challenges'),
 				className: 'pointer',
 			},
 		},

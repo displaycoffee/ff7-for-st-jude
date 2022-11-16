@@ -6,8 +6,10 @@
 //// --------------------------------------------------------------------------
 
 @include mixins.respond-min(theme.$bp-02) {
-	.detail .detail-row .detail-column:not(.detail-column-whole) {
-		width: 50%;
+	.detail .detail-row {
+		.detail-column-quarter, .detail-column-third, .detail-column-half {
+			width: 50%;
+		}
 	}
 }
 
@@ -15,8 +17,10 @@
 //// --------------------------------------------------------------------------
 
 @include mixins.respond-min(theme.$bp-03) {
-	.detail .detail-row .detail-column:not(.detail-column-whole) {
-		width: 33.3333%;
+	.detail .detail-row {
+		.detail-column-quarter, .detail-column-third {
+			width: 33.3333%;
+		}
 	}
 }
 
@@ -33,7 +37,9 @@
 			margin: 0 0 0 auto;
 		}
 	}
-	.detail .detail-row .detail-column:not(.detail-column-whole) {
-		width: 25%;
+	.detail .detail-row {
+		.detail-column-quarter {
+			width: 25%;
+		}
 	}
 }
