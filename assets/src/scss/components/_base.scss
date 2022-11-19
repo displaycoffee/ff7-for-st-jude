@@ -19,9 +19,7 @@
 //// --------------------------------------------------------------------------
 
 body {
-	background-color: theme.$color-01;
- 	background-image: linear-gradient(160deg, theme.$color-01 35%, theme.$color-02);
-	background-attachment: fixed;
+	background-color: theme.$color-06;
 	padding: theme.$spacing-x12;
 }
 
@@ -30,7 +28,7 @@ body {
 	margin: 0 auto;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p, .p, h1, h2, h3, h4, h5, h6 {
 	margin: 0 0 theme.$spacing-x6 0;
 }
 

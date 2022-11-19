@@ -43,10 +43,9 @@
 			}
 			.header-button-label-02 {
 				display: inline;
-			}			
+			}
 		}
 		.header-button-label-01 {
-			
 		}
 		.header-button-label-02 {
 			display: none;
@@ -61,6 +60,12 @@
 
 .navigation {
 	margin: 0 0 theme.$spacing-x12 0;
+	.navigation-separator {
+		&:before {
+			content: '-';
+			padding: 0 theme.$spacing-x2;
+		}
+	}
 }
 
 .to-top {
@@ -68,18 +73,46 @@
 	display: inline-block;
 }
 
+//// MISSION STATEMENT
+//// --------------------------------------------------------------------------
+
+.mission-statement {
+	text-align: center;
+	font-style: italic;
+}
+
+//// LEVEL BAR
+//// --------------------------------------------------------------------------
+
+.level-bar {
+	@include mixins.inline-block(top);
+	.level-bar-outof {		
+		@include mixins.sizing(100%, 20px);
+		border: 2px solid theme.$color-03;
+		background-color: theme.$color-07;
+		background-image: linear-gradient(theme.$color-09 0%, theme.$color-08 50%, theme.$color-07 75%);
+		position: relative;
+		.level-bar-progress, .level-bar-shadow {
+			@include mixins.sizing(100%, 100%);
+		}
+		.level-bar-progress {
+			background-color: theme.$color-10;
+			background-image: linear-gradient(theme.$color-12 0%, theme.$color-11 50%, theme.$color-10 75%);
+		}
+		.level-bar-shadow {
+			border: 2px solid rgba(0, 0, 0, 0.30);
+			border-top-width: 3px;
+			border-bottom-color: rgba(0, 0, 0, 0.10);
+			@include mixins.position($type: absolute, $left: 0, $top: 0);
+		}
+	}
+}
+
 //// DETAIL LAYOUT
 //// --------------------------------------------------------------------------
 
 .detail {
 	margin: 0 0 theme.$spacing-x12 0;
-	&.detail-campaign {
-		.detail-row {
-			.detail-column {
-				width: 100%;
-			}
-		}
-	}
 	.detail-row {
 		margin: 0 -#{theme.$spacing-x3} -#{theme.$spacing-x6} -#{theme.$spacing-x3};
 		.detail-column {
@@ -92,8 +125,10 @@
 				border-radius: 10px;
 				padding: theme.$spacing-x3;
 				height: 100%;
+				background-color: theme.$color-01;
+ 				background-image: linear-gradient(160deg, theme.$color-01 35%, theme.$color-02);
 			}
-			p {
+			p, .p {
 				margin: 0 0 theme.$spacing-x2 0;
 				word-break: break-word;
 				&:last-child {
@@ -115,7 +150,7 @@
 			}
 		}
 		.detail-column-skeleton {
-			p {
+			p, .p {
 				background-color: theme.$color-03;
 				width: 80%;
 				opacity: 0.8;
