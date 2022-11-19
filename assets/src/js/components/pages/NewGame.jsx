@@ -3,9 +3,10 @@ import Header from '../elements/Header';
 import Navigation from '../elements/Navigation';
 import Campaign from '../content/Campaign';
 import Supporting from '../content/Supporting';
+import Previous from '../content/Previous';
 
 const NewGame = (props) => {
-	let { supporting, campaign, buttonClick, utils } = props;
+	let { supporting, campaign, previous, buttonClick, utils } = props;
 
 	// setup navigation links
 	const navigationLinks = [
@@ -76,6 +77,8 @@ const NewGame = (props) => {
 			<Campaign campaign={campaign} utils={utils} />
 
 			{supporting && <Supporting supporting={supporting} utils={utils} />}
+
+			{previous && previous.length !== 0 && <Previous previous={previous} />}
 		</>
 	);
 };

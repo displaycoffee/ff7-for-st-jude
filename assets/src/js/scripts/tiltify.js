@@ -3,6 +3,9 @@ import secret from '../../../../secret.txt';
 
 /* st. jude ff7 campaign ids */
 const campaignIds = {
+	1: 92717,
+	2: 119041,
+	3: 140241,
 	4: 169251,
 	5: 463822,
 };
@@ -10,6 +13,36 @@ const campaignIds = {
 export const tiltify = {
 	token: secret,
 	campaign: campaignIds[5],
+	campaigns: [
+		{
+			id: campaignIds[4],
+			name: 'FF7 No-Slots for St. Jude #4',
+			totalAmountRaised: '8770.46',
+			campaign: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-4',
+			date: 'June 25, 2022',
+		},
+		{
+			id: campaignIds[3],
+			name: 'FF7 No-Slots for St. Jude #3',
+			totalAmountRaised: '6448.34',
+			campaign: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-3',
+			date: 'December 11, 2021',
+		},
+		{
+			id: campaignIds[2],
+			name: 'FF7 No-Slots For St. Jude #2',
+			totalAmountRaised: '4469.69',
+			campaign: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-2',
+			date: 'June 26, 2021',
+		},
+		{
+			id: campaignIds[1],
+			name: 'FF7 No-Slots For St. Jude',
+			totalAmountRaised: '2313.06',
+			campaign: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude',
+			date: 'December 28, 2020',
+		},
+	],
 	api: 'https://tiltify.com/api/v3/campaigns/',
 	fetchParams: {
 		method: 'GET',

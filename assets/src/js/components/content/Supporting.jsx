@@ -10,19 +10,18 @@ const Supporting = (props) => {
 	const supportingFlattened = utils.flatten(supporting);
 	const supportingMerged = utils.merge(supportingFlattened);
 	utils.values.sort(supportingMerged, 'integer', 'totalAmountRaised', 'desc');
-	console.log(supporting);
 
 	return (
 		<section className="detail detail-supporting">
 			<h3 className="detail-title">Supporting campaigns</h3>
 
 			<div className={`detail-row${supportingSize ? ' detail-row-loaded' : ''} flex-wrap`}>
-				<Skeleton columns={8} perRow={'third'} paragraphs={4} />
+				<Skeleton columns={8} perRow={'half'} paragraphs={4} />
 
 				{supportingSize
 					? supportingMerged.map((support, index) => {
 							return (
-								<div className={`detail-column detail-column-third detail-column-${index}`} key={support.id}>
+								<div className={`detail-column detail-column-half detail-column-${index}`} key={support.id}>
 									<div className="detail-column-inner">
 										<p>
 											<strong>Campaign:</strong> {support.name}

@@ -16,12 +16,12 @@ const Donations = (props) => {
 			<h3 className="detail-title">Donations</h3>
 
 			<div className={`detail-row${donationsSize ? ' detail-row-loaded' : ''} flex-wrap`}>
-				<Skeleton columns={12} perRow={'quarter'} paragraphs={2} />
+				<Skeleton columns={12} perRow={'third'} paragraphs={2} />
 
 				{donationsSize
 					? donationsMerged.map((donation, index) => {
 							return (
-								<div className={`detail-column detail-column-quarter detail-column-${index}`} key={donation.id}>
+								<div className={`detail-column detail-column-third detail-column-${index}`} key={donation.id}>
 									<div className="detail-column-inner">
 										<p>
 											<strong>Donation:</strong> ${donation.amount.toFixed(2)} from {donation.name} to&nbsp;

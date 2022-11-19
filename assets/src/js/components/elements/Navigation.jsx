@@ -3,10 +3,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navigation = (props) => {
-	const { links } = props;
+	const { links, navClass } = props;
 
 	return links.length !== 0 ? (
-		<nav className="navigation">
+		<nav className={`navigation${navClass ? ` ${navClass}` : ``}`}>
 			{links.map((link, index) => (
 				<React.Fragment key={index}>
 					{link.attributes.to ? <Link {...link.attributes}>{link.label}</Link> : <a {...link.attributes}>{link.label}</a>}

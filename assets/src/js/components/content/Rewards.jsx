@@ -16,12 +16,12 @@ const Rewards = (props) => {
 			<h3 className="detail-title">Rewards ending soon</h3>
 
 			<div className={`detail-row${rewardsSize ? ' detail-row-loaded' : ''} flex-wrap`}>
-				<Skeleton columns={12} perRow={'quarter'} paragraphs={5} />
+				<Skeleton columns={12} perRow={'third'} paragraphs={5} />
 
 				{rewardsSize
 					? rewardsMerged.map((reward, index) => {
 							return (
-								<div className={`detail-column detail-column-quarter detail-column-${index}`} key={reward.id}>
+								<div className={`detail-column detail-column-third detail-column-${index}`} key={reward.id}>
 									<div className="detail-column-inner">
 										<p>
 											<strong>Reward:</strong> {reward.name}

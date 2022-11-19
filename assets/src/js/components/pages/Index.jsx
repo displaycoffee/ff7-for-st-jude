@@ -92,7 +92,7 @@ const Index = () => {
 		<div className="wrapper">
 			<main id="top" className="layout">
 				<Router>
-					<Navigation links={navigationLinks} />
+					<Navigation links={navigationLinks} navClass={'navigation-top'} />
 
 					<Routes>
 						<Route
@@ -104,7 +104,15 @@ const Index = () => {
 
 						<Route
 							path="/"
-							element={<NewGame supporting={supporting} campaign={campaign} buttonClick={requestCampaigns} utils={utils} />}
+							element={
+								<NewGame
+									supporting={supporting}
+									campaign={campaign}
+									previous={tiltify.campaigns}
+									buttonClick={requestCampaigns}
+									utils={utils}
+								/>
+							}
 						/>
 					</Routes>
 				</Router>
