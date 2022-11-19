@@ -77,13 +77,13 @@ const Index = () => {
 		{
 			label: 'NEW GAME',
 			attributes: {
-				to: '/',
+				to: './',
 			},
 		},
 		{
 			label: 'Continue?',
 			attributes: {
-				to: '/continue',
+				to: './continue',
 			},
 		},
 	];
