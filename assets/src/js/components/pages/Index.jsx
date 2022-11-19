@@ -1,5 +1,5 @@
 /* react imports */
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 /* local script imports */
@@ -77,13 +77,13 @@ const Index = () => {
 		{
 			label: 'NEW GAME',
 			attributes: {
-				to: './',
+				to: '/',
 			},
 		},
 		{
 			label: 'Continue?',
 			attributes: {
-				to: './continue',
+				to: '/continue',
 			},
 		},
 	];
@@ -91,7 +91,7 @@ const Index = () => {
 	return (
 		<div className="wrapper">
 			<main id="top" className="layout">
-				<Router>
+				<Router basename={window.location.pathname}>
 					<Navigation links={navigationLinks} navClass={'navigation-top'} />
 
 					<Routes>
