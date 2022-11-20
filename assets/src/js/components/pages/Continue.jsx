@@ -1,19 +1,13 @@
 /* react imports */
 import { useState, useEffect } from 'react';
 
-/* local script imports */
-import { tiltify } from '../../scripts/tiltify';
-
 /* local component imports */
-import Header from '../elements/Header';
-import Navigation from '../elements/Navigation';
-import Campaign from '../content/Campaign';
-import Challenges from '../content/Challenges';
-import Donations from '../content/Donations';
-import Rewards from '../content/Rewards';
+import { Header } from '../elements/Header';
+import { Navigation } from '../elements/Navigation';
+import { Details } from '../elements/Details';
 
-const Continue = (props) => {
-	let { localCache, supporting, campaign, utils } = props;
+export const Continue = (props) => {
+	let { localCache, supporting, campaign, tiltify, utils, theme } = props;
 
 	// state variables
 	let [donations, setDonations] = useState(false);
@@ -35,14 +29,14 @@ const Continue = (props) => {
 
 				// only request content from api if amount has changed and add into localCache
 				if (utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data.amountRaised)) {
-					const content = await tiltify.request.content(id);
+					const content = await tiltify.request.content(id, supporting);
 					localCache.donations[id] = content.donations;
 					localCache.rewards[id] = content.rewards;
 					localCache.challenges[id] = content.challenges;
 				}
 			} else {
 				// initially add content into localCache
-				const content = await tiltify.request.content(id);
+				const content = await tiltify.request.content(id, supporting);
 				localCache.donations[id] = content.donations;
 				localCache.rewards[id] = content.rewards;
 				localCache.challenges[id] = content.challenges;
@@ -91,17 +85,15 @@ const Continue = (props) => {
 		<>
 			<Header buttonClick={requestContent} />
 
-			<Campaign campaign={campaign} utils={utils} />
+			<Details settings={theme.details.campaign} details={campaign} utils={utils} />
 
 			<Navigation links={navigationLinks} />
 
-			<Donations supporting={supporting} donations={donations} utils={utils} />
+			<Details settings={theme.details.donations} details={donations} utils={utils} />
 
-			<Rewards supporting={supporting} rewards={rewards} utils={utils} />
+			<Details settings={theme.details.rewards} details={rewards} utils={utils} />
 
-			<Challenges supporting={supporting} challenges={challenges} utils={utils} />
+			<Details settings={theme.details.challenges} details={challenges} utils={utils} />
 		</>
 	);
 };
-
-export default Continue;

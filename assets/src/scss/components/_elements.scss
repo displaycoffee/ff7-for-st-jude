@@ -108,7 +108,7 @@
 	}
 }
 
-//// DETAIL LAYOUT
+//// DETAILS - MAIN LAYOUT
 //// --------------------------------------------------------------------------
 
 .detail {
@@ -139,7 +139,39 @@
 	}
 }
 
-//// SKELETON
+//// DETAILS - SUPPORTING
+//// --------------------------------------------------------------------------
+
+.detail-supporting {
+	.detail-row {
+		.detail-column-0, .detail-column-1, .detail-column-2 {
+			.detail-column-inner .detail-links {
+				position: relative;
+				padding: 0 0 0 70px;
+				&:before {
+					content: '';
+					display: block;
+					@include mixins.sizing(50px, 50px);
+					@include mixins.position($type: absolute, $top: 5px, $left: 0);
+					background-repeat: no-repeat;
+					background-position: 0 0;
+					background-size: contain;
+				}
+			}
+		}
+		.detail-column-0 .detail-column-inner .detail-links:before {
+			background-image: url('../../dist/images/chocobo-01.png');
+		}
+		.detail-column-1 .detail-column-inner .detail-links:before {
+			background-image: url('../../dist/images/chocobo-02.png');
+		}
+		.detail-column-2 .detail-column-inner .detail-links:before {
+			background-image: url('../../dist/images/chocobo-03.png');
+		}
+	}
+}
+
+//// DETAILS - SKELETON
 //// --------------------------------------------------------------------------
 
 .detail {

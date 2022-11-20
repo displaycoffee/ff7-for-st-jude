@@ -2,7 +2,7 @@
 import { createRoot } from 'react-dom/client';
 
 /* local component imports */
-import Index from './components/pages/Index';
+import { Index } from './components/pages/Index';
 
 /* create root into app entry point */
 const ff7App = document.getElementById('ff7-app');

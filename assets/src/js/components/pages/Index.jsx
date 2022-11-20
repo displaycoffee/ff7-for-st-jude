@@ -5,11 +5,12 @@ import { useState, useEffect } from 'react';
 /* local script imports */
 import { tiltify } from '../../scripts/tiltify';
 import { utils } from '../../scripts/utils';
+import { theme } from '../../scripts/theme';
 
 /* local component imports */
-import Navigation from '../elements/Navigation';
-import NewGame from './NewGame';
-import Continue from './Continue';
+import { Navigation } from '../elements/Navigation';
+import { NewGame } from './NewGame';
+import { Continue } from './Continue';
 
 /* setup cache of campaigns */
 let localCache = {
@@ -20,7 +21,7 @@ let localCache = {
 	challenges: {},
 };
 
-const Index = () => {
+export const Index = () => {
 	// state variables
 	let [campaign, setCampaign] = useState(false);
 	let [supporting, setSupporting] = useState(false);
@@ -57,13 +58,32 @@ const Index = () => {
 					data.campaignId = data.id;
 					data.username = data.user.username;
 					data.campaign = `${data.user.url}/${data.slug}`;
-					data.twitch = data?.livestream?.type == 'twitch' ? `https://${data.livestream.type}.tv/${data.livestream.channel}` : false;
+					data.links = [
+						{
+							label: `Support ${data.username}`,
+							url: data.campaign,
+						},
+					];
+					if (data?.livestream?.type == 'twitch') {
+						data.links.unshift({
+							label: 'Watch stream',
+							url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
+						});
+					}
 					localCache.supporting[id] = data;
 				}
 			}
 
-			// set base campaign
-			campaign = localCache.campaign;
+			// set base campaign (and add details)
+			const campaignUrl = `${localCache.campaign.url}/${localCache.campaign.slug}`;
+			localCache.campaign.date = 'December 10, 2022';
+			localCache.campaign.links = [
+				{
+					label: campaignUrl.replace('https://', ''),
+					url: campaignUrl,
+				},
+			];
+			campaign = [localCache.campaign];
 			setCampaign(campaign);
 
 			// set supporting campaigns
@@ -88,17 +108,32 @@ const Index = () => {
 		},
 	];
 
+	// determine basename for route
+	let basename = '';
+	if (window.location.pathname.includes('/ff7-st-jude')) {
+		basename = '/ff7-st-jude';
+	}
+
 	return (
 		<div className="wrapper">
 			<main id="top" className="layout">
-				<Router basename={window.location.pathname}>
+				<Router basename={basename}>
 					<Navigation links={navigationLinks} navClass={'navigation-top'} />
 
 					<Routes>
 						<Route
 							path="/continue"
 							element={
-								supporting ? <Continue supporting={supporting} campaign={campaign} localCache={localCache} utils={utils} /> : null
+								supporting ? (
+									<Continue
+										supporting={supporting}
+										campaign={campaign}
+										localCache={localCache}
+										tiltify={tiltify}
+										utils={utils}
+										theme={theme}
+									/>
+								) : null
 							}
 						/>
 
@@ -111,14 +146,17 @@ const Index = () => {
 									previous={tiltify.campaigns}
 									buttonClick={requestCampaigns}
 									utils={utils}
+									theme={theme}
 								/>
 							}
 						/>
 					</Routes>
 				</Router>
+
+				<section className="credits">
+					Created by <a href="https://github.com/displaycoffee" target="_blank">displaycoffee</a>.
+				</section>
 			</main>
 		</div>
 	);
 };
-
-export default Index;

@@ -1,33 +1,31 @@
 /* local component imports */
-import Header from '../elements/Header';
-import Navigation from '../elements/Navigation';
-import Campaign from '../content/Campaign';
-import Supporting from '../content/Supporting';
-import Previous from '../content/Previous';
+import { Header } from '../elements/Header';
+import { Navigation } from '../elements/Navigation';
+import { Details } from '../elements/Details';
 
-const NewGame = (props) => {
-	let { supporting, campaign, previous, buttonClick, utils } = props;
+export const NewGame = (props) => {
+	let { supporting, campaign, previous, buttonClick, utils, theme } = props;
 
 	// setup navigation links
 	const navigationLinks = [
 		{
 			label: 'Participant Guide',
 			attributes: {
-				href: '//docs.google.com/document/d/1ggjNslCvkzGdsjmWvkJriRNMgvVjSfbsCG-FTPUpBuw',
+				href: 'https://docs.google.com/document/d/1ggjNslCvkzGdsjmWvkJriRNMgvVjSfbsCG-FTPUpBuw',
 				target: '_blank',
 			},
 		},
 		{
 			label: 'Signup Sheet',
 			attributes: {
-				href: '//docs.google.com/spreadsheets/d/1_P65Vui4GYhFB2YII8p6bbcKTGWerqa2u838LiHwuxQ',
+				href: 'https://docs.google.com/spreadsheets/d/1_P65Vui4GYhFB2YII8p6bbcKTGWerqa2u838LiHwuxQ',
 				target: '_blank',
 			},
 		},
 		{
 			label: 'Commentary Stream',
 			attributes: {
-				href: '//twitch.tv/MonetaryDragon',
+				href: 'https://twitch.tv/MonetaryDragon',
 				target: '_blank',
 			},
 		},
@@ -46,11 +44,11 @@ const NewGame = (props) => {
 							<p>
 								Welcome to the biannual FF7 for St. Jude speedrun event! Since December 2020, these events have been held twice per
 								year, typically the last weekend of June and the 2nd weekend of December. The event is part of{' '}
-								<a href="//www.stjude.org/get-involved/other-ways/video-game-charity-event.html" target="_blank">
+								<a href="https://www.stjude.org/get-involved/other-ways/video-game-charity-event.html" target="_blank">
 									St. Jude PLAY LIVE
 								</a>
 								, an organization for gamers to support{' '}
-								<a href="//www.stjude.org" target="_blank">
+								<a href="https://www.stjude.org" target="_blank">
 									St. Jude Children's Research Hospital
 								</a>
 								.
@@ -74,13 +72,11 @@ const NewGame = (props) => {
 
 			<Navigation links={navigationLinks} />
 
-			<Campaign campaign={campaign} utils={utils} />
+			<Details settings={theme.details.campaign} details={campaign} utils={utils} />
 
-			{supporting && <Supporting supporting={supporting} utils={utils} />}
+			<Details settings={theme.details.supporting} details={supporting} utils={utils} />
 
-			{previous && previous.length !== 0 && <Previous previous={previous} />}
+			<Details settings={theme.details.previous} details={previous} utils={utils} />
 		</>
 	);
 };
-
-export default NewGame;

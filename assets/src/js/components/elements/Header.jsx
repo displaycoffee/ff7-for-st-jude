@@ -1,4 +1,4 @@
-const Header = (props) => {
+export const Header = (props) => {
 	const { buttonClick } = props;
 
 	// make button spin
@@ -40,5 +40,3 @@ const Header = (props) => {
 		</>
 	);
 };
-
-export default Header;
