@@ -154,7 +154,11 @@ export const Index = () => {
 				</Router>
 
 				<section className="credits">
-					Created by <a href="https://github.com/displaycoffee" target="_blank">displaycoffee</a>.
+					Created by{' '}
+					<a href="https://github.com/displaycoffee" target="_blank">
+						displaycoffee
+					</a>
+					.
 				</section>
 			</main>
 		</div>
