@@ -1,7 +1,7 @@
 /* local component imports */
 import Header from '../elements/Header';
 import Navigation from '../elements/Navigation';
-import Campaign from '../content/Campaign';
+import Details from '../elements/Details';
 import Supporting from '../content/Supporting';
 import Previous from '../content/Previous';
 
@@ -32,6 +32,43 @@ const NewGame = (props) => {
 			},
 		},
 	];
+
+	// campaign details
+	const campaignDetails = {
+		content: {
+			details: campaign,
+			header: 'Current campaign',
+			name: 'Campaign',
+		},
+		sort: false,
+		layout: {
+			columns: 'whole',
+		},
+		skeleton: {
+			columns: 1,
+			paragraphs: 5,
+		},
+	};
+
+	// supporting details
+	const supportingDetails = {
+		content: {
+			details: supporting,
+			header: 'Supporting campaigns',
+			name: 'Campaign',
+		},
+		sort: {
+			field: 'totalAmountRaised',
+			direction: 'desc',
+		},
+		layout: {
+			columns: 'half',
+		},
+		skeleton: {
+			columns: 8,
+			paragraphs: 4,
+		},
+	};
 
 	return (
 		<>
@@ -74,7 +111,9 @@ const NewGame = (props) => {
 
 			<Navigation links={navigationLinks} />
 
-			<Campaign campaign={campaign} utils={utils} />
+			<Details details={campaignDetails} supporting={supporting} utils={utils} />
+
+			<Details details={supportingDetails} supporting={supporting} utils={utils} />
 
 			{supporting && <Supporting supporting={supporting} utils={utils} />}
 

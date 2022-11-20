@@ -63,7 +63,11 @@ const Index = () => {
 			}
 
 			// set base campaign
-			campaign = localCache.campaign;
+			localCache.campaign.date = 'December 10, 2022';
+			const campaignConfig = {
+				[localCache.campaign.id]: [localCache.campaign],
+			};
+			campaign = campaignConfig;
 			setCampaign(campaign);
 
 			// set supporting campaigns
@@ -88,10 +92,13 @@ const Index = () => {
 		},
 	];
 
+	// determine basename for route
+	const basename = window.location.hostname.includes('localhost') ? '' : window.location.pathname;
+
 	return (
 		<div className="wrapper">
 			<main id="top" className="layout">
-				<Router basename={window.location.pathname}>
+				<Router basename={basename}>
 					<Navigation links={navigationLinks} navClass={'navigation-top'} />
 
 					<Routes>

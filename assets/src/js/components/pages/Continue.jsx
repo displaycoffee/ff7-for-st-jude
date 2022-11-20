@@ -7,10 +7,7 @@ import { tiltify } from '../../scripts/tiltify';
 /* local component imports */
 import Header from '../elements/Header';
 import Navigation from '../elements/Navigation';
-import Campaign from '../content/Campaign';
-import Challenges from '../content/Challenges';
-import Donations from '../content/Donations';
-import Rewards from '../content/Rewards';
+import Details from '../elements/Details';
 
 const Continue = (props) => {
 	let { localCache, supporting, campaign, utils } = props;
@@ -87,19 +84,98 @@ const Continue = (props) => {
 		},
 	];
 
+	// campaign details
+	const campaignDetails = {
+		content: {
+			details: campaign,
+			header: 'Current campaign',
+			name: 'Campaign',
+		},
+		sort: false,
+		layout: {
+			columns: 'whole',
+		},
+		skeleton: {
+			columns: 1,
+			paragraphs: 5,
+		},
+	};
+
+	// donation details
+	const donationsDetails = {
+		content: {
+			details: donations,
+			header: 'Donations',
+			name: 'Donation',
+		},
+		sort: {
+			field: 'completedAt',
+			direction: 'desc',
+		},
+		layout: {
+			columns: 'third',
+		},
+		skeleton: {
+			columns: 12,
+			paragraphs: 2,
+		},
+	};
+
+	// rewards details
+	const rewardsDetails = {
+		content: {
+			details: rewards,
+			header: 'Rewards ending soon',
+			name: 'Reward',
+			linkLabel: 'Redeem at',
+		},
+		sort: {
+			field: 'endsAt',
+			direction: 'asc',
+		},
+		layout: {
+			columns: 'third',
+		},
+		skeleton: {
+			columns: 12,
+			paragraphs: 5,
+		},
+	};
+
+	// challenges details
+	const challengesDetails = {
+		content: {
+			details: challenges,
+			header: 'Challenges ending soon',
+			name: 'Challenge',
+			linkLabel: 'Participate at',
+		},
+		sort: {
+			field: 'endsAt',
+			direction: 'asc',
+		},
+		layout: {
+			columns: 'third',
+		},
+		skeleton: {
+			columns: 12,
+			paragraphs: 4,
+		},
+	};
+
 	return (
 		<>
 			<Header buttonClick={requestContent} />
 
-			<Campaign campaign={campaign} utils={utils} />
+			<Details details={campaignDetails} supporting={supporting} utils={utils} />
 
 			<Navigation links={navigationLinks} />
 
-			<Donations supporting={supporting} donations={donations} utils={utils} />
+			<Details details={donationsDetails} supporting={supporting} utils={utils} />
 
-			<Rewards supporting={supporting} rewards={rewards} utils={utils} />
+			<Details details={rewardsDetails} supporting={supporting} utils={utils} />
 
-			<Challenges supporting={supporting} challenges={challenges} utils={utils} />
+			<Details details={challengesDetails} supporting={supporting} utils={utils} />
 		</>
 	);
 };
