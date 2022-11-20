@@ -1,3 +1,7 @@
+/*!******************************************************************************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../node_modules/sass-loader/dist/cjs.js!./assets/src/scss/modules/theme.module.scss ***!
+  \******************************************************************************************************************************************************************/
+
 /*!****************************************************************************************************************************************************!*\
   !*** css ../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!../node_modules/sass-loader/dist/cjs.js!./assets/src/scss/styles.scss ***!
   \****************************************************************************************************************************************************/
@@ -437,6 +441,32 @@ button {
   margin-bottom: 0;
 }
 
+.detail-supporting .detail-row .detail-column-0 .detail-column-inner .detail-links, .detail-supporting .detail-row .detail-column-1 .detail-column-inner .detail-links, .detail-supporting .detail-row .detail-column-2 .detail-column-inner .detail-links {
+  position: relative;
+  padding: 0 0 0 70px;
+}
+.detail-supporting .detail-row .detail-column-0 .detail-column-inner .detail-links:before, .detail-supporting .detail-row .detail-column-1 .detail-column-inner .detail-links:before, .detail-supporting .detail-row .detail-column-2 .detail-column-inner .detail-links:before {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: contain;
+}
+.detail-supporting .detail-row .detail-column-0 .detail-column-inner .detail-links:before {
+  background-image: url("../../dist/images/chocobo-01.png");
+}
+.detail-supporting .detail-row .detail-column-1 .detail-column-inner .detail-links:before {
+  background-image: url("../../dist/images/chocobo-02.png");
+}
+.detail-supporting .detail-row .detail-column-2 .detail-column-inner .detail-links:before {
+  background-image: url("../../dist/images/chocobo-03.png");
+}
+
 .detail .detail-row.detail-row-loaded .detail-column-skeleton {
   display: none;
 }
@@ -461,33 +491,6 @@ button {
 }
 .detail .detail-row .detail-column-skeleton p:nth-child(5), .detail .detail-row .detail-column-skeleton .p:nth-child(5) {
   width: 50%;
-}
-
-/* prettier-ignore */
-.detail-supporting .detail-row .detail-column-0 .detail-column-inner .detail-links, .detail-supporting .detail-row .detail-column-1 .detail-column-inner .detail-links, .detail-supporting .detail-row .detail-column-2 .detail-column-inner .detail-links {
-  position: relative;
-  padding: 0 0 0 60px;
-}
-.detail-supporting .detail-row .detail-column-0 .detail-column-inner .detail-links:before, .detail-supporting .detail-row .detail-column-1 .detail-column-inner .detail-links:before, .detail-supporting .detail-row .detail-column-2 .detail-column-inner .detail-links:before {
-  content: "";
-  display: block;
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  top: 5px;
-  left: 0;
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  background-size: contain;
-}
-.detail-supporting .detail-row .detail-column-0 .detail-column-inner .detail-links:before {
-  background-image: url("../../dist/images/chocobo-01.png");
-}
-.detail-supporting .detail-row .detail-column-1 .detail-column-inner .detail-links:before {
-  background-image: url("../../dist/images/chocobo-02.png");
-}
-.detail-supporting .detail-row .detail-column-2 .detail-column-inner .detail-links:before {
-  background-image: url("../../dist/images/chocobo-03.png");
 }
 
 @media only screen and (min-width: 768px) {

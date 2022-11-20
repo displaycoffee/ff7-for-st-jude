@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navigation = (props) => {
+export const Navigation = (props) => {
 	const { links, navClass } = props;
 
 	return links.length !== 0 ? (
@@ -17,5 +17,3 @@ const Navigation = (props) => {
 		</nav>
 	) : null;
 };
-
-export default Navigation;

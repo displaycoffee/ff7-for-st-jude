@@ -1,16 +1,13 @@
 /* react imports */
 import { useState, useEffect } from 'react';
 
-/* local script imports */
-import { tiltify } from '../../scripts/tiltify';
-
 /* local component imports */
-import Header from '../elements/Header';
-import Navigation from '../elements/Navigation';
-import Details from '../elements/Details';
+import { Header } from '../elements/Header';
+import { Navigation } from '../elements/Navigation';
+import { Details } from '../elements/Details';
 
-const Continue = (props) => {
-	let { localCache, supporting, campaign, utils } = props;
+export const Continue = (props) => {
+	let { localCache, supporting, campaign, tiltify, utils, theme } = props;
 
 	// state variables
 	let [donations, setDonations] = useState(false);
@@ -32,14 +29,14 @@ const Continue = (props) => {
 
 				// only request content from api if amount has changed and add into localCache
 				if (utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data.amountRaised)) {
-					const content = await tiltify.request.content(id);
+					const content = await tiltify.request.content(id, supporting);
 					localCache.donations[id] = content.donations;
 					localCache.rewards[id] = content.rewards;
 					localCache.challenges[id] = content.challenges;
 				}
 			} else {
 				// initially add content into localCache
-				const content = await tiltify.request.content(id);
+				const content = await tiltify.request.content(id, supporting);
 				localCache.donations[id] = content.donations;
 				localCache.rewards[id] = content.rewards;
 				localCache.challenges[id] = content.challenges;
@@ -84,100 +81,19 @@ const Continue = (props) => {
 		},
 	];
 
-	// campaign details
-	const campaignDetails = {
-		content: {
-			details: campaign,
-			header: 'Current campaign',
-			name: 'Campaign',
-		},
-		sort: false,
-		layout: {
-			columns: 'whole',
-		},
-		skeleton: {
-			columns: 1,
-			paragraphs: 5,
-		},
-	};
-
-	// donation details
-	const donationsDetails = {
-		content: {
-			details: donations,
-			header: 'Donations',
-			name: 'Donation',
-		},
-		sort: {
-			field: 'completedAt',
-			direction: 'desc',
-		},
-		layout: {
-			columns: 'third',
-		},
-		skeleton: {
-			columns: 12,
-			paragraphs: 2,
-		},
-	};
-
-	// rewards details
-	const rewardsDetails = {
-		content: {
-			details: rewards,
-			header: 'Rewards ending soon',
-			name: 'Reward',
-			linkLabel: 'Redeem at',
-		},
-		sort: {
-			field: 'endsAt',
-			direction: 'asc',
-		},
-		layout: {
-			columns: 'third',
-		},
-		skeleton: {
-			columns: 12,
-			paragraphs: 5,
-		},
-	};
-
-	// challenges details
-	const challengesDetails = {
-		content: {
-			details: challenges,
-			header: 'Challenges ending soon',
-			name: 'Challenge',
-			linkLabel: 'Participate at',
-		},
-		sort: {
-			field: 'endsAt',
-			direction: 'asc',
-		},
-		layout: {
-			columns: 'third',
-		},
-		skeleton: {
-			columns: 12,
-			paragraphs: 4,
-		},
-	};
-
 	return (
 		<>
 			<Header buttonClick={requestContent} />
 
-			<Details details={campaignDetails} supporting={supporting} utils={utils} />
+			<Details settings={theme.details.campaign} details={campaign} utils={utils} />
 
 			<Navigation links={navigationLinks} />
 
-			<Details details={donationsDetails} supporting={supporting} utils={utils} />
+			<Details settings={theme.details.donations} details={donations} utils={utils} />
 
-			<Details details={rewardsDetails} supporting={supporting} utils={utils} />
+			<Details settings={theme.details.rewards} details={rewards} utils={utils} />
 
-			<Details details={challengesDetails} supporting={supporting} utils={utils} />
+			<Details settings={theme.details.challenges} details={challenges} utils={utils} />
 		</>
 	);
 };
-
-export default Continue;

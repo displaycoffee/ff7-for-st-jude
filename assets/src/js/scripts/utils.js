@@ -1,4 +1,4 @@
-export let utils = {
+export const utils = {
 	handleize: (value) => {
 		// format value for html classes
 		return value

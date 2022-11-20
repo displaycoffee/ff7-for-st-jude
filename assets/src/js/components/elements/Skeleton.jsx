@@ -1,4 +1,4 @@
-const Skeleton = (props) => {
+export const Skeleton = (props) => {
 	let { columns, perRow, paragraphs } = props;
 
 	// function to build details in skeleton
@@ -24,5 +24,3 @@ const Skeleton = (props) => {
 		</div>
 	));
 };
-
-export default Skeleton;

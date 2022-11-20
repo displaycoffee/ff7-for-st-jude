@@ -17,30 +17,50 @@ export const tiltify = {
 		{
 			id: campaignIds[4],
 			name: 'FF7 No-Slots for St. Jude #4',
-			totalAmountRaised: '8770.46',
-			campaign: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-4',
+			totalAmountRaised: 8770.46,
 			date: 'June 25, 2022',
+			links: [
+				{
+					label: 'See campaign',
+					url: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-4',
+				},
+			],
 		},
 		{
 			id: campaignIds[3],
 			name: 'FF7 No-Slots for St. Jude #3',
-			totalAmountRaised: '6448.34',
-			campaign: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-3',
+			totalAmountRaised: 6448.34,
 			date: 'December 11, 2021',
+			links: [
+				{
+					label: 'See campaign',
+					url: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-3',
+				},
+			],
 		},
 		{
 			id: campaignIds[2],
 			name: 'FF7 No-Slots For St. Jude #2',
-			totalAmountRaised: '4469.69',
-			campaign: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-2',
+			totalAmountRaised: 4469.69,
 			date: 'June 26, 2021',
+			links: [
+				{
+					label: 'See campaign',
+					url: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude-2',
+				},
+			],
 		},
 		{
 			id: campaignIds[1],
 			name: 'FF7 No-Slots For St. Jude',
-			totalAmountRaised: '2313.06',
-			campaign: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude',
+			totalAmountRaised: 2313.06,
 			date: 'December 28, 2020',
+			links: [
+				{
+					label: 'See campaign',
+					url: 'https://tiltify.com/+ff7-for-st-jude/ff7-no-slots-for-st-jude',
+				},
+			],
 		},
 	],
 	api: 'https://tiltify.com/api/v3/campaigns/',
@@ -84,7 +104,7 @@ export const tiltify = {
 				return json.data;
 			}
 		},
-		content: async (id) => {
+		content: async (id, supporting) => {
 			// empty content config to fetch and store data in
 			let contentConfig = {
 				donations: [],
@@ -103,9 +123,15 @@ export const tiltify = {
 			let [donationsJson, rewardsJson, challengesJson] = await Promise.all([donations.json(), rewards.json(), challenges.json()]);
 
 			if (donationsJson && donationsJson.data) {
-				// add campaignId to donations
+				// add campaignId and links to donations
 				donationsJson.data = donationsJson.data.filter((data) => {
 					data.campaignId = id;
+					data.links = [
+						{
+							label: supporting[data.campaignId].username,
+							url: supporting[data.campaignId].campaign,
+						},
+					];
 					return data;
 				});
 
@@ -114,9 +140,15 @@ export const tiltify = {
 			}
 
 			if (rewardsJson && rewardsJson.data) {
-				// add campaignId and filter out inactive rewards
+				// add campaignId and links and filter out inactive rewards
 				rewardsJson.data = rewardsJson.data.filter((data) => {
 					data.campaignId = id;
+					data.links = [
+						{
+							label: `Redeem at ${supporting[data.campaignId].username}`,
+							url: supporting[data.campaignId].campaign,
+						},
+					];
 					return tiltify.filterContent('reward', data);
 				});
 
@@ -125,9 +157,15 @@ export const tiltify = {
 			}
 
 			if (challengesJson && challengesJson.data) {
-				// add campaignId and filter out inactive challenges
+				// add campaignId and links and filter out inactive challenges
 				challengesJson.data = challengesJson.data.filter((data) => {
 					data.campaignId = id;
+					data.links = [
+						{
+							label: `Participate at ${supporting[data.campaignId].username}`,
+							url: supporting[data.campaignId].campaign,
+						},
+					];
 					return tiltify.filterContent('challenge', data);
 				});
 
