@@ -92,6 +92,7 @@
 		background-color: theme.$color-07;
 		background-image: linear-gradient(theme.$color-09 0%, theme.$color-08 50%, theme.$color-07 75%);
 		position: relative;
+		overflow: hidden;
 		.level-bar-progress, .level-bar-shadow {
 			@include mixins.sizing(100%, 100%);
 		}

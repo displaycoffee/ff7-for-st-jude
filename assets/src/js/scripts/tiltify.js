@@ -1,6 +1,9 @@
 /* local imports */
 import secret from '../../../../secret.txt';
 
+/* local script imports */
+import { utils } from './utils';
+
 /* st. jude ff7 campaign ids */
 const campaignIds = {
 	1: 92717,
@@ -71,6 +74,9 @@ export const tiltify = {
 			'Content-Type': `application/json`,
 		},
 	},
+	checkLinks: (supporting, data) => {
+		return supporting[data.campaignId].username && supporting[data.campaignId].campaign ? true : false;
+	},
 	filterContent: (content, data) => {
 		// get time for checking if content has expired
 		const currentTime = Date.now();
@@ -84,7 +90,7 @@ export const tiltify = {
 			const isRemaining = typeof data.remaining == 'number' && data.remaining > 0 ? true : false;
 			contentActive = !isExpired && isRemaining && data.active && !data.alwaysActive;
 		} else if (content == 'challenge') {
-			contentActive = !isExpired && data.totalAmountRaised < data.amount;
+			contentActive = !isExpired && data.active && data.totalAmountRaised < data.amount;
 		}
 		return contentActive;
 	},
@@ -125,13 +131,15 @@ export const tiltify = {
 			if (donationsJson && donationsJson.data) {
 				// add campaignId and links to donations
 				donationsJson.data = donationsJson.data.filter((data) => {
-					data.campaignId = id;
-					data.links = [
-						{
-							label: supporting[data.campaignId].username,
-							url: supporting[data.campaignId].campaign,
-						},
-					];
+					data.campaignId = utils.values.toNumber(id);
+					data.links = tiltify.checkLinks(supporting, data)
+						? [
+								{
+									label: supporting[data.campaignId].username,
+									url: supporting[data.campaignId].campaign,
+								},
+						  ]
+						: [];
 					return data;
 				});
 
@@ -142,13 +150,15 @@ export const tiltify = {
 			if (rewardsJson && rewardsJson.data) {
 				// add campaignId and links and filter out inactive rewards
 				rewardsJson.data = rewardsJson.data.filter((data) => {
-					data.campaignId = id;
-					data.links = [
-						{
-							label: `Redeem at ${supporting[data.campaignId].username}`,
-							url: supporting[data.campaignId].campaign,
-						},
-					];
+					data.campaignId = utils.values.toNumber(id);
+					data.links = tiltify.checkLinks(supporting, data)
+						? [
+								{
+									label: `Redeem at ${supporting[data.campaignId].username}`,
+									url: supporting[data.campaignId].campaign,
+								},
+						  ]
+						: [];
 					return tiltify.filterContent('reward', data);
 				});
 
@@ -159,13 +169,15 @@ export const tiltify = {
 			if (challengesJson && challengesJson.data) {
 				// add campaignId and links and filter out inactive challenges
 				challengesJson.data = challengesJson.data.filter((data) => {
-					data.campaignId = id;
-					data.links = [
-						{
-							label: `Participate at ${supporting[data.campaignId].username}`,
-							url: supporting[data.campaignId].campaign,
-						},
-					];
+					data.campaignId = utils.values.toNumber(id);
+					data.links = tiltify.checkLinks(supporting, data)
+						? [
+								{
+									label: `Participate at ${supporting[data.campaignId].username}`,
+									url: supporting[data.campaignId].campaign,
+								},
+						  ]
+						: [];
 					return tiltify.filterContent('challenge', data);
 				});
 

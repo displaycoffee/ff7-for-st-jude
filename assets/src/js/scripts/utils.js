@@ -27,7 +27,11 @@ export const utils = {
 		});
 	},
 	values: {
-		// functions for manipulating values,
+		// functions for manipulating values
+		toNumber: (number) => {
+			const numberCheck = number ? number : 0;
+			return !isNaN(Number(numberCheck)) ? numberCheck : 0;
+		},
 		convertDecimal: (number) => {
 			// convert number to two decimal places
 			return Math.round(number * 100) / 100;
