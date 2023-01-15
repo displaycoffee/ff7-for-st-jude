@@ -110,7 +110,7 @@ export const tiltify = {
 				return json.data;
 			}
 		},
-		content: async (id, supporting) => {
+		content: async (id, supporting, donationsFetch, donationsCache) => {
 			// empty content config to fetch and store data in
 			let contentConfig = {
 				donations: [],
@@ -120,13 +120,17 @@ export const tiltify = {
 
 			// fetch donations, rewards, and challenges from tiltify using promises
 			let [donations, rewards, challenges] = await Promise.all([
-				fetch(`${tiltify.api}${id}/donations?count=50`, tiltify.fetchParams),
+				donationsFetch ? fetch(`${tiltify.api}${id}/donations?count=100`, tiltify.fetchParams) : Promise.resolve({}),
 				fetch(`${tiltify.api}${id}/rewards`, tiltify.fetchParams),
 				fetch(`${tiltify.api}${id}/challenges`, tiltify.fetchParams),
 			]);
 
 			// get json from response
-			let [donationsJson, rewardsJson, challengesJson] = await Promise.all([donations.json(), rewards.json(), challenges.json()]);
+			let [donationsJson, rewardsJson, challengesJson] = await Promise.all([
+				donationsFetch ? donations.json() : Promise.resolve({ data: donationsCache }),
+				rewards.json(),
+				challenges.json(),
+			]);
 
 			if (donationsJson && donationsJson.data) {
 				// add campaignId and links to donations

@@ -26,17 +26,17 @@ export const Continue = (props) => {
 
 			if (localCache.donations[id]) {
 				const donationAmount = utils.values.getTotal(0, localCache.donations[id], 'amount');
+				const donationsChanged = utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data.amountRaised);
 
-				// only request content from api if amount has changed and add into localCache
-				if (utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data.amountRaised)) {
-					const content = await tiltify.request.content(id, supporting);
-					localCache.donations[id] = content.donations;
-					localCache.rewards[id] = content.rewards;
-					localCache.challenges[id] = content.challenges;
-				}
+				// only request donations from api if amount has changed
+				// rewards and challenges always requested (there's no good way to tell if these have changed)
+				const content = await tiltify.request.content(id, supporting, donationsChanged, localCache.donations[id]);
+				localCache.donations[id] = content.donations;
+				localCache.rewards[id] = content.rewards;
+				localCache.challenges[id] = content.challenges;
 			} else {
 				// initially add content into localCache
-				const content = await tiltify.request.content(id, supporting);
+				const content = await tiltify.request.content(id, supporting, true, []);
 				localCache.donations[id] = content.donations;
 				localCache.rewards[id] = content.rewards;
 				localCache.challenges[id] = content.challenges;
