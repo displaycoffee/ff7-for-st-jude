@@ -56,7 +56,8 @@ export const Index = () => {
 				if (!localCache.supporting[id]) {
 					// add supporting campaigns to localCache
 					data.campaignId = utils.values.toNumber(data.id);
-					data.username = data.user.username;
+					data.isBase = false;
+					data.username = data.user.username.trim();
 					data.campaign = `${data.user.url}/${data.slug}`;
 					data.links = [
 						{
@@ -88,7 +89,8 @@ export const Index = () => {
 
 			// add base campaign to localCache.supporting
 			let baseCampaign = campaign[0];
-			baseCampaign.username = baseCampaign.user.username;
+			baseCampaign.isBase = true;
+			baseCampaign.username = baseCampaign.user.username.trim();
 			baseCampaign.campaign = baseCampaign.user.url;
 			localCache.supporting[baseCampaign.id] = baseCampaign;
 

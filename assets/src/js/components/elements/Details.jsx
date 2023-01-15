@@ -3,7 +3,7 @@ import { Skeleton } from '../elements/Skeleton';
 
 export const Details = (props) => {
 	let { settings, details, utils } = props;
-	const { content, sort, layout, skeleton } = settings;
+	const { id, content, sort, layout, skeleton } = settings;
 	const hasDetails = details ? true : false;
 
 	// default details conditions
@@ -17,13 +17,22 @@ export const Details = (props) => {
 		// flatten, merge, and re-sort details
 		detailsFlattened = utils.flatten(details);
 		detailsMerged = utils.merge(detailsFlattened);
+
+		// if on supporting campaign list, do not return base campaign
+		if (id == 'supporting') {
+			detailsMerged = detailsMerged.filter((detail) => {
+				return !detail.isBase;
+			});
+		}
+
+		// then sort values
 		if (sort) {
 			utils.values.sort(detailsMerged, 'integer', sort.field, sort.direction);
 		}
 	}
 
 	return (
-		<section id={`detail-${settings.id}`} className={`detail detail-${settings.id}`}>
+		<section id={`detail-${id}`} className={`detail detail-${id}`}>
 			<h3 className="detail-title">{content.header}</h3>
 
 			<div className={`detail-row${hasDetails && detailsSize ? ' detail-row-loaded' : ''} flex-wrap`}>
@@ -48,7 +57,7 @@ export const Details = (props) => {
 											campaign: <DetailsCampaign detail={detail} />,
 											supporting: <DetailsSupporting detail={detail} />,
 											donations: <DetailsDonation detail={detail} />,
-										}[settings.id] || <DetailsDefault detail={detail} />}
+										}[id] || <DetailsDefault detail={detail} />}
 									</div>
 								</div>
 							);
