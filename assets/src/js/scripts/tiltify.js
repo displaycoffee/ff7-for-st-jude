@@ -1,4 +1,5 @@
 /* local script imports */
+import { settings } from './settings';
 import { utils } from './utils';
 
 /* st. jude ff7 campaign ids */
@@ -10,8 +11,6 @@ const campaignIds = {
 	5: 'f0db38a3-df52-4f4c-8030-3b2c81db39d1',
 	6: '6805c495-d02f-42ea-81d8-9b6c5ff5d3b5',
 };
-
-const responsePrefix = window.location.href.includes('localhost') ? 'https://cors-anywhere.herokuapp.com/' : '';
 
 export const tiltify = {
 	campaign: campaignIds[6],
@@ -77,7 +76,7 @@ export const tiltify = {
 			],
 		},
 	],
-	api: `${responsePrefix}https://v5api.tiltify.com/api/public/team_campaigns/`,
+	api: `${settings.corsBypass}${settings.tiltifyApi}/api/public/team_campaigns/`,
 	fetchParams: (token) => {
 		return {
 			method: 'GET',

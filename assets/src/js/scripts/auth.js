@@ -1,11 +1,11 @@
-/* local imports */
+/* local script imports */
+import { settings } from './settings';
 import secret from '../../../../secret.txt';
 
 /* split secret */
 const splitSecret = secret.split('::');
 
 const bodyOptions = {
-	method: 'POST',
 	client_id: splitSecret[0],
 	client_secret: splitSecret[1],
 	grant_type: 'client_credentials',
@@ -21,8 +21,7 @@ const options = {
 };
 
 export const getToken = async () => {
-	const responsePrefix = window.location.href.includes('localhost') ? 'https://cors-anywhere.herokuapp.com/' : '';
-	const response = await fetch(`${responsePrefix}https://v5api.tiltify.com/oauth/token`, options);
+	const response = await fetch(`${settings.corsBypass}${settings.tiltifyApi}/oauth/token`, options);
 	const json = await response.json();
 	return json.access_token;
 };

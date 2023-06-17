@@ -38,7 +38,6 @@ export const Index = () => {
 		// get data of supporting campaigns
 		const supportingResponse = await fetch(`${tiltify.api}${tiltify.campaign}/supporting_campaigns`, tiltify.fetchParams(token));
 		const supportingJson = await supportingResponse.json();
-		console.log(supportingJson);
 		// if (supportingJson && supportingJson.data) {
 		// 	if (Object.keys(localCache.campaign).length > 0) {
 		// 		const campaignAmount = utils.values.getTotal(localCache.campaign.amountRaised, supportingJson.data, 'amountRaised');
