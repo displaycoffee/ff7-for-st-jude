@@ -7,7 +7,8 @@ import { Navigation } from '../elements/Navigation';
 import { Details } from '../elements/Details';
 
 export const Continue = (props) => {
-	let { localCache, supporting, campaign, tiltify, utils, theme } = props;
+	let { config, localCache, supporting, campaign, tiltify, utils, theme } = props;
+	const { campaigns, variables, requests } = config;
 
 	// state variables
 	let [donations, setDonations] = useState(false);
@@ -22,21 +23,28 @@ export const Continue = (props) => {
 		// loop through supporting to fetch content
 		for (const support in supporting) {
 			const data = supporting[support];
-			const id = support;
+			const id = data.id;
 
 			if (localCache.donations[id]) {
 				const donationAmount = utils.values.getTotal(0, localCache.donations[id], 'amount');
-				const donationsChanged = utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data.amount_raised);
+				const donationsChanged = utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data_raised);
 
 				// only request donations from api if amount has changed
 				// rewards and challenges always requested (there's no good way to tell if these have changed)
-				const content = await tiltify.request.content(id, supporting, donationsChanged, localCache.donations[id]);
+				const content = await requests.content(
+					id,
+					data.isBase,
+					localCache.token.token,
+					supporting,
+					donationsChanged,
+					localCache.donations[id]
+				);
 				localCache.donations[id] = content.donations;
 				localCache.rewards[id] = content.rewards;
 				localCache.challenges[id] = content.challenges;
 			} else {
 				// initially add content into localCache
-				const content = await tiltify.request.content(id, supporting, true, []);
+				const content = await requests.content(id, data.isBase, localCache.token.token, supporting, true, []);
 				localCache.donations[id] = content.donations;
 				localCache.rewards[id] = content.rewards;
 				localCache.challenges[id] = content.challenges;

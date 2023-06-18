@@ -99,4 +99,24 @@ export const utils = {
 			return list;
 		},
 	},
+	checkLinks: (supporting, data) => {
+		return supporting[data.id].username && supporting[data.id].campaign ? true : false;
+	},
+	filterContent: (content, data) => {
+		// get time for checking if content has expired
+		const currentTime = Date.now();
+
+		// variables for checking if content should be returned
+		const isExpired = data.endsAt < currentTime;
+
+		// set state for checks
+		let contentActive = true;
+		if (content == 'reward') {
+			const isRemaining = typeof data.remaining == 'number' && data.remaining > 0 ? true : false;
+			contentActive = !isExpired && isRemaining && data.active && !data.alwaysActive;
+		} else if (content == 'challenge') {
+			contentActive = !isExpired && data.active && data.total_amount_raised < data.amount_raised;
+		}
+		return contentActive;
+	},
 };

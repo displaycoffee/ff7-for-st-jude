@@ -90,7 +90,7 @@ const DetailsCampaign = (props) => {
 				</p>
 			)}
 
-			{total_amount_raised && goal && (
+			{total_amount_raised > 0 && goal > 0 ? (
 				<div className="p">
 					<strong>Raised:</strong>
 					{` `}
@@ -111,7 +111,7 @@ const DetailsCampaign = (props) => {
 						</div>
 					</div>
 				</div>
-			)}
+			) : null}
 
 			{detail.description && (
 				<p>
@@ -146,11 +146,11 @@ const DetailsSupporting = (props) => {
 				</p>
 			)}
 
-			{total_amount_raised && (
+			{total_amount_raised ? (
 				<p>
 					<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
 				</p>
-			)}
+			) : null}
 
 			{detail.hasLinks && (
 				<div className="detail-links">
@@ -173,7 +173,7 @@ const DetailsDonation = (props) => {
 
 	return (
 		<>
-			{amount_raised && (
+			{amount_raised > 0 ? (
 				<p>
 					<strong>{detail.contentName}:</strong> ${amount_raised.toFixed(2)} from {detail.name} to&nbsp;
 					{detail.hasLinks &&
@@ -183,7 +183,7 @@ const DetailsDonation = (props) => {
 							</a>
 						))}
 				</p>
-			)}
+			) : null}
 
 			{detail.comment && (
 				<p>
@@ -218,7 +218,7 @@ const DetailsDefault = (props) => {
 				</p>
 			)}
 
-			{total_amount_raised ? (
+			{total_amount_raised > 0 ? (
 				<p>
 					<strong>Raised:</strong>{' '}
 					{amount_raised ? (
@@ -229,13 +229,11 @@ const DetailsDefault = (props) => {
 						<>${total_amount_raised.toFixed(2)}</>
 					)}
 				</p>
-			) : (
-				amount_raised && (
-					<p>
-						<strong>Cost:</strong> ${amount_raised.toFixed(2)}
-					</p>
-				)
-			)}
+			) : amount_raised > 0 ? (
+				<p>
+					<strong>Cost:</strong> ${amount_raised.toFixed(2)}
+				</p>
+			) : null}
 
 			{detail.calcTime && (
 				<p>

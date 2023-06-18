@@ -2,7 +2,7 @@
 import { variables } from './_variables';
 
 /* st. jude ff7 campaign ids */
-const campaignIds = {
+const ids = {
 	1: 'e96852f5-6234-4c36-ab09-82de953ae6fa',
 	2: 'f7e6a172-16be-40c0-9f99-3afe2eda3a3c',
 	3: '3f4c8d77-43a3-4414-9ecb-25ef430f77c7',
@@ -13,7 +13,7 @@ const campaignIds = {
 
 export const campaigns = {
 	current: {
-		id: campaignIds[6],
+		id: ids[6],
 		name: 'FF7 for St. Jude #6',
 		date: 'June 24, 2023',
 		links: [
@@ -25,7 +25,7 @@ export const campaigns = {
 	},
 	previous: [
 		{
-			id: campaignIds[5],
+			id: ids[5],
 			name: 'FF7 for St. Jude #5',
 			total_amount_raised: { value: 9254.38, currency: 'USD' },
 			date: 'December 10, 2022',
@@ -37,7 +37,7 @@ export const campaigns = {
 			],
 		},
 		{
-			id: campaignIds[4],
+			id: ids[4],
 			name: 'FF7 No-Slots for St. Jude #4',
 			total_amount_raised: { value: 8770.46, currency: 'USD' },
 			date: 'June 25, 2022',
@@ -49,7 +49,7 @@ export const campaigns = {
 			],
 		},
 		{
-			id: campaignIds[3],
+			id: ids[3],
 			name: 'FF7 No-Slots for St. Jude #3',
 			total_amount_raised: { value: 6448.34, currency: 'USD' },
 			date: 'December 11, 2021',
@@ -61,7 +61,7 @@ export const campaigns = {
 			],
 		},
 		{
-			id: campaignIds[2],
+			id: ids[2],
 			name: 'FF7 No-Slots For St. Jude #2',
 			total_amount_raised: { value: 4469.69, currency: 'USD' },
 			date: 'June 26, 2021',
@@ -73,7 +73,7 @@ export const campaigns = {
 			],
 		},
 		{
-			id: campaignIds[1],
+			id: ids[1],
 			name: 'FF7 No-Slots For St. Jude',
 			total_amount_raised: { value: 2313.06, currency: 'USD' },
 			date: 'December 28, 2020',

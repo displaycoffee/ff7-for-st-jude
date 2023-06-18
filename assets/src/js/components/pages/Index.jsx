@@ -15,6 +15,7 @@ import { Continue } from './Continue';
 
 /* setup cache of campaigns */
 let localCache = {
+	token: {},
 	supporting: {},
 	campaign: {},
 	donations: {},
@@ -27,6 +28,7 @@ export const Index = () => {
 	const { campaigns, variables, requests } = config;
 
 	// state variables
+	let [token, setToken] = useState(false);
 	let [campaign, setCampaign] = useState(false);
 	let [supporting, setSupporting] = useState(false);
 
@@ -37,13 +39,15 @@ export const Index = () => {
 	async function requestCampaigns() {
 		// get token for auth
 		const tokenDetails = await requests.token();
-		const token = tokenDetails.token;
+		localCache.token = tokenDetails;
+		token = localCache.token;
+		setToken(token);
 
 		// set id of current campaign
-		const campaignId = campaigns.current.id;
+		const id = campaigns.current.id;
 
 		// get data of supporting campaigns
-		const supportingCampaigns = await requests.supporting(token, campaignId);
+		const supportingCampaigns = await requests.supporting(id, localCache.token.token);
 
 		if (supportingCampaigns && supportingCampaigns.data) {
 			if (Object.keys(localCache.campaign).length > 0) {
@@ -52,56 +56,54 @@ export const Index = () => {
 
 				// only request campaign from api if amount has changed and add into localCache
 				if (utils.values.convertDecimal(campaignTotal) != campaignAmounts.total_amount_raised) {
-					localCache.campaign = await requests.campaign(token, campaignId);
+					localCache.campaign = await requests.campaign(id, localCache.token.token);
 				}
 			} else {
 				// initially add campaignConfig into localCache
-				localCache.campaign = await requests.campaign(token, campaignId);
+				localCache.campaign = await requests.campaign(id, localCache.token.token);
 			}
 
-			// // loop through supportingCampaigns to add supporting campaigns
-			// for (let i = 0; i < supportingCampaigns.data.length; i++) {
-			// 	const data = supportingCampaigns.data[i];
-			// 	const id = data.id;
-			// 	if (!localCache.supporting[id]) {
-			// 		// add supporting campaigns to localCache
-			// 		data.campaignId = utils.values.toNumber(data.id);
-			// 		data.isBase = false;
-			// 		data.username = data.user.username.trim();
-			// 		data.campaign = `${data.user.url}/${data.slug}`;
-			// 		data.links = [
-			// 			{
-			// 				label: `Support ${data.username}`,
-			// 				url: data.campaign,
-			// 			},
-			// 		];
-			// 		if (data?.livestream?.type == 'twitch') {
-			// 			data.links.unshift({
-			// 				label: 'Watch stream',
-			// 				url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
-			// 			});
-			// 		}
-			// 		localCache.supporting[id] = data;
-			// 	}
-			// }
+			// loop through supportingCampaigns to add supporting campaigns
+			for (let i = 0; i < supportingCampaigns.data.length; i++) {
+				const data = supportingCampaigns.data[i];
+
+				if (!localCache.supporting[data.id]) {
+					// add supporting campaigns to localCache
+					data.isBase = false;
+					data.username = data.user.username.trim();
+					data.campaign = `${data.user.url}/${data.slug}`;
+					data.links = [
+						{
+							label: `Support ${data.username}`,
+							url: data.campaign,
+						},
+					];
+					if (data?.livestream?.type == 'twitch') {
+						data.links.unshift({
+							label: 'Watch stream',
+							url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
+						});
+					}
+					localCache.supporting[data.id] = data;
+				}
+			}
+
 			// set base campaign (and add details)
 			localCache.campaign.date = campaigns.current.date;
 			localCache.campaign.links = campaigns.current.links;
 			campaign = [localCache.campaign];
 			setCampaign(campaign);
 
-			console.log(campaign);
-
 			// add base campaign to localCache.supporting
 			let baseCampaign = campaign[0];
 			baseCampaign.isBase = true;
 			baseCampaign.username = baseCampaign.user.username.trim();
 			baseCampaign.campaign = baseCampaign.user.url;
-			// localCache.supporting[baseCampaign.id] = baseCampaign;
+			localCache.supporting[baseCampaign.id] = baseCampaign;
 
-			// // set supporting campaigns
-			// supporting = localCache.supporting;
-			// setSupporting(supporting);
+			// set supporting campaigns
+			supporting = localCache.supporting;
+			setSupporting(supporting);
 		}
 	}
 
@@ -139,6 +141,7 @@ export const Index = () => {
 							element={
 								supporting ? (
 									<Continue
+										config={config}
 										supporting={supporting}
 										campaign={campaign}
 										localCache={localCache}
@@ -154,6 +157,7 @@ export const Index = () => {
 							path="/"
 							element={
 								<NewGame
+									config={config}
 									supporting={supporting}
 									campaign={campaign}
 									previous={campaigns.previous}
