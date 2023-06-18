@@ -26,7 +26,7 @@ export const Continue = (props) => {
 
 			if (localCache.donations[id]) {
 				const donationAmount = utils.values.getTotal(0, localCache.donations[id], 'amount');
-				const donationsChanged = utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data.amountRaised);
+				const donationsChanged = utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data.amount_raised);
 
 				// only request donations from api if amount has changed
 				// rewards and challenges always requested (there's no good way to tell if these have changed)

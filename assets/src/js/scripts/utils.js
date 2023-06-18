@@ -32,6 +32,21 @@ export const utils = {
 			const numberCheck = number ? number : 0;
 			return !isNaN(Number(numberCheck)) ? numberCheck : 0;
 		},
+		getAmounts: (detail) => {
+			const goal = detail?.goal?.value ? utils.values.convertDecimal(detail.goal.value || detail.goal.value === 0) : 0;
+			const total = detail?.total_amount_raised?.value
+				? utils.values.convertDecimal(detail.total_amount_raised.value || detail.total_amount_raised.value === 0)
+				: 0;
+			const amount = detail?.amount_raised?.value
+				? utils.values.convertDecimal(detail.amount_raised.value || detail.amount_raised.value === 0)
+				: 0;
+
+			return {
+				goal: goal,
+				total_amount_raised: total,
+				amount_raised: amount,
+			};
+		},
 		convertDecimal: (number) => {
 			// convert number to two decimal places
 			return Math.round(number * 100) / 100;

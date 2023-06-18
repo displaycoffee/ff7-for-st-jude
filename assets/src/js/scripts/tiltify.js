@@ -1,5 +1,5 @@
 /* local script imports */
-import { settings } from './settings';
+import { variables } from './_variables';
 import { utils } from './utils';
 
 /* st. jude ff7 campaign ids */
@@ -18,7 +18,7 @@ export const tiltify = {
 		{
 			id: campaignIds[5],
 			name: 'FF7 for St. Jude #5',
-			totalAmountRaised: 9254.38,
+			total_amount_raised: 9254.38,
 			date: 'December 10, 2022',
 			links: [
 				{
@@ -30,7 +30,7 @@ export const tiltify = {
 		{
 			id: campaignIds[4],
 			name: 'FF7 No-Slots for St. Jude #4',
-			totalAmountRaised: 8770.46,
+			total_amount_raised: 8770.46,
 			date: 'June 25, 2022',
 			links: [
 				{
@@ -42,7 +42,7 @@ export const tiltify = {
 		{
 			id: campaignIds[3],
 			name: 'FF7 No-Slots for St. Jude #3',
-			totalAmountRaised: 6448.34,
+			total_amount_raised: 6448.34,
 			date: 'December 11, 2021',
 			links: [
 				{
@@ -54,7 +54,7 @@ export const tiltify = {
 		{
 			id: campaignIds[2],
 			name: 'FF7 No-Slots For St. Jude #2',
-			totalAmountRaised: 4469.69,
+			total_amount_raised: 4469.69,
 			date: 'June 26, 2021',
 			links: [
 				{
@@ -66,7 +66,7 @@ export const tiltify = {
 		{
 			id: campaignIds[1],
 			name: 'FF7 No-Slots For St. Jude',
-			totalAmountRaised: 2313.06,
+			total_amount_raised: 2313.06,
 			date: 'December 28, 2020',
 			links: [
 				{
@@ -76,7 +76,7 @@ export const tiltify = {
 			],
 		},
 	],
-	api: `${settings.corsBypass}${settings.tiltifyApi}/api/public/team_campaigns/`,
+	api: `${variables.corsBypass}${variables.tiltifyApi}/api/public/team_campaigns/`,
 	fetchParams: (token) => {
 		return {
 			method: 'GET',
@@ -102,7 +102,7 @@ export const tiltify = {
 			const isRemaining = typeof data.remaining == 'number' && data.remaining > 0 ? true : false;
 			contentActive = !isExpired && isRemaining && data.active && !data.alwaysActive;
 		} else if (content == 'challenge') {
-			contentActive = !isExpired && data.active && data.totalAmountRaised < data.amount;
+			contentActive = !isExpired && data.active && data.total_amount_raised < data.amount_raised;
 		}
 		return contentActive;
 	},

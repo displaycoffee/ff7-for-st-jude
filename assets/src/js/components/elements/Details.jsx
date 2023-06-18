@@ -43,11 +43,9 @@ export const Details = (props) => {
 							// add extra details to avoid adding more props
 							detail.calcTime = detail.endsAt ? utils.values.getTime(detail.endsAt) : false;
 							detail.contentName = content.name;
-							detail.checks = {
-								fundraiserGoalAmount: detail.fundraiserGoalAmount || detail.fundraiserGoalAmount === 0,
-								totalAmountRaised: detail.totalAmountRaised || detail.totalAmountRaised === 0,
-								amount: detail.amount || detail.amount === 0,
-								links: detail.links && detail.links.length !== 0,
+							detail.hasLinks = detail?.links && detail.links.length !== 0;
+							detail.amounts = {
+								...utils.values.getAmounts(detail),
 							};
 
 							return (
@@ -76,6 +74,7 @@ export const Details = (props) => {
 
 const DetailsCampaign = (props) => {
 	let { detail } = props;
+	const { total_amount_raised, goal } = detail.amounts;
 
 	return (
 		<>
@@ -91,20 +90,20 @@ const DetailsCampaign = (props) => {
 				</p>
 			)}
 
-			{detail.checks.totalAmountRaised && detail.checks.fundraiserGoalAmount && (
+			{total_amount_raised && goal && (
 				<div className="p">
 					<strong>Raised:</strong>
 					{` `}
 					<div className="level-bar">
 						<div className="level-bar-label">
-							${detail.totalAmountRaised.toFixed(2)} out of ${detail.fundraiserGoalAmount.toFixed(2)}
+							${total_amount_raised.toFixed(2)} out of ${goal.toFixed(2)}
 						</div>
 
 						<div className="level-bar-outof">
 							<div
 								className="level-bar-progress"
 								style={{
-									width: `${(detail.totalAmountRaised / detail.fundraiserGoalAmount) * 100}%`,
+									width: `${(total_amount_raised / goal) * 100}%`,
 								}}
 							></div>
 
@@ -120,7 +119,7 @@ const DetailsCampaign = (props) => {
 				</p>
 			)}
 
-			{detail.checks.links && (
+			{detail.hasLinks && (
 				<div className="detail-links">
 					{detail.links.map((link) => (
 						<p key={link.url}>
@@ -137,6 +136,7 @@ const DetailsCampaign = (props) => {
 
 const DetailsSupporting = (props) => {
 	let { detail } = props;
+	const { total_amount_raised } = detail.amounts;
 
 	return (
 		<>
@@ -146,13 +146,13 @@ const DetailsSupporting = (props) => {
 				</p>
 			)}
 
-			{detail.checks.totalAmountRaised && (
+			{total_amount_raised && (
 				<p>
-					<strong>Raised:</strong> ${detail.totalAmountRaised.toFixed(2)}
+					<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
 				</p>
 			)}
 
-			{detail.checks.links && (
+			{detail.hasLinks && (
 				<div className="detail-links">
 					{detail.links.map((link) => (
 						<p key={link.url}>
@@ -169,13 +169,14 @@ const DetailsSupporting = (props) => {
 
 const DetailsDonation = (props) => {
 	let { detail } = props;
+	const { amount_raised } = detail.amounts;
 
 	return (
 		<>
-			{detail.checks.amount && (
+			{amount_raised && (
 				<p>
-					<strong>{detail.contentName}:</strong> ${detail.amount.toFixed(2)} from {detail.name} to&nbsp;
-					{detail.checks.links &&
+					<strong>{detail.contentName}:</strong> ${amount_raised.toFixed(2)} from {detail.name} to&nbsp;
+					{detail.hasLinks &&
 						detail.links.map((link) => (
 							<a key={link.url} href={link.url} target="_blank">
 								{link.label}
@@ -195,6 +196,7 @@ const DetailsDonation = (props) => {
 
 const DetailsDefault = (props) => {
 	let { detail } = props;
+	const { total_amount_raised, amount_raised } = detail.amounts;
 
 	return (
 		<>
@@ -216,21 +218,21 @@ const DetailsDefault = (props) => {
 				</p>
 			)}
 
-			{detail.checks.totalAmountRaised ? (
+			{total_amount_raised ? (
 				<p>
 					<strong>Raised:</strong>{' '}
-					{detail.checks.amount ? (
+					{amount_raised ? (
 						<>
-							${detail.totalAmountRaised.toFixed(2)} out of ${detail.amount.toFixed(2)}
+							${total_amount_raised.toFixed(2)} out of ${amount_raised.toFixed(2)}
 						</>
 					) : (
-						<>${detail.totalAmountRaised.toFixed(2)}</>
+						<>${total_amount_raised.toFixed(2)}</>
 					)}
 				</p>
 			) : (
-				detail.checks.amount && (
+				amount_raised && (
 					<p>
-						<strong>Cost:</strong> ${detail.amount.toFixed(2)}
+						<strong>Cost:</strong> ${amount_raised.toFixed(2)}
 					</p>
 				)
 			)}
@@ -241,7 +243,7 @@ const DetailsDefault = (props) => {
 				</p>
 			)}
 
-			{detail.checks.links && (
+			{detail.hasLinks && (
 				<div className="detail-links">
 					{detail.links.map((link) => (
 						<p key={link.url}>

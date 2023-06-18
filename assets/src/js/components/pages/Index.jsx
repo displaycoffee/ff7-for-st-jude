@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 /* local script imports */
-import { getToken } from '../../scripts/auth';
+import { config } from '../../scripts/config';
 import { tiltify } from '../../scripts/tiltify';
 import { utils } from '../../scripts/utils';
 import { theme } from '../../scripts/theme';
@@ -23,6 +23,9 @@ let localCache = {
 };
 
 export const Index = () => {
+	// spread objects from config
+	const { campaigns, variables, requests } = config;
+
 	// state variables
 	let [campaign, setCampaign] = useState(false);
 	let [supporting, setSupporting] = useState(false);
@@ -33,68 +36,73 @@ export const Index = () => {
 
 	async function requestCampaigns() {
 		// get token for auth
-		const token = await getToken();
+		const tokenDetails = await requests.token();
+		const token = tokenDetails.token;
+
+		// set id of current campaign
+		const campaignId = campaigns.current.id;
 
 		// get data of supporting campaigns
-		const supportingResponse = await fetch(`${tiltify.api}${tiltify.campaign}/supporting_campaigns`, tiltify.fetchParams(token));
-		const supportingJson = await supportingResponse.json();
-		// if (supportingJson && supportingJson.data) {
-		// 	if (Object.keys(localCache.campaign).length > 0) {
-		// 		const campaignAmount = utils.values.getTotal(localCache.campaign.amountRaised, supportingJson.data, 'amountRaised');
-		// 		// only request campaign from api if amount has changed and add into localCache
-		// 		if (utils.values.convertDecimal(campaignAmount) != utils.values.convertDecimal(localCache.campaign.totalAmountRaised)) {
-		// 			localCache.campaign = await tiltify.request.campaign();
-		// 		}
-		// 	} else {
-		// 		// initially add campaignConfig into localCache
-		// 		localCache.campaign = await tiltify.request.campaign();
-		// 	}
-		// 	// loop through supportingJson to add supporting campaigns
-		// 	for (let i = 0; i < supportingJson.data.length; i++) {
-		// 		const data = supportingJson.data[i];
-		// 		const id = data.id;
-		// 		if (!localCache.supporting[id]) {
-		// 			// add supporting campaigns to localCache
-		// 			data.campaignId = utils.values.toNumber(data.id);
-		// 			data.isBase = false;
-		// 			data.username = data.user.username.trim();
-		// 			data.campaign = `${data.user.url}/${data.slug}`;
-		// 			data.links = [
-		// 				{
-		// 					label: `Support ${data.username}`,
-		// 					url: data.campaign,
-		// 				},
-		// 			];
-		// 			if (data?.livestream?.type == 'twitch') {
-		// 				data.links.unshift({
-		// 					label: 'Watch stream',
-		// 					url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
-		// 				});
-		// 			}
-		// 			localCache.supporting[id] = data;
-		// 		}
-		// 	}
-		// 	// set base campaign (and add details)
-		// 	const campaignUrl = `${localCache.campaign.url}/${localCache.campaign.slug}`;
-		// 	localCache.campaign.date = 'December 10, 2022';
-		// 	localCache.campaign.links = [
-		// 		{
-		// 			label: campaignUrl.replace('https://', ''),
-		// 			url: campaignUrl,
-		// 		},
-		// 	];
-		// 	campaign = [localCache.campaign];
-		// 	setCampaign(campaign);
-		// 	// add base campaign to localCache.supporting
-		// 	let baseCampaign = campaign[0];
-		// 	baseCampaign.isBase = true;
-		// 	baseCampaign.username = baseCampaign.user.username.trim();
-		// 	baseCampaign.campaign = baseCampaign.user.url;
-		// 	localCache.supporting[baseCampaign.id] = baseCampaign;
-		// 	// set supporting campaigns
-		// 	supporting = localCache.supporting;
-		// 	setSupporting(supporting);
-		// }
+		const supportingCampaigns = await requests.supporting(token, campaignId);
+
+		if (supportingCampaigns && supportingCampaigns.data) {
+			if (Object.keys(localCache.campaign).length > 0) {
+				const campaignAmounts = utils.values.getAmounts(localCache.campaign);
+				const campaignTotal = utils.values.getTotal(campaignAmounts.amount_raised, supportingCampaigns.data, 'amount_raised');
+
+				// only request campaign from api if amount has changed and add into localCache
+				if (utils.values.convertDecimal(campaignTotal) != campaignAmounts.total_amount_raised) {
+					localCache.campaign = await requests.campaign(token, campaignId);
+				}
+			} else {
+				// initially add campaignConfig into localCache
+				localCache.campaign = await requests.campaign(token, campaignId);
+			}
+
+			// // loop through supportingCampaigns to add supporting campaigns
+			// for (let i = 0; i < supportingCampaigns.data.length; i++) {
+			// 	const data = supportingCampaigns.data[i];
+			// 	const id = data.id;
+			// 	if (!localCache.supporting[id]) {
+			// 		// add supporting campaigns to localCache
+			// 		data.campaignId = utils.values.toNumber(data.id);
+			// 		data.isBase = false;
+			// 		data.username = data.user.username.trim();
+			// 		data.campaign = `${data.user.url}/${data.slug}`;
+			// 		data.links = [
+			// 			{
+			// 				label: `Support ${data.username}`,
+			// 				url: data.campaign,
+			// 			},
+			// 		];
+			// 		if (data?.livestream?.type == 'twitch') {
+			// 			data.links.unshift({
+			// 				label: 'Watch stream',
+			// 				url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
+			// 			});
+			// 		}
+			// 		localCache.supporting[id] = data;
+			// 	}
+			// }
+			// set base campaign (and add details)
+			localCache.campaign.date = campaigns.current.date;
+			localCache.campaign.links = campaigns.current.links;
+			campaign = [localCache.campaign];
+			setCampaign(campaign);
+
+			console.log(campaign);
+
+			// add base campaign to localCache.supporting
+			let baseCampaign = campaign[0];
+			baseCampaign.isBase = true;
+			baseCampaign.username = baseCampaign.user.username.trim();
+			baseCampaign.campaign = baseCampaign.user.url;
+			// localCache.supporting[baseCampaign.id] = baseCampaign;
+
+			// // set supporting campaigns
+			// supporting = localCache.supporting;
+			// setSupporting(supporting);
+		}
 	}
 
 	// setup navigation links
@@ -148,7 +156,7 @@ export const Index = () => {
 								<NewGame
 									supporting={supporting}
 									campaign={campaign}
-									previous={tiltify.campaigns}
+									previous={campaigns.previous}
 									buttonClick={requestCampaigns}
 									utils={utils}
 									theme={theme}

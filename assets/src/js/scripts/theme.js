@@ -32,7 +32,7 @@ export const theme = {
 				name: 'Campaign',
 			},
 			sort: {
-				field: 'totalAmountRaised',
+				field: 'total_amount_raised',
 				direction: 'desc',
 			},
 			layout: {
