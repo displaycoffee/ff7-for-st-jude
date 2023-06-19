@@ -1,4 +1,5 @@
 /* local script imports */
+import { utils } from './_utils';
 import { variables } from './_variables';
 
 /* st. jude ff7 campaign ids */
@@ -27,7 +28,7 @@ export const campaigns = {
 		{
 			id: ids[5],
 			name: 'FF7 for St. Jude #5',
-			total_amount_raised: { value: 9254.38, currency: 'USD' },
+			amounts: utils.values.getAmounts({ total_amount_raised: { value: 9254.38 } }),
 			date: 'December 10, 2022',
 			links: [
 				{
@@ -39,7 +40,7 @@ export const campaigns = {
 		{
 			id: ids[4],
 			name: 'FF7 No-Slots for St. Jude #4',
-			total_amount_raised: { value: 8770.46, currency: 'USD' },
+			amounts: utils.values.getAmounts({ total_amount_raised: { value: 8770.46 } }),
 			date: 'June 25, 2022',
 			links: [
 				{
@@ -51,7 +52,7 @@ export const campaigns = {
 		{
 			id: ids[3],
 			name: 'FF7 No-Slots for St. Jude #3',
-			total_amount_raised: { value: 6448.34, currency: 'USD' },
+			amounts: utils.values.getAmounts({ total_amount_raised: { value: 6448.34 } }),
 			date: 'December 11, 2021',
 			links: [
 				{
@@ -63,7 +64,7 @@ export const campaigns = {
 		{
 			id: ids[2],
 			name: 'FF7 No-Slots For St. Jude #2',
-			total_amount_raised: { value: 4469.69, currency: 'USD' },
+			amounts: utils.values.getAmounts({ total_amount_raised: { value: 4469.69 } }),
 			date: 'June 26, 2021',
 			links: [
 				{
@@ -75,7 +76,7 @@ export const campaigns = {
 		{
 			id: ids[1],
 			name: 'FF7 No-Slots For St. Jude',
-			total_amount_raised: { value: 2313.06, currency: 'USD' },
+			amounts: utils.values.getAmounts({ total_amount_raised: { value: 2313.06 } }),
 			date: 'December 28, 2020',
 			links: [
 				{

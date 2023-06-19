@@ -4,28 +4,24 @@ import { useState, useEffect } from 'react';
 
 /* local script imports */
 import { config } from '../../scripts/config';
-import { tiltify } from '../../scripts/tiltify';
-import { utils } from '../../scripts/utils';
-import { theme } from '../../scripts/theme';
 
 /* local component imports */
-import { Navigation } from '../elements/Navigation';
-import { NewGame } from './NewGame';
 import { Continue } from './Continue';
+import { NewGame } from './NewGame';
+import { Navigation } from '../elements/Navigation';
 
 /* setup cache of campaigns */
 let localCache = {
-	token: {},
-	supporting: {},
 	campaign: {},
+	challenges: {},
 	donations: {},
 	rewards: {},
-	challenges: {},
+	supporting: {},
+	token: {},
 };
 
 export const Index = () => {
-	// spread objects from config
-	const { campaigns, variables, requests } = config;
+	const { campaigns, navigation, requests, utils, variables } = config;
 
 	// state variables
 	let [token, setToken] = useState(false);
@@ -47,15 +43,14 @@ export const Index = () => {
 		const id = campaigns.current.id;
 
 		// get data of supporting campaigns
-		const supportingCampaigns = await requests.supporting(id, localCache.token.token);
+		localCache.supporting = await requests.supporting(id, localCache.token.token);
 
-		if (supportingCampaigns && supportingCampaigns.data) {
+		if (localCache.supporting) {
 			if (Object.keys(localCache.campaign).length > 0) {
-				const campaignAmounts = utils.values.getAmounts(localCache.campaign);
-				const campaignTotal = utils.values.getTotal(campaignAmounts.amount_raised, supportingCampaigns.data, 'amount_raised');
+				const campaignTotal = utils.values.getTotal(localCache.campaign.amounts.amount_raised, localCache.supporting, 'amount_raised');
 
 				// only request campaign from api if amount has changed and add into localCache
-				if (utils.values.convertDecimal(campaignTotal) != campaignAmounts.total_amount_raised) {
+				if (campaignTotal != localCache.campaign.amounts.total_amount_raised) {
 					localCache.campaign = await requests.campaign(id, localCache.token.token);
 				}
 			} else {
@@ -63,43 +58,11 @@ export const Index = () => {
 				localCache.campaign = await requests.campaign(id, localCache.token.token);
 			}
 
-			// loop through supportingCampaigns to add supporting campaigns
-			for (let i = 0; i < supportingCampaigns.data.length; i++) {
-				const data = supportingCampaigns.data[i];
-
-				if (!localCache.supporting[data.id]) {
-					// add supporting campaigns to localCache
-					data.isBase = false;
-					data.username = data.user.username.trim();
-					data.campaign = `${data.user.url}/${data.slug}`;
-					data.links = [
-						{
-							label: `Support ${data.username}`,
-							url: data.campaign,
-						},
-					];
-					if (data?.livestream?.type == 'twitch') {
-						data.links.unshift({
-							label: 'Watch stream',
-							url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
-						});
-					}
-					localCache.supporting[data.id] = data;
-				}
-			}
-
-			// set base campaign (and add details)
+			// set team campaign (and add details)
 			localCache.campaign.date = campaigns.current.date;
 			localCache.campaign.links = campaigns.current.links;
 			campaign = [localCache.campaign];
 			setCampaign(campaign);
-
-			// add base campaign to localCache.supporting
-			let baseCampaign = campaign[0];
-			baseCampaign.isBase = true;
-			baseCampaign.username = baseCampaign.user.username.trim();
-			baseCampaign.campaign = baseCampaign.user.url;
-			localCache.supporting[baseCampaign.id] = baseCampaign;
 
 			// set supporting campaigns
 			supporting = localCache.supporting;
@@ -107,49 +70,17 @@ export const Index = () => {
 		}
 	}
 
-	// setup navigation links
-	const navigationLinks = [
-		{
-			label: 'NEW GAME',
-			attributes: {
-				to: '/',
-			},
-		},
-		{
-			label: 'Continue?',
-			attributes: {
-				to: '/continue',
-			},
-		},
-	];
-
-	// determine basename for route
-	let basename = '';
-	if (window.location.pathname.includes('/ff7-st-jude')) {
-		basename = '/ff7-st-jude';
-	}
-
 	return (
 		<div className="wrapper">
 			<main id="top" className="layout">
-				<Router basename={basename}>
-					<Navigation links={navigationLinks} navClass={'navigation-top'} />
+				<Router basename={variables.paths.base}>
+					<Navigation links={navigation.index} navClass={'navigation-top'} />
 
 					<Routes>
 						<Route
 							path="/continue"
 							element={
-								supporting ? (
-									<Continue
-										config={config}
-										supporting={supporting}
-										campaign={campaign}
-										localCache={localCache}
-										tiltify={tiltify}
-										utils={utils}
-										theme={theme}
-									/>
-								) : null
+								supporting ? <Continue campaign={campaign} config={config} localCache={localCache} supporting={supporting} /> : null
 							}
 						/>
 
@@ -157,13 +88,11 @@ export const Index = () => {
 							path="/"
 							element={
 								<NewGame
-									config={config}
-									supporting={supporting}
-									campaign={campaign}
-									previous={campaigns.previous}
 									buttonClick={requestCampaigns}
-									utils={utils}
-									theme={theme}
+									campaign={campaign}
+									config={config}
+									previous={campaigns.previous}
+									supporting={supporting}
 								/>
 							}
 						/>

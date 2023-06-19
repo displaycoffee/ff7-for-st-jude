@@ -67,7 +67,7 @@ export const theme = {
 				name: 'Donation',
 			},
 			sort: {
-				field: 'completedAt',
+				field: 'completed_at',
 				direction: 'desc',
 			},
 			layout: {

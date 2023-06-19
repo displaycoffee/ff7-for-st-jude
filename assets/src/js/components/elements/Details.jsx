@@ -2,7 +2,7 @@
 import { Skeleton } from '../elements/Skeleton';
 
 export const Details = (props) => {
-	let { settings, details, utils } = props;
+	let { details, settings, utils } = props;
 	const { id, content, sort, layout, skeleton } = settings;
 	const hasDetails = details ? true : false;
 
@@ -17,13 +17,6 @@ export const Details = (props) => {
 		// flatten, merge, and re-sort details
 		detailsFlattened = utils.flatten(details);
 		detailsMerged = utils.merge(detailsFlattened);
-
-		// if on supporting campaign list, do not return base campaign
-		if (id == 'supporting') {
-			detailsMerged = detailsMerged.filter((detail) => {
-				return !detail.isBase;
-			});
-		}
 
 		// then sort values
 		if (sort) {
@@ -44,17 +37,14 @@ export const Details = (props) => {
 							detail.calcTime = detail.endsAt ? utils.values.getTime(detail.endsAt) : false;
 							detail.contentName = content.name;
 							detail.hasLinks = detail?.links && detail.links.length !== 0;
-							detail.amounts = {
-								...utils.values.getAmounts(detail),
-							};
 
 							return (
 								<div className={`detail-column detail-column-${layout.columns} detail-column-${index}`} key={detail.id}>
 									<div className="detail-column-inner">
 										{{
+											donations: <DetailsDonation detail={detail} />,
 											campaign: <DetailsCampaign detail={detail} />,
 											supporting: <DetailsSupporting detail={detail} />,
-											donations: <DetailsDonation detail={detail} />,
 										}[id] || <DetailsDefault detail={detail} />}
 									</div>
 								</div>
@@ -74,7 +64,7 @@ export const Details = (props) => {
 
 const DetailsCampaign = (props) => {
 	let { detail } = props;
-	const { total_amount_raised, goal } = detail.amounts;
+	const { goal, total_amount_raised } = detail.amounts;
 
 	return (
 		<>
@@ -134,6 +124,33 @@ const DetailsCampaign = (props) => {
 	);
 };
 
+const DetailsDonation = (props) => {
+	let { detail } = props;
+	const { amount } = detail.amounts;
+
+	return (
+		<>
+			{amount > 0 ? (
+				<p>
+					<strong>{detail.contentName}:</strong> ${amount.toFixed(2)} from {detail.name} to&nbsp;
+					{detail.hasLinks &&
+						detail.links.map((link) => (
+							<a key={link.url} href={link.url} target="_blank">
+								{link.label}
+							</a>
+						))}
+				</p>
+			) : null}
+
+			{detail.donor_comment && (
+				<p>
+					<strong>Comment:</strong> {detail.donor_comment}
+				</p>
+			)}
+		</>
+	);
+};
+
 const DetailsSupporting = (props) => {
 	let { detail } = props;
 	const { total_amount_raised } = detail.amounts;
@@ -162,33 +179,6 @@ const DetailsSupporting = (props) => {
 						</p>
 					))}
 				</div>
-			)}
-		</>
-	);
-};
-
-const DetailsDonation = (props) => {
-	let { detail } = props;
-	const { amount_raised } = detail.amounts;
-
-	return (
-		<>
-			{amount_raised > 0 ? (
-				<p>
-					<strong>{detail.contentName}:</strong> ${amount_raised.toFixed(2)} from {detail.name} to&nbsp;
-					{detail.hasLinks &&
-						detail.links.map((link) => (
-							<a key={link.url} href={link.url} target="_blank">
-								{link.label}
-							</a>
-						))}
-				</p>
-			) : null}
-
-			{detail.comment && (
-				<p>
-					<strong>Comment:</strong> {detail.comment}
-				</p>
 			)}
 		</>
 	);

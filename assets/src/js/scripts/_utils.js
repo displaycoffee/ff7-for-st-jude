@@ -28,24 +28,22 @@ export const utils = {
 	},
 	values: {
 		// functions for manipulating values
-		toNumber: (number) => {
-			const numberCheck = number ? number : 0;
-			return !isNaN(Number(numberCheck)) ? numberCheck : 0;
-		},
 		getAmounts: (detail) => {
-			const goal = detail?.goal?.value ? utils.values.convertDecimal(detail.goal.value || detail.goal.value === 0) : 0;
-			const total = detail?.total_amount_raised?.value
-				? utils.values.convertDecimal(detail.total_amount_raised.value || detail.total_amount_raised.value === 0)
-				: 0;
-			const amount = detail?.amount_raised?.value
-				? utils.values.convertDecimal(detail.amount_raised.value || detail.amount_raised.value === 0)
-				: 0;
-
+			// set values from currency data
+			const amount = utils.values.checkAmount(detail?.amount?.value);
+			const amount_raised = utils.values.checkAmount(detail?.amount_raised?.value);
+			const goal = utils.values.checkAmount(detail?.goal?.value);
+			const total = utils.values.checkAmount(detail?.total_amount_raised?.value);
 			return {
+				amount: amount,
+				amount_raised: amount_raised,
 				goal: goal,
 				total_amount_raised: total,
-				amount_raised: amount,
 			};
+		},
+		checkAmount: (number) => {
+			// check number to always urn a value
+			return number ? utils.values.convertDecimal(number || number === 0) : 0;
 		},
 		convertDecimal: (number) => {
 			// convert number to two decimal places
@@ -62,15 +60,16 @@ export const utils = {
 			// get total amount for checking if prices have changed
 			let total = starting;
 			data.filter((d) => {
-				total += d[field];
+				const dValue = d[field].value || d[field].value === 0 ? utils.values.convertDecimal(d[field].value) : d[field];
+				total += dValue;
 			});
 			return total;
 		},
 		sort: (list, type, field, direction) => {
 			// sort values in a list based on type, field, and direction
 			list.sort((a, b) => {
-				let sortValueA = a[field];
-				let sortValueB = b[field];
+				let sortValueA = type == 'integer' && (a.amounts[field] || a.amounts[field] === 0) ? a.amounts[field] : a[field];
+				let sortValueB = type == 'integer' && (b.amounts[field] || b.amounts[field] === 0) ? b.amounts[field] : b[field];
 
 				if (type == 'string' || type == 'boolean') {
 					// make sure booleans are strings
@@ -95,12 +94,8 @@ export const utils = {
 					}
 				}
 			});
-
 			return list;
 		},
-	},
-	checkLinks: (supporting, data) => {
-		return supporting[data.id].username && supporting[data.id].campaign ? true : false;
 	},
 	filterContent: (content, data) => {
 		// get time for checking if content has expired
