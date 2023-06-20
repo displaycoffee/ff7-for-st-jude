@@ -12,7 +12,7 @@ export const Details = (props) => {
 	let detailsMerged = [];
 
 	if (hasDetails) {
-		detailsSize = utils.size(details);
+		detailsSize = Object.keys(details).length;
 
 		// flatten, merge, and re-sort details
 		detailsFlattened = utils.flatten(details);
@@ -20,7 +20,7 @@ export const Details = (props) => {
 
 		// then sort values
 		if (sort) {
-			utils.values.sort(detailsMerged, 'integer', sort.field, sort.direction);
+			utils.sort(detailsMerged, 'integer', sort.field, sort.direction);
 		}
 	}
 
@@ -34,7 +34,6 @@ export const Details = (props) => {
 				{hasDetails && detailsSize
 					? detailsMerged.map((detail, index) => {
 							// add extra details to avoid adding more props
-							detail.calcTime = detail.endsAt ? utils.values.getTime(detail.endsAt) : false;
 							detail.contentName = content.name;
 							detail.hasLinks = detail?.links && detail.links.length !== 0;
 
@@ -80,7 +79,7 @@ const DetailsCampaign = (props) => {
 				</p>
 			)}
 
-			{total_amount_raised > 0 && goal > 0 ? (
+			{detail.total_amount_raised && detail.goal ? (
 				<div className="p">
 					<strong>Raised:</strong>
 					{` `}
@@ -130,9 +129,9 @@ const DetailsDonation = (props) => {
 
 	return (
 		<>
-			{amount > 0 ? (
+			{detail.amount ? (
 				<p>
-					<strong>{detail.contentName}:</strong> ${amount.toFixed(2)} from {detail.name} to&nbsp;
+					<strong>{detail.contentName}:</strong> ${amount.toFixed(2)} from {detail.donor_name} to&nbsp;
 					{detail.hasLinks &&
 						detail.links.map((link) => (
 							<a key={link.url} href={link.url} target="_blank">
@@ -163,7 +162,7 @@ const DetailsSupporting = (props) => {
 				</p>
 			)}
 
-			{total_amount_raised ? (
+			{detail.total_amount_raised ? (
 				<p>
 					<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
 				</p>
@@ -186,7 +185,7 @@ const DetailsSupporting = (props) => {
 
 const DetailsDefault = (props) => {
 	let { detail } = props;
-	const { total_amount_raised, amount_raised } = detail.amounts;
+	const { amount, amount_raised } = detail.amounts;
 
 	return (
 		<>
@@ -196,38 +195,32 @@ const DetailsDefault = (props) => {
 				</p>
 			)}
 
-			{detail.date && (
-				<p>
-					<strong>Date:</strong> {detail.date}
-				</p>
-			)}
-
 			{detail.description && (
 				<p>
 					<strong>Description:</strong> {detail.description}
 				</p>
 			)}
 
-			{total_amount_raised > 0 ? (
+			{detail.amount_raised ? (
 				<p>
 					<strong>Raised:</strong>{' '}
-					{amount_raised ? (
+					{detail.amount ? (
 						<>
-							${total_amount_raised.toFixed(2)} out of ${amount_raised.toFixed(2)}
+							${amount_raised.toFixed(2)} out of ${amount.toFixed(2)}
 						</>
 					) : (
-						<>${total_amount_raised.toFixed(2)}</>
+						<>${amount_raised.toFixed(2)}</>
 					)}
 				</p>
-			) : amount_raised > 0 ? (
+			) : detail.amount ? (
 				<p>
-					<strong>Cost:</strong> ${amount_raised.toFixed(2)}
+					<strong>Cost:</strong> ${amount.toFixed(2)}
 				</p>
 			) : null}
 
-			{detail.calcTime && (
+			{detail.date && !detail.date.includes('September 30, 2023') && (
 				<p>
-					<strong>Ends:</strong> {detail.calcTime}
+					<strong>Ends:</strong> {detail.date}
 				</p>
 			)}
 

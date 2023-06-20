@@ -30,9 +30,9 @@ export const navigation = {
 			},
 		},
 		{
-			label: 'Challenges',
+			label: 'Targets',
 			attributes: {
-				onClick: (e) => utils.scrollTo(e, 'detail-challenges'),
+				onClick: (e) => utils.scrollTo(e, 'detail-targets'),
 				className: 'pointer',
 			},
 		},

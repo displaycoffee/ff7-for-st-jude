@@ -13,7 +13,7 @@ import { Navigation } from '../elements/Navigation';
 /* setup cache of campaigns */
 let localCache = {
 	campaign: {},
-	challenges: {},
+	targets: {},
 	donations: {},
 	rewards: {},
 	supporting: {},
@@ -47,7 +47,7 @@ export const Index = () => {
 
 		if (localCache.supporting) {
 			if (Object.keys(localCache.campaign).length > 0) {
-				const campaignTotal = utils.values.getTotal(localCache.campaign.amounts.amount_raised, localCache.supporting, 'amount_raised');
+				const campaignTotal = utils.getTotal(localCache.campaign.amounts.amount_raised, localCache.supporting, 'amount_raised');
 
 				// only request campaign from api if amount has changed and add into localCache
 				if (campaignTotal != localCache.campaign.amounts.total_amount_raised) {
