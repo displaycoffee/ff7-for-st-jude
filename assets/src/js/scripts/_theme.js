@@ -32,7 +32,7 @@ export const theme = {
 				name: 'Campaign',
 			},
 			sort: {
-				field: 'totalAmountRaised',
+				field: 'total_amount_raised',
 				direction: 'desc',
 			},
 			layout: {
@@ -67,7 +67,7 @@ export const theme = {
 				name: 'Donation',
 			},
 			sort: {
-				field: 'completedAt',
+				field: 'milliseconds',
 				direction: 'desc',
 			},
 			layout: {
@@ -86,7 +86,7 @@ export const theme = {
 				name: 'Reward',
 			},
 			sort: {
-				field: 'endsAt',
+				field: 'milliseconds',
 				direction: 'asc',
 			},
 			layout: {
@@ -98,14 +98,14 @@ export const theme = {
 				paragraphs: 5,
 			},
 		},
-		challenges: {
-			id: 'challenges',
+		targets: {
+			id: 'targets',
 			content: {
-				header: 'Challenges ending soon',
-				name: 'Challenge',
+				header: 'Targets ending soon',
+				name: 'Target',
 			},
 			sort: {
-				field: 'endsAt',
+				field: 'milliseconds',
 				direction: 'asc',
 			},
 			layout: {

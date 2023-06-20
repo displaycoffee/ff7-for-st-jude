@@ -7,40 +7,31 @@ import { Navigation } from '../elements/Navigation';
 import { Details } from '../elements/Details';
 
 export const Continue = (props) => {
-	let { localCache, supporting, campaign, tiltify, utils, theme } = props;
+	let { campaign, config, localCache, supporting } = props;
+	const { navigation, requests, theme, utils } = config;
 
 	// state variables
 	let [donations, setDonations] = useState(false);
 	let [rewards, setRewards] = useState(false);
-	let [challenges, setChallenges] = useState(false);
+	let [targets, setTargets] = useState(false);
 
 	useEffect(() => {
 		requestContent();
 	}, []);
 
 	async function requestContent() {
+		// initially add donations into cache (these can be fetched from the team campaign)
+		localCache.donations = await requests.donations(localCache.token.token, campaign, supporting);
+
 		// loop through supporting to fetch content
 		for (const support in supporting) {
-			const data = supporting[support];
-			const id = support;
+			const supportData = supporting[support];
+			const id = supportData.id;
 
-			if (localCache.donations[id]) {
-				const donationAmount = utils.values.getTotal(0, localCache.donations[id], 'amount');
-				const donationsChanged = utils.values.convertDecimal(donationAmount) != utils.values.convertDecimal(data.amountRaised);
-
-				// only request donations from api if amount has changed
-				// rewards and challenges always requested (there's no good way to tell if these have changed)
-				const content = await tiltify.request.content(id, supporting, donationsChanged, localCache.donations[id]);
-				localCache.donations[id] = content.donations;
-				localCache.rewards[id] = content.rewards;
-				localCache.challenges[id] = content.challenges;
-			} else {
-				// initially add content into localCache
-				const content = await tiltify.request.content(id, supporting, true, []);
-				localCache.donations[id] = content.donations;
-				localCache.rewards[id] = content.rewards;
-				localCache.challenges[id] = content.challenges;
-			}
+			// initially add content (rewards and targets) into localCache
+			const content = await requests.content(id, localCache.token.token, supportData);
+			localCache.rewards[id] = content.rewards;
+			localCache.targets[id] = content.targets;
 		}
 
 		// set donations
@@ -51,49 +42,24 @@ export const Continue = (props) => {
 		rewards = localCache.rewards;
 		setRewards(rewards);
 
-		// set challenges
-		challenges = localCache.challenges;
-		setChallenges(challenges);
+		// set targets
+		targets = localCache.targets;
+		setTargets(targets);
 	}
-
-	// setup navigation links
-	const navigationLinks = [
-		{
-			label: 'Donations',
-			attributes: {
-				onClick: (e) => utils.scrollTo(e, 'detail-donations'),
-				className: 'pointer',
-			},
-		},
-		{
-			label: 'Rewards',
-			attributes: {
-				onClick: (e) => utils.scrollTo(e, 'detail-rewards'),
-				className: 'pointer',
-			},
-		},
-		{
-			label: 'Challenges',
-			attributes: {
-				onClick: (e) => utils.scrollTo(e, 'detail-challenges'),
-				className: 'pointer',
-			},
-		},
-	];
 
 	return (
 		<>
 			<Header buttonClick={requestContent} />
 
-			<Details settings={theme.details.campaign} details={campaign} utils={utils} />
+			<Details details={campaign} settings={theme.details.campaign} utils={utils} />
 
-			<Navigation links={navigationLinks} />
+			<Navigation links={navigation.continue} />
 
-			<Details settings={theme.details.donations} details={donations} utils={utils} />
+			<Details details={donations} settings={theme.details.donations} utils={utils} />
 
-			<Details settings={theme.details.rewards} details={rewards} utils={utils} />
+			<Details details={rewards} settings={theme.details.rewards} utils={utils} />
 
-			<Details settings={theme.details.challenges} details={challenges} utils={utils} />
+			<Details details={targets} settings={theme.details.targets} utils={utils} />
 		</>
 	);
 };

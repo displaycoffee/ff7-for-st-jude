@@ -4,32 +4,8 @@ import { Navigation } from '../elements/Navigation';
 import { Details } from '../elements/Details';
 
 export const NewGame = (props) => {
-	let { supporting, campaign, previous, buttonClick, utils, theme } = props;
-
-	// setup navigation links
-	const navigationLinks = [
-		{
-			label: 'Participant Guide',
-			attributes: {
-				href: 'https://docs.google.com/document/d/1ggjNslCvkzGdsjmWvkJriRNMgvVjSfbsCG-FTPUpBuw',
-				target: '_blank',
-			},
-		},
-		{
-			label: 'Signup Sheet',
-			attributes: {
-				href: 'https://docs.google.com/spreadsheets/d/1_P65Vui4GYhFB2YII8p6bbcKTGWerqa2u838LiHwuxQ',
-				target: '_blank',
-			},
-		},
-		{
-			label: 'Commentary Stream',
-			attributes: {
-				href: 'https://twitch.tv/MonetaryDragon',
-				target: '_blank',
-			},
-		},
-	];
+	let { buttonClick, campaign, config, previous, supporting } = props;
+	const { navigation, theme, utils } = config;
 
 	return (
 		<>
@@ -70,13 +46,13 @@ export const NewGame = (props) => {
 				</div>
 			</section>
 
-			<Navigation links={navigationLinks} />
+			<Navigation links={navigation.newGame} />
 
-			<Details settings={theme.details.campaign} details={campaign} utils={utils} />
+			<Details details={campaign} settings={theme.details.campaign} utils={utils} />
 
-			<Details settings={theme.details.supporting} details={supporting} utils={utils} />
+			<Details details={supporting} settings={theme.details.supporting} utils={utils} />
 
-			<Details settings={theme.details.previous} details={previous} utils={utils} />
+			<Details details={previous} settings={theme.details.previous} utils={utils} />
 		</>
 	);
 };
