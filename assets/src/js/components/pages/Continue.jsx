@@ -21,7 +21,7 @@ export const Continue = (props) => {
 
 	async function requestContent() {
 		// initially add donations into cache (these can be fetched from the team campaign)
-		localCache.donations = await requests.donations(localCache.token.token, campaign, supporting);
+		localCache.donations = await requests.donations(campaign, supporting);
 
 		// loop through supporting to fetch content
 		for (const support in supporting) {
@@ -29,7 +29,7 @@ export const Continue = (props) => {
 			const id = supportData.id;
 
 			// initially add content (rewards and targets) into localCache
-			const content = await requests.content(id, localCache.token.token, supportData);
+			const content = await requests.content(id, supportData);
 			localCache.rewards[id] = content.rewards;
 			localCache.targets[id] = content.targets;
 		}

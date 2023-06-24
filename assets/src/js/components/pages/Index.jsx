@@ -17,14 +17,12 @@ let localCache = {
 	donations: {},
 	rewards: {},
 	supporting: {},
-	token: {},
 };
 
 export const Index = () => {
 	const { campaigns, navigation, requests, utils, variables } = config;
 
 	// state variables
-	let [token, setToken] = useState(false);
 	let [campaign, setCampaign] = useState(false);
 	let [supporting, setSupporting] = useState(false);
 
@@ -33,17 +31,11 @@ export const Index = () => {
 	}, []);
 
 	async function requestCampaigns() {
-		// get token for auth
-		const tokenDetails = await requests.token();
-		localCache.token = tokenDetails;
-		token = localCache.token;
-		setToken(token);
-
 		// set id of current campaign
 		const id = campaigns.current.id;
 
 		// get data of supporting campaigns
-		localCache.supporting = await requests.supporting(id, localCache.token.token);
+		localCache.supporting = await requests.supporting(id);
 
 		if (localCache.supporting) {
 			if (Object.keys(localCache.campaign).length > 0) {
@@ -51,11 +43,11 @@ export const Index = () => {
 
 				// only request campaign from api if amount has changed and add into localCache
 				if (campaignTotal != localCache.campaign.amounts.total_amount_raised) {
-					localCache.campaign = await requests.campaign(id, localCache.token.token);
+					localCache.campaign = await requests.campaign(id);
 				}
 			} else {
 				// initially add campaignConfig into localCache
-				localCache.campaign = await requests.campaign(id, localCache.token.token);
+				localCache.campaign = await requests.campaign(id);
 			}
 
 			// set team campaign (and add details)

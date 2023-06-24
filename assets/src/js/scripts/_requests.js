@@ -5,33 +5,11 @@ import { utils } from './_utils';
 
 /* setup parameters to pass to fetches */
 const parameters = {
-	token: {
-		body: () => {
-			// split secret
-			const splitSecret = secret.split('::');
-
-			return {
-				client_id: splitSecret[0],
-				client_secret: splitSecret[1],
-				grant_type: 'client_credentials',
-				scope: 'public',
-			};
-		},
-		options: () => {
-			return {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			};
-		},
-	},
 	tiltify: {
-		options: (token) => {
+		options: () => {
 			return {
 				method: 'GET',
 				headers: {
-					Authorization: `Bearer ${token}`,
 					'Content-Type': 'application/json',
 				},
 			};
@@ -40,24 +18,9 @@ const parameters = {
 };
 
 export const requests = {
-	token: async () => {
-		// set options for fetch
-		const options = {
-			...parameters.token.options(),
-			body: JSON.stringify(parameters.token.body()),
-		};
-
-		// authorize and get token
-		const response = await fetch(variables.api.token, options);
-		const json = await response.json();
-		return {
-			token: json.access_token,
-			created: json.created_at,
-		};
-	},
-	campaign: async (id, token) => {
+	campaign: async (id) => {
 		// fetch base campaign
-		const response = await fetch(`${variables.api.teams}/${id}`, parameters.tiltify.options(token));
+		const response = await fetch(`${variables.api.teams}/${id}/`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
@@ -71,11 +34,11 @@ export const requests = {
 			return json.data;
 		}
 	},
-	donations: async (token, campaign, supporting) => {
+	donations: async (campaign, supporting) => {
 		let donations = false; // storage for donations data
 
 		// fetch donations
-		const response = await fetch(`${variables.api.teams}/${campaign[0].id}/donations?limit=100`, parameters.tiltify.options(token));
+		const response = await fetch(`${variables.api.teams}/${campaign[0].id}/donations?limit=100`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
@@ -105,11 +68,11 @@ export const requests = {
 
 		return donations;
 	},
-	supporting: async (id, token) => {
+	supporting: async (id) => {
 		let supporting = false; // storage for supporting data
 
 		// fetch supporting campaigns
-		const response = await fetch(`${variables.api.teams}/${id}/supporting_campaigns`, parameters.tiltify.options(token));
+		const response = await fetch(`${variables.api.teams}/${id}/supporting_campaigns/`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
@@ -136,7 +99,7 @@ export const requests = {
 
 		return supporting;
 	},
-	content: async (id, token, support) => {
+	content: async (id, support) => {
 		// empty content config to fetch and store data in
 		let contentConfig = {
 			rewards: [],
@@ -147,7 +110,7 @@ export const requests = {
 		const contentUrl = `${variables.api.campaign}/${id}`;
 
 		// set fetch parameters
-		const contentParameters = parameters.tiltify.options(token);
+		const contentParameters = parameters.tiltify.options();
 
 		// set fetch array
 		const contentFetch = [

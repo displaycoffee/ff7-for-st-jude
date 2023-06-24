@@ -1,9 +1,5 @@
-/* cors-anywhere url to get around cors cross-site block when testing with locahost */
-/* note: if this fails, you may need to re-run the demo by visiting https://cors-anywhere.herokuapp.com/corsdemo */
-const corsBypass = window.location.href.includes('localhost') ? 'https://cors-anywhere.herokuapp.com/' : '';
-
-/* tiltify api domain */
-const tiltifyApi = `${corsBypass}https://v5api.tiltify.com`;
+/* tiltify api proxy */
+const tiltifyApi = `https://tiltify-api-proxy.fly.dev`;
 
 /* this config contains variables to use through application */
 export const variables = {
@@ -11,7 +7,6 @@ export const variables = {
 		base: window.location.pathname.includes('/ff7-st-jude') ? '/ff7-st-jude' : '',
 	},
 	api: {
-		token: `${tiltifyApi}/oauth/token`,
 		campaign: `${tiltifyApi}/api/public/campaigns`,
 		teams: `${tiltifyApi}/api/public/team_campaigns`,
 	},
