@@ -96,6 +96,10 @@ export const Index = () => {
 					<a href="https://github.com/displaycoffee" target="_blank">
 						displaycoffee
 					</a>
+					. Built and organized with{' '}
+					<a href="https://tiltify.com" target="_blank">
+						tiltify
+					</a>
 					.
 				</section>
 			</main>

@@ -48,7 +48,7 @@ export const navigation = {
 		{
 			label: 'Signup Sheet',
 			attributes: {
-				href: 'https://docs.google.com/spreadsheets/d/1_P65Vui4GYhFB2YII8p6bbcKTGWerqa2u838LiHwuxQ',
+				href: 'https://docs.google.com/spreadsheets/d/12MUW_ndfxjgkfapai0HXCGlJkZDzZohT04AltKWzzss',
 				target: '_blank',
 			},
 		},

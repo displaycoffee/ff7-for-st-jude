@@ -78,22 +78,24 @@ export const requests = {
 		if (json && json.data) {
 			supporting = json.data.filter((data) => {
 				// add details to supporting data
-				data.amounts = utils.getAmounts(data);
-				data.username = data.user.username.trim();
-				data.campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
-				data.links = [
-					{
-						label: `Support ${data.username}`,
-						url: data.campaign,
-					},
-				];
-				if (data?.livestream?.type == 'twitch') {
-					data.links.unshift({
-						label: 'Watch stream',
-						url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
-					});
+				if (!data.user.username.includes('blackdomus')) {
+					data.amounts = utils.getAmounts(data);
+					data.username = data.user.username.trim();
+					data.campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
+					data.links = [
+						{
+							label: `Support ${data.username}`,
+							url: data.campaign,
+						},
+					];
+					if (data?.livestream?.type == 'twitch') {
+						data.links.unshift({
+							label: 'Watch stream',
+							url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
+						});
+					}
+					return data;
 				}
-				return data;
 			});
 		}
 
