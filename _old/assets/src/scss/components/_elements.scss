@@ -1,0 +1,39 @@
+// Use helpers and theme variables
+@use '../helpers/_mixins';
+@use '../theme/_theme';
+
+//// NAVIGATION
+//// --------------------------------------------------------------------------
+
+.to-top {
+	margin: theme.$spacing-x6 0 0 0;
+	display: inline-block;
+}
+
+//// LEVEL BAR
+//// --------------------------------------------------------------------------
+
+.level-bar {
+	@include mixins.inline-block(top);
+	.level-bar-outof {		
+		@include mixins.sizing(100%, 20px);
+		border: 2px solid theme.$color-03;
+		background-color: theme.$color-07;
+		background-image: linear-gradient(theme.$color-09 0%, theme.$color-08 50%, theme.$color-07 75%);
+		position: relative;
+		overflow: hidden;
+		.level-bar-progress, .level-bar-shadow {
+			@include mixins.sizing(100%, 100%);
+		}
+		.level-bar-progress {
+			background-color: theme.$color-10;
+			background-image: linear-gradient(theme.$color-12 0%, theme.$color-11 50%, theme.$color-10 75%);
+		}
+		.level-bar-shadow {
+			border: 2px solid rgba(0, 0, 0, 0.30);
+			border-top-width: 3px;
+			border-bottom-color: rgba(0, 0, 0, 0.10);
+			@include mixins.position($type: absolute, $left: 0, $top: 0);
+		}
+	}
+}

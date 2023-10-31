@@ -1,64 +1,45 @@
 {
 	"name": "ff7-st-jude",
-	"sideEffects": true,
 	"version": "1.0.0",
 	"description": "custom ff7-st-jude setup",
-	"private": true,
+	"main": "index.js",
+	"type": "module",
+	"keywords": [],
+	"author": "displaycoffee",
+	"license": "ISC",
+	"scripts": {
+		"build": "vite build",
+		"dev": "vite --host",
+		"format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+		"lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
+		"preview": "vite preview"
+	},
 	"devDependencies": {
-		"@babel/core": "^7.17.8",
-		"@babel/eslint-parser": "^7.17.0",
-		"@babel/plugin-proposal-class-properties": "^7.16.7",
-		"@babel/plugin-transform-runtime": "^7.17.0",
-		"@babel/preset-env": "^7.16.11",
-		"@babel/preset-react": "^7.16.7",
-		"babel-loader": "^8.2.4",
-		"browser-sync-webpack-plugin": "^2.3.0",
-		"connect-history-api-fallback": "^1.6.0",
-		"css-loader": "^6.7.1",
-		"eslint": "^8.12.0",
-		"eslint-plugin-import": "^2.25.4",
-		"eslint-plugin-jsx-a11y": "^6.5.1",
-		"eslint-plugin-react": "^7.29.4",
-		"eslint-plugin-react-hooks": "^4.4.0",
-		"husky": "^7.0.4",
-		"lint-staged": "^12.3.7",
-		"mini-css-extract-plugin": "^2.6.0",
-		"prettier": "^2.7.1",
-		"raw-loader": "^4.0.2",
-		"sass": "^1.49.9",
-		"sass-loader": "^12.6.0",
-		"webpack": "^5.70.0",
-		"webpack-cli": "^4.9.2",
-		"webpack-dev-server": "^4.15.1"
+		"@vitejs/plugin-react": "^4.1.0",
+		"eslint": "^8.49.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-import": "^2.28.1",
+		"eslint-plugin-jsx-a11y": "^6.7.1",
+		"eslint-plugin-react": "^7.33.2",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"prettier": "^3.0.3",
+		"vite": "^4.4.11"
 	},
 	"dependencies": {
-		"react": "^18.0.0",
-		"react-dom": "^18.0.0",
-		"react-router-dom": "^6.3.0"
-	},
-	"scripts": {
-		"dev": "webpack --watch --config webpack.dev.js",
-		"prod": "webpack --config webpack.prod.js",
-		"lint": "eslint \"./assets/src/js/*.{js,jsx}\" --quiet",
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"prepare": "husky install",
-		"format": "prettier --write \"assets/src/**/*.{js,jsx}\""
+		"@tanstack/react-query": "^4.35.3",
+		"react": "^18.2.0",
+		"react-cookie": "^6.1.1",
+		"react-dom": "^18.2.0",
+		"react-router-dom": "^6.16.0"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/displaycoffee/ff7-st-jude.git"
 	},
-	"author": "displaycoffee",
-	"license": "ISC",
 	"bugs": {
 		"url": "https://github.com/displaycoffee/ff7-st-jude/issues"
 	},
 	"homepage": "https://github.com/displaycoffee/ff7-st-jude#readme",
-	"lint-staged": {
-		"./assets/src/js/*.{js,jsx}": [
-			"eslint --quiet"
-		]
-	},
 	"browserslist": [
 		"last 2 versions"
 	]

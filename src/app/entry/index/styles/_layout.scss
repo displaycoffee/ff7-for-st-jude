@@ -1,0 +1,198 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// FLEX
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.flex-wrap {
+		@include mixins.flex-layout;
+	}
+	.flex-align-content-center {
+		@include mixins.flex-parent(align-content, center);
+	}
+	.flex-nowrap {
+		@include mixins.flex-layout((flex-flow: row nowrap));
+	}
+	.flex-align-items-center {
+		@include mixins.flex-parent(align-items, center);
+	}
+	.flex-justify-content-center {
+		@include mixins.flex-parent(justify-content, center);
+	}
+
+//// ROWS / COLUMNS
+//// --------------------------------------------------------------------------
+
+	// Configuration
+	
+	$row-spacing: (
+		theme.$spacing-x1, 
+		theme.$spacing-x2, 
+		theme.$spacing-x3, 
+		theme.$spacing-x4,
+		theme.$spacing-x5, 
+		theme.$spacing-x6, 
+		theme.$spacing-x7, 
+		theme.$spacing-x8
+	); // Array of spacing values
+
+	// Style block
+
+	.row {
+		.column {
+			min-width: 1px;
+		}
+	}
+	.row-auto {
+		.column {
+			@include mixins.flex(0 1 auto);
+		}
+	}
+	.row-fit {
+		.column {		
+			@include mixins.flex;
+		}
+	}
+	.row-wrap {
+		@extend .flex-wrap;
+	}
+	.row-nowrap {
+		@extend .flex-nowrap;
+	}
+	.row-align-content-center {
+		@extend .flex-align-content-center;
+	}
+	.row-align-items-center {
+		@extend .flex-align-items-center;
+	}
+	.row-justify-content-center {
+		@extend .flex-justify-content-center;
+	}
+
+	// Create row spacing styles by looping through $row-spacing
+	@each $row in $row-spacing {
+		$row-class: calc($row / 1px);
+		$row-half: calc($row / 2);
+		.row-#{$row-class} {
+			margin: 0 -#{$row-half} -#{$row} -#{$row-half};
+			& > .column {
+				padding: 0 $row-half;
+				margin: 0 0 $row 0;
+			}
+		}
+	}
+
+//// MAIN LAYOUT
+//// --------------------------------------------------------------------------	
+
+	// Configuration 
+
+	$layout-main-bp: theme.$bp-02; // breakpoint
+
+	// Style block
+
+	.main {}
+	@include mixins.respond-min($layout-main-bp) {
+		.main {}
+	}
+
+//// DETAILS
+//// --------------------------------------------------------------------------
+
+	.details {
+		margin: 0 0 theme.$spacing-x12 0;
+	// 	.details-row {
+	// 		margin: 0 -#{theme.$spacing-x3} -#{theme.$spacing-x6} -#{theme.$spacing-x3};
+	// 		.details-column {
+	// 			padding: 0 theme.$spacing-x3;
+	// 			margin: 0 0 theme.$spacing-x6;
+	// 			@include mixins.flex(0 1 auto);
+	// 			width: 100%;
+	// 			.details-column-inner {
+	// 				height: 100%;
+	// 				padding: theme.$spacing-x3;
+	// 				background-color: theme.$color-04;
+	// 				background-image: linear-gradient(160deg, theme.$color-04 35%, theme.$color-05);
+	// 				border: 3px solid theme.$color-02;
+	// 				@include mixins.border-radius(10px);
+	// 			}
+	// 			p, .p {
+	// 				margin: 0 0 theme.$spacing-x2 0;
+	// 				word-break: break-word;
+	// 				&:last-child {
+	// 					margin-bottom: 0;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	}
+
+//// DETAILS - SUPPORTING
+//// --------------------------------------------------------------------------
+
+	// .details-supporting {
+	// 	.details-row {
+	// 		.details-column-0, .details-column-1, .details-column-2 {
+	// 			.details-column-inner .details-links {
+	// 				position: relative;
+	// 				padding: 0 0 0 70px;
+	// 				min-height: 50px;
+	// 				&:before {
+	// 					content: '';
+	// 					display: block;
+	// 					@include mixins.sizing(50px, 50px);
+	// 					@include mixins.position($type: absolute, $top: 5px, $left: 0);
+	// 					background-repeat: no-repeat;
+	// 					background-position: 0 0;
+	// 					background-size: contain;
+	// 				}
+	// 			}
+	// 		}
+	// 		.details-column-0 .details-column-inner .details-links:before {
+	// 			background-image: url('../../dist/images/chocobo-01.png');
+	// 		}
+	// 		.details-column-1 .details-column-inner .details-links:before {
+	// 			background-image: url('../../dist/images/chocobo-02.png');
+	// 		}
+	// 		.details-column-2 .details-column-inner .details-links:before {
+	// 			background-image: url('../../dist/images/chocobo-03.png');
+	// 		}
+	// 	}
+	// }
+
+//// DETAILS - SKELETON
+//// --------------------------------------------------------------------------
+
+	// .details {
+	// 	.details-row {
+	// 		&.details-row-loaded {
+	// 			.details-column-skeleton {
+	// 				display: none;
+	// 			}
+	// 		}
+	// 		.details-column-skeleton {
+	// 			p, .p {
+	// 				background-color: theme.$color-03;
+	// 				width: 80%;
+	// 				opacity: 0.8;
+	// 				@include mixins.transition(opacity 0.3s ease);
+	// 				&:nth-child(2) {
+	// 					width: 60%;
+	// 				}
+	// 				&:nth-child(3) {
+	// 					width: 40%;
+	// 				}
+	// 				&:nth-child(4) {
+	// 					width: 75%;
+	// 				}
+	// 				&:nth-child(5) {
+	// 					width: 50%;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }	

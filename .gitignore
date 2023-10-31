@@ -1,4 +1,7 @@
-node_modules
 .DS_Store
+.env
 .husky
-secret.txt
+.vscode/
+coverage/
+node_modules/
+dist/

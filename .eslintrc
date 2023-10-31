@@ -8,21 +8,17 @@
 		"prettier"
 	],
 	"rules": {
+		"react/no-unescaped-entities": 0,
 		"react/prop-types": 0,
 		"react/react-in-jsx-scope": 0
 	},
 	"plugins": ["react", "import", "jsx-a11y"],
-	"parser": "@babel/eslint-parser",
 	"parserOptions": {
 		"ecmaVersion": 2022,
 		"sourceType": "module",
-		"requireConfigFile": "false",
 		"ecmaFeatures": {
 			"jsx": true
 		}
-	},
-	"babelOptions": {
-		"configFile": "./babelrc"
 	},
 	"env": {
 		"es6": true,
@@ -32,6 +28,11 @@
 	"settings": {
 		"react": {
 			"version": "detect"
+		},
+		"import/resolver": {
+			"node": {
+				"extensions": [".js", ".jsx"]
+			}
 		}
 	}
 }

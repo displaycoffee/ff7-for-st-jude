@@ -1,0 +1,49 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// HEADER
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.header {
+		margin: 0 0 theme.$spacing-x12 0;
+		.header-title, .header-button {
+			@include mixins.flex(0 1 auto);
+		}
+		.header-title {
+			width: 100%;
+			margin: 0 0 theme.$spacing-x3 0;
+		}
+		.header-button {
+			&.spinning {
+				@include mixins.animate(spin 1s infinite linear);
+			}
+			&.spinning-complete {
+				.header-button-label-01 {
+					display: none;
+				}
+				.header-button-label-02 {
+					display: inline;
+				}
+			}
+			.header-button-label-01 {}
+			.header-button-label-02 {
+				display: none;
+			}
+		}
+	}
+	@include mixins.respond-min(theme.$bp-04) {
+		.header {
+			.header-title {
+				width: auto;
+				margin: 0 theme.$spacing-x6 0 0;
+			}
+			.header-button {
+				margin: 0 0 0 auto;
+			}
+		}
+	}	
+	@include mixins.animate-spin;
