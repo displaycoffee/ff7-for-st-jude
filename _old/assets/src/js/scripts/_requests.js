@@ -1,5 +1,4 @@
 /* local script imports */
-import secret from '../../../../secret.txt';
 import { variables } from './_variables';
 import { utils } from './_utils';
 
