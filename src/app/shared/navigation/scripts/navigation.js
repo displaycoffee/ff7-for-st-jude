@@ -1,6 +1,6 @@
 export const navigation = [
 	{
-		id: 3,
+		id: 4,
 		label: 'Commentary Stream',
 		alt: 'Commentary Stream',
 		url: '//twitch.tv/MonetaryDragon',
@@ -8,12 +8,20 @@ export const navigation = [
 		isRoute: false,
 	},
 	{
+		id: 3,
+		label: 'Dashboard',
+		alt: 'Dashboard',
+		url: '/',
+		showInNav: true,
+		isRoute: true,
+	},
+	{
 		id: 2,
 		label: 'Signup Sheet',
 		alt: 'Signup Sheet',
-		url: '//docs.google.com/spreadsheets/d/12MUW_ndfxjgkfapai0HXCGlJkZDzZohT04AltKWzzss/edit#gid=0',
+		url: '/',
 		showInNav: true,
-		isRoute: false,
+		isRoute: true,
 	},
 	{
 		id: 1,

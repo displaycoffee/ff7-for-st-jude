@@ -26,6 +26,18 @@ export const campaigns = {
 	},
 	previous: [
 		{
+			id: ids[6],
+			name: 'FF7 for St. Jude #6',
+			amounts: utils.getAmounts({ total_amount_raised: { value: 5397.74 } }),
+			date: 'June 24, 2023',
+			links: [
+				{
+					label: 'See campaign',
+					url: `${variables.urls.team}/ff7-for-st-jude-6`,
+				},
+			],
+		},
+		{
 			id: ids[5],
 			name: 'FF7 for St. Jude #5',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 9254.38 } }),

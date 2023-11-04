@@ -1,6 +1,3 @@
-/* React */
-import { useState } from 'react';
-
 export const utils = {
 	checkAmount: (number) => {
 		// check number to always urn a value
@@ -75,28 +72,6 @@ export const utils = {
 	merge: (array) => {
 		// merge array of arrays
 		return array.reduce((merge, next) => merge.concat(next), []);
-	},
-	respond: (bp) => {
-		const rule = window.matchMedia(`(min-width: ${bp}px)`);
-		let [match, setMatch] = useState(rule.matches);
-
-		// Update match state on media change
-		rule.onchange = (e) => {
-			if (e.matches) {
-				match = true;
-			} else {
-				match = false;
-			}
-			setMatch(match);
-		};
-
-		return match;
-	},
-	scrollTo: (e, id) => {
-		e.preventDefault();
-		document.querySelector(`#${id}`).scrollIntoView({
-			behavior: 'smooth',
-		});
 	},
 	sort: (list, type, field, direction) => {
 		// sort values in a list based on type, field, and direction

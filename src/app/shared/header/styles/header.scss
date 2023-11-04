@@ -9,7 +9,7 @@
 	// Style block
 
 	.header {
-		margin: 0 0 theme.$spacing-x12 0;
+		margin: 0 0 theme.$spacing-x8 0;
 		.header-title, .header-button {
 			@include mixins.flex(0 1 auto);
 		}

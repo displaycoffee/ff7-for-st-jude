@@ -43,7 +43,6 @@
 	b, strong {
 		font-weight: theme.$font-weight-01;
 		font-family: theme.$font-family-02;
-		color: theme.$color-03;
 	}
 	dfn, em, i {
 		font-style: italic;
@@ -51,7 +50,7 @@
 	a, abbr[title] {
 		text-decoration: none;
 	}
-	a {		
+	a, .a {
 		color: theme.$color-03;
 		background-color: transparent;
 		@include mixins.transition(color 0.3s ease-in-out);

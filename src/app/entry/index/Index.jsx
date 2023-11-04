@@ -14,30 +14,30 @@ import { Header } from '../../shared/header/Header';
 import { Footer } from '../../shared/footer/Footer';
 
 export const Index = (props) => {
-	const { theme, utils } = props;
-	const isDesktop = utils.respond(theme.bps.bp02);
+	const { theme, useRespond } = props;
+	const isDesktop = useRespond(theme.bps.bp02);
 
-	useEffect(() => {
-		requestCampaigns();
-	}, []);
+	// useEffect(() => {
+	// 	requestCampaigns();
+	// }, []);
 
-	async function requestCampaigns() {
-		const response = await fetch(
-			`http://ff7forstjude.org:5000/api/public/team_campaigns/6805c495-d02f-42ea-81d8-9b6c5ff5d3b5/supporting_campaigns/`,
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			},
-		);
-		const json = await response.json();
-		console.log(json);
-	}
+	// async function requestCampaigns() {
+	// 	const response = await fetch(
+	// 		`http://ff7forstjude.org:5000/api/public/team_campaigns/6805c495-d02f-42ea-81d8-9b6c5ff5d3b5/supporting_campaigns/`,
+	// 		{
+	// 			method: 'GET',
+	// 			headers: {
+	// 				'Content-Type': 'application/json',
+	// 			},
+	// 		},
+	// 	);
+	// 	const json = await response.json();
+	// 	console.log(json);
+	// }
 
 	return (
 		<Context.Provider value={props}>
-			<div className="wrapper">
+			<div id="top" className="wrapper">
 				<IndexBody />
 
 				<ErrorBoundary message={<IndexError />}>

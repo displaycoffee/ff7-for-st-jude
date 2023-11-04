@@ -46,6 +46,9 @@
 		.column {
 			min-width: 1px;
 		}
+		.column-full {
+			width: 100%;
+		}
 	}
 	.row-auto {
 		.column {
@@ -79,10 +82,26 @@
 		$row-half: calc($row / 2);
 		.row-#{$row-class} {
 			margin: 0 -#{$row-half} -#{$row} -#{$row-half};
-			& > .column {
+			.column {
 				padding: 0 $row-half;
 				margin: 0 0 $row 0;
 			}
+		}
+	}
+
+	@include mixins.respond-min(theme.$bp-02) {
+		.row .column-half {
+			width: 50%;
+		}
+	}
+	@include mixins.respond-min(theme.$bp-03) {
+		.row .column-third {
+			width: 33.3333%;
+		}
+	}
+	@include mixins.respond-min(theme.$bp-04) {
+		.row .column-quarter {
+			width: 25%;
 		}
 	}
 
@@ -99,100 +118,3 @@
 	@include mixins.respond-min($layout-main-bp) {
 		.main {}
 	}
-
-//// DETAILS
-//// --------------------------------------------------------------------------
-
-	.details {
-		margin: 0 0 theme.$spacing-x12 0;
-	// 	.details-row {
-	// 		margin: 0 -#{theme.$spacing-x3} -#{theme.$spacing-x6} -#{theme.$spacing-x3};
-	// 		.details-column {
-	// 			padding: 0 theme.$spacing-x3;
-	// 			margin: 0 0 theme.$spacing-x6;
-	// 			@include mixins.flex(0 1 auto);
-	// 			width: 100%;
-	// 			.details-column-inner {
-	// 				height: 100%;
-	// 				padding: theme.$spacing-x3;
-	// 				background-color: theme.$color-04;
-	// 				background-image: linear-gradient(160deg, theme.$color-04 35%, theme.$color-05);
-	// 				border: 3px solid theme.$color-02;
-	// 				@include mixins.border-radius(10px);
-	// 			}
-	// 			p, .p {
-	// 				margin: 0 0 theme.$spacing-x2 0;
-	// 				word-break: break-word;
-	// 				&:last-child {
-	// 					margin-bottom: 0;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	}
-
-//// DETAILS - SUPPORTING
-//// --------------------------------------------------------------------------
-
-	// .details-supporting {
-	// 	.details-row {
-	// 		.details-column-0, .details-column-1, .details-column-2 {
-	// 			.details-column-inner .details-links {
-	// 				position: relative;
-	// 				padding: 0 0 0 70px;
-	// 				min-height: 50px;
-	// 				&:before {
-	// 					content: '';
-	// 					display: block;
-	// 					@include mixins.sizing(50px, 50px);
-	// 					@include mixins.position($type: absolute, $top: 5px, $left: 0);
-	// 					background-repeat: no-repeat;
-	// 					background-position: 0 0;
-	// 					background-size: contain;
-	// 				}
-	// 			}
-	// 		}
-	// 		.details-column-0 .details-column-inner .details-links:before {
-	// 			background-image: url('../../dist/images/chocobo-01.png');
-	// 		}
-	// 		.details-column-1 .details-column-inner .details-links:before {
-	// 			background-image: url('../../dist/images/chocobo-02.png');
-	// 		}
-	// 		.details-column-2 .details-column-inner .details-links:before {
-	// 			background-image: url('../../dist/images/chocobo-03.png');
-	// 		}
-	// 	}
-	// }
-
-//// DETAILS - SKELETON
-//// --------------------------------------------------------------------------
-
-	// .details {
-	// 	.details-row {
-	// 		&.details-row-loaded {
-	// 			.details-column-skeleton {
-	// 				display: none;
-	// 			}
-	// 		}
-	// 		.details-column-skeleton {
-	// 			p, .p {
-	// 				background-color: theme.$color-03;
-	// 				width: 80%;
-	// 				opacity: 0.8;
-	// 				@include mixins.transition(opacity 0.3s ease);
-	// 				&:nth-child(2) {
-	// 					width: 60%;
-	// 				}
-	// 				&:nth-child(3) {
-	// 					width: 40%;
-	// 				}
-	// 				&:nth-child(4) {
-	// 					width: 75%;
-	// 				}
-	// 				&:nth-child(5) {
-	// 					width: 50%;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }	

@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 
 /* Local scripts */
 import { theme } from './_config/scripts/theme';
+import { useRespond } from './_config/scripts/hooks';
 import { utils } from './_config/scripts/utils';
 import { variables } from './_config/scripts/variables';
 
@@ -14,7 +15,7 @@ import { Index } from './entry/index/Index';
 const App = () => {
 	return (
 		<Router basename={variables.paths.base}>
-			<Index theme={theme} utils={utils} variables={variables} />
+			<Index theme={theme} useRespond={useRespond} utils={utils} variables={variables} />
 		</Router>
 	);
 };

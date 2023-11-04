@@ -8,7 +8,7 @@
 
 	// Style block
 
-	button {
+	button:not(.unstyled) {
 		height: 40px;
 		line-height: 40px;	
 		padding: 0 theme.$spacing-x3;
@@ -17,4 +17,10 @@
 		@include mixins.border-radius(10px);
 		color: theme.$color-01; 
 		@include mixins.ellipsis;
+	}
+	button.unstyled {
+		padding: 0;
+		background-color: transparent;
+		border: 0;
+		line-height: 2;
 	}

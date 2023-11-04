@@ -128,7 +128,7 @@ function checkSassVar(value) {
 		} else if (value == 'false') {
 			return false;
 		} else {
-			let formattedValue = isNaN(value * 1) ? value.replace(/\"/gi, "'") : value * 1;
+			let formattedValue = isNaN(value * 1) ? value.replace(/"/gi, "'") : value * 1;
 			return formattedValue;
 		}
 	} else {

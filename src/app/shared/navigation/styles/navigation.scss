@@ -15,7 +15,7 @@
 	.navigation {
 		margin: 0 0 theme.$spacing-x8 0;
 		.navigation-list {
-			margin: 0 -#{theme.$spacing-x1};
+			margin: 0 -#{theme.$spacing-x1} -#{theme.$spacing-x4} -#{theme.$spacing-x1};
 			.navigation-list-item {
 				@if $navigation-is-inline == true {
 					@include mixins.inline-block(middle);

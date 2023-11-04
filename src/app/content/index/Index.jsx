@@ -1,12 +1,16 @@
 /* Local styles */
 import './styles/index.scss';
 
+/* Local scripts */
+import { campaigns } from './scripts/campaigns';
+
+/* Local components */
+import { Details } from '../../shared/details/Details';
+
 export const Index = () => {
 	return (
-		<section className="details details-information">
-			<h3 className="details-title">Information</h3>
-
-			<div className="details-content spacing-reset blue-bg">
+		<>
+			<Details header={'Information'}>
 				<p>
 					Welcome to the biannual FF7 for St. Jude speedrun event! Since December 2020, these events have been held twice per year,
 					typically the last weekend of June and the 2nd weekend of December. The event is part of{' '}
@@ -31,7 +35,48 @@ export const Index = () => {
 					diseases through research and treatment. Consistent with the vision of our founder Danny Thomas, no child is denied treatment
 					based on race, religion or a family's ability to pay.
 				</p>
-			</div>
-		</section>
+			</Details>
+
+			<Details header={'Current Campaign'}>
+				<p>Coming soon.</p>
+			</Details>
+
+			<Details header={'Supporting Campaigns'}>
+				<p>Coming soon.</p>
+			</Details>
+
+			<Details header={'Previous Campaigns'} hasRow={true}>
+				<div className="row row-20 row-wrap row-auto">
+					{campaigns.previous.map((campaign) => {
+						const { total_amount_raised } = campaign.amounts;
+
+						return (
+							<div className="column column-full column-half" key={campaign.id}>
+								<div className="blue-bg">
+									<p>
+										<strong>Campaign:</strong> {campaign.name}
+									</p>
+									<p>
+										<strong>Ends:</strong> {campaign.date}
+									</p>
+									<p>
+										<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
+									</p>
+									{campaign.links && campaign.links.length != 0 && (
+										<div className="detail-links">
+											{campaign.links.map((link) => (
+												<a href={link.url} target="_blank" rel="noreferrer" key={link.url}>
+													{link.label}
+												</a>
+											))}
+										</div>
+									)}
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			</Details>
+		</>
 	);
 };
