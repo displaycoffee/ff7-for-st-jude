@@ -1,0 +1,38 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// IMAGES
+//// --------------------------------------------------------------------------
+	
+	img {
+		display: block;
+		max-width: 100%;
+		border: 0;
+	}
+	.image-wrapper {
+		position: relative;
+		height: 0;
+		line-height: 0;
+		padding-bottom: 100%;
+		img {
+			@include mixins.sizing(auto, auto);
+			max-height: 100%;
+			@include mixins.position-fill(auto);
+		}
+	}
+	.image-wrapper-fit {
+		img {
+			@include mixins.sizing(100%, 100%);
+			@include mixins.object-fit(center, cover)
+		}
+	}
+	.image-wrapper-bg {
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: cover;
+		img {
+			@include mixins.sr-only;
+		}
+	}

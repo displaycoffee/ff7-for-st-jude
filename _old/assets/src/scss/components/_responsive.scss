@@ -1,0 +1,36 @@
+// Use helpers and theme variables
+@use '../helpers/_mixins';
+@use '../theme/_theme';
+
+//// RESPONSIVE - 768
+//// --------------------------------------------------------------------------
+
+@include mixins.respond-min(theme.$bp-02) {
+	.detail .detail-row {
+		.detail-column-quarter, .detail-column-third, .detail-column-half {
+			width: 50%;
+		}
+	}
+}
+
+//// RESPONSIVE - 992
+//// --------------------------------------------------------------------------
+
+@include mixins.respond-min(theme.$bp-03) {
+	.detail .detail-row {
+		.detail-column-quarter, .detail-column-third {
+			width: 33.3333%;
+		}
+	}
+}
+
+//// RESPONSIVE - 1200
+//// --------------------------------------------------------------------------
+
+@include mixins.respond-min(theme.$bp-04) {
+	.detail .detail-row {
+		.detail-column-quarter {
+			width: 25%;
+		}
+	}
+}

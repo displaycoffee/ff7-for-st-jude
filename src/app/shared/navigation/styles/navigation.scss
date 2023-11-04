@@ -1,0 +1,40 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// NAVIGATION
+//// --------------------------------------------------------------------------
+
+	// Configuration
+
+	$navigation-is-inline: true; // determine if navigation is inline
+
+	// Style block
+
+	.navigation {
+		&.sticky {
+			@include mixins.position($left: 0, $right: 0);
+			width: 100%;
+			padding: theme.$spacing-x4;
+			background-color: theme.$color-01;
+			border-bottom: 3px solid theme.$color-02;
+			.navigation-list {			
+				max-width: 1600px;
+				padding: 0 theme.$spacing-x3;
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+		margin: 0 0 theme.$spacing-x8 0;
+		.navigation-list {
+			margin: 0 -#{theme.$spacing-x1} -#{theme.$spacing-x4} -#{theme.$spacing-x1};
+			.navigation-list-item {
+				@if $navigation-is-inline == true {
+					@include mixins.inline-block(middle);
+				}
+				padding: 0 theme.$spacing-x1;
+				margin: 0 0 theme.$spacing-x4 0;
+			}
+		}
+	}
