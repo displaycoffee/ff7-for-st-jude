@@ -12,7 +12,7 @@ export const navigation = [
 		label: 'Dashboard',
 		alt: 'Dashboard',
 		url: '/',
-		showInNav: true,
+		showInNav: false,
 		isRoute: true,
 	},
 	{

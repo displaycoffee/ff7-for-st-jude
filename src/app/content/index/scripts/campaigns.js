@@ -10,13 +10,14 @@ const ids = {
 	4: 'e9048b01-70ce-4f0a-9cc9-29c583b1a997',
 	5: 'f0db38a3-df52-4f4c-8030-3b2c81db39d1',
 	6: '6805c495-d02f-42ea-81d8-9b6c5ff5d3b5',
+	7: 'a2308711-88cd-470c-80f5-e59286063517',
 };
 
 export const campaigns = {
 	current: {
-		id: ids[6],
-		name: 'FF7 for St. Jude #6',
-		date: 'June 24, 2023',
+		id: ids[7],
+		name: 'FF7 for St. Jude #7',
+		date: 'December 16th, 2023',
 		links: [
 			{
 				label: variables.urls.campaign.replace('https://', ''),

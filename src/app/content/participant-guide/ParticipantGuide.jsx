@@ -27,6 +27,43 @@ export const ParticipantGuide = () => {
 				</ul>
 			</Details>
 
+			<Details header={'Checklist'} scrollLink={true}>
+				<h5>Before the day of the event</h5>
+
+				<ol>
+					<li>Create your Tiltify campaign, create incentives, publish your campaign, activate incentives.</li>
+					<li>
+						Create bot commands and timers with links to your campaign page and the commentary stream (
+						<a href="//twitch.tv/monetarydragon" target="_blank" rel="noreferrer">
+							twitch.tv/monetarydragon
+						</a>
+						).
+					</li>
+					<li>Set up donation alerts and overlays.</li>
+					<li>Sign up for racetime.gg.</li>
+					<li>
+						Advertise the event to family and friends! Encourage people to redeem early incentives like naming Cloud and Barret before the
+						event.
+					</li>
+				</ol>
+
+				<h5>Day of the event</h5>
+
+				<ol>
+					<li>
+						Keep an eye on the <strong>#ff7-for-st-jude</strong> channel in the{' '}
+						<a href="//discord.gg/jb38ssbnt" target="_blank" rel="noreferrer">
+							Coffee and Toast discord
+						</a>
+						.
+					</li>
+					<li>Start your stream at least 20 minutes before the event starts.</li>
+					<li>Restart your stream until you get resolution quality options (360p must be available).</li>
+					<li>Join the racetime.gg race in LiveSplit and click "I'm ready" when you're ready.</li>
+					<li>Wait on the "New Game" screen and move cursor until the race starts.</li>
+				</ol>
+			</Details>
+
 			<Details header={'Important Links'} scrollLink={true}>
 				<ul>
 					<li>
@@ -269,43 +306,6 @@ export const ParticipantGuide = () => {
 					the campaign raises $100 or more, they will donate $100. It is also common for businesses to do a percentage based match such as
 					20% up to $100 which would mean if $100 is raised, they would donate $20 but if $500 or more is raised, they would donate $100.
 				</p>
-			</Details>
-
-			<Details header={'Checklist'} scrollLink={true}>
-				<h5>Before the day of the event</h5>
-
-				<ol>
-					<li>Create your Tiltify campaign, create incentives, publish your campaign, activate incentives.</li>
-					<li>
-						Create bot commands and timers with links to your campaign page and the commentary stream (
-						<a href="//twitch.tv/monetarydragon" target="_blank" rel="noreferrer">
-							twitch.tv/monetarydragon
-						</a>
-						).
-					</li>
-					<li>Set up donation alerts and overlays.</li>
-					<li>Sign up for racetime.gg.</li>
-					<li>
-						Advertise the event to family and friends! Encourage people to redeem early incentives like naming Cloud and Barret before the
-						event.
-					</li>
-				</ol>
-
-				<h5>Day of the event</h5>
-
-				<ol>
-					<li>
-						Keep an eye on the <strong>#ff7-for-st-jude</strong> channel in the{' '}
-						<a href="//discord.gg/jb38ssbnt" target="_blank" rel="noreferrer">
-							Coffee and Toast discord
-						</a>
-						.
-					</li>
-					<li>Start your stream at least 20 minutes before the event starts.</li>
-					<li>Restart your stream until you get resolution quality options (360p must be available).</li>
-					<li>Join the racetime.gg race in LiveSplit and click "I'm ready" when you're ready.</li>
-					<li>Wait on the "New Game" screen and move cursor until the race starts.</li>
-				</ol>
 			</Details>
 		</>
 	);
