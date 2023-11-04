@@ -13,7 +13,8 @@ slideout.set.overlay();
 export const Slideout = (props) => {
 	let { id, width, direction, label, content, closeOnClick } = props;
 	const { config, get, toggle } = slideout;
-	const slideoutId = `slideout-${id ? id : useId().replace(/\:/g, '')}`;
+	const fallbackId = useId().replace(/:/g, '');
+	const slideoutId = `slideout-${id ? id : fallbackId}`;
 
 	// Get default attributes for slideout
 	width = width ? width : config.values.width;
@@ -33,25 +34,23 @@ export const Slideout = (props) => {
 			data-direction={direction}
 			data-orientation={orientation}
 		>
-			<button className="slideout-button flex-nowrap flex-align-items-center" type="button" onClick={(e) => toggle(e, slideoutId)}>
-				<span className="icon-wrapper icon-wrapper-large">
-					<svg className="icon icon-equalizer">
-						<use xlinkHref="#icon-equalizer"></use>
-					</svg>
-				</span>{' '}
-				{label}
+			<button className="slideout-button pointer unstyled a" type="button" onClick={(e) => toggle(e, slideoutId)}>
+				{label} &gt;
 			</button>
 
-			<div className={config.classes.content} style={styles} onClick={(e) => e.stopPropagation()}>
+			<div
+				className={`${config.classes.content} blue-background`}
+				style={styles}
+				onClick={(e) => e.stopPropagation()}
+				role="button"
+				tabIndex={0}
+				aria-hidden="true"
+			>
 				<header className="slideout-header flex-nowrap flex-align-items-center">
 					<h3 className="slideout-title">{label}</h3>
 
-					<button className="slideout-close" type="button" onClick={(e) => toggle(e, false)}>
-						<span className="icon-wrapper">
-							<svg className="icon icon-close-thin">
-								<use xlinkHref="#icon-close-thin"></use>
-							</svg>
-						</span>
+					<button className="slideout-close pointer unstyled" type="button" onClick={(e) => toggle(e, false)}>
+						x
 					</button>
 				</header>
 
@@ -64,6 +63,9 @@ export const Slideout = (props) => {
 							return false;
 						}
 					}}
+					role="button"
+					tabIndex={0}
+					aria-hidden="true"
 				>
 					{content ? content : null}
 				</div>

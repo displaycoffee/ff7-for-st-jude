@@ -46,18 +46,18 @@
 		.column {
 			min-width: 1px;
 		}
-		.column-full {
+		[class*='column-width-'] {
 			width: 100%;
 		}
 	}
-	.row-auto {
-		.column {
-			@include mixins.flex(0 1 auto);
+	.row-fit {
+		.column {	
+			@include mixins.flex;
 		}
 	}
-	.row-fit {
-		.column {		
-			@include mixins.flex;
+	.row-auto {
+		.column {	
+			@include mixins.flex(0 1 auto);
 		}
 	}
 	.row-wrap {
@@ -80,7 +80,7 @@
 	@each $row in $row-spacing {
 		$row-class: calc($row / 1px);
 		$row-half: calc($row / 2);
-		.row-#{$row-class} {
+		.row-spacing-#{$row-class} {
 			margin: 0 -#{$row-half} -#{$row} -#{$row-half};
 			.column {
 				padding: 0 $row-half;
@@ -90,18 +90,30 @@
 	}
 
 	@include mixins.respond-min(theme.$bp-02) {
-		.row .column-half {
-			width: 50%;
+		.row {
+			[class*='column-width-'] {
+				width: 50%;
+			}
 		}
 	}
 	@include mixins.respond-min(theme.$bp-03) {
-		.row .column-third {
-			width: 33.3333%;
+		.row {
+			.column-width-33, .column-width-25 {
+				width: 33.3333%;
+			}
+			.column-width-20 {
+				width: 25%;
+			}
 		}
 	}
 	@include mixins.respond-min(theme.$bp-04) {
-		.row .column-quarter {
-			width: 25%;
+		.row {
+			.column-width-25 {
+				width: 25%;
+			}
+			.column-width-20 {
+				width: 20%;
+			}
 		}
 	}
 

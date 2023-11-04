@@ -23,7 +23,7 @@
 
 	$base-elements-spacing: theme.$spacing-x4; // overall spacing of theme
 	$base-elements-body-spacing-vertical: theme.$spacing-x12; // top / bottom spacing for body
-	$base-elements-body-spacing-horizontal: theme.$spacing-x12; // left / right spacing for body
+	$base-elements-body-spacing-horizontal: theme.$spacing-x4; // left / right spacing for body
 
 	// Style block
 
@@ -86,6 +86,12 @@
 		margin: 0 auto;
 		padding: 0 $base-elements-spacing;
 	}
+	@include mixins.respond-min(theme.$bp-02) {
+		body {
+			padding-left: theme.$spacing-x8;
+			padding-right: theme.$spacing-x8;
+		}
+	}
 
 //// HELPERS
 //// --------------------------------------------------------------------------
@@ -113,10 +119,13 @@
 	.scrollbar {
 		@include mixins.scrollbar('&', $base-helpers-scrollbar-width, $base-helpers-color-01, $base-helpers-color-02);
 	}
-	.blue-bg {
-		padding: theme.$spacing-x4;
+	.blue-background {
 		background-color: theme.$color-04;
 		background-image: linear-gradient(160deg, theme.$color-04 35%, theme.$color-05);
 		border: 3px solid theme.$color-02;
+	}
+	.blue-section {
+		padding: theme.$spacing-x4;
+		@extend .blue-background;		
 		@include mixins.border-radius(10px);
 	}

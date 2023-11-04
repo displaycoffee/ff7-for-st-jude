@@ -1,6 +1,3 @@
-/* Local styles */
-import './styles/footer.scss';
-
 export const Footer = () => {
 	return (
 		<footer className="credits">

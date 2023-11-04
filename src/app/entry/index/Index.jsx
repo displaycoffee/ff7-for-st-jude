@@ -5,6 +5,9 @@ import { Link, useLocation } from 'react-router-dom';
 /* Local styles */
 import './styles/index.scss';
 
+/* Local scripts */
+import { useRespond } from '../../_config/scripts/hooks';
+
 /* Local components */
 import { Context } from '../context/Context';
 import { ErrorBoundary } from '../../shared/error-boundary/ErrorBoundary';
@@ -14,7 +17,7 @@ import { Header } from '../../shared/header/Header';
 import { Footer } from '../../shared/footer/Footer';
 
 export const Index = (props) => {
-	const { theme, useRespond } = props;
+	const { theme } = props;
 	const isDesktop = useRespond(theme.bps.bp02);
 
 	// useEffect(() => {
@@ -37,11 +40,15 @@ export const Index = (props) => {
 
 	return (
 		<Context.Provider value={props}>
-			<div id="top" className="wrapper">
+			<div className="wrapper">
 				<IndexBody />
 
 				<ErrorBoundary message={<IndexError />}>
-					{isDesktop ? <Navigation /> : <Slideout id={'menu'} label={'Menu'} content={<Navigation />} closeOnClick={true} />}
+					{isDesktop ? (
+						<Navigation location={'header'} />
+					) : (
+						<Slideout id={'menu'} label={'Menu'} content={<Navigation location={'slideout'} />} closeOnClick={true} />
+					)}
 
 					<Header buttonClick={false} />
 

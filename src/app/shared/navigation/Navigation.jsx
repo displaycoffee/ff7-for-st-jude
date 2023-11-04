@@ -1,20 +1,30 @@
 /* React */
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 /* Local styles */
 import './styles/navigation.scss';
 
 /* Local scripts */
 import { navigation } from './scripts/navigation';
+import { sticky } from './scripts/sticky';
 
 /* Local components */
 import { Index as IndexContent } from '../../content/index/Index';
 import { ParticipantGuide } from '../../content/participant-guide/ParticipantGuide';
 
-export const Navigation = () => {
+export const Navigation = (props) => {
+	const { location } = props;
+
+	useEffect(() => {
+		if (location == 'header') {
+			sticky();
+		}
+	}, []);
+
 	return navigation && navigation.length != 0 ? (
-		<nav className="navigation">
+		<nav className={`navigation navigation-${location}`}>
 			<ul className="navigation-list unstyled">
 				{navigation.map((nav, index) => {
 					const navAlt = nav.alt || nav.label;

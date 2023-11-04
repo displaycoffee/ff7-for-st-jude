@@ -46,22 +46,25 @@ export const Index = () => {
 			</Details>
 
 			<Details header={'Previous Campaigns'} hasRow={true}>
-				<div className="row row-20 row-wrap row-auto">
+				<div className="row row-auto row-spacing-20 row-wrap">
 					{campaigns.previous.map((campaign) => {
 						const { total_amount_raised } = campaign.amounts;
 
 						return (
-							<div className="column column-full column-half" key={campaign.id}>
-								<div className="blue-bg">
+							<div className="column column-width-50" key={campaign.id}>
+								<div className="blue-section">
 									<p>
 										<strong>Campaign:</strong> {campaign.name}
 									</p>
+
 									<p>
 										<strong>Ends:</strong> {campaign.date}
 									</p>
+
 									<p>
 										<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
 									</p>
+
 									{campaign.links && campaign.links.length != 0 && (
 										<div className="detail-links">
 											{campaign.links.map((link) => (

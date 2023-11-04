@@ -40,7 +40,8 @@ export const slideout = {
 		},
 		slideout: (element, state) => {
 			// Helper function to toggle slideout properties
-			const classes = slideout.config.classes;
+			const config = slideout.config;
+			const { classes, values } = config;
 			const content = element.querySelector(`.${classes.content}`);
 
 			// Get data attributes
@@ -54,7 +55,7 @@ export const slideout = {
 				content.style[direction] = 0;
 			} else {
 				element.classList.remove(classes.active);
-				content.style[direction] = orientation == 'vertical' ? config.values.vertical : `-${width}`;
+				content.style[direction] = orientation == 'vertical' ? values.vertical : `-${width}`;
 			}
 		},
 	},

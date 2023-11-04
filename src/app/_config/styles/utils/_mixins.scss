@@ -259,13 +259,20 @@
 	grid-template-columns: repeat(auto-fill, minmax($width, 1fr));
 }
 
+// Add spacing for grid or flex layouts
+@mixin grid-gap($gap) {
+	@if $gap != false {
+		-ms-gap: $gap;
+		gap: $gap;
+	}
+}
+
 // Inline block with vertical alignment
 @mixin grid-layout($gap: 5px, $width) {
 	display: -ms-grid;
 	display: grid;
 	@include grid-columns($width);
-	-ms-grid-gap: $gap;
-	grid-gap: $gap;
+	@include grid-gap($gap);
 }
 
 // Resize icons

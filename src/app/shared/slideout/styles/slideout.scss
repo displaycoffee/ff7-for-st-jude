@@ -9,7 +9,7 @@
 	// Colors
 
 	$slideout-color-01: theme.$color-07; // overlay
-	$slideout-color-02: theme.$color-01; // content background
+	$slideout-color-02: false; // content background
 
 	// Configuration
 
@@ -58,7 +58,9 @@
 			}
 		}
 		.slideout-content {
-			background-color: $slideout-color-02;
+			//background-color: $slideout-color-02;
+			border-width: 0;
+			border-right-width: 3px;
 			z-index: 9999;
 			padding: $slideout-spacing;
 			.slideout-header {
@@ -67,9 +69,13 @@
 				.slideout-title {
 					margin: 0;
 					padding-right: theme.$spacing-x2;
+					line-height: 1;
 				}
 				.slideout-close {
 					margin-left: auto;
+					font-size: functions.em(20px, rem);
+					font-family: theme.$font-family-02;
+					color: theme.$color-02;
 				}
 			}
 			.slideout-scrollbar {
@@ -78,6 +84,16 @@
 				height: 100%;
 				max-height: 90%;
 				max-height: calc(100% - ($slideout-header + $slideout-spacing));
+				.navigation {
+					.navigation-list {
+						.navigation-list-item {
+							font-size: functions.em(16px, rem);
+						}
+						.navigation-list-item-separator {
+							display: none;
+						}
+					}
+				}
 			}
 		}
 	}
