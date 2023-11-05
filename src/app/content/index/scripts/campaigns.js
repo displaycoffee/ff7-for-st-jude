@@ -20,7 +20,7 @@ export const campaigns = {
 		date: 'December 16th, 2023',
 		links: [
 			{
-				label: variables.urls.campaign.replace('https://', ''),
+				label: variables.urls.campaign.replace('https://', '').replace('//', ''),
 				url: variables.urls.campaign,
 			},
 		],

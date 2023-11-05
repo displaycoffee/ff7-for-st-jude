@@ -8,6 +8,8 @@ import { campaigns } from './scripts/campaigns';
 import { Details } from '../../shared/details/Details';
 
 export const Index = () => {
+	const { current, previous } = campaigns;
+
 	return (
 		<>
 			<Details header={'Information'}>
@@ -38,7 +40,50 @@ export const Index = () => {
 			</Details>
 
 			<Details header={'Current Campaign'}>
-				<p>Coming soon.</p>
+				{current.name && (
+					<p>
+						<strong>Name:</strong> {current.name}
+					</p>
+				)}
+
+				{current.date && (
+					<p>
+						<strong>Date:</strong> {current.date}
+					</p>
+				)}
+
+				{/* {current.amounts && current.amounts.total_amount_raised && current.amounts.goal ? (
+					<div className="p">
+						<strong>Raised:</strong>
+						{` `}
+						<div className="level-bar">
+							<div className="level-bar-label">
+								${current.amounts.total_amount_raised.toFixed(2)} out of ${current.amounts.goal.toFixed(2)}
+							</div>
+
+							<div className="level-bar-outof">
+								<div
+									className="level-bar-progress"
+									style={{
+										width: `${(current.amounts.total_amount_raised / current.amounts.goal) * 100}%`,
+									}}
+								></div>
+
+								<div className="level-bar-shadow"></div>
+							</div>
+						</div>
+					</div>
+				) : null} */}
+
+				{current.links && current.links.length !== 0 && (
+					<div className="detail-links">
+						{current.links.map((link) => (
+							<a href={link.url} target="_blank" rel="noreferrer" key={link.url}>
+								{link.label}
+							</a>
+						))}
+					</div>
+				)}
 			</Details>
 
 			<Details header={'Supporting Campaigns'}>
@@ -47,7 +92,7 @@ export const Index = () => {
 
 			<Details header={'Previous Campaigns'} hasRow={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{campaigns.previous.map((campaign) => {
+					{previous.map((campaign) => {
 						const { total_amount_raised } = campaign.amounts;
 
 						return (
