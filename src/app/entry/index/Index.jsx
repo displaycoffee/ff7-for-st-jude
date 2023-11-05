@@ -1,6 +1,7 @@
 /* React */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Local styles */
 import './styles/index.scss';
@@ -16,50 +17,50 @@ import { Slideout } from '../../shared/slideout/Slideout';
 import { Header } from '../../shared/header/Header';
 import { Footer } from '../../shared/footer/Footer';
 
+/* Query client for api */
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: Infinity,
+			cacheTime: Infinity,
+		},
+	},
+});
+
 export const Index = (props) => {
 	const { theme } = props;
 	const isDesktop = useRespond(theme.bps.bp02);
 
-	// useEffect(() => {
-	// 	requestCampaigns();
-	// }, []);
-
-	// async function requestCampaigns() {
-	// 	const response = await fetch(
-	// 		`http://ff7forstjude.org:5000/api/public/team_campaigns/6805c495-d02f-42ea-81d8-9b6c5ff5d3b5/supporting_campaigns/`,
-	// 		{
-	// 			method: 'GET',
-	// 			headers: {
-	// 				'Content-Type': 'application/json',
-	// 			},
-	// 		},
-	// 	);
-	// 	const json = await response.json();
-	// 	console.log(json);
-	// }
+	// Set state for query params and animals
+	const [requestParams, setRequestParams] = useState({
+		campaign: {},
+		supporting: {},
+	});
 
 	return (
-		<Context.Provider value={props}>
-			<div className="wrapper">
-				<IndexBody />
+		<QueryClientProvider client={queryClient}>
+			<Context.Provider value={props}>
+				<div className="wrapper">
+					<IndexBody />
 
-				<ErrorBoundary message={<IndexError />}>
-					{isDesktop ? (
-						<Navigation location={'header'} />
-					) : (
-						<Slideout id={'menu'} label={'Menu'} content={<Navigation location={'slideout'} />} closeOnClick={true} />
-					)}
+					<ErrorBoundary message={<IndexError />}>
+						{isDesktop ? (
+							<Navigation location={'header'} />
+						) : (
+							<Slideout id={'menu'} label={'Menu'} content={<Navigation location={'slideout'} />} closeOnClick={true} />
+						)}
 
-					<Header buttonClick={false} />
+						<Header buttonClick={false} />
 
-					<main className="main">
-						<NavigationRoutes />
-					</main>
+						<main className="main">
+							<NavigationRoutes requestParams={requestParams} setRequestParams={setRequestParams} />
+						</main>
 
-					<Footer />
-				</ErrorBoundary>
-			</div>
-		</Context.Provider>
+						<Footer />
+					</ErrorBoundary>
+				</div>
+			</Context.Provider>
+		</QueryClientProvider>
 	);
 };
 

@@ -1,6 +1,6 @@
 /* local script imports */
-import { variables } from './_variables';
-import { utils } from './_utils';
+import { variables } from './variables';
+import { utils } from './utils';
 
 /* setup parameters to pass to fetches */
 const parameters = {
@@ -17,9 +17,10 @@ const parameters = {
 };
 
 export const requests = {
-	campaign: async (id) => {
+	campaign: async ({ queryKey }) => {
+		console.log('key', queryKey);
 		// fetch base campaign
-		const response = await fetch(`${variables.api.teams}/${id}/`, parameters.tiltify.options());
+		const response = await fetch(`${variables.api.teams}/${queryKey[2]}/`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
@@ -30,6 +31,7 @@ export const requests = {
 				url: json.data.url,
 			};
 			json.data.amounts = utils.getAmounts(json.data);
+
 			return json.data;
 		}
 	},

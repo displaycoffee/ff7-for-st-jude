@@ -1,3 +1,7 @@
+/* React */
+import { useContext } from 'react';
+import { useQuery } from '@tanstack/react-query';
+
 /* Local styles */
 import './styles/index.scss';
 
@@ -5,10 +9,19 @@ import './styles/index.scss';
 import { campaigns } from './scripts/campaigns';
 
 /* Local components */
+import { Context } from '../../entry/context/Context';
 import { Details } from '../../shared/details/Details';
 
-export const Index = () => {
-	const { current, previous } = campaigns;
+export const Index = (props) => {
+	let { requestParams } = props;
+	let { current, previous } = campaigns;
+	const context = useContext(Context);
+	const requests = context.requests;
+
+	// Use query to get and show resultsbbb
+	const campaignQuery = useQuery(['campaign', requestParams, current.id], requests.campaign);
+	const campaignResults = campaignQuery?.data ? campaignQuery.data : false;
+	current.amounts = campaignResults ? campaignResults.amounts : false;
 
 	return (
 		<>
@@ -52,7 +65,7 @@ export const Index = () => {
 					</p>
 				)}
 
-				{/* {current.amounts && current.amounts.total_amount_raised && current.amounts.goal ? (
+				{campaignResults && current.amounts && current.amounts.total_amount_raised !== false && current.amounts.goal !== false ? (
 					<div className="p">
 						<strong>Raised:</strong>
 						{` `}
@@ -73,7 +86,7 @@ export const Index = () => {
 							</div>
 						</div>
 					</div>
-				) : null} */}
+				) : null}
 
 				{current.links && current.links.length !== 0 && (
 					<div className="detail-links">

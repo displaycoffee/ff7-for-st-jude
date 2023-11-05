@@ -54,7 +54,9 @@ export const Navigation = (props) => {
 	) : null;
 };
 
-export const NavigationRoutes = () => {
+export const NavigationRoutes = (props) => {
+	const { requestParams, setRequestParams } = props;
+
 	return navigation && navigation.length != 0 ? (
 		<Routes>
 			{navigation.map(
@@ -63,7 +65,9 @@ export const NavigationRoutes = () => {
 						<React.Fragment key={nav.id}>
 							{{
 								'participant guide': <Route path={nav.url} element={<ParticipantGuide />} />,
-							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<IndexContent />} />}
+							}[nav.label.toLowerCase()] || (
+								<Route path={nav.url} element={<IndexContent requestParams={requestParams} setRequestParams={setRequestParams} />} />
+							)}
 						</React.Fragment>
 					),
 			)}
