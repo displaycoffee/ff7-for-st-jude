@@ -13,6 +13,8 @@
 	// Style block
 
 	.navigation {
+		@include mixins.transition(top 1s ease-in-out);
+		@include mixins.position($type: static, $top: -50px);
 		&.sticky {
 			@include mixins.position($left: 0, $right: 0);
 			width: 100%;
@@ -25,7 +27,7 @@
 				margin-left: auto;
 				margin-right: auto;
 			}
-		}
+		}		
 		margin: 0 0 theme.$spacing-x8 0;
 		.navigation-list {
 			margin: 0 -#{theme.$spacing-x1} -#{theme.$spacing-x4} -#{theme.$spacing-x1};

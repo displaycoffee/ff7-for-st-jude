@@ -48,7 +48,7 @@ export const sticky = () => {
 		anchor: 'main.main',
 		y: 'top', // top or bottom
 		position: 0,
-		offset: -110,
+		offset: 0,
 	};
 
 	// init function on load and on window scroll

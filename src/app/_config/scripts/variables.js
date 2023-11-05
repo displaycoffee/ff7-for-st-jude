@@ -13,6 +13,6 @@ export const variables = {
 	urls: {
 		tiltify: '//tiltify.com',
 		team: '//tiltify.com/+ff7-for-st-jude',
-		campaign: '//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-6',
+		campaign: '//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-7',
 	},
 };

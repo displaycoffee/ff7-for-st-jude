@@ -1,7 +1,7 @@
 {
-	"name": "ff7-st-jude",
+	"name": "ff7-for-st-jude",
 	"version": "1.0.0",
-	"description": "custom ff7-st-jude setup",
+	"description": "information and dashboard for the FF7 for St. Jude campaign",
 	"main": "index.js",
 	"type": "module",
 	"keywords": [],
