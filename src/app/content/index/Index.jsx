@@ -19,13 +19,15 @@ export const Index = (props) => {
 	let { current, previous } = campaigns;
 
 	// Use query to get and show campaign data
-	const campaignQuery = useQuery(['campaign', requestParams, current.id], requests.campaign);
-	const campaignResults = campaignQuery?.data ? campaignQuery.data : false;
-	current.amounts = campaignResults ? campaignResults.amounts : false;
+	// const campaignQuery = useQuery(['campaign', requestParams, current.id], requests.campaign);
+	// const campaignResults = campaignQuery?.data ? campaignQuery.data : false;
+	// current.amounts = campaignResults ? campaignResults.amounts : false;
+	const campaignResults = false;
 
 	// Use query to get and supporting campaigns
-	const supportingQuery = useQuery(['supporting', requestParams, current.id], requests.supporting);
-	const supportingResults = supportingQuery?.data ? supportingQuery.data : false;
+	// const supportingQuery = useQuery(['supporting', requestParams, current.id], requests.supporting);
+	// const supportingResults = supportingQuery?.data ? supportingQuery.data : false;
+	const supportingResults = false;
 
 	return (
 		<>
