@@ -12,6 +12,7 @@ import { sticky } from './scripts/sticky';
 
 /* Local components */
 import { Index as IndexContent } from '../../content/index/Index';
+import { Dashboard } from '../../content/dashboard/Dashboard';
 import { ParticipantGuide } from '../../content/participant-guide/ParticipantGuide';
 
 export const Navigation = (props) => {
@@ -56,6 +57,10 @@ export const Navigation = (props) => {
 
 export const NavigationRoutes = (props) => {
 	const { requestParams, setRequestParams } = props;
+	const routeProps = {
+		requestParams: requestParams,
+		setRequestParams: setRequestParams,
+	};
 
 	return navigation && navigation.length != 0 ? (
 		<Routes>
@@ -65,9 +70,8 @@ export const NavigationRoutes = (props) => {
 						<React.Fragment key={nav.id}>
 							{{
 								'participant guide': <Route path={nav.url} element={<ParticipantGuide />} />,
-							}[nav.label.toLowerCase()] || (
-								<Route path={nav.url} element={<IndexContent requestParams={requestParams} setRequestParams={setRequestParams} />} />
-							)}
+								dashboard: <Route path={nav.url} element={<Dashboard {...routeProps} />} />,
+							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<IndexContent {...routeProps} />} />}
 						</React.Fragment>
 					),
 			)}

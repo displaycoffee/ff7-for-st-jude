@@ -61,68 +61,6 @@ export const Details = (props) => {
 	);
 };
 
-const DetailsCampaign = (props) => {
-	let { detail } = props;
-	const { goal, total_amount_raised } = detail.amounts;
-
-	return (
-		<>
-			{detail.name && (
-				<p>
-					<strong>{detail.contentName}:</strong> {detail.name}
-				</p>
-			)}
-
-			{detail.date && (
-				<p>
-					<strong>Date:</strong> {detail.date}
-				</p>
-			)}
-
-			{detail.total_amount_raised && detail.goal ? (
-				<div className="p">
-					<strong>Raised:</strong>
-					{` `}
-					<div className="level-bar">
-						<div className="level-bar-label">
-							${total_amount_raised.toFixed(2)} out of ${goal.toFixed(2)}
-						</div>
-
-						<div className="level-bar-outof">
-							<div
-								className="level-bar-progress"
-								style={{
-									width: `${(total_amount_raised / goal) * 100}%`,
-								}}
-							></div>
-
-							<div className="level-bar-shadow"></div>
-						</div>
-					</div>
-				</div>
-			) : null}
-
-			{detail.description && (
-				<p>
-					<strong>About:</strong> {detail.description}
-				</p>
-			)}
-
-			{detail.hasLinks && (
-				<div className="detail-links">
-					{detail.links.map((link) => (
-						<p key={link.url}>
-							<a href={link.url} target="_blank">
-								{link.label}
-							</a>
-						</p>
-					))}
-				</div>
-			)}
-		</>
-	);
-};
-
 const DetailsDonation = (props) => {
 	let { detail } = props;
 	const { amount } = detail.amounts;
@@ -145,39 +83,6 @@ const DetailsDonation = (props) => {
 				<p>
 					<strong>Comment:</strong> {detail.donor_comment}
 				</p>
-			)}
-		</>
-	);
-};
-
-const DetailsSupporting = (props) => {
-	let { detail } = props;
-	const { total_amount_raised } = detail.amounts;
-
-	return (
-		<>
-			{detail.name && (
-				<p>
-					<strong>{detail.contentName}:</strong> {detail.name}
-				</p>
-			)}
-
-			{detail.total_amount_raised ? (
-				<p>
-					<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
-				</p>
-			) : null}
-
-			{detail.hasLinks && (
-				<div className="detail-links">
-					{detail.links.map((link) => (
-						<p key={link.url}>
-							<a href={link.url} target="_blank">
-								{link.label}
-							</a>
-						</p>
-					))}
-				</div>
 			)}
 		</>
 	);

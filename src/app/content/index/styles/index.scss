@@ -12,10 +12,20 @@
 		text-align: center;
 		font-style: italic;
 	}
+	.level-bar-raised strong, .level-bar-raised .level-bar, .level-bar .level-bar-label, .level-bar .level-bar-outof {
+		min-width: 1px;
+	}
+	.level-bar-raised strong, .level-bar .level-bar-label {
+		@include mixins.flex(0 1 auto);
+		padding: 0 theme.$spacing-x2 0 0;
+	}
+	.level-bar-raised .level-bar, .level-bar .level-bar-outof {
+		@include mixins.flex(1 1 0%);
+	}
 	.level-bar {
-		@include mixins.inline-block(top);
 		.level-bar-outof {		
 			@include mixins.sizing(100%, 20px);
+			max-width: 600px;
 			border: 2px solid theme.$color-02;
 			background-color: theme.$color-11;
 			background-image: linear-gradient(theme.$color-13 0%, theme.$color-12 50%, theme.$color-11 75%);
@@ -33,6 +43,44 @@
 				border-top-width: 3px;
 				border-bottom-color: rgba(0, 0, 0, 0.10);
 				@include mixins.position($type: absolute, $left: 0, $top: 0);
+			}
+		}
+	}
+	.details-supporting-campaigns {
+		.details-links {
+			position: relative;
+			padding: 0 0 0 70px;
+			min-height: 50px;
+			&:before {
+				content: '';
+				display: block;
+				@include mixins.sizing(50px, 50px);
+				@include mixins.position($type: absolute, $top: 5px, $left: 0);
+				background-repeat: no-repeat;
+				background-position: center center;
+				background-size: contain;
+			}
+		}
+		.row {
+			.column {
+				&:nth-child(1) .details-links:before {
+					background-image: url('./assets/images/theme/chocobo-01.png');
+				}
+				&:nth-child(2) .details-links:before {
+					background-image: url('./assets/images/theme/chocobo-02.png');
+				}
+				&:nth-child(3) .details-links:before {
+					background-image: url('./assets/images/theme/chocobo-03.png');
+				}			
+			}
+		}
+	}
+	@include mixins.respond-min(theme.$bp-02) {
+		.level-bar {
+			@include mixins.flex-layout((flex-flow: row nowrap, align-items: center));
+			.level-bar-outof {
+				@include mixins.position($type: relative, $top: -3px);
+				width: auto;
 			}
 		}
 	}

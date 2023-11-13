@@ -18,7 +18,9 @@ const parameters = {
 
 export const requests = {
 	campaign: async ({ queryKey }) => {
-		console.log('key', queryKey);
+		// storage for campaign data
+		let campaign = false;
+
 		// fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${queryKey[2]}/`, parameters.tiltify.options());
 		const json = await response.json();
@@ -31,8 +33,43 @@ export const requests = {
 				url: json.data.url,
 			};
 			json.data.amounts = utils.getAmounts(json.data);
+			campaign = json.data;
+			return campaign;
+		} else {
+			return campaign;
+		}
+	},
+	supporting: async ({ queryKey }) => {
+		// storage for supporting data
+		let supporting = false;
 
-			return json.data;
+		// fetch base campaign
+		const response = await fetch(`${variables.api.teams}/${queryKey[2]}/supporting_campaigns/`, parameters.tiltify.options());
+		const json = await response.json();
+
+		if (json && json.data) {
+			// add details to supporting data
+			supporting = json.data.filter((data) => {
+				data.amounts = utils.getAmounts(data);
+				data.username = data.user.username.trim();
+				data.campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
+				data.links = [
+					{
+						label: `Support ${data.username}`,
+						url: data.campaign,
+					},
+				];
+				if (data?.livestream?.type == 'twitch') {
+					data.links.unshift({
+						label: 'Watch stream',
+						url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
+					});
+				}
+				return data;
+			});
+			return supporting;
+		} else {
+			return supporting;
 		}
 	},
 	donations: async (campaign, supporting) => {
@@ -68,39 +105,6 @@ export const requests = {
 		}
 
 		return donations;
-	},
-	supporting: async (id) => {
-		let supporting = false; // storage for supporting data
-
-		// fetch supporting campaigns
-		const response = await fetch(`${variables.api.teams}/${id}/supporting_campaigns/`, parameters.tiltify.options());
-		const json = await response.json();
-
-		if (json && json.data) {
-			supporting = json.data.filter((data) => {
-				// add details to supporting data
-				if (!data.user.username.includes('blackdomus')) {
-					data.amounts = utils.getAmounts(data);
-					data.username = data.user.username.trim();
-					data.campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
-					data.links = [
-						{
-							label: `Support ${data.username}`,
-							url: data.campaign,
-						},
-					];
-					if (data?.livestream?.type == 'twitch') {
-						data.links.unshift({
-							label: 'Watch stream',
-							url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
-						});
-					}
-					return data;
-				}
-			});
-		}
-
-		return supporting;
 	},
 	content: async (id, support) => {
 		// empty content config to fetch and store data in
