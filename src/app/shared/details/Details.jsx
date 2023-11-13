@@ -1,4 +1,5 @@
 /* React */
+import React from 'react';
 import { useId, useContext } from 'react';
 
 /* Local styles */
@@ -35,4 +36,22 @@ export const Details = (props) => {
 			)}
 		</section>
 	);
+};
+
+export const DetailsLinks = (props) => {
+	const { links } = props;
+
+	return links && links.length != 0 ? (
+		<div className="details-links">
+			{links.map((link, index) => (
+				<React.Fragment key={link.url}>
+					<a href={link.url} target="_blank" rel="noreferrer">
+						{link.label}
+					</a>
+
+					{index != links.length - 1 && <br />}
+				</React.Fragment>
+			))}
+		</div>
+	) : null;
 };

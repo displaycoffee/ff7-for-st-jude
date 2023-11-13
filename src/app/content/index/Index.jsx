@@ -1,14 +1,31 @@
+/* React */
+import { useContext } from 'react';
+import { useQuery } from '@tanstack/react-query';
+
 /* Local styles */
 import './styles/index.scss';
 
 /* Local scripts */
-import { campaigns } from './scripts/campaigns';
+import { requests } from '../../_config/scripts/requests';
 
 /* Local components */
-import { Details } from '../../shared/details/Details';
+import { Context } from '../../entry/context/Context';
+import { Details, DetailsLinks } from '../../shared/details/Details';
 
-export const Index = () => {
-	const { current, previous } = campaigns;
+export const Index = (props) => {
+	let { requestParams } = props;
+	const context = useContext(Context);
+	const { campaigns } = context;
+	let { current, previous } = campaigns;
+
+	// Use query to get and show campaign data
+	const campaignQuery = useQuery(['campaign', requestParams, current.id], requests.campaign);
+	const campaignResults = campaignQuery?.data ? campaignQuery.data : false;
+	current.amounts = campaignResults ? campaignResults.amounts : false;
+
+	// Use query to get and supporting campaigns
+	const supportingQuery = useQuery(['supporting', requestParams, current.id], requests.supporting);
+	const supportingResults = supportingQuery?.data ? supportingQuery.data : false;
 
 	return (
 		<>
@@ -39,56 +56,71 @@ export const Index = () => {
 				</p>
 			</Details>
 
-			<Details header={'Current Campaign'}>
-				{current.name && (
-					<p>
-						<strong>Name:</strong> {current.name}
-					</p>
-				)}
+			{campaignResults ? (
+				<Details header={'Current Campaign'}>
+					{current.name && (
+						<p>
+							<strong>Name:</strong> {current.name}
+						</p>
+					)}
 
-				{current.date && (
-					<p>
-						<strong>Date:</strong> {current.date}
-					</p>
-				)}
+					{current.date && (
+						<p>
+							<strong>Date:</strong> {current.date}
+						</p>
+					)}
 
-				{/* {current.amounts && current.amounts.total_amount_raised && current.amounts.goal ? (
-					<div className="p">
-						<strong>Raised:</strong>
-						{` `}
-						<div className="level-bar">
-							<div className="level-bar-label">
-								${current.amounts.total_amount_raised.toFixed(2)} out of ${current.amounts.goal.toFixed(2)}
-							</div>
+					{campaignResults && current.amounts && current.amounts.total_amount_raised !== false && current.amounts.goal !== false ? (
+						<div className="level-bar-raised flex-nowrap">
+							<strong>Raised:</strong>
+							<div className="level-bar">
+								<div className="level-bar-label">
+									${current.amounts.total_amount_raised.toFixed(2)} out of ${current.amounts.goal.toFixed(2)}
+								</div>
 
-							<div className="level-bar-outof">
-								<div
-									className="level-bar-progress"
-									style={{
-										width: `${(current.amounts.total_amount_raised / current.amounts.goal) * 100}%`,
-									}}
-								></div>
+								<div className="level-bar-outof">
+									<div
+										className="level-bar-progress"
+										style={{
+											width: `${(current.amounts.total_amount_raised / current.amounts.goal) * 100}%`,
+										}}
+									></div>
 
-								<div className="level-bar-shadow"></div>
+									<div className="level-bar-shadow"></div>
+								</div>
 							</div>
 						</div>
-					</div>
-				) : null} */}
+					) : null}
 
-				{current.links && current.links.length !== 0 && (
-					<div className="detail-links">
-						{current.links.map((link) => (
-							<a href={link.url} target="_blank" rel="noreferrer" key={link.url}>
-								{link.label}
-							</a>
-						))}
-					</div>
-				)}
-			</Details>
+					<DetailsLinks links={current.links} />
+				</Details>
+			) : null}
 
-			<Details header={'Supporting Campaigns'}>
-				<p>Coming soon.</p>
-			</Details>
+			{supportingResults ? (
+				<Details header={'Supporting Campaigns'} hasRow={true}>
+					<div className="row row-auto row-spacing-20 row-wrap">
+						{supportingResults.map((supporting) => {
+							const { total_amount_raised } = supporting.amounts;
+
+							return (
+								<div className="column column-width-50" key={supporting.id}>
+									<div className="blue-section">
+										<p>
+											<strong>Campaign:</strong> {supporting.name}
+										</p>
+
+										<p>
+											<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
+										</p>
+
+										<DetailsLinks links={supporting.links} />
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				</Details>
+			) : null}
 
 			<Details header={'Previous Campaigns'} hasRow={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">

@@ -11,7 +11,7 @@ export const navigation = [
 		id: 3,
 		label: 'Dashboard',
 		alt: 'Dashboard',
-		url: '/',
+		url: '/dashboard',
 		showInNav: false,
 		isRoute: true,
 	},

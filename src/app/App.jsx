@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 
 /* Local scripts */
+import { campaigns } from './_config/scripts/campaigns';
 import { theme } from './_config/scripts/theme';
 import { utils } from './_config/scripts/utils';
 import { variables } from './_config/scripts/variables';
@@ -14,7 +15,7 @@ import { Index } from './entry/index/Index';
 const App = () => {
 	return (
 		<Router basename={variables.paths.base}>
-			<Index theme={theme} utils={utils} variables={variables} />
+			<Index campaigns={campaigns} theme={theme} utils={utils} variables={variables} />
 		</Router>
 	);
 };

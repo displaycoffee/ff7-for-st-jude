@@ -1,6 +1,6 @@
 /* local script imports */
-import { utils } from '../../../_config/scripts/utils';
-import { variables } from '../../../_config/scripts/variables';
+import { utils } from './utils';
+import { variables } from './variables';
 
 /* st. jude ff7 campaign ids */
 const ids = {
