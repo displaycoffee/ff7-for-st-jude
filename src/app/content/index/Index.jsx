@@ -18,16 +18,20 @@ export const Index = (props) => {
 	const { campaigns } = context;
 	let { current, previous } = campaigns;
 
-	// Use query to get and show campaign data
-	// const campaignQuery = useQuery(['campaign', requestParams, current.id], requests.campaign);
-	// const campaignResults = campaignQuery?.data ? campaignQuery.data : false;
-	// current.amounts = campaignResults ? campaignResults.amounts : false;
-	const campaignResults = false;
+	// Use query to get campaign data
+	const { data: campaignQuery } = useQuery({
+		queryKey: ['campaign', requestParams, current.id],
+		queryFn: requests.campaign,
+	});
+	const campaignResults = campaignQuery && Object.keys(campaignQuery).length !== 0 ? campaignQuery : false;
+	current.amounts = campaignResults ? campaignResults.amounts : false;
 
-	// Use query to get and supporting campaigns
-	// const supportingQuery = useQuery(['supporting', requestParams, current.id], requests.supporting);
-	// const supportingResults = supportingQuery?.data ? supportingQuery.data : false;
-	const supportingResults = false;
+	// Use query to get supporting campaigns
+	const { data: supportingQuery } = useQuery({
+		queryKey: ['supporting', requestParams, current.id],
+		queryFn: requests.supporting,
+	});
+	const supportingResults = supportingQuery && supportingQuery.length !== 0 ? supportingQuery : false;
 
 	return (
 		<>
@@ -58,45 +62,43 @@ export const Index = (props) => {
 				</p>
 			</Details>
 
-			{campaignResults ? (
-				<Details header={'Current Campaign'}>
-					{current.name && (
-						<p>
-							<strong>Name:</strong> {current.name}
-						</p>
-					)}
+			<Details header={'Current Campaign'}>
+				{current.name && (
+					<p>
+						<strong>Name:</strong> {current.name}
+					</p>
+				)}
 
-					{current.date && (
-						<p>
-							<strong>Date:</strong> {current.date}
-						</p>
-					)}
+				{current.date && (
+					<p>
+						<strong>Date:</strong> {current.date}
+					</p>
+				)}
 
-					{campaignResults && current.amounts && current.amounts.total_amount_raised !== false && current.amounts.goal !== false ? (
-						<div className="level-bar-raised flex-nowrap">
-							<strong>Raised:</strong>
-							<div className="level-bar">
-								<div className="level-bar-label">
-									${current.amounts.total_amount_raised.toFixed(2)} out of ${current.amounts.goal.toFixed(2)}
-								</div>
+				{campaignResults && current.amounts && current.amounts.total_amount_raised !== false && current.amounts.goal !== false ? (
+					<div className="level-bar-raised flex-nowrap">
+						<strong>Raised:</strong>
+						<div className="level-bar">
+							<div className="level-bar-label">
+								${current.amounts.total_amount_raised.toFixed(2)} out of ${current.amounts.goal.toFixed(2)}
+							</div>
 
-								<div className="level-bar-outof">
-									<div
-										className="level-bar-progress"
-										style={{
-											width: `${(current.amounts.total_amount_raised / current.amounts.goal) * 100}%`,
-										}}
-									></div>
+							<div className="level-bar-outof">
+								<div
+									className="level-bar-progress"
+									style={{
+										width: `${(current.amounts.total_amount_raised / current.amounts.goal) * 100}%`,
+									}}
+								></div>
 
-									<div className="level-bar-shadow"></div>
-								</div>
+								<div className="level-bar-shadow"></div>
 							</div>
 						</div>
-					) : null}
+					</div>
+				) : null}
 
-					<DetailsLinks links={current.links} />
-				</Details>
-			) : null}
+				<DetailsLinks links={current.links} />
+			</Details>
 
 			{supportingResults ? (
 				<Details header={'Supporting Campaigns'} hasRow={true}>

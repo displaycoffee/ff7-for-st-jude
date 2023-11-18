@@ -72,21 +72,23 @@ export const requests = {
 			return supporting;
 		}
 	},
-	donations: async (campaign, supporting) => {
-		let donations = false; // storage for donations data
+	donations: async ({ queryKey }) => {
+		// storage for donations data
+		let donations = false;
 
-		// fetch donations
-		const response = await fetch(`${variables.api.teams}/${campaign[0].id}/donations?limit=100`, parameters.tiltify.options());
+		// fetch base campaign
+		const response = await fetch(`${variables.api.teams}/${queryKey[2]}/donations?limit=100`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
+			// add details to donations data
 			donations = json.data.filter((data) => {
 				// add details to donations data
 				data.milliseconds = new Date(data.completed_at).getTime();
 				data.amounts = utils.getAmounts(data);
 				data.links = [];
 				if (data.campaign_id) {
-					supporting.forEach((support) => {
+					queryKey[3].forEach((support) => {
 						if (data.campaign_id == support.id) {
 							return data.links.push({
 								label: support.username,
@@ -96,15 +98,16 @@ export const requests = {
 					});
 				} else {
 					data.links.push({
-						label: campaign[0].user.username,
+						label: queryKey[2].user.username,
 						url: variables.urls.campaign,
 					});
 				}
 				return data;
 			});
+			return donations;
+		} else {
+			return donations;
 		}
-
-		return donations;
 	},
 	content: async (id, support) => {
 		// empty content config to fetch and store data in

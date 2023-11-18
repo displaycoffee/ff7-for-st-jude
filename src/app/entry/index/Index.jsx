@@ -35,6 +35,9 @@ export const Index = (props) => {
 	const [requestParams, setRequestParams] = useState({
 		campaign: {},
 		supporting: {},
+		donations: {},
+		rewards: {},
+		targets: {},
 	});
 
 	return (
