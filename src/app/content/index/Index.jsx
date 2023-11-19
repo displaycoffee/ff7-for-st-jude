@@ -10,7 +10,7 @@ import { requests } from '../../_config/scripts/requests';
 
 /* Local components */
 import { Context } from '../../entry/context/Context';
-import { Details, DetailsLinks } from '../../shared/details/Details';
+import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
 
 export const Index = (props) => {
 	let { requestParams } = props;
@@ -20,7 +20,7 @@ export const Index = (props) => {
 
 	// Use query to get campaign data
 	const { data: campaignQuery } = useQuery({
-		queryKey: ['campaign', requestParams, current.id],
+		queryKey: ['campaign', requestParams, current],
 		queryFn: requests.campaign,
 	});
 	const campaignResults = campaignQuery && Object.keys(campaignQuery).length !== 0 ? campaignQuery : false;
@@ -28,7 +28,7 @@ export const Index = (props) => {
 
 	// Use query to get supporting campaigns
 	const { data: supportingQuery } = useQuery({
-		queryKey: ['supporting', requestParams, current.id],
+		queryKey: ['supporting', requestParams, current],
 		queryFn: requests.supporting,
 	});
 	const supportingResults = supportingQuery && supportingQuery.length !== 0 ? supportingQuery : false;
@@ -63,17 +63,9 @@ export const Index = (props) => {
 			</Details>
 
 			<Details header={'Current Campaign'}>
-				{current.name && (
-					<p>
-						<strong>Name:</strong> {current.name}
-					</p>
-				)}
+				<DetailsParagraph label={'Name'} content={current?.name} />
 
-				{current.date && (
-					<p>
-						<strong>Date:</strong> {current.date}
-					</p>
-				)}
+				<DetailsParagraph label={'Date'} content={current?.date} />
 
 				{campaignResults && current.amounts && current.amounts.total_amount_raised !== false && current.amounts.goal !== false ? (
 					<div className="level-bar-raised flex-nowrap">
@@ -97,7 +89,7 @@ export const Index = (props) => {
 					</div>
 				) : null}
 
-				<DetailsLinks links={current.links} />
+				<DetailsLinks links={current?.links} />
 			</Details>
 
 			{supportingResults ? (
@@ -109,15 +101,11 @@ export const Index = (props) => {
 							return (
 								<div className="column column-width-50" key={supporting.id}>
 									<div className="blue-section">
-										<p>
-											<strong>Campaign:</strong> {supporting.name}
-										</p>
+										<DetailsParagraph label={'Campaign'} content={supporting?.name} />
 
-										<p>
-											<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
-										</p>
+										<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
 
-										<DetailsLinks links={supporting.links} />
+										<DetailsLinks links={supporting?.links} />
 									</div>
 								</div>
 							);
@@ -134,27 +122,13 @@ export const Index = (props) => {
 						return (
 							<div className="column column-width-50" key={campaign.id}>
 								<div className="blue-section">
-									<p>
-										<strong>Campaign:</strong> {campaign.name}
-									</p>
+									<DetailsParagraph label={'Campaign'} content={campaign?.name} />
 
-									<p>
-										<strong>Ends:</strong> {campaign.date}
-									</p>
+									<DetailsParagraph label={'Ends'} content={campaign?.date} />
 
-									<p>
-										<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
-									</p>
+									<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
 
-									{campaign.links && campaign.links.length != 0 && (
-										<div className="detail-links">
-											{campaign.links.map((link) => (
-												<a href={link.url} target="_blank" rel="noreferrer" key={link.url}>
-													{link.label}
-												</a>
-											))}
-										</div>
-									)}
+									<DetailsLinks links={campaign?.links} />
 								</div>
 							</div>
 						);

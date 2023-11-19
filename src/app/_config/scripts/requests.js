@@ -18,11 +18,13 @@ const parameters = {
 
 export const requests = {
 	campaign: async ({ queryKey }) => {
+		const current = queryKey[2];
+
 		// storage for campaign data
 		let campaign = false;
 
 		// fetch base campaign
-		const response = await fetch(`${variables.api.teams}/${queryKey[2]}/`, parameters.tiltify.options());
+		const response = await fetch(`${variables.api.teams}/${current.id}/`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
@@ -40,11 +42,13 @@ export const requests = {
 		}
 	},
 	supporting: async ({ queryKey }) => {
+		const current = queryKey[2];
+
 		// storage for supporting data
 		let supporting = false;
 
 		// fetch base campaign
-		const response = await fetch(`${variables.api.teams}/${queryKey[2]}/supporting_campaigns/`, parameters.tiltify.options());
+		const response = await fetch(`${variables.api.teams}/${current.id}/supporting_campaigns/`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
@@ -73,22 +77,24 @@ export const requests = {
 		}
 	},
 	donations: async ({ queryKey }) => {
+		const current = queryKey[2];
+		const supportingResults = queryKey[3];
+
 		// storage for donations data
 		let donations = false;
 
 		// fetch base campaign
-		const response = await fetch(`${variables.api.teams}/${queryKey[2]}/donations?limit=100`, parameters.tiltify.options());
+		const response = await fetch(`${variables.api.teams}/${current.id}/donations?limit=100`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
 			// add details to donations data
 			donations = json.data.filter((data) => {
-				// add details to donations data
 				data.milliseconds = new Date(data.completed_at).getTime();
 				data.amounts = utils.getAmounts(data);
 				data.links = [];
 				if (data.campaign_id) {
-					queryKey[3].forEach((support) => {
+					supportingResults.forEach((support) => {
 						if (data.campaign_id == support.id) {
 							return data.links.push({
 								label: support.username,
@@ -98,7 +104,7 @@ export const requests = {
 					});
 				} else {
 					data.links.push({
-						label: queryKey[2].user.username,
+						label: current.name,
 						url: variables.urls.campaign,
 					});
 				}
@@ -109,72 +115,64 @@ export const requests = {
 			return donations;
 		}
 	},
-	content: async (id, support) => {
-		// empty content config to fetch and store data in
-		let contentConfig = {
-			rewards: [],
-			targets: [],
-		};
+	rewards: async ({ queryKey }) => {
+		const campaign = queryKey[2];
 
-		// set fetch path
-		const contentUrl = `${variables.api.campaign}/${id}`;
+		// storage for rewards data
+		let rewards = false;
 
-		// set fetch parameters
-		const contentParameters = parameters.tiltify.options();
+		// fetch base campaign
+		const response = await fetch(`${variables.api.campaigns}/${campaign.id}/rewards?limit=100`, parameters.tiltify.options());
+		const json = await response.json();
 
-		// set fetch array
-		const contentFetch = [
-			fetch(`${contentUrl}/rewards?limit=100`, contentParameters),
-			fetch(`${contentUrl}/targets?limit=100`, contentParameters),
-		];
-
-		// fetch rewards, and targets from tiltify using promises
-		await Promise.all(contentFetch)
-			.then(([rewardsResponse, resPosts]) => {
-				return Promise.all([rewardsResponse.json(), resPosts.json()]);
-			})
-			.then(([rewardsJson, targetsJson]) => {
-				if (rewardsJson && rewardsJson.data) {
-					// add id and links and filter out inactive rewards
-					rewardsJson.data = rewardsJson.data.filter((data) => {
-						data.ends_at = data.ends_at ? data.ends_at : '2023-09-30T24:00:00Z';
-						data.date = utils.getDate(data.ends_at);
-						data.milliseconds = new Date(data.ends_at).getTime();
-						data.amounts = utils.getAmounts(data);
-						data.links = [
-							{
-								label: `Redeem at ${support.username}`,
-								url: `${variables.urls.tiltify}${support.url}`,
-							},
-						];
-						return utils.filterContent('reward', data);
-					});
-
-					// then add rewards to contentConfig
-					contentConfig.rewards = rewardsJson.data;
-				}
-
-				if (targetsJson && targetsJson.data) {
-					// add id and links and filter out inactive rewards
-					targetsJson.data = targetsJson.data.filter((data) => {
-						data.ends_at = data.ends_at ? data.ends_at : '2023-09-30T24:00:00Z';
-						data.date = utils.getDate(data.ends_at);
-						data.milliseconds = new Date(data.ends_at).getTime();
-						data.amounts = utils.getAmounts(data);
-						data.links = [
-							{
-								label: `Participate at ${support.username}`,
-								url: `${variables.urls.tiltify}${support.url}`,
-							},
-						];
-						return utils.filterContent('target', data);
-					});
-
-					// then add targets to contentConfig
-					contentConfig.targets = targetsJson.data;
-				}
+		if (json && json.data) {
+			// add details to rewards data
+			rewards = json.data.filter((data) => {
+				data.ends_at = data.ends_at ? data.ends_at : variables.placeholders.endsAt;
+				data.date = utils.getDate(data.ends_at);
+				data.milliseconds = new Date(data.ends_at).getTime();
+				data.amounts = utils.getAmounts(data);
+				data.links = [
+					{
+						label: `Redeem at ${campaign.username}`,
+						url: `${variables.urls.tiltify}${campaign.url}`,
+					},
+				];
+				return utils.filterContent('rewards', data);
 			});
+			return rewards;
+		} else {
+			return rewards;
+		}
+	},
+	targets: async ({ queryKey }) => {
+		const campaign = queryKey[2];
 
-		return contentConfig;
+		// storage for targets data
+		let targets = false;
+
+		// fetch base campaign
+		const response = await fetch(`${variables.api.campaigns}/${campaign.id}/targets?limit=100`, parameters.tiltify.options());
+		const json = await response.json();
+
+		if (json && json.data) {
+			// add details to targets data
+			targets = json.data.filter((data) => {
+				data.ends_at = data.ends_at ? data.ends_at : variables.placeholders.endsAt;
+				data.date = utils.getDate(data.ends_at);
+				data.milliseconds = new Date(data.ends_at).getTime();
+				data.amounts = utils.getAmounts(data);
+				data.links = [
+					{
+						label: `Participate at ${campaign.username}`,
+						url: `${variables.urls.tiltify}${campaign.url}`,
+					},
+				];
+				return utils.filterContent('targets', data);
+			});
+			return targets;
+		} else {
+			return targets;
+		}
 	},
 };

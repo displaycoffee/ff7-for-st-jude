@@ -38,20 +38,30 @@ export const Details = (props) => {
 	);
 };
 
-export const DetailsLinks = (props) => {
-	const { links } = props;
+export const DetailsParagraph = (props) => {
+	const { label, content } = props;
 
-	return links && links.length != 0 ? (
-		<div className="details-links">
-			{links.map((link, index) => (
-				<React.Fragment key={link.url}>
-					<a href={link.url} target="_blank" rel="noreferrer">
-						{link.label}
-					</a>
-
-					{index != links.length - 1 && <br />}
-				</React.Fragment>
-			))}
-		</div>
+	return content ? (
+		<p>
+			<strong>{label}:</strong> {content}
+		</p>
 	) : null;
+};
+
+export const DetailsLinks = (props) => {
+	const { links, wrapper } = props;
+	const hasWrapper = !wrapper && wrapper !== false ? true : false;
+
+	// create loop for links
+	const linksLoop = links.map((link, index) => (
+		<React.Fragment key={link.url}>
+			<a href={link.url} target="_blank" rel="noreferrer">
+				{link.label}
+			</a>
+
+			{index != links.length - 1 && <br />}
+		</React.Fragment>
+	));
+
+	return links && links.length != 0 ? hasWrapper ? <div className="details-links">{linksLoop}</div> : linksLoop : null;
 };

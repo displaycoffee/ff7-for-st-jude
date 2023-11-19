@@ -17,13 +17,20 @@ export const utils = {
 
 		// set state for checks
 		let contentActive = true;
-		if (type == 'reward') {
+		if (type == 'rewards') {
 			const isRemaining = typeof data.quantity_remaining == 'number' && data.quantity_remaining > 0 ? true : false;
 			contentActive = !isExpired && isRemaining && data.active;
-		} else if (type == 'target') {
+		} else if (type == 'targets') {
 			contentActive = !isExpired && data.active && data.amounts.amount_raised < data.amounts.amount;
 		}
 		return contentActive;
+	},
+	filterData: (array) => {
+		return array
+			.map((item) => {
+				return item.data;
+			})
+			.flat(array.length + 1);
 	},
 	flatten: (object) => {
 		// flatten object into array
