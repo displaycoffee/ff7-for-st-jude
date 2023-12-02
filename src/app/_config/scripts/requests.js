@@ -128,7 +128,7 @@ export const requests = {
 		if (json && json.data) {
 			// add details to rewards data
 			rewards = json.data.filter((data) => {
-				data.ends_at = data.ends_at ? data.ends_at : variables.placeholders.endsAt;
+				data.ends_at = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 				data.date = utils.getDate(data.ends_at);
 				data.milliseconds = new Date(data.ends_at).getTime();
 				data.amounts = utils.getAmounts(data);
@@ -158,7 +158,7 @@ export const requests = {
 		if (json && json.data) {
 			// add details to targets data
 			targets = json.data.filter((data) => {
-				data.ends_at = data.ends_at ? data.ends_at : variables.placeholders.endsAt;
+				data.ends_at = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 				data.date = utils.getDate(data.ends_at);
 				data.milliseconds = new Date(data.ends_at).getTime();
 				data.amounts = utils.getAmounts(data);
