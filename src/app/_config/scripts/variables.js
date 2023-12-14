@@ -1,5 +1,5 @@
 /* tiltify api proxy */
-const tiltifyApi = 'http://ff7forstjude.org:5000';
+const tiltifyApi = 'https://api.ff7forstjude.org';
 
 /* This config contains variables to use through application */
 export const variables = {

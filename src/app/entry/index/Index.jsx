@@ -33,11 +33,11 @@ export const Index = (props) => {
 
 	// Set state for query params and animals
 	const [requestParams, setRequestParams] = useState({
-		campaign: {},
-		supporting: {},
-		donations: {},
-		rewards: {},
-		targets: {},
+		campaign: false,
+		supporting: false,
+		donations: false,
+		rewards: false,
+		targets: false,
 	});
 
 	return (

@@ -36,8 +36,10 @@ export const requests = {
 			};
 			json.data.amounts = utils.getAmounts(json.data);
 			campaign = json.data;
+			queryKey[1].campaign = campaign;
 			return campaign;
 		} else {
+			queryKey[1].campaign = false;
 			return campaign;
 		}
 	},
@@ -71,8 +73,10 @@ export const requests = {
 				}
 				return data;
 			});
+			queryKey[1].supporting = supporting;
 			return supporting;
 		} else {
+			queryKey[1].supporting = false;
 			return supporting;
 		}
 	},

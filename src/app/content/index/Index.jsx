@@ -11,6 +11,7 @@ import { requests } from '../../_config/scripts/requests';
 /* Local components */
 import { Context } from '../../entry/context/Context';
 import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
+import { Skeleton } from '../../shared/skeleton/Skeleton';
 
 export const Index = (props) => {
 	let { requestParams } = props;
@@ -22,16 +23,22 @@ export const Index = (props) => {
 	const { data: campaignQuery } = useQuery({
 		queryKey: ['campaign', requestParams, current],
 		queryFn: requests.campaign,
+		enabled: !requestParams.campaign,
 	});
-	const campaignResults = campaignQuery && Object.keys(campaignQuery).length !== 0 ? campaignQuery : false;
+	const campaignResults = campaignQuery && Object.keys(campaignQuery).length !== 0 ? campaignQuery : requestParams.campaign;
 	current.amounts = campaignResults ? campaignResults.amounts : false;
 
 	// Use query to get supporting campaigns
 	const { data: supportingQuery } = useQuery({
 		queryKey: ['supporting', requestParams, current],
 		queryFn: requests.supporting,
+		enabled: !requestParams.supporting,
 	});
-	const supportingResults = supportingQuery && supportingQuery.length !== 0 ? supportingQuery : false;
+	const supportingResults = supportingQuery && supportingQuery.length !== 0 ? supportingQuery : requestParams.supporting;
+
+	// Set variables for progress bar
+	const amountRaised = campaignResults && current?.amounts?.total_amount_raised !== false ? current.amounts.total_amount_raised : false;
+	const goal = campaignResults && current?.amounts?.goal !== false ? current.amounts.goal : false;
 
 	return (
 		<>
@@ -67,52 +74,52 @@ export const Index = (props) => {
 
 				<DetailsParagraph label={'Date'} content={current?.date} />
 
-				{campaignResults && current.amounts && current.amounts.total_amount_raised !== false && current.amounts.goal !== false ? (
-					<div className="level-bar-raised flex-nowrap">
-						<strong>Raised:</strong>
-						<div className="level-bar">
-							<div className="level-bar-label">
-								${current.amounts.total_amount_raised.toFixed(2)} out of ${current.amounts.goal.toFixed(2)}
-							</div>
+				<div className="level-bar-raised flex-nowrap">
+					<strong>Raised:</strong>
+					<div className="level-bar">
+						<div className="level-bar-label">
+							${amountRaised ? amountRaised.toFixed(2) : 'xxx.xx'} out of ${goal ? goal.toFixed(2) : 'xxxx.xx'}
+						</div>
 
-							<div className="level-bar-outof">
-								<div
-									className="level-bar-progress"
-									style={{
-										width: `${(current.amounts.total_amount_raised / current.amounts.goal) * 100}%`,
-									}}
-								></div>
+						<div className="level-bar-outof">
+							<div
+								className="level-bar-progress"
+								style={{
+									width: amountRaised && goal ? `${(amountRaised / goal) * 100}%` : `0%`,
+								}}
+							></div>
 
-								<div className="level-bar-shadow"></div>
-							</div>
+							<div className="level-bar-shadow"></div>
 						</div>
 					</div>
-				) : null}
+				</div>
 
 				<DetailsLinks links={current?.links} />
 			</Details>
 
-			{supportingResults ? (
-				<Details header={'Supporting Campaigns'} hasRow={true}>
-					<div className="row row-auto row-spacing-20 row-wrap">
-						{supportingResults.map((supporting) => {
-							const { total_amount_raised } = supporting.amounts;
+			<Details header={'Supporting Campaigns'} hasRow={true}>
+				<div className="row row-auto row-spacing-20 row-wrap">
+					{supportingResults
+						? supportingResults.map((supporting) => {
+								const { total_amount_raised } = supporting.amounts;
 
-							return (
-								<div className="column column-width-50" key={supporting.id}>
-									<div className="blue-section">
-										<DetailsParagraph label={'Campaign'} content={supporting?.name} />
+								return (
+									<div className="column column-width-50" key={supporting.id}>
+										<div className="blue-section">
+											<DetailsParagraph label={'Campaign'} content={supporting?.name} />
 
-										<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
+											<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
 
-										<DetailsLinks links={supporting?.links} />
+											<DetailsLinks links={supporting?.links} />
+										</div>
 									</div>
-								</div>
-							);
-						})}
-					</div>
-				</Details>
-			) : null}
+								);
+						  })
+						: null}
+
+					<Skeleton columns={8} perRow={2} paragraphs={4} />
+				</div>
+			</Details>
 
 			<Details header={'Previous Campaigns'} hasRow={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
