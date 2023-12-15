@@ -10,24 +10,46 @@ import { requests } from '../../_config/scripts/requests';
 
 /* Local components */
 import { Context } from '../../entry/context/Context';
-import { Details, DetailsLinks } from '../../shared/details/Details';
+import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
+import { Skeleton } from '../../shared/skeleton/Skeleton';
 
 export const Index = (props) => {
 	let { requestParams } = props;
 	const context = useContext(Context);
-	const { campaigns } = context;
+	const { campaigns, utils } = context;
 	let { current, previous } = campaigns;
 
-	// Use query to get and show campaign data
-	// const campaignQuery = useQuery(['campaign', requestParams, current.id], requests.campaign);
-	// const campaignResults = campaignQuery?.data ? campaignQuery.data : false;
-	// current.amounts = campaignResults ? campaignResults.amounts : false;
-	const campaignResults = false;
+	// Use query to get campaign data
+	const { data: campaignQuery } = useQuery({
+		queryKey: ['campaign', requestParams, current],
+		queryFn: requests.campaign,
+		enabled: !requestParams.campaign,
+	});
+	const hasCampaign = campaignQuery ? true : false;
+	const campaignResults = hasCampaign ? campaignQuery : requestParams.campaign;
+	current.amounts = campaignResults ? campaignResults.amounts : false;
 
-	// Use query to get and supporting campaigns
-	// const supportingQuery = useQuery(['supporting', requestParams, current.id], requests.supporting);
-	// const supportingResults = supportingQuery?.data ? supportingQuery.data : false;
-	const supportingResults = false;
+	// Use query to get supporting campaigns
+	const { data: supportingQuery } = useQuery({
+		queryKey: ['supporting', requestParams, current],
+		queryFn: requests.supporting,
+		enabled: !requestParams.supporting,
+	});
+	const hasSupporting = supportingQuery && supportingQuery.length !== 0 ? true : false;
+	const supportingResults = hasSupporting ? supportingQuery : requestParams.supporting;
+
+	// Set variables for progress bar
+	const amountRaised = campaignResults && current?.amounts?.total_amount_raised !== false ? current.amounts.total_amount_raised : false;
+	const goal = campaignResults && current?.amounts?.goal !== false ? current.amounts.goal : false;
+
+	// Get amount raised from all campaigns
+	let totalRaised = 0;
+	previous.forEach((campaign) => {
+		totalRaised += campaign.amounts.total_amount_raised;
+	});
+	if (amountRaised) {
+		totalRaised += amountRaised;
+	}
 
 	return (
 		<>
@@ -51,6 +73,10 @@ export const Index = (props) => {
 					help raise more money.
 				</p>
 
+				<p>
+					In total, we have raised <strong>${totalRaised.toFixed(2)}</strong>.
+				</p>
+
 				<p className="mission-statement">
 					The mission of St. Jude Children's Research Hospital is to advance cures, and means of prevention, for pediatric catastrophic
 					diseases through research and treatment. Consistent with the vision of our founder Danny Thomas, no child is denied treatment
@@ -58,71 +84,57 @@ export const Index = (props) => {
 				</p>
 			</Details>
 
-			{campaignResults ? (
-				<Details header={'Current Campaign'}>
-					{current.name && (
-						<p>
-							<strong>Name:</strong> {current.name}
-						</p>
-					)}
+			<Details header={'Current Campaign'}>
+				<DetailsParagraph label={'Name'} content={current?.name} />
 
-					{current.date && (
-						<p>
-							<strong>Date:</strong> {current.date}
-						</p>
-					)}
+				<DetailsParagraph label={'Date'} content={current?.date} />
 
-					{campaignResults && current.amounts && current.amounts.total_amount_raised !== false && current.amounts.goal !== false ? (
-						<div className="level-bar-raised flex-nowrap">
-							<strong>Raised:</strong>
-							<div className="level-bar">
-								<div className="level-bar-label">
-									${current.amounts.total_amount_raised.toFixed(2)} out of ${current.amounts.goal.toFixed(2)}
-								</div>
-
-								<div className="level-bar-outof">
-									<div
-										className="level-bar-progress"
-										style={{
-											width: `${(current.amounts.total_amount_raised / current.amounts.goal) * 100}%`,
-										}}
-									></div>
-
-									<div className="level-bar-shadow"></div>
-								</div>
-							</div>
+				<div className="level-bar-raised flex-nowrap">
+					<strong>Raised:</strong>
+					<div className="level-bar">
+						<div className="level-bar-label">
+							${amountRaised ? amountRaised.toFixed(2) : 'xxx.xx'} out of ${goal ? goal.toFixed(2) : 'xxxx.xx'}
 						</div>
-					) : null}
 
-					<DetailsLinks links={current.links} />
-				</Details>
-			) : null}
+						<div className="level-bar-outof">
+							<div
+								className="level-bar-progress"
+								style={{
+									width: amountRaised && goal ? `${(amountRaised / goal) * 100}%` : `0%`,
+								}}
+							></div>
 
-			{supportingResults ? (
-				<Details header={'Supporting Campaigns'} hasRow={true}>
-					<div className="row row-auto row-spacing-20 row-wrap">
-						{supportingResults.map((supporting) => {
-							const { total_amount_raised } = supporting.amounts;
-
-							return (
-								<div className="column column-width-50" key={supporting.id}>
-									<div className="blue-section">
-										<p>
-											<strong>Campaign:</strong> {supporting.name}
-										</p>
-
-										<p>
-											<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
-										</p>
-
-										<DetailsLinks links={supporting.links} />
-									</div>
-								</div>
-							);
-						})}
+							<div className="level-bar-shadow"></div>
+						</div>
 					</div>
-				</Details>
-			) : null}
+				</div>
+
+				<DetailsLinks links={current?.links} />
+			</Details>
+
+			<Details header={'Supporting Campaigns'} hasRow={true}>
+				<div className="row row-auto row-spacing-20 row-wrap">
+					{supportingResults
+						? utils.sort(supportingResults, 'integer', 'total_amount_raised', 'desc').map((supporting) => {
+								const { total_amount_raised } = supporting.amounts;
+
+								return (
+									<div className="column column-width-50" key={supporting.id}>
+										<div className="blue-section">
+											<DetailsParagraph label={'Campaign'} content={supporting?.name} />
+
+											<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
+
+											<DetailsLinks links={supporting?.links} />
+										</div>
+									</div>
+								);
+						  })
+						: null}
+
+					<Skeleton columns={8} perRow={2} paragraphs={4} />
+				</div>
+			</Details>
 
 			<Details header={'Previous Campaigns'} hasRow={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
@@ -132,27 +144,13 @@ export const Index = (props) => {
 						return (
 							<div className="column column-width-50" key={campaign.id}>
 								<div className="blue-section">
-									<p>
-										<strong>Campaign:</strong> {campaign.name}
-									</p>
+									<DetailsParagraph label={'Campaign'} content={campaign?.name} />
 
-									<p>
-										<strong>Ends:</strong> {campaign.date}
-									</p>
+									<DetailsParagraph label={'Ends'} content={campaign?.date} />
 
-									<p>
-										<strong>Raised:</strong> ${total_amount_raised.toFixed(2)}
-									</p>
+									<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
 
-									{campaign.links && campaign.links.length != 0 && (
-										<div className="detail-links">
-											{campaign.links.map((link) => (
-												<a href={link.url} target="_blank" rel="noreferrer" key={link.url}>
-													{link.label}
-												</a>
-											))}
-										</div>
-									)}
+									<DetailsLinks links={campaign?.links} />
 								</div>
 							</div>
 						);

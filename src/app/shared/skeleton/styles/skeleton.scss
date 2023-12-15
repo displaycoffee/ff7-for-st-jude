@@ -1,0 +1,39 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// SKELETON
+//// --------------------------------------------------------------------------
+
+	.row {
+		.column-skeleton {
+			opacity: 1;
+			@include mixins.transition(opacity 0.3s ease);
+			p, .p {
+				background-color: theme.$color-02;
+				width: 80%;
+				opacity: 0.8;
+				&:nth-child(2) {
+					width: 60%;
+				}
+				&:nth-child(3) {
+					width: 40%;
+				}
+				&:nth-child(4) {
+					width: 75%;
+				}
+				&:nth-child(5) {
+					width: 50%;
+				}
+				&:nth-child(6) {
+					width: 55%;
+				}
+			}
+		}
+		.column:not(.column-skeleton) ~ .column-skeleton {
+			min-width: 0;
+			opacity: 0;
+			@include mixins.sr-only;
+		}
+	}

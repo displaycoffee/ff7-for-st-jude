@@ -29,12 +29,15 @@ const queryClient = new QueryClient({
 
 export const Index = (props) => {
 	const { theme } = props;
-	const isDesktop = useRespond(theme.bps.bp02);
+	const isDesktop = useRespond(theme.bps.bp03);
 
 	// Set state for query params and animals
 	const [requestParams, setRequestParams] = useState({
-		campaign: {},
-		supporting: {},
+		campaign: false,
+		supporting: false,
+		donations: false,
+		rewards: false,
+		targets: false,
 	});
 
 	return (
