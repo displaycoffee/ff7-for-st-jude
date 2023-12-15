@@ -16,7 +16,7 @@ import { Skeleton } from '../../shared/skeleton/Skeleton';
 export const Index = (props) => {
 	let { requestParams } = props;
 	const context = useContext(Context);
-	const { campaigns } = context;
+	const { campaigns, utils } = context;
 	let { current, previous } = campaigns;
 
 	// Use query to get campaign data
@@ -25,7 +25,8 @@ export const Index = (props) => {
 		queryFn: requests.campaign,
 		enabled: !requestParams.campaign,
 	});
-	const campaignResults = campaignQuery && Object.keys(campaignQuery).length !== 0 ? campaignQuery : requestParams.campaign;
+	const hasCampaign = campaignQuery ? true : false;
+	const campaignResults = hasCampaign ? campaignQuery : requestParams.campaign;
 	current.amounts = campaignResults ? campaignResults.amounts : false;
 
 	// Use query to get supporting campaigns
@@ -34,11 +35,21 @@ export const Index = (props) => {
 		queryFn: requests.supporting,
 		enabled: !requestParams.supporting,
 	});
-	const supportingResults = supportingQuery && supportingQuery.length !== 0 ? supportingQuery : requestParams.supporting;
+	const hasSupporting = supportingQuery && supportingQuery.length !== 0 ? true : false;
+	const supportingResults = hasSupporting ? supportingQuery : requestParams.supporting;
 
 	// Set variables for progress bar
 	const amountRaised = campaignResults && current?.amounts?.total_amount_raised !== false ? current.amounts.total_amount_raised : false;
 	const goal = campaignResults && current?.amounts?.goal !== false ? current.amounts.goal : false;
+
+	// Get amount raised from all campaigns
+	let totalRaised = 0;
+	previous.forEach((campaign) => {
+		totalRaised += campaign.amounts.total_amount_raised;
+	});
+	if (amountRaised) {
+		totalRaised += amountRaised;
+	}
 
 	return (
 		<>
@@ -60,6 +71,10 @@ export const Index = (props) => {
 					We call this a race but it is important to know that the goal is not necessarily to finish first. The primary goals are to raise
 					money for kids in need and have fun doing it. Using donation incentives to make the run more fun to watch may cost time but can
 					help raise more money.
+				</p>
+
+				<p>
+					In total, we have raised <strong>${totalRaised.toFixed(2)}</strong>.
 				</p>
 
 				<p className="mission-statement">
@@ -100,7 +115,7 @@ export const Index = (props) => {
 			<Details header={'Supporting Campaigns'} hasRow={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{supportingResults
-						? supportingResults.map((supporting) => {
+						? utils.sort(supportingResults, 'integer', 'total_amount_raised', 'desc').map((supporting) => {
 								const { total_amount_raised } = supporting.amounts;
 
 								return (

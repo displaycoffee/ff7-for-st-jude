@@ -20,49 +20,58 @@ export const Dashboard = (props) => {
 	const { data: supportingQuery } = useQuery({
 		queryKey: ['supporting', requestParams, current],
 		queryFn: requests.supporting,
+		enabled: !requestParams.supporting,
 	});
-	const supportingResults = supportingQuery && supportingQuery.length !== 0 ? supportingQuery : false;
+	const hasSupporting = supportingQuery && supportingQuery.length !== 0 ? true : false;
+	const supportingResults = hasSupporting ? supportingQuery : requestParams.supporting;
 
 	// use query to get donations
 	const { data: donationsQuery } = useQuery({
 		queryKey: ['donations', requestParams, current, supportingResults],
 		queryFn: requests.donations,
-		enabled: !!supportingResults, // don't fetch until supportingResults is complete
+		enabled: !!supportingResults && !requestParams.donations, // don't fetch until supportingResults is complete
 	});
-	const donationsResults = donationsQuery && donationsQuery.length !== 0 ? donationsQuery : false;
+	const hasDonations = donationsQuery && donationsQuery.length !== 0 ? true : false;
+	const donationsResults = hasDonations ? donationsQuery : requestParams.donations;
 
 	// use query to get rewards
 	const rewardsQuery = useQueries({
-		queries: supportingResults
-			? supportingResults.map((result) => {
-					return {
-						queryKey: ['rewards', requestParams, result],
-						queryFn: requests.rewards,
-					};
-			  })
-			: [], // if supportingResults is undefined, an empty array will be returned
+		queries:
+			supportingResults && !requestParams.rewards
+				? supportingResults.map((result) => {
+						return {
+							queryKey: ['rewards', requestParams, result],
+							queryFn: requests.rewards,
+							enabled: !requestParams.rewards[result.id],
+						};
+				  })
+				: [], // if supportingResults is undefined, an empty array will be returned
 	});
-	const rewardsResults = rewardsQuery && rewardsQuery.length !== 0 ? utils.filterData(rewardsQuery) : false;
+	const hasRewards = rewardsQuery && Object.keys(rewardsQuery).length !== 0 ? true : false;
+	const rewardsResults = hasRewards ? utils.filterData(rewardsQuery) : utils.merge(utils.flatten(requestParams.rewards));
 
 	// use query to get targets
 	const targetsQuery = useQueries({
-		queries: supportingResults
-			? supportingResults.map((result) => {
-					return {
-						queryKey: ['targets', requestParams, result],
-						queryFn: requests.targets,
-					};
-			  })
-			: [], // if supportingResults is undefined, an empty array will be returned
+		queries:
+			supportingResults && !requestParams.targets
+				? supportingResults.map((result) => {
+						return {
+							queryKey: ['targets', requestParams, result],
+							queryFn: requests.targets,
+							enabled: !requestParams.targets[result.id],
+						};
+				  })
+				: [], // if supportingResults is undefined, an empty array will be returned
 	});
-	const targetsResults = targetsQuery && targetsQuery.length !== 0 ? utils.filterData(targetsQuery) : false;
+	const hasTargets = targetsQuery && Object.keys(targetsQuery).length !== 0 ? true : false;
+	const targetsResults = hasTargets ? utils.filterData(targetsQuery) : utils.merge(utils.flatten(requestParams.targets));
 
 	return (
 		<>
 			<Details header={'Donations'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{donationsResults
-						? donationsResults.map((donation) => {
+						? utils.sort(donationsResults, 'integer', 'milliseconds', 'desc').map((donation) => {
 								const { amount } = donation.amounts;
 
 								return (
@@ -89,7 +98,7 @@ export const Dashboard = (props) => {
 			<Details header={'Rewards'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{rewardsResults
-						? rewardsResults.map((reward) => {
+						? utils.sort(rewardsResults, 'integer', 'milliseconds', 'asc').map((reward) => {
 								const { amount } = reward?.amounts ? reward.amounts : false;
 
 								return reward ? (
@@ -121,7 +130,7 @@ export const Dashboard = (props) => {
 			<Details header={'Targets'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{targetsResults
-						? targetsResults.map((target) => {
+						? utils.sort(targetsResults, 'integer', 'milliseconds', 'asc').map((target) => {
 								const { amount_raised, amount } = target?.amounts ? target.amounts : false;
 
 								return target ? (

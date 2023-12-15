@@ -114,8 +114,10 @@ export const requests = {
 				}
 				return data;
 			});
+			queryKey[1].donations = donations;
 			return donations;
 		} else {
+			queryKey[1].donations = false;
 			return donations;
 		}
 	},
@@ -144,8 +146,13 @@ export const requests = {
 				];
 				return utils.filterContent('rewards', data);
 			});
+			if (!queryKey[1].rewards) {
+				queryKey[1].rewards = {};
+			}
+			queryKey[1].rewards[campaign.id] = rewards;
 			return rewards;
 		} else {
+			queryKey[1].rewards = false;
 			return rewards;
 		}
 	},
@@ -174,8 +181,13 @@ export const requests = {
 				];
 				return utils.filterContent('targets', data);
 			});
+			if (!queryKey[1].targets) {
+				queryKey[1].targets = {};
+			}
+			queryKey[1].targets[campaign.id] = targets;
 			return targets;
 		} else {
+			queryKey[1].targets = false;
 			return targets;
 		}
 	},
