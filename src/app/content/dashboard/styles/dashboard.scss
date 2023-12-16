@@ -1,0 +1,23 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// DASHBOARD
+//// --------------------------------------------------------------------------
+
+	.floating {
+		@include mixins.position($type: fixed, $left: 20px, $bottom: 20px);
+		font-size: functions.em(12px, rem);
+		.floating-list {
+			.floating-list-item {
+				margin: 0 0 theme.$spacing-x1 0;
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}	
+		}
+	}
+	.details {
+		scroll-margin-top: 100px;
+	}

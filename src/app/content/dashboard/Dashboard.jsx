@@ -2,6 +2,9 @@
 import { useContext } from 'react';
 import { useQuery, useQueries } from '@tanstack/react-query';
 
+/* Local styles */
+import './styles/dashboard.scss';
+
 /* Local scripts */
 import { requests } from '../../_config/scripts/requests';
 
@@ -17,7 +20,7 @@ export const Dashboard = (props) => {
 	let { current } = campaigns;
 
 	// use query to get supporting campaigns
-	const { data: supportingQuery } = useQuery({
+	const { data: supportingQuery, refetch: supportingRefetch } = useQuery({
 		queryKey: ['supporting', requestParams, current],
 		queryFn: requests.supporting,
 		enabled: !requestParams.supporting,
@@ -26,7 +29,7 @@ export const Dashboard = (props) => {
 	const supportingResults = hasSupporting ? supportingQuery : requestParams.supporting;
 
 	// use query to get donations
-	const { data: donationsQuery } = useQuery({
+	const { data: donationsQuery, refetch: donationRefetch } = useQuery({
 		queryKey: ['donations', requestParams, current, supportingResults],
 		queryFn: requests.donations,
 		enabled: !!supportingResults && !requestParams.donations, // don't fetch until supportingResults is complete
@@ -35,7 +38,7 @@ export const Dashboard = (props) => {
 	const donationsResults = hasDonations ? donationsQuery : requestParams.donations;
 
 	// use query to get rewards
-	const rewardsQuery = useQueries({
+	const { data: rewardsQuery } = useQueries({
 		queries:
 			supportingResults && !requestParams.rewards
 				? supportingResults.map((result) => {
@@ -51,7 +54,7 @@ export const Dashboard = (props) => {
 	const rewardsResults = hasRewards ? utils.filterData(rewardsQuery) : utils.merge(utils.flatten(requestParams.rewards));
 
 	// use query to get targets
-	const targetsQuery = useQueries({
+	const { data: targetsQuery } = useQueries({
 		queries:
 			supportingResults && !requestParams.targets
 				? supportingResults.map((result) => {
@@ -66,8 +69,55 @@ export const Dashboard = (props) => {
 	const hasTargets = targetsQuery && Object.keys(targetsQuery).length !== 0 ? true : false;
 	const targetsResults = hasTargets ? utils.filterData(targetsQuery) : utils.merge(utils.flatten(requestParams.targets));
 
+	// scroll to section function
+	const scrollToSection = (e, selector) => {
+		e.preventDefault();
+		document.querySelector(selector).scrollIntoView({
+			behavior: 'smooth',
+		});
+	};
+
 	return (
 		<>
+			<nav className="floating">
+				<div className="blue-section">
+					<ul className="floating-list unstyled">
+						<li className="floating-list-item">
+							<button className="pointer unstyled a" onClick={(e) => scrollToSection(e, '#details-donations')} type="button">
+								Donations
+							</button>
+						</li>
+
+						<li className="floating-list-item">
+							<button className="pointer unstyled a" onClick={(e) => scrollToSection(e, '#details-rewards')} type="button">
+								Rewards
+							</button>
+						</li>
+
+						<li className="floating-list-item">
+							<button className="pointer unstyled a" onClick={(e) => scrollToSection(e, '#details-targets')} type="button">
+								Targets
+							</button>
+						</li>
+
+						<li className="floating-list-item">
+							<button
+								className="pointer unstyled a"
+								onClick={(e) => {
+									// refresh content
+									e.preventDefault();
+									supportingRefetch();
+									donationRefetch();
+								}}
+								type="button"
+							>
+								Refresh
+							</button>
+						</li>
+					</ul>
+				</div>
+			</nav>
+
 			<Details header={'Donations'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{donationsResults
