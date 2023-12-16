@@ -50,7 +50,7 @@ export const requests = {
 		let supporting = false;
 
 		// fetch base campaign
-		const response = await fetch(`${variables.api.teams}/${current.id}/supporting_campaigns/`, parameters.tiltify.options());
+		const response = await fetch(`${variables.api.teams}/${current.id}/supporting_campaigns?limit=50`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
