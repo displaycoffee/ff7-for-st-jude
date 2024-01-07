@@ -4,7 +4,7 @@ import './styles/skeleton.scss';
 export const Skeleton = (props) => {
 	let { columns, perRow, paragraphs } = props;
 
-	// function to build details in skeleton
+	// Function to build details in skeleton
 	const buildSkeleton = (length) => {
 		let skeleton = [];
 		for (var i = 0; i < length; i++) {
@@ -13,7 +13,7 @@ export const Skeleton = (props) => {
 		return skeleton;
 	};
 
-	// create list of skeletons
+	// Create list of skeletons
 	const skeletonColumns = buildSkeleton(columns);
 	const skeletonParagraphs = buildSkeleton(paragraphs);
 
