@@ -20,7 +20,7 @@ export const navigation = [
 		label: 'Signup Sheet',
 		alt: 'Signup Sheet',
 		url: '//docs.google.com/spreadsheets/d/1L1xFc2R_GRRFRPdSqoZLHWP5SWoxM8drlZhaBd6XZsM/edit#gid=0',
-		showInNav: true,
+		showInNav: false,
 		isRoute: false,
 	},
 	{

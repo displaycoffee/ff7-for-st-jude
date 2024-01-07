@@ -1,6 +1,5 @@
 /* React */
-import { useContext } from 'react';
-import { useQuery, useQueries } from '@tanstack/react-query';
+import { useContext, useState, useEffect } from 'react';
 
 /* Local styles */
 import './styles/dashboard.scss';
@@ -14,68 +13,93 @@ import { Context } from '../../entry/context/Context';
 import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
 
 export const Dashboard = (props) => {
-	let { requestParams } = props;
+	let { localCache } = props;
 	const context = useContext(Context);
 	const { campaigns, utils, variables } = context;
-	let { current } = campaigns;
 
-	// use query to get supporting campaigns
-	const { data: supportingQuery, refetch: supportingRefetch } = useQuery({
-		queryKey: ['supporting', requestParams, current],
-		queryFn: requests.supporting,
-		enabled: !requestParams.supporting,
-	});
-	const hasSupporting = supportingQuery && supportingQuery.length !== 0 ? true : false;
-	const supportingResults = hasSupporting ? supportingQuery : requestParams.supporting;
+	// State variables
+	let [supporting, setSupporting] = useState(false);
+	let [donations, setDonations] = useState(false);
+	let [rewards, setRewards] = useState(false);
+	let [rewardsLoaded, setRewardsLoaded] = useState(false);
+	let [targets, setTargets] = useState(false);
+	let [targetsLoaded, setTargetsLoaded] = useState(false);
 
-	// use query to get donations
-	const { data: donationsQuery, refetch: donationRefetch } = useQuery({
-		queryKey: ['donations', requestParams, current, supportingResults],
-		queryFn: requests.donations,
-		enabled: !!supportingResults && !requestParams.donations, // don't fetch until supportingResults is complete
-	});
-	const hasDonations = donationsQuery && donationsQuery.length !== 0 ? true : false;
-	const donationsResults = hasDonations ? donationsQuery : requestParams.donations;
+	useEffect(() => {
+		// Request campaign content on load
+		requestContent();
+	}, []);
 
-	// use query to get rewards
-	const { data: rewardsQuery } = useQueries({
-		queries:
-			supportingResults && !requestParams.rewards
-				? supportingResults.map((result) => {
-						return {
-							queryKey: ['rewards', requestParams, result],
-							queryFn: requests.rewards,
-							enabled: !requestParams.rewards[result.id],
-						};
-				  })
-				: [], // if supportingResults is undefined, an empty array will be returned
-	});
-	const hasRewards = rewardsQuery && Object.keys(rewardsQuery).length !== 0 ? true : false;
-	const rewardsResults = hasRewards ? utils.filterData(rewardsQuery) : utils.merge(utils.flatten(requestParams.rewards));
+	async function requestContent() {
+		if (!localCache.supporting) {
+			// Get data of supporting campaigns
+			localCache.supporting = await requests.supporting(campaigns.current);
+		}
 
-	// use query to get targets
-	const { data: targetsQuery } = useQueries({
-		queries:
-			supportingResults && !requestParams.targets
-				? supportingResults.map((result) => {
-						return {
-							queryKey: ['targets', requestParams, result],
-							queryFn: requests.targets,
-							enabled: !requestParams.targets[result.id],
-						};
-				  })
-				: [], // if supportingResults is undefined, an empty array will be returned
-	});
-	const hasTargets = targetsQuery && Object.keys(targetsQuery).length !== 0 ? true : false;
-	const targetsResults = hasTargets ? utils.filterData(targetsQuery) : utils.merge(utils.flatten(requestParams.targets));
+		// Set supporting campaigns
+		supporting = localCache.supporting;
+		setSupporting(supporting);
 
-	// scroll to section function
-	const scrollToSection = (e, selector) => {
-		e.preventDefault();
-		document.querySelector(selector).scrollIntoView({
-			behavior: 'smooth',
-		});
-	};
+		// Initially add donations into cache (these can be fetched from the team campaign)
+		localCache.donations = await requests.donations(campaigns.current, supporting);
+
+		// Set donations
+		localCache.donations = utils.checkArray(localCache.donations);
+		donations = localCache.donations;
+		setDonations(donations);
+
+		// Reset cache for content (rewards and targets)
+		localCache.rewards = false;
+		localCache.targets = false;
+
+		// Loop through supporting to fetch content
+		for (const support in supporting) {
+			const supportData = supporting[support];
+
+			// Set fetch array
+			const contentFetch = [requests.rewards(supportData), requests.targets(supportData)];
+
+			// Fetch content using promise
+			await Promise.all(contentFetch)
+				.then(([rewardsResponse, targetsResponse]) => {
+					return [rewardsResponse, targetsResponse];
+				})
+				.then(([rewardsJson, targetsJson]) => {
+					if (!localCache.rewards) {
+						localCache.rewards = {};
+					}
+					if (!localCache.rewards[supportData.id]) {
+						localCache.rewards[supportData.id] = rewardsJson;
+					}
+					if (!localCache.targets) {
+						localCache.targets = {};
+					}
+					if (!localCache.targets[supportData.id]) {
+						localCache.targets[supportData.id] = targetsJson;
+					}
+				});
+		}
+
+		// Set rewards
+		localCache.rewards = localCache.rewards ? utils.merge(utils.flatten(localCache.rewards)) : false;
+		localCache.rewards = utils.checkArray(localCache.rewards);
+		rewards = localCache.rewards;
+		setRewards(rewards);
+
+		// Set loaded rewards state
+		rewardsLoaded = true;
+		setRewardsLoaded(rewardsLoaded);
+
+		// Set targets
+		localCache.targets = localCache.targets ? utils.merge(utils.flatten(localCache.targets)) : false;
+		localCache.targets = utils.checkArray(localCache.targets);
+		targets = localCache.targets;
+		setTargets(targets);
+
+		// Set loaded targets state
+		targetsLoaded = true;
+		setTargetsLoaded(targetsLoaded);
+	}
 
 	return (
 		<>
@@ -83,19 +107,19 @@ export const Dashboard = (props) => {
 				<div className="blue-section">
 					<ul className="floating-list unstyled">
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => scrollToSection(e, '#details-donations')} type="button">
+							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-donations')} type="button">
 								Donations
 							</button>
 						</li>
 
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => scrollToSection(e, '#details-rewards')} type="button">
+							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-rewards')} type="button">
 								Rewards
 							</button>
 						</li>
 
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => scrollToSection(e, '#details-targets')} type="button">
+							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-targets')} type="button">
 								Targets
 							</button>
 						</li>
@@ -104,10 +128,11 @@ export const Dashboard = (props) => {
 							<button
 								className="pointer unstyled a"
 								onClick={(e) => {
-									// refresh content
+									// Refresh content
 									e.preventDefault();
-									supportingRefetch();
-									donationRefetch();
+									setRewardsLoaded(false);
+									setTargetsLoaded(false);
+									requestContent();
 								}}
 								type="button"
 							>
@@ -120,8 +145,8 @@ export const Dashboard = (props) => {
 
 			<Details header={'Donations'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{donationsResults
-						? utils.sort(donationsResults, 'integer', 'milliseconds', 'desc').map((donation) => {
+					{localCache.donations
+						? utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc').map((donation) => {
 								const { amount } = donation.amounts;
 
 								return (
@@ -147,8 +172,8 @@ export const Dashboard = (props) => {
 
 			<Details header={'Rewards'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{rewardsResults
-						? utils.sort(rewardsResults, 'integer', 'milliseconds', 'asc').map((reward) => {
+					{localCache.rewards
+						? utils.sort(localCache.rewards, 'integer', 'milliseconds', 'asc').map((reward) => {
 								const { amount } = reward?.amounts ? reward.amounts : false;
 
 								return reward ? (
@@ -173,14 +198,22 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					<Skeleton columns={6} perRow={3} paragraphs={6} />
+					{rewardsLoaded && !localCache.rewards ? (
+						<div className="column column-width-100">
+							<div className="blue-section">
+								<p>No rewards found.</p>
+							</div>
+						</div>
+					) : (
+						<Skeleton columns={6} perRow={3} paragraphs={6} />
+					)}
 				</div>
 			</Details>
 
 			<Details header={'Targets'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{targetsResults
-						? utils.sort(targetsResults, 'integer', 'milliseconds', 'asc').map((target) => {
+					{localCache.targets
+						? utils.sort(localCache.targets, 'integer', 'milliseconds', 'asc').map((target) => {
 								const { amount_raised, amount } = target?.amounts ? target.amounts : false;
 
 								return target ? (
@@ -208,7 +241,15 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					<Skeleton columns={6} perRow={3} paragraphs={5} />
+					{targetsLoaded && !localCache.targets ? (
+						<div className="column column-width-100">
+							<div className="blue-section">
+								<p>No targets found.</p>
+							</div>
+						</div>
+					) : (
+						<Skeleton columns={6} perRow={3} paragraphs={5} />
+					)}
 				</div>
 			</Details>
 		</>

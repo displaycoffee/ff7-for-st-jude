@@ -1,6 +1,5 @@
 /* React */
-import { useContext } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useContext, useState, useEffect } from 'react';
 
 /* Local styles */
 import './styles/index.scss';
@@ -14,41 +13,69 @@ import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/De
 import { Skeleton } from '../../shared/skeleton/Skeleton';
 
 export const Index = (props) => {
-	let { requestParams } = props;
+	let { localCache } = props;
 	const context = useContext(Context);
 	const { campaigns, utils } = context;
 	let { current, previous } = campaigns;
 
-	// Use query to get campaign data
-	const { data: campaignQuery } = useQuery({
-		queryKey: ['campaign', requestParams, current],
-		queryFn: requests.campaign,
-		enabled: !requestParams.campaign,
-	});
-	const hasCampaign = campaignQuery ? true : false;
-	const campaignResults = hasCampaign ? campaignQuery : requestParams.campaign;
-	current.amounts = campaignResults ? campaignResults.amounts : false;
+	// State variables
+	let [campaign, setCampaign] = useState(false);
+	let [supporting, setSupporting] = useState(false);
+	let [amountRaised, setAmountRaised] = useState(0);
+	let [goal, setGoal] = useState(0);
+	let [totalRaised, setTotalRaised] = useState(0);
 
-	// Use query to get supporting campaigns
-	const { data: supportingQuery } = useQuery({
-		queryKey: ['supporting', requestParams, current],
-		queryFn: requests.supporting,
-		enabled: !requestParams.supporting,
-	});
-	const hasSupporting = supportingQuery && supportingQuery.length !== 0 ? true : false;
-	const supportingResults = hasSupporting ? supportingQuery : requestParams.supporting;
+	useEffect(() => {
+		// Request campaigns on load
+		requestCampaigns();
+	}, []);
 
-	// Set variables for progress bar
-	const amountRaised = campaignResults && current?.amounts?.total_amount_raised !== false ? current.amounts.total_amount_raised : false;
-	const goal = campaignResults && current?.amounts?.goal !== false ? current.amounts.goal : false;
+	async function requestCampaigns() {
+		if (!localCache.supporting) {
+			// Get data of supporting campaigns
+			localCache.supporting = await requests.supporting(campaigns.current);
+		}
 
-	// Get amount raised from all campaigns
-	let totalRaised = 0;
-	previous.forEach((campaign) => {
-		totalRaised += campaign.amounts.total_amount_raised;
-	});
-	if (amountRaised) {
-		totalRaised += amountRaised;
+		if (Object.keys(localCache.campaign).length > 0) {
+			const campaignTotal = utils.getTotal(localCache.campaign.amounts.amount_raised, localCache.supporting, 'amount_raised');
+
+			// Only request campaign from api if amount has changed and add into localCache
+			if (campaignTotal != localCache.campaign.amounts.total_amount_raised) {
+				localCache.campaign = await requests.campaign(campaigns.current);
+			}
+		} else {
+			// Initially add campaign into localCache
+			localCache.campaign = await requests.campaign(campaigns.current);
+		}
+
+		// Set team campaign (and add details)
+		localCache.campaign.date = campaigns.current.date;
+		localCache.campaign.links = campaigns.current.links;
+		campaign = localCache.campaign;
+		setCampaign(campaign);
+
+		// Set supporting campaigns
+		supporting = localCache.supporting;
+		setSupporting(supporting);
+
+		// Get current amounts
+		current.amounts = campaign ? campaign.amounts : false;
+
+		// Set variables for progress bar
+		amountRaised = current?.amounts?.total_amount_raised !== false ? current.amounts.total_amount_raised : 0;
+		setAmountRaised(amountRaised);
+		goal = current?.amounts?.goal !== false ? current.amounts.goal : 0;
+		setGoal(goal);
+
+		// Reset totalRaised and get amount raised from all campaigns
+		totalRaised = 0;
+		previous.forEach((campaign) => {
+			totalRaised += campaign.amounts.total_amount_raised;
+		});
+		if (amountRaised) {
+			totalRaised += amountRaised;
+		}
+		setTotalRaised(totalRaised);
 	}
 
 	return (
@@ -114,8 +141,8 @@ export const Index = (props) => {
 
 			<Details header={'Supporting Campaigns'} hasRow={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{supportingResults
-						? utils.sort(supportingResults, 'integer', 'total_amount_raised', 'desc').map((supporting) => {
+					{localCache.supporting
+						? utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc').map((supporting) => {
 								const { total_amount_raised } = supporting.amounts;
 
 								return (

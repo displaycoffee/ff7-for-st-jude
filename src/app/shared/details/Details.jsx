@@ -15,14 +15,6 @@ export const Details = (props) => {
 	const fallbackId = useId().replace(/:/g, '');
 	const detailsId = header ? utils.handleize(header) : fallbackId;
 
-	// scroll to top function
-	const scrollTo = (e) => {
-		e.preventDefault();
-		document.body.scrollIntoView({
-			behavior: 'smooth',
-		});
-	};
-
 	return (
 		<section id={`details-${detailsId}`} className={`details details-${detailsId}`}>
 			{header && <h3 className="details-title">{header}</h3>}
@@ -30,7 +22,7 @@ export const Details = (props) => {
 			{props?.children && <div className={`details-content${hasRow ? '' : ' spacing-reset blue-section'}`}>{props.children}</div>}
 
 			{scrollLink && (
-				<button className="details-to-top pointer unstyled a" type="button" onClick={(e) => scrollTo(e)}>
+				<button className="details-to-top pointer unstyled a" type="button" onClick={(e) => utils.scrollTo(e)}>
 					^ Back to top
 				</button>
 			)}
@@ -52,7 +44,7 @@ export const DetailsLinks = (props) => {
 	const { links, wrapper } = props;
 	const hasWrapper = !wrapper && wrapper !== false ? true : false;
 
-	// create loop for links
+	// Create loop for links
 	const linksLoop = links.map((link, index) => (
 		<React.Fragment key={link.url}>
 			<a href={link.url} target="_blank" rel="noreferrer">

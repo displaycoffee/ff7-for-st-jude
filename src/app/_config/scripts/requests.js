@@ -17,18 +17,16 @@ const parameters = {
 };
 
 export const requests = {
-	campaign: async ({ queryKey }) => {
-		const current = queryKey[2];
-
-		// storage for campaign data
+	campaign: async (current) => {
+		// Storage for campaign data
 		let campaign = false;
 
-		// fetch base campaign
+		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}/`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
-			// add details to campaign data
+			// Add details to campaign data
 			json.data.url = json.data.team.url;
 			json.data.user = {
 				username: json.data.name,
@@ -36,25 +34,21 @@ export const requests = {
 			};
 			json.data.amounts = utils.getAmounts(json.data);
 			campaign = json.data;
-			queryKey[1].campaign = campaign;
 			return campaign;
 		} else {
-			queryKey[1].campaign = false;
 			return campaign;
 		}
 	},
-	supporting: async ({ queryKey }) => {
-		const current = queryKey[2];
-
-		// storage for supporting data
+	supporting: async (current) => {
+		// Storage for supporting data
 		let supporting = false;
 
-		// fetch base campaign
+		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}/supporting_campaigns?limit=50`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
-			// add details to supporting data
+			// Add details to supporting data
 			supporting = json.data.filter((data) => {
 				data.amounts = utils.getAmounts(data);
 				data.username = data.user.username.trim();
@@ -73,32 +67,27 @@ export const requests = {
 				}
 				return data;
 			});
-			queryKey[1].supporting = supporting;
 			return supporting;
 		} else {
-			queryKey[1].supporting = false;
 			return supporting;
 		}
 	},
-	donations: async ({ queryKey }) => {
-		const current = queryKey[2];
-		const supportingResults = queryKey[3];
-
-		// storage for donations data
+	donations: async (current, supporting) => {
+		// Storage for donations data
 		let donations = false;
 
-		// fetch base campaign
+		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}/donations?limit=100`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
-			// add details to donations data
+			// Add details to donations data
 			donations = json.data.filter((data) => {
 				data.milliseconds = new Date(data.completed_at).getTime();
 				data.amounts = utils.getAmounts(data);
 				data.links = [];
 				if (data.campaign_id) {
-					supportingResults.forEach((support) => {
+					supporting.forEach((support) => {
 						if (data.campaign_id == support.id) {
 							return data.links.push({
 								label: support.username,
@@ -114,25 +103,21 @@ export const requests = {
 				}
 				return data;
 			});
-			queryKey[1].donations = donations;
 			return donations;
 		} else {
-			queryKey[1].donations = false;
 			return donations;
 		}
 	},
-	rewards: async ({ queryKey }) => {
-		const campaign = queryKey[2];
-
-		// storage for rewards data
+	rewards: async (current) => {
+		// Storage for rewards data
 		let rewards = false;
 
-		// fetch base campaign
-		const response = await fetch(`${variables.api.campaigns}/${campaign.id}/rewards?limit=100`, parameters.tiltify.options());
+		// Fetch base campaign
+		const response = await fetch(`${variables.api.campaigns}/${current.id}/rewards?limit=100`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
-			// add details to rewards data
+			// Add details to rewards data
 			rewards = json.data.filter((data) => {
 				data.ends_at = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 				data.date = utils.getDate(data.ends_at);
@@ -140,34 +125,27 @@ export const requests = {
 				data.amounts = utils.getAmounts(data);
 				data.links = [
 					{
-						label: `Redeem at ${campaign.username}`,
-						url: `${variables.urls.tiltify}${campaign.url}`,
+						label: `Redeem at ${current.username}`,
+						url: `${variables.urls.tiltify}${current.url}`,
 					},
 				];
 				return utils.filterContent('rewards', data);
 			});
-			if (!queryKey[1].rewards) {
-				queryKey[1].rewards = {};
-			}
-			queryKey[1].rewards[campaign.id] = rewards;
 			return rewards;
 		} else {
-			queryKey[1].rewards = false;
 			return rewards;
 		}
 	},
-	targets: async ({ queryKey }) => {
-		const campaign = queryKey[2];
-
-		// storage for targets data
+	targets: async (current) => {
+		// Storage for targets data
 		let targets = false;
 
-		// fetch base campaign
-		const response = await fetch(`${variables.api.campaigns}/${campaign.id}/targets?limit=100`, parameters.tiltify.options());
+		// Fetch base campaign
+		const response = await fetch(`${variables.api.campaigns}/${current.id}/targets?limit=100`, parameters.tiltify.options());
 		const json = await response.json();
 
 		if (json && json.data) {
-			// add details to targets data
+			// Add details to targets data
 			targets = json.data.filter((data) => {
 				data.ends_at = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 				data.date = utils.getDate(data.ends_at);
@@ -175,19 +153,14 @@ export const requests = {
 				data.amounts = utils.getAmounts(data);
 				data.links = [
 					{
-						label: `Participate at ${campaign.username}`,
-						url: `${variables.urls.tiltify}${campaign.url}`,
+						label: `Participate at ${current.username}`,
+						url: `${variables.urls.tiltify}${current.url}`,
 					},
 				];
 				return utils.filterContent('targets', data);
 			});
-			if (!queryKey[1].targets) {
-				queryKey[1].targets = {};
-			}
-			queryKey[1].targets[campaign.id] = targets;
 			return targets;
 		} else {
-			queryKey[1].targets = false;
 			return targets;
 		}
 	},

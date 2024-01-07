@@ -46,7 +46,7 @@
 		.column {
 			min-width: 1px;
 		}
-		[class*='column-width-'] {
+		[class*='column-width-'], .column-width-100 {
 			width: 100%;
 		}
 	}
@@ -93,6 +93,9 @@
 		.row {
 			[class*='column-width-'] {
 				width: 50%;
+			}
+			.column-width-100 {
+				width: 100%;
 			}
 		}
 	}
