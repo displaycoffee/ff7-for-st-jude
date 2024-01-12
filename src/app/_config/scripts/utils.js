@@ -5,7 +5,28 @@ export const utils = {
 	},
 	checkArray: (array) => {
 		// Ensure array has length and if not, reset to false
-		return array && array.length !== 0 ? array : false;
+		return array && array.length !== 0 ? array : [];
+	},
+	checkTotals: (localCache) => {
+		let totalChanged = false; // Variable to see if total has changed
+
+		if (localCache.campaign) {
+			// Get total amount for checking if prices have changed
+			let campaignTotal = localCache.campaign.amounts.amount_raised;
+			localCache.supporting.filter((d) => {
+				const dValue = d.amount_raised.value || d.amount_raised.value === 0 ? utils.convertDecimal(d.amount_raised.value) : d.amount_raised;
+				campaignTotal += dValue;
+			});
+
+			// Request campaign from api if amount has changed
+			if (campaignTotal != localCache.campaign.amounts.total_amount_raised) {
+				totalChanged = true;
+			}
+		} else {
+			// If nothing is in cache, we should request
+			totalChanged = true;
+		}
+		return totalChanged;
 	},
 	convertDecimal: (number) => {
 		// Convert number to two decimal places
@@ -55,15 +76,6 @@ export const utils = {
 			dateStyle: 'full',
 			timeStyle: 'long',
 		}).format(date);
-	},
-	getTotal: (starting, data, field) => {
-		// Get total amount for checking if prices have changed
-		let total = starting;
-		data.filter((d) => {
-			const dValue = d[field].value || d[field].value === 0 ? utils.convertDecimal(d[field].value) : d[field];
-			total += dValue;
-		});
-		return total;
 	},
 	handleize: (value) => {
 		// Format value for html classes
@@ -115,5 +127,11 @@ export const utils = {
 			}
 		});
 		return list;
+	},
+	updateCampaign: (localCache, campaigns) => {
+		// Update campaign details
+		localCache.campaign.date = campaigns.current.date;
+		localCache.campaign.links = campaigns.current.links;
+		return localCache.campaign;
 	},
 };

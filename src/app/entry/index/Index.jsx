@@ -16,7 +16,7 @@ import { Slideout } from '../../shared/slideout/Slideout';
 import { Header } from '../../shared/header/Header';
 import { Footer } from '../../shared/footer/Footer';
 
-/* setup cache of campaigns */
+/* Setup cache of campaigns */
 let localCache = {
 	campaign: false,
 	supporting: false,

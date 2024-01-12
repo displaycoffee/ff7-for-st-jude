@@ -1,8 +1,8 @@
-/* local script imports */
+/* Local scripts */
 import { variables } from './variables';
 import { utils } from './utils';
 
-/* setup parameters to pass to fetches */
+/* Setup parameters to pass to fetches */
 const parameters = {
 	tiltify: {
 		options: () => {

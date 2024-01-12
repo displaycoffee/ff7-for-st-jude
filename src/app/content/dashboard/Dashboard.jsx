@@ -19,7 +19,9 @@ export const Dashboard = (props) => {
 
 	// State variables
 	let [supporting, setSupporting] = useState(false);
+	let [campaign, setCampaign] = useState(false);
 	let [donations, setDonations] = useState(false);
+	let [donationsLoaded, setDonationsLoaded] = useState(false);
 	let [rewards, setRewards] = useState(false);
 	let [rewardsLoaded, setRewardsLoaded] = useState(false);
 	let [targets, setTargets] = useState(false);
@@ -31,57 +33,72 @@ export const Dashboard = (props) => {
 	}, []);
 
 	async function requestContent() {
-		if (!localCache.supporting) {
-			// Get data of supporting campaigns
-			localCache.supporting = await requests.supporting(campaigns.current);
-		}
+		// Always get data of supporting campaigns to check if totals have changed
+		localCache.supporting = await requests.supporting(campaigns.current);
 
 		// Set supporting campaigns
 		supporting = localCache.supporting;
 		setSupporting(supporting);
 
-		// Initially add donations into cache (these can be fetched from the team campaign)
-		localCache.donations = await requests.donations(campaigns.current, supporting);
+		// Get campaign data if totals have changed or if not in cache
+		const totalsChanged = (localCache.campaign && utils.checkTotals(localCache)) || !localCache.campaign ? true : false;
+		if (totalsChanged) {
+			localCache.campaign = await requests.campaign(campaigns.current);
+		}
+
+		// Set team campaign (and add details)
+		campaign = utils.updateCampaign(localCache, campaigns);
+		setCampaign(campaign);
+
+		if (totalsChanged || (!totalsChanged && !localCache.donations)) {
+			// Initially add donations into cache (these can be fetched from the team campaign)
+			localCache.donations = await requests.donations(campaigns.current, supporting);
+		}
 
 		// Set donations
 		localCache.donations = utils.checkArray(localCache.donations);
 		donations = localCache.donations;
 		setDonations(donations);
 
-		// Reset cache for content (rewards and targets)
-		localCache.rewards = false;
-		localCache.targets = false;
+		// Set loaded donations stateaa
+		donationsLoaded = true;
+		setDonationsLoaded(donationsLoaded);
 
-		// Loop through supporting to fetch content
-		for (const support in supporting) {
-			const supportData = supporting[support];
+		if (totalsChanged || (!totalsChanged && !localCache.rewards) || (!totalsChanged && !localCache.targets)) {
+			// Loop through supporting to fetch content
+			for (const support in supporting) {
+				const supportData = supporting[support];
 
-			// Set fetch array
-			const contentFetch = [requests.rewards(supportData), requests.targets(supportData)];
+				// Set fetch array
+				const contentFetch = [requests.rewards(supportData), requests.targets(supportData)];
 
-			// Fetch content using promise
-			await Promise.all(contentFetch)
-				.then(([rewardsResponse, targetsResponse]) => {
-					return [rewardsResponse, targetsResponse];
-				})
-				.then(([rewardsJson, targetsJson]) => {
-					if (!localCache.rewards) {
-						localCache.rewards = {};
-					}
-					if (!localCache.rewards[supportData.id]) {
-						localCache.rewards[supportData.id] = rewardsJson;
-					}
-					if (!localCache.targets) {
-						localCache.targets = {};
-					}
-					if (!localCache.targets[supportData.id]) {
-						localCache.targets[supportData.id] = targetsJson;
-					}
-				});
+				// Fetch content using promise
+				await Promise.all(contentFetch)
+					.then(([rewardsResponse, targetsResponse]) => {
+						return [rewardsResponse, targetsResponse];
+					})
+					.then(([rewardsJson, targetsJson]) => {
+						if (!localCache.rewards) {
+							localCache.rewards = {};
+						}
+						if (!localCache.rewards[supportData.id]) {
+							localCache.rewards[supportData.id] = rewardsJson;
+						}
+						if (!localCache.targets) {
+							localCache.targets = {};
+						}
+						if (!localCache.targets[supportData.id]) {
+							localCache.targets[supportData.id] = targetsJson;
+						}
+					});
+			}
+
+			// Update rewards and targets after requesting
+			localCache.rewards = localCache.rewards ? utils.merge(utils.flatten(localCache.rewards)) : false;
+			localCache.targets = localCache.targets ? utils.merge(utils.flatten(localCache.targets)) : false;
 		}
 
 		// Set rewards
-		localCache.rewards = localCache.rewards ? utils.merge(utils.flatten(localCache.rewards)) : false;
 		localCache.rewards = utils.checkArray(localCache.rewards);
 		rewards = localCache.rewards;
 		setRewards(rewards);
@@ -91,7 +108,6 @@ export const Dashboard = (props) => {
 		setRewardsLoaded(rewardsLoaded);
 
 		// Set targets
-		localCache.targets = localCache.targets ? utils.merge(utils.flatten(localCache.targets)) : false;
 		localCache.targets = utils.checkArray(localCache.targets);
 		targets = localCache.targets;
 		setTargets(targets);
@@ -130,8 +146,22 @@ export const Dashboard = (props) => {
 								onClick={(e) => {
 									// Refresh content
 									e.preventDefault();
+
+									// Reset localCache to get new details
+									localCache = {
+										campaign: false,
+										supporting: false,
+										donations: false,
+										rewards: false,
+										targets: false,
+									};
+
+									// Reset loaded states
+									setDonationsLoaded(false);
 									setRewardsLoaded(false);
 									setTargetsLoaded(false);
+
+									// Run requestContent again
 									requestContent();
 								}}
 								type="button"
@@ -166,7 +196,15 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					<Skeleton columns={6} perRow={3} paragraphs={2} />
+					{donationsLoaded && localCache.donations.length === 0 ? (
+						<div className="column column-width-100">
+							<div className="blue-section">
+								<p>No donations found.</p>
+							</div>
+						</div>
+					) : (
+						<Skeleton columns={6} perRow={3} paragraphs={2} />
+					)}
 				</div>
 			</Details>
 
@@ -198,7 +236,7 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					{rewardsLoaded && !localCache.rewards ? (
+					{rewardsLoaded && localCache.rewards.length === 0 ? (
 						<div className="column column-width-100">
 							<div className="blue-section">
 								<p>No rewards found.</p>
@@ -241,7 +279,7 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					{targetsLoaded && !localCache.targets ? (
+					{targetsLoaded && localCache.targets.length === 0 ? (
 						<div className="column column-width-100">
 							<div className="blue-section">
 								<p>No targets found.</p>
