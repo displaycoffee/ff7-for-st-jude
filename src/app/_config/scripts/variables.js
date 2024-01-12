@@ -1,4 +1,4 @@
-/* tiltify api proxy */
+/* Tiltify API proxy */
 const tiltifyApi = 'https://api.ff7forstjude.org';
 
 /* This config contains variables to use through application */

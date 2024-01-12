@@ -2,7 +2,7 @@
 import { useContext, useState, useEffect } from 'react';
 
 /* Local styles */
-import './styles/index.scss';
+import './styles/home.scss';
 
 /* Local scripts */
 import { requests } from '../../_config/scripts/requests';
@@ -12,15 +12,15 @@ import { Context } from '../../entry/context/Context';
 import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
 import { Skeleton } from '../../shared/skeleton/Skeleton';
 
-export const Index = (props) => {
+export const Home = (props) => {
 	let { localCache } = props;
 	const context = useContext(Context);
 	const { campaigns, utils } = context;
 	let { current, previous } = campaigns;
 
 	// State variables
-	let [campaign, setCampaign] = useState(false);
 	let [supporting, setSupporting] = useState(false);
+	let [campaign, setCampaign] = useState(false);
 	let [amountRaised, setAmountRaised] = useState(0);
 	let [goal, setGoal] = useState(0);
 	let [totalRaised, setTotalRaised] = useState(0);
@@ -31,32 +31,22 @@ export const Index = (props) => {
 	}, []);
 
 	async function requestCampaigns() {
-		if (!localCache.supporting) {
-			// Get data of supporting campaigns
-			localCache.supporting = await requests.supporting(campaigns.current);
-		}
-
-		if (Object.keys(localCache.campaign).length > 0) {
-			const campaignTotal = utils.getTotal(localCache.campaign.amounts.amount_raised, localCache.supporting, 'amount_raised');
-
-			// Only request campaign from api if amount has changed and add into localCache
-			if (campaignTotal != localCache.campaign.amounts.total_amount_raised) {
-				localCache.campaign = await requests.campaign(campaigns.current);
-			}
-		} else {
-			// Initially add campaign into localCache
-			localCache.campaign = await requests.campaign(campaigns.current);
-		}
-
-		// Set team campaign (and add details)
-		localCache.campaign.date = campaigns.current.date;
-		localCache.campaign.links = campaigns.current.links;
-		campaign = localCache.campaign;
-		setCampaign(campaign);
+		// Always get data of supporting campaigns to check if totals have changed
+		localCache.supporting = await requests.supporting(campaigns.current);
 
 		// Set supporting campaigns
 		supporting = localCache.supporting;
 		setSupporting(supporting);
+
+		// Get campaign data if totals have changed or if not in cache
+		const totalsChanged = (localCache.campaign && utils.checkTotals(localCache)) || !localCache.campaign ? true : false;
+		if (totalsChanged) {
+			localCache.campaign = await requests.campaign(campaigns.current);
+		}
+
+		// Set team campaign (and add details)
+		campaign = utils.updateCampaign(localCache, campaigns);
+		setCampaign(campaign);
 
 		// Get current amounts
 		current.amounts = campaign ? campaign.amounts : false;

@@ -11,7 +11,7 @@ import { navigation } from './scripts/navigation';
 import { sticky } from './scripts/sticky';
 
 /* Local components */
-import { Index as IndexContent } from '../../content/index/Index';
+import { Home } from '../../content/home/Home';
 import { Dashboard } from '../../content/dashboard/Dashboard';
 import { ParticipantGuide } from '../../content/participant-guide/ParticipantGuide';
 
@@ -70,7 +70,7 @@ export const NavigationRoutes = (props) => {
 							{{
 								'participant guide': <Route path={nav.url} element={<ParticipantGuide />} />,
 								dashboard: <Route path={nav.url} element={<Dashboard {...routeProps} />} />,
-							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<IndexContent {...routeProps} />} />}
+							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Home {...routeProps} />} />}
 						</React.Fragment>
 					),
 			)}

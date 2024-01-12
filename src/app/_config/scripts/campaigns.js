@@ -1,8 +1,8 @@
-/* local script imports */
+/* Local scripts */
 import { utils } from './utils';
 import { variables } from './variables';
 
-/* st. jude ff7 campaign ids */
+/* St. Jude FF7 campaign ids */
 const ids = {
 	1: 'e96852f5-6234-4c36-ab09-82de953ae6fa',
 	2: 'f7e6a172-16be-40c0-9f99-3afe2eda3a3c',
