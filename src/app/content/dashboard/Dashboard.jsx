@@ -60,11 +60,15 @@ export const Dashboard = (props) => {
 		donations = localCache.donations;
 		setDonations(donations);
 
-		// Set loaded donations stateaa
+		// Set loaded donations state
 		donationsLoaded = true;
 		setDonationsLoaded(donationsLoaded);
 
 		if (totalsChanged || (!totalsChanged && !localCache.rewards) || (!totalsChanged && !localCache.targets)) {
+			// Make sure both caches are set to false
+			localCache.rewards = false;
+			localCache.targets = false;
+
 			// Loop through supporting to fetch content
 			for (const support in supporting) {
 				const supportData = supporting[support];
