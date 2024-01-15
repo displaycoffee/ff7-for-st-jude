@@ -7,6 +7,7 @@ import './styles/index.scss';
 
 /* Local scripts */
 import { useRespond } from '../../_config/scripts/hooks';
+import { utils } from '../../_config/scripts/utils';
 
 /* Local components */
 import { Context } from '../context/Context';
@@ -17,13 +18,7 @@ import { Header } from '../../shared/header/Header';
 import { Footer } from '../../shared/footer/Footer';
 
 /* Setup cache of campaigns */
-let localCache = {
-	campaign: false,
-	supporting: false,
-	donations: false,
-	rewards: false,
-	targets: false,
-};
+let localCache = utils.initCache();
 
 export const Index = (props) => {
 	const { theme } = props;
