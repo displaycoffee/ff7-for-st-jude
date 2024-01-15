@@ -200,7 +200,7 @@ export const Dashboard = (props) => {
 					{donations.loaded && donations.data.length === 0 ? (
 						<ContentLoading type={'donations'} />
 					) : (
-						<Skeleton columns={6} perRow={3} paragraphs={2} />
+						<Skeleton columns={15} perRow={3} paragraphs={2} />
 					)}
 				</div>
 			</Details>

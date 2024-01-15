@@ -12,7 +12,7 @@ export const navigation = [
 		label: 'Donations',
 		alt: 'Donations',
 		url: '/donations',
-		showInNav: true,
+		showInNav: false,
 		isRoute: true,
 	},
 	{
