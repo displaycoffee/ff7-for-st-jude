@@ -85,6 +85,16 @@ export const utils = {
 			.replace(/\s/g, '-')
 			.trim();
 	},
+	initCache: () => {
+		// Function to create or reset cache
+		return {
+			campaign: false,
+			supporting: false,
+			donations: false,
+			rewards: false,
+			targets: false,
+		};
+	},
 	merge: (array) => {
 		// Merge array of arrays
 		return array.reduce((merge, next) => merge.concat(next), []);

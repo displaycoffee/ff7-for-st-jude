@@ -1,11 +1,19 @@
 export const navigation = [
 	{
-		id: 4,
+		id: 5,
 		label: 'Commentary Stream',
 		alt: 'Commentary Stream',
 		url: '//twitch.tv/MonetaryDragon',
 		showInNav: true,
 		isRoute: false,
+	},
+	{
+		id: 4,
+		label: 'Donations',
+		alt: 'Donations',
+		url: '/donations',
+		showInNav: true,
+		isRoute: true,
 	},
 	{
 		id: 3,

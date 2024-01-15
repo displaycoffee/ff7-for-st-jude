@@ -12,6 +12,12 @@ import { Skeleton } from '../../shared/skeleton/Skeleton';
 import { Context } from '../../entry/context/Context';
 import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
 
+/* Default object state for content details */
+const defaultState = {
+	data: false,
+	loaded: false,
+};
+
 export const Dashboard = (props) => {
 	let { localCache } = props;
 	const context = useContext(Context);
@@ -20,12 +26,9 @@ export const Dashboard = (props) => {
 	// State variables
 	let [supporting, setSupporting] = useState(false);
 	let [campaign, setCampaign] = useState(false);
-	let [donations, setDonations] = useState(false);
-	let [donationsLoaded, setDonationsLoaded] = useState(false);
-	let [rewards, setRewards] = useState(false);
-	let [rewardsLoaded, setRewardsLoaded] = useState(false);
-	let [targets, setTargets] = useState(false);
-	let [targetsLoaded, setTargetsLoaded] = useState(false);
+	let [donations, setDonations] = useState(defaultState);
+	let [rewards, setRewards] = useState(defaultState);
+	let [targets, setTargets] = useState(defaultState);
 
 	useEffect(() => {
 		// Request campaign content on load
@@ -57,12 +60,12 @@ export const Dashboard = (props) => {
 
 		// Set donations
 		localCache.donations = utils.checkArray(localCache.donations);
-		donations = localCache.donations;
+		localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
+		donations = {
+			data: localCache.donations,
+			loaded: true,
+		};
 		setDonations(donations);
-
-		// Set loaded donations state
-		donationsLoaded = true;
-		setDonationsLoaded(donationsLoaded);
 
 		if (totalsChanged || (!totalsChanged && !localCache.rewards) || (!totalsChanged && !localCache.targets)) {
 			// Make sure both caches are set to false
@@ -104,21 +107,21 @@ export const Dashboard = (props) => {
 
 		// Set rewards
 		localCache.rewards = utils.checkArray(localCache.rewards);
-		rewards = localCache.rewards;
+		localCache.rewards = utils.sort(localCache.rewards, 'integer', 'milliseconds', 'asc');
+		rewards = {
+			data: localCache.rewards,
+			loaded: true,
+		};
 		setRewards(rewards);
-
-		// Set loaded rewards state
-		rewardsLoaded = true;
-		setRewardsLoaded(rewardsLoaded);
 
 		// Set targets
 		localCache.targets = utils.checkArray(localCache.targets);
-		targets = localCache.targets;
+		localCache.targets = utils.sort(localCache.targets, 'integer', 'milliseconds', 'asc');
+		targets = {
+			data: localCache.targets,
+			loaded: true,
+		};
 		setTargets(targets);
-
-		// Set loaded targets state
-		targetsLoaded = true;
-		setTargetsLoaded(targetsLoaded);
 	}
 
 	return (
@@ -152,18 +155,12 @@ export const Dashboard = (props) => {
 									e.preventDefault();
 
 									// Reset localCache to get new details
-									localCache = {
-										campaign: false,
-										supporting: false,
-										donations: false,
-										rewards: false,
-										targets: false,
-									};
+									localCache = utils.initCache();
 
-									// Reset loaded states
-									setDonationsLoaded(false);
-									setRewardsLoaded(false);
-									setTargetsLoaded(false);
+									// Reset states
+									setDonations(defaultState);
+									setRewards(defaultState);
+									setTargets(defaultState);
 
 									// Run requestContent again
 									requestContent();
@@ -179,8 +176,8 @@ export const Dashboard = (props) => {
 
 			<Details header={'Donations'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{localCache.donations
-						? utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc').map((donation) => {
+					{donations.data
+						? donations.data.map((donation) => {
 								const { amount } = donation.amounts;
 
 								return (
@@ -200,12 +197,8 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					{donationsLoaded && localCache.donations.length === 0 ? (
-						<div className="column column-width-100">
-							<div className="blue-section">
-								<p>No donations found.</p>
-							</div>
-						</div>
+					{donations.loaded && donations.data.length === 0 ? (
+						<ContentLoading type={'donations'} />
 					) : (
 						<Skeleton columns={6} perRow={3} paragraphs={2} />
 					)}
@@ -214,8 +207,8 @@ export const Dashboard = (props) => {
 
 			<Details header={'Rewards'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{localCache.rewards
-						? utils.sort(localCache.rewards, 'integer', 'milliseconds', 'asc').map((reward) => {
+					{rewards.data
+						? rewards.data.map((reward) => {
 								const { amount } = reward?.amounts ? reward.amounts : false;
 
 								return reward ? (
@@ -240,12 +233,8 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					{rewardsLoaded && localCache.rewards.length === 0 ? (
-						<div className="column column-width-100">
-							<div className="blue-section">
-								<p>No rewards found.</p>
-							</div>
-						</div>
+					{rewards.loaded && rewards.data.length === 0 ? (
+						<ContentLoading type={'rewards'} />
 					) : (
 						<Skeleton columns={6} perRow={3} paragraphs={6} />
 					)}
@@ -254,8 +243,8 @@ export const Dashboard = (props) => {
 
 			<Details header={'Targets'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{localCache.targets
-						? utils.sort(localCache.targets, 'integer', 'milliseconds', 'asc').map((target) => {
+					{targets.data
+						? targets.data.map((target) => {
 								const { amount_raised, amount } = target?.amounts ? target.amounts : false;
 
 								return target ? (
@@ -283,17 +272,25 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					{targetsLoaded && localCache.targets.length === 0 ? (
-						<div className="column column-width-100">
-							<div className="blue-section">
-								<p>No targets found.</p>
-							</div>
-						</div>
+					{targets.loaded && targets.data.length === 0 ? (
+						<ContentLoading type={'targets'} />
 					) : (
 						<Skeleton columns={6} perRow={3} paragraphs={5} />
 					)}
 				</div>
 			</Details>
 		</>
+	);
+};
+
+export const ContentLoading = (props) => {
+	const { type } = props;
+
+	return (
+		<div className="column column-width-100">
+			<div className="blue-section">
+				<p>No {type} found.</p>
+			</div>
+		</div>
 	);
 };

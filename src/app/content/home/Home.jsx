@@ -36,6 +36,7 @@ export const Home = (props) => {
 
 		// Set supporting campaigns
 		supporting = localCache.supporting;
+		supporting = utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc');
 		setSupporting(supporting);
 
 		// Get campaign data if totals have changed or if not in cache
@@ -131,18 +132,18 @@ export const Home = (props) => {
 
 			<Details header={'Supporting Campaigns'} hasRow={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{localCache.supporting
-						? utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc').map((supporting) => {
-								const { total_amount_raised } = supporting.amounts;
+					{supporting
+						? supporting.map((support) => {
+								const { total_amount_raised } = support.amounts;
 
 								return (
-									<div className="column column-width-50" key={supporting.id}>
+									<div className="column column-width-50" key={support.id}>
 										<div className="blue-section">
-											<DetailsParagraph label={'Campaign'} content={supporting?.name} />
+											<DetailsParagraph label={'Campaign'} content={support?.name} />
 
 											<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
 
-											<DetailsLinks links={supporting?.links} />
+											<DetailsLinks links={support?.links} />
 										</div>
 									</div>
 								);

@@ -13,6 +13,7 @@ import { sticky } from './scripts/sticky';
 /* Local components */
 import { Home } from '../../content/home/Home';
 import { Dashboard } from '../../content/dashboard/Dashboard';
+import { Donations } from '../../content/donations/Donations';
 import { ParticipantGuide } from '../../content/participant-guide/ParticipantGuide';
 
 export const Navigation = (props) => {
@@ -70,6 +71,7 @@ export const NavigationRoutes = (props) => {
 							{{
 								'participant guide': <Route path={nav.url} element={<ParticipantGuide />} />,
 								dashboard: <Route path={nav.url} element={<Dashboard {...routeProps} />} />,
+								donations: <Route path={nav.url} element={<Donations {...routeProps} />} />,
 							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Home {...routeProps} />} />}
 						</React.Fragment>
 					),
