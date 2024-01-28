@@ -1,6 +1,7 @@
 /* React */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Local styles */
 import './styles/index.scss';
@@ -20,32 +21,47 @@ import { Footer } from '../../shared/footer/Footer';
 /* Setup cache of campaigns */
 let localCache = utils.initCache();
 
+/* Query client for api */
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: Infinity,
+			cacheTime: Infinity,
+		},
+	},
+});
+
 export const Index = (props) => {
 	const { theme } = props;
 	const isDesktop = useRespond(theme.bps.bp03);
 
+	// Set state for query params
+	let [requestParams, setRequestParams] = useState(utils.initCache());
+
 	return (
-		<Context.Provider value={props}>
-			<div className="wrapper">
-				<IndexBody />
+		<QueryClientProvider client={queryClient}>
+			<Context.Provider value={props}>
+				<div className="wrapper">
+					<IndexBody />
 
-				<ErrorBoundary message={<IndexError />}>
-					{isDesktop ? (
-						<Navigation location={'header'} />
-					) : (
-						<Slideout id={'menu'} label={'Menu'} content={<Navigation location={'slideout'} />} closeOnClick={true} />
-					)}
+					<ErrorBoundary message={<IndexError />}>
+						{isDesktop ? (
+							<Navigation location={'header'} />
+						) : (
+							<Slideout id={'menu'} label={'Menu'} content={<Navigation location={'slideout'} />} closeOnClick={true} />
+						)}
 
-					<Header buttonClick={false} />
+						<Header buttonClick={false} />
 
-					<main className="main">
-						<NavigationRoutes localCache={localCache} />
-					</main>
+						<main className="main">
+							<NavigationRoutes localCache={localCache} requestParams={requestParams} setRequestParams={setRequestParams} />
+						</main>
 
-					<Footer />
-				</ErrorBoundary>
-			</div>
-		</Context.Provider>
+						<Footer />
+					</ErrorBoundary>
+				</div>
+			</Context.Provider>
+		</QueryClientProvider>
 	);
 };
 

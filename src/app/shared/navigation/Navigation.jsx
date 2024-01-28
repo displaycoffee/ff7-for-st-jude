@@ -57,9 +57,11 @@ export const Navigation = (props) => {
 };
 
 export const NavigationRoutes = (props) => {
-	const { localCache } = props;
+	const { localCache, requestParams, setRequestParams } = props;
 	const routeProps = {
 		localCache: localCache,
+		requestParams: requestParams,
+		setRequestParams: setRequestParams,
 	};
 
 	return navigation && navigation.length != 0 ? (

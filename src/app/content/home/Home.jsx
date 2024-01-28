@@ -1,5 +1,6 @@
 /* React */
 import { useContext, useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 /* Local styles */
 import './styles/home.scss';
@@ -25,49 +26,51 @@ export const Home = (props) => {
 	let [goal, setGoal] = useState(0);
 	let [totalRaised, setTotalRaised] = useState(0);
 
+	// Use query to get supporting campaigns
+	const { data: supportingQuery, status: supportingStatus } = useQuery({
+		queryKey: ['supporting', current],
+		queryFn: requests.supporting,
+	});
+
+	// Get campaign data if totals have changed or if not in cache
+	const totalsChanged = (localCache.campaign && utils.checkTotals(localCache)) || !localCache.campaign ? true : false;
+	const { data: campaignQuery, status: campaignStatus } = useQuery({
+		queryKey: ['campaign', current],
+		queryFn: requests.campaign,
+		enabled: totalsChanged,
+	});
+
 	useEffect(() => {
-		// Request campaigns on load
-		requestCampaigns();
-	}, []);
+		if (supportingStatus == 'success' && campaignStatus == 'success') {
+			// Update supporting
+			localCache.supporting = utils.checkArray(supportingQuery);
+			localCache.supporting = utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc');
+			supporting = localCache.supporting;
+			setSupporting(supporting);
 
-	async function requestCampaigns() {
-		// Always get data of supporting campaigns to check if totals have changed
-		localCache.supporting = await requests.supporting(campaigns.current);
+			// Set team campaign (and add details)
+			localCache.campaign = campaignQuery ? campaignQuery : false;
+			localCache.campaign = utils.updateCampaign(localCache, campaigns);
+			campaign = localCache.campaign;
+			setCampaign(campaign);
 
-		// Set supporting campaigns
-		supporting = localCache.supporting;
-		supporting = utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc');
-		setSupporting(supporting);
+			// Set variables for progress bar
+			amountRaised = campaign?.amounts?.total_amount_raised !== false ? campaign.amounts.total_amount_raised : 0;
+			setAmountRaised(amountRaised);
+			goal = campaign?.amounts?.goal !== false ? campaign.amounts.goal : 0;
+			setGoal(goal);
 
-		// Get campaign data if totals have changed or if not in cache
-		const totalsChanged = (localCache.campaign && utils.checkTotals(localCache)) || !localCache.campaign ? true : false;
-		if (totalsChanged) {
-			localCache.campaign = await requests.campaign(campaigns.current);
+			// Reset totalRaised and get amount raised from all campaigns
+			totalRaised = 0;
+			previous.forEach((campaign) => {
+				totalRaised += campaign.amounts.total_amount_raised;
+			});
+			if (amountRaised) {
+				totalRaised += amountRaised;
+			}
+			setTotalRaised(totalRaised);
 		}
-
-		// Set team campaign (and add details)
-		campaign = utils.updateCampaign(localCache, campaigns);
-		setCampaign(campaign);
-
-		// Get current amounts
-		current.amounts = campaign ? campaign.amounts : false;
-
-		// Set variables for progress bar
-		amountRaised = current?.amounts?.total_amount_raised !== false ? current.amounts.total_amount_raised : 0;
-		setAmountRaised(amountRaised);
-		goal = current?.amounts?.goal !== false ? current.amounts.goal : 0;
-		setGoal(goal);
-
-		// Reset totalRaised and get amount raised from all campaigns
-		totalRaised = 0;
-		previous.forEach((campaign) => {
-			totalRaised += campaign.amounts.total_amount_raised;
-		});
-		if (amountRaised) {
-			totalRaised += amountRaised;
-		}
-		setTotalRaised(totalRaised);
-	}
+	}, [supportingStatus, campaignStatus]);
 
 	return (
 		<>

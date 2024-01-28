@@ -140,8 +140,10 @@ export const utils = {
 	},
 	updateCampaign: (localCache, campaigns) => {
 		// Update campaign details
-		localCache.campaign.date = campaigns.current.date;
-		localCache.campaign.links = campaigns.current.links;
-		return localCache.campaign;
+		if (localCache.campaign) {
+			localCache.campaign.date = campaigns.current.date;
+			localCache.campaign.links = campaigns.current.links;
+			return localCache.campaign;
+		}
 	},
 };

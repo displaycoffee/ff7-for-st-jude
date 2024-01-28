@@ -17,7 +17,9 @@ const parameters = {
 };
 
 export const requests = {
-	campaign: async (current) => {
+	campaign: async ({ queryKey }) => {
+		const current = queryKey[1];
+
 		// Storage for campaign data
 		let campaign = false;
 
@@ -34,12 +36,12 @@ export const requests = {
 			};
 			json.data.amounts = utils.getAmounts(json.data);
 			campaign = json.data;
-			return campaign;
-		} else {
-			return campaign;
 		}
+		return campaign;
 	},
-	supporting: async (current) => {
+	supporting: async ({ queryKey }) => {
+		const current = queryKey[1];
+
 		// Storage for supporting data
 		let supporting = false;
 
@@ -67,10 +69,8 @@ export const requests = {
 				}
 				return data;
 			});
-			return supporting;
-		} else {
-			return supporting;
 		}
+		return supporting;
 	},
 	donations: async (current, supporting) => {
 		// Storage for donations data
