@@ -72,7 +72,10 @@ export const requests = {
 		}
 		return supporting;
 	},
-	donations: async (current, supporting) => {
+	donations: async ({ queryKey }) => {
+		const current = queryKey[1];
+		const supporting = queryKey[2];
+
 		// Storage for donations data
 		let donations = false;
 
@@ -103,12 +106,12 @@ export const requests = {
 				}
 				return data;
 			});
-			return donations;
-		} else {
-			return donations;
 		}
+		return donations;
 	},
-	rewards: async (current) => {
+	rewards: async ({ queryKey }) => {
+		const current = queryKey[1];
+
 		// Storage for rewards data
 		let rewards = false;
 
@@ -131,10 +134,8 @@ export const requests = {
 				];
 				return utils.filterContent('rewards', data);
 			});
-			return rewards;
-		} else {
-			return rewards;
 		}
+		return rewards;
 	},
 	targets: async (current) => {
 		// Storage for targets data

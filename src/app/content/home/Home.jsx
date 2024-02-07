@@ -27,30 +27,30 @@ export const Home = (props) => {
 	let [totalRaised, setTotalRaised] = useState(0);
 
 	// Use query to get supporting campaigns
-	const { data: supportingQuery, status: supportingStatus } = useQuery({
+	const requestSupporting = !localCache.supporting ? true : false;
+	const { data: supportingQuery, isSuccess: supportingStatus } = useQuery({
 		queryKey: ['supporting', current],
 		queryFn: requests.supporting,
+		enabled: requestSupporting,
 	});
 
 	// Get campaign data if totals have changed or if not in cache
-	const totalsChanged = (localCache.campaign && utils.checkTotals(localCache)) || !localCache.campaign ? true : false;
-	const { data: campaignQuery, status: campaignStatus } = useQuery({
+	const requestCampaign = !localCache.campaign || (localCache.campaign && utils.checkTotals(localCache)) ? true : false;
+	const { data: campaignQuery, isSuccess: campaignStatus } = useQuery({
 		queryKey: ['campaign', current],
 		queryFn: requests.campaign,
-		enabled: totalsChanged,
+		enabled: requestCampaign,
 	});
 
 	useEffect(() => {
-		if (supportingStatus == 'success' && campaignStatus == 'success') {
+		if (supportingStatus && campaignStatus) {
 			// Update supporting
-			localCache.supporting = utils.checkArray(supportingQuery);
-			localCache.supporting = utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc');
+			localCache.supporting = utils.updateSupporting(supportingQuery, localCache);
 			supporting = localCache.supporting;
 			setSupporting(supporting);
 
 			// Set team campaign (and add details)
-			localCache.campaign = campaignQuery ? campaignQuery : false;
-			localCache.campaign = utils.updateCampaign(localCache, campaigns);
+			localCache.campaign = utils.updateCampaign(campaignQuery, localCache, campaigns);
 			campaign = localCache.campaign;
 			setCampaign(campaign);
 

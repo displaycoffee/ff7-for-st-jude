@@ -138,12 +138,27 @@ export const utils = {
 		});
 		return list;
 	},
-	updateCampaign: (localCache, campaigns) => {
+	updateCampaign: (query, localCache, campaigns) => {
 		// Update campaign details
-		if (localCache.campaign) {
+		if (query) {
+			localCache.campaign = query;
 			localCache.campaign.date = campaigns.current.date;
 			localCache.campaign.links = campaigns.current.links;
-			return localCache.campaign;
+		} else {
+			localCache.campaign = false;
 		}
+		return localCache.campaign;
+	},
+	updateDonations: (query, localCache) => {
+		// Update donation details
+		localCache.donations = utils.checkArray(query);
+		localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
+		return localCache.donations;
+	},
+	updateSupporting: (query, localCache) => {
+		// Update supporting details
+		localCache.supporting = utils.checkArray(query);
+		localCache.supporting = utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc');
+		return localCache.supporting;
 	},
 };
