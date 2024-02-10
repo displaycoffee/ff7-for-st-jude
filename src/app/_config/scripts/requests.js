@@ -17,7 +17,9 @@ const parameters = {
 };
 
 export const requests = {
-	campaign: async (current) => {
+	campaign: async ({ queryKey }) => {
+		const current = queryKey[1];
+
 		// Storage for campaign data
 		let campaign = false;
 
@@ -34,12 +36,12 @@ export const requests = {
 			};
 			json.data.amounts = utils.getAmounts(json.data);
 			campaign = json.data;
-			return campaign;
-		} else {
-			return campaign;
 		}
+		return campaign;
 	},
-	supporting: async (current) => {
+	supporting: async ({ queryKey }) => {
+		const current = queryKey[1];
+
 		// Storage for supporting data
 		let supporting = false;
 
@@ -67,12 +69,13 @@ export const requests = {
 				}
 				return data;
 			});
-			return supporting;
-		} else {
-			return supporting;
 		}
+		return supporting;
 	},
-	donations: async (current, supporting) => {
+	donations: async ({ queryKey }) => {
+		const current = queryKey[1];
+		const supporting = queryKey[2];
+
 		// Storage for donations data
 		let donations = false;
 
@@ -103,12 +106,12 @@ export const requests = {
 				}
 				return data;
 			});
-			return donations;
-		} else {
-			return donations;
 		}
+		return donations;
 	},
-	rewards: async (current) => {
+	rewards: async ({ queryKey }) => {
+		const current = queryKey[1];
+
 		// Storage for rewards data
 		let rewards = false;
 
@@ -131,12 +134,12 @@ export const requests = {
 				];
 				return utils.filterContent('rewards', data);
 			});
-			return rewards;
-		} else {
-			return rewards;
 		}
+		return rewards;
 	},
-	targets: async (current) => {
+	targets: async ({ queryKey }) => {
+		const current = queryKey[1];
+
 		// Storage for targets data
 		let targets = false;
 
@@ -159,9 +162,7 @@ export const requests = {
 				];
 				return utils.filterContent('targets', data);
 			});
-			return targets;
-		} else {
-			return targets;
 		}
+		return targets;
 	},
 };

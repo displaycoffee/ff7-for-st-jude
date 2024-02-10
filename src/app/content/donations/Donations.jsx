@@ -2,83 +2,70 @@
 import { useContext, useState, useEffect } from 'react';
 
 /* Local scripts */
-import { requests } from '../../_config/scripts/requests';
+import { useCampaign, useDonations, useSupporting } from '../../_config/scripts/hooks';
 
 /* Local components */
 import { Skeleton } from '../../shared/skeleton/Skeleton';
 import { Context } from '../../entry/context/Context';
-import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
+import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../shared/details/Details';
 
 /* Set donations timeout (or false to disable) */
 const timeout = false; // 60000 == one minute
 
-/* Default object state for content details */
-const defaultState = {
-	data: false,
-	loaded: false,
-};
-
 export const Donations = (props) => {
 	let { localCache } = props;
 	const context = useContext(Context);
-	const { campaigns, utils } = context;
+	const { campaigns, utils, queryClient } = context;
+	const { current } = campaigns;
 
 	// State variables
 	let [supporting, setSupporting] = useState(false);
 	let [campaign, setCampaign] = useState(false);
-	let [donations, setDonations] = useState(defaultState);
+	let [donations, setDonations] = useState(false);
+
+	// Use custom hook to get supporting campaigns
+	const [supportingData, supportingStatus] = useSupporting(localCache, current);
+
+	// Use custom hook to get campaign
+	const [campaignData, campaignStatus] = useCampaign(localCache, current);
 
 	useEffect(() => {
-		// Request campaign content on load
-		requestDonations();
-	}, []);
+		if (supportingStatus == 'success' && campaignStatus == 'success') {
+			// Update supporting
+			localCache.supporting = utils.updateSupporting(supportingData, localCache);
+			supporting = localCache.supporting;
+			setSupporting(supporting);
 
-	async function requestDonations() {
-		// Always get data of supporting campaigns to check if totals have changed
-		localCache.supporting = await requests.supporting(campaigns.current);
-
-		// Set supporting campaigns
-		supporting = localCache.supporting;
-		setSupporting(supporting);
-
-		// Get campaign data if totals have changed or if not in cache
-		const totalsChanged = (localCache.campaign && utils.checkTotals(localCache)) || !localCache.campaign ? true : false;
-		if (totalsChanged) {
-			localCache.campaign = await requests.campaign(campaigns.current);
+			// Set team campaign (and add details)
+			localCache.campaign = utils.updateCampaign(campaignData, localCache, campaigns);
+			campaign = localCache.campaign;
+			setCampaign(campaign);
 		}
+	}, [supportingStatus, campaignStatus]);
 
-		// Set team campaign (and add details)
-		campaign = utils.updateCampaign(localCache, campaigns);
-		setCampaign(campaign);
+	// Use custom hook to get donations
+	const [donationsData, donationsStatus] = useDonations(supporting, localCache, current);
 
-		if (totalsChanged || (!totalsChanged && !localCache.donations)) {
-			// Initially add donations into cache (these can be fetched from the team campaign)
-			localCache.donations = await requests.donations(campaigns.current, supporting);
+	useEffect(() => {
+		if (donationsStatus == 'success') {
+			// Set donations
+			localCache.donations = utils.checkArray(donationsData);
+			localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
+			donations = localCache.donations;
+			setDonations(donations);
 		}
-
-		// Set donations
-		localCache.donations = utils.checkArray(localCache.donations);
-		localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
-		donations = {
-			data: localCache.donations,
-			loaded: true,
-		};
-		setDonations(donations);
-	}
+	}, [donationsStatus]);
 
 	useEffect(() => {
 		if (timeout) {
 			const interval = setInterval(() => {
-				// Partially reset localCache to get new details
-				localCache.campaign = false;
-				localCache.supporting = false;
-				localCache.donations = false;
-
 				// Reset states
-				setDonations(defaultState);
+				localCache.donations = false;
+				donations = localCache.donations;
+				setDonations(donations);
 
-				// Run requestDonations again
-				requestDonations();
+				// Reset queries
+				queryClient.resetQueries({ queryKey: ['donations'] });
 			}, timeout);
 
 			return () => {
@@ -91,8 +78,8 @@ export const Donations = (props) => {
 		<>
 			<Details header={'Donations'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{donations.data
-						? donations.data.map((donation) => {
+					{donations
+						? donations.map((donation) => {
 								const { amount } = donation.amounts;
 
 								return (
@@ -112,25 +99,13 @@ export const Donations = (props) => {
 						  })
 						: null}
 
-					{donations.loaded && donations.data.length === 0 ? (
-						<ContentLoading type={'donations'} />
+					{donationsStatus == 'success' && donations.length === 0 ? (
+						<DetailsNotFound type={'donations'} />
 					) : (
 						<Skeleton columns={15} perRow={3} paragraphs={2} />
 					)}
 				</div>
 			</Details>
 		</>
-	);
-};
-
-export const ContentLoading = (props) => {
-	const { type } = props;
-
-	return (
-		<div className="column column-width-100">
-			<div className="blue-section">
-				<p>No {type} found.</p>
-			</div>
-		</div>
 	);
 };

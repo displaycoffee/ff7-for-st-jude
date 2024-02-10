@@ -50,12 +50,6 @@ export const utils = {
 		}
 		return contentActive;
 	},
-	flatten: (object) => {
-		// Flatten object into array
-		return Object.keys(object).map((value) => {
-			return object[value];
-		});
-	},
 	getAmounts: (detail) => {
 		// Set values from currency data
 		const amount = utils.checkAmount(detail?.amount?.value);
@@ -84,16 +78,6 @@ export const utils = {
 			.replace(/[^\w\s]/g, '')
 			.replace(/\s/g, '-')
 			.trim();
-	},
-	initCache: () => {
-		// Function to create or reset cache
-		return {
-			campaign: false,
-			supporting: false,
-			donations: false,
-			rewards: false,
-			targets: false,
-		};
 	},
 	merge: (array) => {
 		// Merge array of arrays
@@ -138,10 +122,27 @@ export const utils = {
 		});
 		return list;
 	},
-	updateCampaign: (localCache, campaigns) => {
+	updateCampaign: (query, localCache, campaigns) => {
 		// Update campaign details
-		localCache.campaign.date = campaigns.current.date;
-		localCache.campaign.links = campaigns.current.links;
+		if (query) {
+			localCache.campaign = query;
+			localCache.campaign.date = campaigns.current.date;
+			localCache.campaign.links = campaigns.current.links;
+		} else {
+			localCache.campaign = false;
+		}
 		return localCache.campaign;
+	},
+	updateDonations: (query, localCache) => {
+		// Update donation details
+		localCache.donations = utils.checkArray(query);
+		localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
+		return localCache.donations;
+	},
+	updateSupporting: (query, localCache) => {
+		// Update supporting details
+		localCache.supporting = utils.checkArray(query);
+		localCache.supporting = utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc');
+		return localCache.supporting;
 	},
 };
