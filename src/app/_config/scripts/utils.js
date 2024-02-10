@@ -50,12 +50,6 @@ export const utils = {
 		}
 		return contentActive;
 	},
-	flatten: (object) => {
-		// Flatten object into array
-		return Object.keys(object).map((value) => {
-			return object[value];
-		});
-	},
 	getAmounts: (detail) => {
 		// Set values from currency data
 		const amount = utils.checkAmount(detail?.amount?.value);
@@ -84,16 +78,6 @@ export const utils = {
 			.replace(/[^\w\s]/g, '')
 			.replace(/\s/g, '-')
 			.trim();
-	},
-	initCache: () => {
-		// Function to create or reset cache
-		return {
-			campaign: false,
-			supporting: false,
-			donations: false,
-			rewards: false,
-			targets: false,
-		};
 	},
 	merge: (array) => {
 		// Merge array of arrays

@@ -57,3 +57,15 @@ export const DetailsLinks = (props) => {
 
 	return links && links.length != 0 ? hasWrapper ? <div className="details-links">{linksLoop}</div> : linksLoop : null;
 };
+
+export const DetailsNotFound = (props) => {
+	const { type } = props;
+
+	return (
+		<div className="column column-width-100">
+			<div className="blue-section">
+				<p>No {type} found.</p>
+			</div>
+		</div>
+	);
+};

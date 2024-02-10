@@ -1,12 +1,11 @@
 /* React */
 import { useContext, useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
 
 /* Local styles */
 import './styles/home.scss';
 
 /* Local scripts */
-import { requests } from '../../_config/scripts/requests';
+import { useCampaign, useSupporting } from '../../_config/scripts/hooks';
 
 /* Local components */
 import { Context } from '../../entry/context/Context';
@@ -26,31 +25,21 @@ export const Home = (props) => {
 	let [goal, setGoal] = useState(0);
 	let [totalRaised, setTotalRaised] = useState(0);
 
-	// Use query to get supporting campaigns
-	const requestSupporting = !localCache.supporting ? true : false;
-	const { data: supportingQuery, isSuccess: supportingStatus } = useQuery({
-		queryKey: ['supporting', current],
-		queryFn: requests.supporting,
-		enabled: requestSupporting,
-	});
+	// Use custom hook to get supporting campaigns
+	const [supportingData, supportingStatus] = useSupporting(localCache, current);
 
-	// Get campaign data if totals have changed or if not in cache
-	const requestCampaign = !localCache.campaign || (localCache.campaign && utils.checkTotals(localCache)) ? true : false;
-	const { data: campaignQuery, isSuccess: campaignStatus } = useQuery({
-		queryKey: ['campaign', current],
-		queryFn: requests.campaign,
-		enabled: requestCampaign,
-	});
+	// Use custom hook to get campaign
+	const [campaignData, campaignStatus] = useCampaign(localCache, current);
 
 	useEffect(() => {
-		if (supportingStatus && campaignStatus) {
+		if (supportingStatus == 'success' && campaignStatus == 'success') {
 			// Update supporting
-			localCache.supporting = utils.updateSupporting(supportingQuery, localCache);
+			localCache.supporting = utils.updateSupporting(supportingData, localCache);
 			supporting = localCache.supporting;
 			setSupporting(supporting);
 
 			// Set team campaign (and add details)
-			localCache.campaign = utils.updateCampaign(campaignQuery, localCache, campaigns);
+			localCache.campaign = utils.updateCampaign(campaignData, localCache, campaigns);
 			campaign = localCache.campaign;
 			setCampaign(campaign);
 

@@ -1,29 +1,22 @@
 /* React */
 import { useContext, useState, useEffect } from 'react';
-import { useQuery, useQueries } from '@tanstack/react-query';
 
 /* Local styles */
 import './styles/dashboard.scss';
 
 /* Local scripts */
-import { requests } from '../../_config/scripts/requests';
+import { useCampaign, useDonations, useSupporting, useMultiQueries } from '../../_config/scripts/hooks';
 
 /* Local components */
 import { Skeleton } from '../../shared/skeleton/Skeleton';
 import { Context } from '../../entry/context/Context';
-import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
-
-/* Default object state for content details */
-const defaultState = {
-	data: false,
-	loaded: false,
-};
+import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../shared/details/Details';
 
 export const Dashboard = (props) => {
 	let { localCache } = props;
 	const context = useContext(Context);
-	const { campaigns, utils, variables } = context;
-	const { current, previous } = campaigns;
+	const { campaigns, utils, queryClient, variables } = context;
+	const { current } = campaigns;
 
 	// State variables
 	let [supporting, setSupporting] = useState(false);
@@ -32,170 +25,60 @@ export const Dashboard = (props) => {
 	let [rewards, setRewards] = useState(false);
 	let [targets, setTargets] = useState(false);
 
-	// Use query to get supporting campaigns
-	const requestSupporting = !localCache.supporting ? true : false;
-	const { data: supportingQuery, status: supportingStatus } = useQuery({
-		queryKey: ['supporting', current],
-		queryFn: requests.supporting,
-		enabled: requestSupporting,
-	});
+	// Use custom hook to get supporting campaigns
+	const [supportingData, supportingStatus] = useSupporting(localCache, current);
 
-	// Get campaign data if totals have changed or if not in cache
-	const requestCampaign = !localCache.campaign || (localCache.campaign && utils.checkTotals(localCache)) ? true : false;
-	const { data: campaignQuery, status: campaignStatus } = useQuery({
-		queryKey: ['campaign', current],
-		queryFn: requests.campaign,
-		enabled: requestCampaign,
-	});
+	// Use custom hook to get campaign
+	const [campaignData, campaignStatus] = useCampaign(localCache, current);
 
 	useEffect(() => {
-		if (supportingStatus && campaignStatus) {
+		if (supportingStatus == 'success' && campaignStatus == 'success') {
 			// Update supporting
-			localCache.supporting = utils.updateSupporting(supportingQuery, localCache);
+			localCache.supporting = utils.updateSupporting(supportingData, localCache);
 			supporting = localCache.supporting;
 			setSupporting(supporting);
 
 			// Set team campaign (and add details)
-			localCache.campaign = utils.updateCampaign(campaignQuery, localCache, campaigns);
+			localCache.campaign = utils.updateCampaign(campaignData, localCache, campaigns);
 			campaign = localCache.campaign;
 			setCampaign(campaign);
 		}
 	}, [supportingStatus, campaignStatus]);
 
-	// Get donations data if supporting is available and if not in cache or if totals have changed
-	const requestDontations = supporting && (!localCache.donations || (localCache.donations && utils.checkTotals(localCache))) ? true : false;
-	const { data: donationsQuery, isSuccess: donationsStatus } = useQuery({
-		queryKey: ['donations', current, supporting],
-		queryFn: requests.donations,
-		enabled: requestDontations,
-	});
+	// Use custom hook to get donations
+	const [donationsData, donationsStatus] = useDonations(supporting, localCache, current);
 
-	// Use query to get rewards
-	const requestRewards = supporting && supporting.length !== 0 ? true : false;
-	const { data: rewardsQuery, isSuccess: rewardsStatus } = useQueries({
-		queries: requestRewards
-			? supporting.map((result) => {
-					return {
-						queryKey: ['rewards', result],
-						queryFn: requests.rewards,
-					};
-			  })
-			: [], // if supporting is undefined, an empty array will be returned
-		combine: (results) => {
-			return {
-				data: utils.merge(
-					results.map((result) => {
-						return result.data;
-					}),
-				),
-				status: results.some((result) => result.isSuccess),
-			};
-		},
-	});
+	// Use ustom hook to get rewards
+	const [rewardsData, rewardsStatus] = useMultiQueries(supporting, 'rewards');
+
+	// Use ustom hook to get targets
+	const [targetsData, targetsStatus] = useMultiQueries(supporting, 'targets');
 
 	useEffect(() => {
-		if (donationsStatus) {
+		if (donationsStatus == 'success') {
 			// Set donations
-			localCache.donations = utils.checkArray(donationsQuery);
+			localCache.donations = utils.checkArray(donationsData);
 			localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
 			donations = localCache.donations;
 			setDonations(donations);
 		}
-	}, [donationsStatus]);
 
-	// useEffect(() => {
-	// 	// Request campaign content on load
-	// 	requestContent();
-	// }, []);
+		if (rewardsStatus == 'success') {
+			// Set rewards
+			localCache.rewards = utils.checkArray(rewardsData);
+			localCache.rewards = utils.sort(localCache.rewards, 'integer', 'milliseconds', 'asc');
+			rewards = localCache.rewards;
+			setRewards(rewards);
+		}
 
-	// async function requestContent() {
-	// 	// Always get data of supporting campaigns to check if totals have changed
-	// 	localCache.supporting = await requests.supporting(campaigns.current);
-
-	// 	// Set supporting campaigns
-	// 	supporting = localCache.supporting;
-	// 	setSupporting(supporting);
-
-	// 	// Get campaign data if totals have changed or if not in cache
-	// 	const totalsChanged = (localCache.campaign && utils.checkTotals(localCache)) || !localCache.campaign ? true : false;
-	// 	if (totalsChanged) {
-	// 		localCache.campaign = await requests.campaign(campaigns.current);
-	// 	}
-
-	// 	// Set team campaign (and add details)
-	// 	campaign = utils.updateCampaign(localCache, campaigns);
-	// 	setCampaign(campaign);
-
-	// 	if (totalsChanged || (!totalsChanged && !localCache.donations)) {
-	// 		// Initially add donations into cache (these can be fetched from the team campaign)
-	// 		localCache.donations = await requests.donations(campaigns.current, supporting);
-	// 	}
-
-	// 	// Set donations
-	// 	localCache.donations = utils.checkArray(localCache.donations);
-	// 	localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
-	// 	donations = {
-	// 		data: localCache.donations,
-	// 		loaded: true,
-	// 	};
-	// 	setDonations(donations);
-
-	// 	if (totalsChanged || (!totalsChanged && !localCache.rewards) || (!totalsChanged && !localCache.targets)) {
-	// 		// Make sure both caches are set to false
-	// 		localCache.rewards = false;
-	// 		localCache.targets = false;
-
-	// 		// Loop through supporting to fetch content
-	// 		for (const support in supporting) {
-	// 			const supportData = supporting[support];
-
-	// 			// Set fetch array
-	// 			const contentFetch = [requests.rewards(supportData), requests.targets(supportData)];
-
-	// 			// Fetch content using promise
-	// 			await Promise.all(contentFetch)
-	// 				.then(([rewardsResponse, targetsResponse]) => {
-	// 					return [rewardsResponse, targetsResponse];
-	// 				})
-	// 				.then(([rewardsJson, targetsJson]) => {
-	// 					if (!localCache.rewards) {
-	// 						localCache.rewards = {};
-	// 					}
-	// 					if (!localCache.rewards[supportData.id]) {
-	// 						localCache.rewards[supportData.id] = rewardsJson;
-	// 					}
-	// 					if (!localCache.targets) {
-	// 						localCache.targets = {};
-	// 					}
-	// 					if (!localCache.targets[supportData.id]) {
-	// 						localCache.targets[supportData.id] = targetsJson;
-	// 					}
-	// 				});
-	// 		}
-
-	// 		// Update rewards and targets after requesting
-	// 		localCache.rewards = localCache.rewards ? utils.merge(utils.flatten(localCache.rewards)) : false;
-	// 		localCache.targets = localCache.targets ? utils.merge(utils.flatten(localCache.targets)) : false;
-	// 	}
-
-	// 	// Set rewards
-	// 	localCache.rewards = utils.checkArray(localCache.rewards);
-	// 	localCache.rewards = utils.sort(localCache.rewards, 'integer', 'milliseconds', 'asc');
-	// 	rewards = {
-	// 		data: localCache.rewards,
-	// 		loaded: true,
-	// 	};
-	// 	setRewards(rewards);
-
-	// 	// Set targets
-	// 	localCache.targets = utils.checkArray(localCache.targets);
-	// 	localCache.targets = utils.sort(localCache.targets, 'integer', 'milliseconds', 'asc');
-	// 	targets = {
-	// 		data: localCache.targets,
-	// 		loaded: true,
-	// 	};
-	// 	setTargets(targets);
-	// }
+		if (targetsStatus == 'success') {
+			// Set targets
+			localCache.targets = utils.checkArray(targetsData);
+			localCache.targets = utils.sort(localCache.targets, 'integer', 'milliseconds', 'asc');
+			targets = localCache.targets;
+			setTargets(targets);
+		}
+	}, [donationsStatus, rewardsStatus, targetsStatus]);
 
 	return (
 		<>
@@ -220,29 +103,34 @@ export const Dashboard = (props) => {
 							</button>
 						</li>
 
-						{/* <li className="floating-list-item">
+						<li className="floating-list-item">
 							<button
 								className="pointer unstyled a"
 								onClick={(e) => {
 									// Refresh content
 									e.preventDefault();
 
-									// Reset localCache to get new details
-									localCache = utils.initCache();
-
 									// Reset states
-									setDonations(defaultState);
-									setRewards(defaultState);
-									setTargets(defaultState);
+									localCache.donations = false;
+									donations = localCache.donations;
+									setDonations(donations);
+									localCache.rewards = false;
+									rewards = localCache.rewards;
+									setRewards(rewards);
+									localCache.targets = false;
+									targets = localCache.targets;
+									setTargets(targets);
 
-									// Run requestContent again
-									requestContent();
+									// Reset queries
+									queryClient.resetQueries({ queryKey: ['donations'] });
+									queryClient.resetQueries({ queryKey: ['rewards'] });
+									queryClient.resetQueries({ queryKey: ['targets'] });
 								}}
 								type="button"
 							>
 								Refresh
 							</button>
-						</li> */}
+						</li>
 					</ul>
 				</div>
 			</nav>
@@ -270,18 +158,18 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					{donationsStatus && donations.length === 0 ? (
-						<ContentLoading type={'donations'} />
+					{donationsStatus == 'success' && donations.length === 0 ? (
+						<DetailsNotFound type={'donations'} />
 					) : (
 						<Skeleton columns={15} perRow={3} paragraphs={2} />
 					)}
 				</div>
 			</Details>
 
-			{/* <Details header={'Rewards'} hasRow={true} scrollLink={true}>
+			<Details header={'Rewards'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{rewards.data
-						? rewards.data.map((reward) => {
+					{rewards
+						? rewards.map((reward) => {
 								const { amount } = reward?.amounts ? reward.amounts : false;
 
 								return reward ? (
@@ -306,8 +194,8 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					{rewards.loaded && rewards.data.length === 0 ? (
-						<ContentLoading type={'rewards'} />
+					{rewardsStatus == 'success' && rewards.length === 0 ? (
+						<DetailsNotFound type={'rewards'} />
 					) : (
 						<Skeleton columns={6} perRow={3} paragraphs={6} />
 					)}
@@ -316,8 +204,8 @@ export const Dashboard = (props) => {
 
 			<Details header={'Targets'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{targets.data
-						? targets.data.map((target) => {
+					{targets
+						? targets.map((target) => {
 								const { amount_raised, amount } = target?.amounts ? target.amounts : false;
 
 								return target ? (
@@ -345,25 +233,13 @@ export const Dashboard = (props) => {
 						  })
 						: null}
 
-					{targets.loaded && targets.data.length === 0 ? (
-						<ContentLoading type={'targets'} />
+					{targetsStatus == 'success' && targets.length === 0 ? (
+						<DetailsNotFound type={'targets'} />
 					) : (
 						<Skeleton columns={6} perRow={3} paragraphs={5} />
 					)}
 				</div>
-			</Details> */}
+			</Details>
 		</>
-	);
-};
-
-export const ContentLoading = (props) => {
-	const { type } = props;
-
-	return (
-		<div className="column column-width-100">
-			<div className="blue-section">
-				<p>No {type} found.</p>
-			</div>
-		</div>
 	);
 };

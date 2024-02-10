@@ -137,7 +137,9 @@ export const requests = {
 		}
 		return rewards;
 	},
-	targets: async (current) => {
+	targets: async ({ queryKey }) => {
+		const current = queryKey[1];
+
 		// Storage for targets data
 		let targets = false;
 
@@ -160,9 +162,7 @@ export const requests = {
 				];
 				return utils.filterContent('targets', data);
 			});
-			return targets;
-		} else {
-			return targets;
 		}
+		return targets;
 	},
 };
