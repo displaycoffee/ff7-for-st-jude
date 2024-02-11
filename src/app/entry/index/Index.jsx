@@ -84,17 +84,18 @@ const IndexBody = () => {
 	const location = useLocation();
 	const bodySelector = document.querySelector('body');
 	const bodyPrefix = 'page-';
+	const bodyDefault = 'content';
 
 	useEffect(() => {
 		// Remove any previous body class
-		bodySelector.classList.remove(`${bodyPrefix}${indexCache.previous || 'index'}`);
+		bodySelector.classList.remove(`${bodyPrefix}${indexCache.previous || bodyDefault}`);
 
 		// Update previous location path
 		// Replace any body prefix, remove first slash, and replace any other slash with hyphen
 		indexCache.previous = location.pathname.replace(bodyPrefix, '').replace('/', '').replace(/\//g, '-');
 
 		// Add new body class
-		bodySelector.classList.add(`${bodyPrefix}${indexCache.previous || 'index'}`);
+		bodySelector.classList.add(`${bodyPrefix}${indexCache.previous || bodyDefault}`);
 	}, [location]);
 
 	return null;

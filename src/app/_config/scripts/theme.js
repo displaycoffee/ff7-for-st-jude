@@ -1,4 +1,4 @@
-// Import variables from sass
+/* Import variables from sass */
 import themeVars from '../styles/theme/_theme.module.scss';
 
 export const theme = {
@@ -120,7 +120,7 @@ export const theme = {
 	},
 };
 
-// Ensure an empty or undefined sass value is false
+/* Ensure an empty or undefined sass value is false */
 function checkSassVar(value) {
 	if (value) {
 		if (value == 'true') {

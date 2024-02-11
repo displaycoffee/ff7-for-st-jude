@@ -222,16 +222,16 @@
 
 // Gradient - generate strips for gradients
 @mixin gradient-stripes($map) {
-	// variables for calculating colors for gradients
+	// Variables for calculating colors for gradients
 	$length: length($map);
 	$divider: calc(100 / $length);
 	$separator: ',';
 
-	// gradients string
+	// Gradients string
 	$gradients: '';
 	$gradients-fallback: '';
 
-	// loop through colors and process gradient rule
+	// Loop through colors and process gradient rule
 	@each $color in $map {
 		$index: index($map, $color) - 1;
 		$percentage: if($index == 0, calc(($index + 1) * $divider), calc($index * $divider));
@@ -245,7 +245,7 @@
 		}
 	}
 
-	// css rules
+	// CSS rules
 	background-color: $gradients-fallback;
 	background-image: -webkit-linear-gradient(#{$gradients});
 	background-image: -o-linear-gradient(#{$gradients});
@@ -324,7 +324,7 @@
 }
 
 // Placeholder
-// examples: @include placeholder {}, :focus{@include placeholder {}}, or input {@include placeholder {}}
+// Examples: @include placeholder {}, :focus{@include placeholder {}}, or input {@include placeholder {}}
 @mixin placeholder {
 	&::-webkit-input-placeholder {@content}
 	&::-ms-input-placeholder {@content}
