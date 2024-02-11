@@ -78,19 +78,19 @@ export const Dashboard = () => {
 				<div className="blue-section">
 					<ul className="floating-list unstyled">
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-donations')} type="button">
+							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-donations', 100)} type="button">
 								Donations
 							</button>
 						</li>
 
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-rewards')} type="button">
+							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-rewards', 100)} type="button">
 								Rewards
 							</button>
 						</li>
 
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-targets')} type="button">
+							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-targets', 100)} type="button">
 								Targets
 							</button>
 						</li>
