@@ -7,19 +7,20 @@ export const utils = {
 		// Ensure array has length and if not, reset to false
 		return array && array.length !== 0 ? array : [];
 	},
-	checkTotals: (localCache) => {
+	checkTotals: (content) => {
+		const { campaign, supporting } = content;
 		let totalChanged = false; // Variable to see if total has changed
 
-		if (localCache.campaign) {
+		if (campaign) {
 			// Get total amount for checking if prices have changed
-			let campaignTotal = localCache.campaign.amounts.amount_raised;
-			localCache.supporting.filter((d) => {
+			let campaignTotal = campaign.amounts.amount_raised;
+			supporting.filter((d) => {
 				const dValue = d.amount_raised.value || d.amount_raised.value === 0 ? utils.convertDecimal(d.amount_raised.value) : d.amount_raised;
 				campaignTotal += dValue;
 			});
 
 			// Request campaign from api if amount has changed
-			if (campaignTotal != localCache.campaign.amounts.total_amount_raised) {
+			if (campaignTotal != campaign.amounts.total_amount_raised) {
 				totalChanged = true;
 			}
 		} else {
@@ -122,27 +123,26 @@ export const utils = {
 		});
 		return list;
 	},
-	updateCampaign: (query, localCache, campaigns) => {
+	updateCampaign: (campaign, campaigns) => {
 		// Update campaign details
-		if (query) {
-			localCache.campaign = query;
-			localCache.campaign.date = campaigns.current.date;
-			localCache.campaign.links = campaigns.current.links;
+		if (campaign) {
+			campaign.date = campaigns.current.date;
+			campaign.links = campaigns.current.links;
 		} else {
-			localCache.campaign = false;
+			campaign = false;
 		}
-		return localCache.campaign;
+		return campaign;
 	},
-	updateDonations: (query, localCache) => {
+	updateDonations: (donations) => {
 		// Update donation details
-		localCache.donations = utils.checkArray(query);
-		localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
-		return localCache.donations;
+		donations = utils.checkArray(donations);
+		donations = utils.sort(donations, 'integer', 'milliseconds', 'desc');
+		return donations;
 	},
-	updateSupporting: (query, localCache) => {
+	updateSupporting: (supporting) => {
 		// Update supporting details
-		localCache.supporting = utils.checkArray(query);
-		localCache.supporting = utils.sort(localCache.supporting, 'integer', 'total_amount_raised', 'desc');
-		return localCache.supporting;
+		supporting = utils.checkArray(supporting);
+		supporting = utils.sort(supporting, 'integer', 'total_amount_raised', 'desc');
+		return supporting;
 	},
 };

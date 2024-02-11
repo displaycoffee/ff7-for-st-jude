@@ -1,5 +1,5 @@
 /* React */
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 /* Local styles */
 import './styles/dashboard.scss';
@@ -12,71 +12,63 @@ import { Skeleton } from '../../shared/skeleton/Skeleton';
 import { Context } from '../../entry/context/Context';
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../shared/details/Details';
 
-export const Dashboard = (props) => {
-	let { localCache } = props;
+export const Dashboard = () => {
 	const context = useContext(Context);
-	const { campaigns, utils, queryClient, variables } = context;
+	let { campaigns, utils, queryClient, variables, content, setContent } = context;
+	let { supporting, campaign, donations, rewards, targets } = content;
 	const { current } = campaigns;
 
-	// State variables
-	let [supporting, setSupporting] = useState(false);
-	let [campaign, setCampaign] = useState(false);
-	let [donations, setDonations] = useState(false);
-	let [rewards, setRewards] = useState(false);
-	let [targets, setTargets] = useState(false);
-
 	// Use custom hook to get supporting campaigns
-	const [supportingData, supportingStatus] = useSupporting(localCache, current);
+	const [supportingData, supportingStatus] = useSupporting(content, current);
 
 	// Use custom hook to get campaign
-	const [campaignData, campaignStatus] = useCampaign(localCache, current);
+	const [campaignData, campaignStatus] = useCampaign(content, current);
 
 	useEffect(() => {
 		if (supportingStatus == 'success' && campaignStatus == 'success') {
 			// Update supporting
-			localCache.supporting = utils.updateSupporting(supportingData, localCache);
-			supporting = localCache.supporting;
-			setSupporting(supporting);
+			supporting = utils.updateSupporting(supportingData);
 
 			// Set team campaign (and add details)
-			localCache.campaign = utils.updateCampaign(campaignData, localCache, campaigns);
-			campaign = localCache.campaign;
-			setCampaign(campaign);
+			campaign = utils.updateCampaign(campaignData, campaigns);
+
+			// Set content state
+			content = { ...content, supporting: supporting, campaign: campaign };
+			setContent(content);
 		}
 	}, [supportingStatus, campaignStatus]);
 
 	// Use custom hook to get donations
-	const [donationsData, donationsStatus] = useDonations(supporting, localCache, current);
+	const [donationsData, donationsStatus] = useDonations(content, current);
 
 	// Use ustom hook to get rewards
-	const [rewardsData, rewardsStatus] = useMultiQueries(supporting, 'rewards');
+	const [rewardsData, rewardsStatus] = useMultiQueries(content, 'rewards');
 
 	// Use ustom hook to get targets
-	const [targetsData, targetsStatus] = useMultiQueries(supporting, 'targets');
+	const [targetsData, targetsStatus] = useMultiQueries(content, 'targets');
 
 	useEffect(() => {
 		if (donationsStatus == 'success') {
 			// Set donations
-			localCache.donations = utils.checkArray(donationsData);
-			localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
-			donations = localCache.donations;
-			setDonations(donations);
+			donations = utils.updateDonations(donationsData);
+			content = { ...content, donations: donations };
 		}
-
 		if (rewardsStatus == 'success') {
 			// Set rewards
-			localCache.rewards = utils.checkArray(rewardsData);
-			localCache.rewards = utils.sort(localCache.rewards, 'integer', 'milliseconds', 'asc');
-			rewards = localCache.rewards;
-			setRewards(rewards);
+			rewards = utils.checkArray(rewardsData);
+			rewards = utils.sort(rewards, 'integer', 'milliseconds', 'asc');
+			content = { ...content, rewards: rewards };
 		}
-
 		if (targetsStatus == 'success') {
 			// Set targets
-			localCache.targets = utils.checkArray(targetsData);
-			localCache.targets = utils.sort(localCache.targets, 'integer', 'milliseconds', 'asc');
-			targets = localCache.targets;
-			setTargets(targets);
+			targets = utils.checkArray(targetsData);
+			targets = utils.sort(targets, 'integer', 'milliseconds', 'asc');
+			content = { ...content, targets: targets };
+		}
+
+		if (donationsStatus == 'success' || rewardsStatus == 'success' || targetsStatus == 'success') {
+			// Set content state
+			setContent(content);
 		}
 	}, [donationsStatus, rewardsStatus, targetsStatus]);
 
@@ -110,16 +102,9 @@ export const Dashboard = (props) => {
 									// Refresh content
 									e.preventDefault();
 
-									// Reset states
-									localCache.donations = false;
-									donations = localCache.donations;
-									setDonations(donations);
-									localCache.rewards = false;
-									rewards = localCache.rewards;
-									setRewards(rewards);
-									localCache.targets = false;
-									targets = localCache.targets;
-									setTargets(targets);
+									// Reset and set content state
+									content = { ...content, donations: false, rewards: false, targets: false };
+									setContent(content);
 
 									// Reset queries
 									queryClient.resetQueries({ queryKey: ['donations'] });

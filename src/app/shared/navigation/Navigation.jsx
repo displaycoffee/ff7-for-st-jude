@@ -56,12 +56,7 @@ export const Navigation = (props) => {
 	) : null;
 };
 
-export const NavigationRoutes = (props) => {
-	const { localCache } = props;
-	const routeProps = {
-		localCache: localCache,
-	};
-
+export const NavigationRoutes = () => {
 	return navigation && navigation.length != 0 ? (
 		<Routes>
 			{navigation.map(
@@ -70,9 +65,9 @@ export const NavigationRoutes = (props) => {
 						<React.Fragment key={nav.id}>
 							{{
 								'participant guide': <Route path={nav.url} element={<ParticipantGuide />} />,
-								dashboard: <Route path={nav.url} element={<Dashboard {...routeProps} />} />,
-								donations: <Route path={nav.url} element={<Donations {...routeProps} />} />,
-							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Home {...routeProps} />} />}
+								dashboard: <Route path={nav.url} element={<Dashboard />} />,
+								donations: <Route path={nav.url} element={<Donations />} />,
+							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Home />} />}
 						</React.Fragment>
 					),
 			)}

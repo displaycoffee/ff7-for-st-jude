@@ -1,5 +1,5 @@
 /* React */
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 
 /* Local scripts */
 import { useCampaign, useDonations, useSupporting } from '../../_config/scripts/hooks';
@@ -12,57 +12,52 @@ import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../
 /* Set donations timeout (or false to disable) */
 const timeout = false; // 60000 == one minute
 
-export const Donations = (props) => {
-	let { localCache } = props;
+export const Donations = () => {
 	const context = useContext(Context);
-	const { campaigns, utils, queryClient } = context;
+	let { campaigns, utils, queryClient, content, setContent } = context;
+	let { supporting, campaign, donations } = content;
 	const { current } = campaigns;
 
-	// State variables
-	let [supporting, setSupporting] = useState(false);
-	let [campaign, setCampaign] = useState(false);
-	let [donations, setDonations] = useState(false);
-
 	// Use custom hook to get supporting campaigns
-	const [supportingData, supportingStatus] = useSupporting(localCache, current);
+	const [supportingData, supportingStatus] = useSupporting(content, current);
 
 	// Use custom hook to get campaign
-	const [campaignData, campaignStatus] = useCampaign(localCache, current);
+	const [campaignData, campaignStatus] = useCampaign(content, current);
 
 	useEffect(() => {
 		if (supportingStatus == 'success' && campaignStatus == 'success') {
 			// Update supporting
-			localCache.supporting = utils.updateSupporting(supportingData, localCache);
-			supporting = localCache.supporting;
-			setSupporting(supporting);
+			supporting = utils.updateSupporting(supportingData);
 
 			// Set team campaign (and add details)
-			localCache.campaign = utils.updateCampaign(campaignData, localCache, campaigns);
-			campaign = localCache.campaign;
-			setCampaign(campaign);
+			campaign = utils.updateCampaign(campaignData, campaigns);
+
+			// Set content state
+			content = { ...content, supporting: supporting, campaign: campaign };
+			setContent(content);
 		}
 	}, [supportingStatus, campaignStatus]);
 
 	// Use custom hook to get donations
-	const [donationsData, donationsStatus] = useDonations(supporting, localCache, current);
+	const [donationsData, donationsStatus] = useDonations(content, current);
 
 	useEffect(() => {
 		if (donationsStatus == 'success') {
 			// Set donations
-			localCache.donations = utils.checkArray(donationsData);
-			localCache.donations = utils.sort(localCache.donations, 'integer', 'milliseconds', 'desc');
-			donations = localCache.donations;
-			setDonations(donations);
+			donations = utils.updateDonations(donationsData);
+
+			// Set content state
+			content = { ...content, donations: donations };
+			setContent(content);
 		}
 	}, [donationsStatus]);
 
 	useEffect(() => {
 		if (timeout) {
 			const interval = setInterval(() => {
-				// Reset states
-				localCache.donations = false;
-				donations = localCache.donations;
-				setDonations(donations);
+				// Reset and set content state
+				content = { ...content, donations: false };
+				setContent(content);
 
 				// Reset queries
 				queryClient.resetQueries({ queryKey: ['donations'] });
