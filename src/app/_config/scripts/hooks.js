@@ -6,10 +6,11 @@ import { useQuery, useQueries } from '@tanstack/react-query';
 import { requests } from './requests';
 import { utils } from './utils';
 
-export function useSupporting(localCache, current) {
+export function useSupporting(content, current) {
 	// Use query to get supporting campaigns
+	const { supporting } = content;
 	const key = 'supporting';
-	const requestData = !localCache.supporting ? true : false;
+	const requestData = !supporting ? true : false;
 	const { data: data, status: status } = useQuery({
 		queryKey: [key, current],
 		queryFn: requests.supporting,
@@ -19,10 +20,11 @@ export function useSupporting(localCache, current) {
 	return [data, status];
 }
 
-export function useCampaign(localCache, current) {
+export function useCampaign(content, current) {
 	// Get campaign data if totals have changed or if not in cache
+	const { campaign } = content;
 	const key = 'campaign';
-	const requestData = !localCache.campaign || (localCache.campaign && utils.checkTotals(localCache)) ? true : false;
+	const requestData = !campaign || (campaign && utils.checkTotals(content)) ? true : false;
 	const { data: data, status: status } = useQuery({
 		queryKey: [key, current],
 		queryFn: requests.campaign,
@@ -32,11 +34,12 @@ export function useCampaign(localCache, current) {
 	return [data, status];
 }
 
-export function useDonations(supporting, localCache, current) {
+export function useDonations(content, current) {
 	// Get donations data if supporting is available and if not in cache or if totals have changed
+	const { donations, supporting } = content;
 	const key = 'donations';
 	const hasSupporting = supporting && supporting.length !== 0 ? true : false;
-	const requestData = hasSupporting && (!localCache.donations || (localCache.donations && utils.checkTotals(localCache))) ? true : false;
+	const requestData = hasSupporting && (!donations || (donations && utils.checkTotals(content))) ? true : false;
 	const { data: data, status: status } = useQuery({
 		queryKey: [key, current, supporting],
 		queryFn: requests.donations,
@@ -46,7 +49,7 @@ export function useDonations(supporting, localCache, current) {
 	return [data, status];
 }
 
-export function useMultiQueries(supporting, key) {
+export function useMultiQueries(content, key) {
 	// Set request type
 	let requestType = false;
 	if (key == 'rewards') {
@@ -56,6 +59,7 @@ export function useMultiQueries(supporting, key) {
 	}
 
 	// Get data from multiple queries
+	const { supporting } = content;
 	const hasSupporting = supporting && supporting.length !== 0 ? true : false;
 	const { data: data, status: status } = useQueries({
 		queries:
@@ -69,26 +73,20 @@ export function useMultiQueries(supporting, key) {
 				: [], // if supporting is undefined, an empty array will be returned
 		combine: (results) => {
 			return {
-				data: utils.merge(
-					results.map((result) => {
-						return result.data;
-					}),
-				),
+				data: results.map((result) => result.data).filter((result) => result),
 				status: results
 					.map((result, index) => {
 						if (index == results.length - 1) {
 							return result.status;
 						}
 					})
-					.filter((result) => {
-						return result;
-					})
+					.filter((result) => result)
 					.pop(),
 			};
 		},
 	});
 
-	return [data, status];
+	return [utils.merge(data), status];
 }
 
 export function useRespond(bp) {

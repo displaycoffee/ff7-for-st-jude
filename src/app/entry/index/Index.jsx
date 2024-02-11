@@ -1,5 +1,5 @@
 /* React */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -17,15 +17,6 @@ import { Slideout } from '../../shared/slideout/Slideout';
 import { Header } from '../../shared/header/Header';
 import { Footer } from '../../shared/footer/Footer';
 
-/* Setup cache of campaigns */
-let localCache = {
-	campaign: false,
-	supporting: false,
-	donations: false,
-	rewards: false,
-	targets: false,
-};
-
 /* Query client for api */
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -40,10 +31,21 @@ export const Index = (props) => {
 	const { theme } = props;
 	const isDesktop = useRespond(theme.bps.bp03);
 
+	// Create state for app
+	let [content, setContent] = useState({
+		campaign: false,
+		supporting: false,
+		donations: false,
+		rewards: false,
+		targets: false,
+	});
+
 	// Include queryClient in props
 	const contextProps = {
 		...props,
 		queryClient,
+		content: content,
+		setContent: setContent,
 	};
 
 	return (
@@ -62,7 +64,7 @@ export const Index = (props) => {
 						<Header buttonClick={false} />
 
 						<main className="main">
-							<NavigationRoutes localCache={localCache} />
+							<NavigationRoutes />
 						</main>
 
 						<Footer />

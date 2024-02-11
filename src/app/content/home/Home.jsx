@@ -12,36 +12,34 @@ import { Context } from '../../entry/context/Context';
 import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
 import { Skeleton } from '../../shared/skeleton/Skeleton';
 
-export const Home = (props) => {
-	let { localCache } = props;
+export const Home = () => {
 	const context = useContext(Context);
-	const { campaigns, utils } = context;
+	let { campaigns, utils, content, setContent } = context;
+	let { supporting, campaign } = content;
 	let { current, previous } = campaigns;
 
 	// State variables
-	let [supporting, setSupporting] = useState(false);
-	let [campaign, setCampaign] = useState(false);
 	let [amountRaised, setAmountRaised] = useState(0);
 	let [goal, setGoal] = useState(0);
 	let [totalRaised, setTotalRaised] = useState(0);
 
 	// Use custom hook to get supporting campaigns
-	const [supportingData, supportingStatus] = useSupporting(localCache, current);
+	const [supportingData, supportingStatus] = useSupporting(content, current);
 
 	// Use custom hook to get campaign
-	const [campaignData, campaignStatus] = useCampaign(localCache, current);
+	const [campaignData, campaignStatus] = useCampaign(content, current);
 
 	useEffect(() => {
 		if (supportingStatus == 'success' && campaignStatus == 'success') {
 			// Update supporting
-			localCache.supporting = utils.updateSupporting(supportingData, localCache);
-			supporting = localCache.supporting;
-			setSupporting(supporting);
+			supporting = utils.updateSupporting(supportingData);
 
 			// Set team campaign (and add details)
-			localCache.campaign = utils.updateCampaign(campaignData, localCache, campaigns);
-			campaign = localCache.campaign;
-			setCampaign(campaign);
+			campaign = utils.updateCampaign(campaignData, campaigns);
+
+			// Set content state
+			content = { ...content, supporting: supporting, campaign: campaign };
+			setContent(content);
 
 			// Set variables for progress bar
 			amountRaised = campaign?.amounts?.total_amount_raised !== false ? campaign.amounts.total_amount_raised : 0;
