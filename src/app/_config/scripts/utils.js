@@ -84,13 +84,18 @@ export const utils = {
 		// Merge array of arrays
 		return array.reduce((merge, next) => merge.concat(next), []);
 	},
-	scrollTo: (e, selector) => {
+	scrollTo: (e, selector, offset) => {
 		// Scroll to element on page
 		e.preventDefault();
-		const scrollElement = selector ? document.querySelector(selector) : document.body;
-		scrollElement.scrollIntoView({
-			behavior: 'smooth',
-		});
+		const anchor = {
+			selector: selector ? selector : false,
+			offset: offset ? offset : 0,
+			position: () => {
+				const anchorElement = document.querySelector(anchor.selector) ? document.querySelector(anchor.selector) : false;
+				return anchorElement ? anchorElement.getBoundingClientRect().top + window.scrollY - anchor.offset : 0 - anchor.offset;
+			},
+		};
+		window.scroll({ top: anchor.position(), left: 0, behavior: 'smooth' });
 	},
 	sort: (list, type, field, direction) => {
 		// Sort values in a list based on type, field, and direction

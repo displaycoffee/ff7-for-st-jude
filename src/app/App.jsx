@@ -22,5 +22,8 @@ const App = () => {
 
 /* Create root into app entry point */
 const rootElement = document.getElementById('root');
-const rootTarget = createRoot(rootElement);
-rootTarget.render(<App />);
+const rootHasChildren = rootElement && rootElement?.children && rootElement.children.length !== 0 ? true : false;
+if (!rootHasChildren) {
+	const rootTarget = createRoot(rootElement);
+	rootTarget.render(<App />);
+}

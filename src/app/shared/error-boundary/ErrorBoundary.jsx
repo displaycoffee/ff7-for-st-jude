@@ -11,7 +11,8 @@ export class ErrorBoundary extends Component {
 		this.state = { hasError: false };
 	}
 
-	static getDerivedStateFromError(error) {
+	static getDerivedStateFromError() {
+		// The function parameter "error" can be returned in function
 		return { hasError: true };
 	}
 

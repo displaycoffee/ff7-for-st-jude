@@ -11,7 +11,7 @@ import { navigation } from './scripts/navigation';
 import { sticky } from './scripts/sticky';
 
 /* Local components */
-import { Home } from '../../content/home/Home';
+import { Content } from '../../content/content/Content';
 import { Dashboard } from '../../content/dashboard/Dashboard';
 import { Donations } from '../../content/donations/Donations';
 import { ParticipantGuide } from '../../content/participant-guide/ParticipantGuide';
@@ -67,7 +67,7 @@ export const NavigationRoutes = () => {
 								'participant guide': <Route path={nav.url} element={<ParticipantGuide />} />,
 								dashboard: <Route path={nav.url} element={<Dashboard />} />,
 								donations: <Route path={nav.url} element={<Donations />} />,
-							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Home />} />}
+							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Content />} />}
 						</React.Fragment>
 					),
 			)}
