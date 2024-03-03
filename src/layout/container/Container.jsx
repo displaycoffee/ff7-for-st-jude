@@ -4,18 +4,18 @@ import { Link, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Local styles */
-import './styles/index.scss';
+import './styles/container.scss';
 
 /* Local scripts */
 import { useRespond } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Context } from '../context/Context';
-import { ErrorBoundary } from '../../shared/error-boundary/ErrorBoundary';
-import { Navigation, NavigationRoutes } from '../../shared/navigation/Navigation';
-import { Slideout } from '../../shared/slideout/Slideout';
-import { Header } from '../../shared/header/Header';
-import { Footer } from '../../shared/footer/Footer';
+import { Context } from '../../entry/context/Context';
+import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
+import { Navigation, NavigationRoutes } from '../../components/navigation/Navigation';
+import { Slideout } from '../../components/slideout/Slideout';
+import { Header } from '../../components/header/Header';
+import { Footer } from '../../components/footer/Footer';
 
 /* Query client for api */
 const queryClient = new QueryClient({
@@ -27,7 +27,7 @@ const queryClient = new QueryClient({
 	},
 });
 
-export const Index = (props) => {
+export const Container = (props) => {
 	const { theme } = props;
 	const isDesktop = useRespond(theme.bps.bp03);
 
@@ -52,9 +52,9 @@ export const Index = (props) => {
 		<QueryClientProvider client={queryClient}>
 			<Context.Provider value={contextProps}>
 				<div className="wrapper">
-					<IndexBody />
+					<ContainerBody />
 
-					<ErrorBoundary message={<IndexError />}>
+					<ErrorBoundary message={<ContainerError />}>
 						{isDesktop ? (
 							<Navigation location={'header'} />
 						) : (
@@ -75,33 +75,33 @@ export const Index = (props) => {
 	);
 };
 
-/* Set indexCache mostly to get previous page */
-let indexCache = {
+/* Set containerCache mostly to get previous page */
+let containerCache = {
 	previous: '',
 };
 
-const IndexBody = () => {
+const ContainerBody = () => {
 	const location = useLocation();
 	const bodySelector = document.querySelector('body');
 	const bodyPrefix = 'page-';
-	const bodyDefault = 'content';
+	const bodyDefault = 'home';
 
 	useEffect(() => {
 		// Remove any previous body class
-		bodySelector.classList.remove(`${bodyPrefix}${indexCache.previous || bodyDefault}`);
+		bodySelector.classList.remove(`${bodyPrefix}${containerCache.previous || bodyDefault}`);
 
 		// Update previous location path
 		// Replace any body prefix, remove first slash, and replace any other slash with hyphen
-		indexCache.previous = location.pathname.replace(bodyPrefix, '').replace('/', '').replace(/\//g, '-');
+		containerCache.previous = location.pathname.replace(bodyPrefix, '').replace('/', '').replace(/\//g, '-');
 
 		// Add new body class
-		bodySelector.classList.add(`${bodyPrefix}${indexCache.previous || bodyDefault}`);
+		bodySelector.classList.add(`${bodyPrefix}${containerCache.previous || bodyDefault}`);
 	}, [location]);
 
 	return null;
 };
 
-const IndexError = () => {
+const ContainerError = () => {
 	return (
 		<p>
 			Something went wrong. <Link to={'/'}>Go back.</Link>

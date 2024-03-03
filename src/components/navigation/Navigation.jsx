@@ -11,10 +11,10 @@ import { navigation } from './scripts/navigation';
 import { sticky } from './scripts/sticky';
 
 /* Local components */
-import { Content } from '../../content/content/Content';
-import { Dashboard } from '../../content/dashboard/Dashboard';
-import { Donations } from '../../content/donations/Donations';
-import { ParticipantGuide } from '../../content/participant-guide/ParticipantGuide';
+import { Home } from '../../pages/home/Home';
+import { Dashboard } from '../../pages/dashboard/Dashboard';
+import { Donations } from '../../pages/donations/Donations';
+import { ParticipantGuide } from '../../pages/participant-guide/ParticipantGuide';
 
 export const Navigation = (props) => {
 	const { location } = props;
@@ -67,7 +67,7 @@ export const NavigationRoutes = () => {
 								'participant guide': <Route path={nav.url} element={<ParticipantGuide />} />,
 								dashboard: <Route path={nav.url} element={<Dashboard />} />,
 								donations: <Route path={nav.url} element={<Donations />} />,
-							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Content />} />}
+							}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Home />} />}
 						</React.Fragment>
 					),
 			)}

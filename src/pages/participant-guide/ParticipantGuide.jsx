@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 
 /* Local components */
-import { Details } from '../../shared/details/Details';
+import { Details } from '../../components/details/Details';
 
 export const ParticipantGuide = () => {
 	return (
