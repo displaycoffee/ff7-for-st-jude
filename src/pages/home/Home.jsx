@@ -2,17 +2,17 @@
 import { useContext, useState, useEffect } from 'react';
 
 /* Local styles */
-import './styles/content.scss';
+import './styles/home.scss';
 
 /* Local scripts */
 import { useCampaign, useSupporting } from '../../_config/scripts/hooks';
 
 /* Local components */
 import { Context } from '../../entry/context/Context';
-import { Details, DetailsParagraph, DetailsLinks } from '../../shared/details/Details';
-import { Skeleton } from '../../shared/skeleton/Skeleton';
+import { Details, DetailsParagraph, DetailsLinks } from '../../components/details/Details';
+import { Skeleton } from '../../components/skeleton/Skeleton';
 
-export const Content = () => {
+export const Home = () => {
 	const context = useContext(Context);
 	let { campaigns, utils, content, setContent } = context;
 	let { supporting, campaign } = content;

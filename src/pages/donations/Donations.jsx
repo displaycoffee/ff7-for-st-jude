@@ -5,9 +5,9 @@ import { useContext, useEffect } from 'react';
 import { useCampaign, useDonations, useSupporting } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Skeleton } from '../../shared/skeleton/Skeleton';
 import { Context } from '../../entry/context/Context';
-import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../shared/details/Details';
+import { Skeleton } from '../../components/skeleton/Skeleton';
+import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 
 /* Set donations timeout (or false to disable) */
 const timeout = false; // 60000 == one minute
