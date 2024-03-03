@@ -24,9 +24,9 @@ export default defineConfig({
 					}
 				},
 				chunkFileNames: (file) => {
-					return `assets/js/app.${file.name.toLowerCase()}.js`;
+					return `assets/js/index.${file.name.toLowerCase()}.js`;
 				},
-				entryFileNames: 'assets/js/app.js',
+				entryFileNames: 'assets/js/index.js',
 			},
 		},
 	},
