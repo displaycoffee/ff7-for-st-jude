@@ -2,9 +2,10 @@
 const tiltifyApi = 'https://api.ff7forstjude.org';
 
 /* This config contains variables to use through application */
+const directory = '/ff7-st-jude';
 export const variables = {
 	paths: {
-		base: window.location.pathname.includes('/ff7-st-jude') ? '/ff7-st-jude' : '',
+		basename: window.location.pathname.includes(directory) ? directory : '',
 	},
 	api: {
 		campaigns: `${tiltifyApi}/api/public/campaigns`,

@@ -45,7 +45,7 @@ export const Home = () => {
 			amountRaised =
 				campaign?.amounts?.total_amount_raised && campaign.amounts.total_amount_raised !== false ? campaign.amounts.total_amount_raised : 0;
 			setAmountRaised(amountRaised);
-			goal = campaign?.amounts?.goal !== false ? campaign.amounts.goal : 0;
+			goal = campaign?.amounts?.goal && campaign.amounts.goal !== false ? campaign.amounts.goal : 0;
 			setGoal(goal);
 
 			// Reset totalRaised and get amount raised from all campaigns
