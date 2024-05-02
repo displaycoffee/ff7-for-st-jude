@@ -1,21 +1,22 @@
 /* React */
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Local styles */
 import './styles/container.scss';
 
 /* Local scripts */
-import { useRespond } from '../../_config/scripts/hooks';
+import { useBodyClass, useRespond } from '../../_config/scripts/hooks';
 
 /* Local components */
 import { Context } from '../../entry/context/Context';
 import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
-import { Navigation, NavigationRoutes } from '../../components/navigation/Navigation';
+import { Navigation } from '../../components/navigation/Navigation';
 import { Slideout } from '../../components/slideout/Slideout';
-import { Header } from '../../components/header/Header';
-import { Footer } from '../../components/footer/Footer';
+import { Header } from '../../layout/header/Header';
+import { Content } from '../../layout/content/Content';
+import { Footer } from '../../layout/footer/Footer';
 
 /* Query client for api */
 const queryClient = new QueryClient({
@@ -30,6 +31,9 @@ const queryClient = new QueryClient({
 export const Container = (props) => {
 	const { theme } = props;
 	const isDesktop = useRespond(theme.bps.bp03);
+
+	// Set body class using custom hook
+	useBodyClass('home');
 
 	// Create state for app
 	let [content, setContent] = useState({
@@ -51,9 +55,7 @@ export const Container = (props) => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<Context.Provider value={contextProps}>
-				<div className="wrapper">
-					<ContainerBody />
-
+				<div className="container">
 					<ErrorBoundary message={<ContainerError />}>
 						{isDesktop ? (
 							<Navigation location={'header'} />
@@ -64,7 +66,9 @@ export const Container = (props) => {
 						<Header buttonClick={false} />
 
 						<main className="main">
-							<NavigationRoutes />
+							<div className="main-layout">
+								<Content />
+							</div>
 						</main>
 
 						<Footer />
@@ -73,32 +77,6 @@ export const Container = (props) => {
 			</Context.Provider>
 		</QueryClientProvider>
 	);
-};
-
-/* Set containerCache mostly to get previous page */
-let containerCache = {
-	previous: '',
-};
-
-const ContainerBody = () => {
-	const location = useLocation();
-	const bodySelector = document.querySelector('body');
-	const bodyPrefix = 'page-';
-	const bodyDefault = 'home';
-
-	useEffect(() => {
-		// Remove any previous body class
-		bodySelector.classList.remove(`${bodyPrefix}${containerCache.previous || bodyDefault}`);
-
-		// Update previous location path
-		// Replace any body prefix, remove first slash, and replace any other slash with hyphen
-		containerCache.previous = location.pathname.replace(bodyPrefix, '').replace('/', '').replace(/\//g, '-');
-
-		// Add new body class
-		bodySelector.classList.add(`${bodyPrefix}${containerCache.previous || bodyDefault}`);
-	}, [location]);
-
-	return null;
 };
 
 const ContainerError = () => {

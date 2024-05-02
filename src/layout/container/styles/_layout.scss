@@ -126,10 +126,16 @@
 	// Configuration 
 
 	$layout-main-bp: theme.$bp-02; // breakpoint
+	$layout-main-spacing: theme.$spacing-x4; // spacing for layout
+	$layout-main-sidebar-width: 250px; // width of sidebar
 
 	// Style block
 
-	.main {}
+	.main {
+		.main-layout {}
+	}
 	@include mixins.respond-min($layout-main-bp) {
-		.main {}
+		.main {
+			.main-layout {}
+		}
 	}
