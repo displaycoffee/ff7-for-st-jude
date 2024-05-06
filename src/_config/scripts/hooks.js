@@ -1,10 +1,37 @@
 /* React */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useQuery, useQueries } from '@tanstack/react-query';
 
 /* Local scripts */
 import { requests } from './requests';
 import { utils } from './utils';
+
+/* Set pageCache to get previous page */
+let pageCache = {
+	previous: '',
+};
+
+export function useBodyClass(defaultPrefix) {
+	const location = useLocation();
+	const bodySelector = document.querySelector('body');
+	const bodyPrefix = 'page-';
+	const bodyDefault = defaultPrefix;
+
+	useEffect(() => {
+		// Remove any previous body class
+		bodySelector.classList.remove(`${bodyPrefix}${pageCache.previous || bodyDefault}`);
+
+		// Update previous location path
+		// Replace any body prefix, remove first slash, and replace any other slash with hyphen
+		pageCache.previous = location.pathname.replace(bodyPrefix, '').replace('/', '').replace(/\//g, '-');
+
+		// Add new body class
+		bodySelector.classList.add(`${bodyPrefix}${pageCache.previous || bodyDefault}`);
+	}, [location]);
+
+	return null;
+}
 
 export function useSupporting(content, current) {
 	// Use query to get supporting campaigns
@@ -69,7 +96,7 @@ export function useMultiQueries(content, key) {
 							queryKey: [key, result],
 							queryFn: requestType,
 						};
-				  })
+					})
 				: [], // if supporting is undefined, an empty array will be returned
 		combine: (results) => {
 			return {
@@ -102,5 +129,6 @@ export function useRespond(bp) {
 		}
 		setMatch(match);
 	};
+
 	return match;
 }

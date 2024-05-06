@@ -81,8 +81,8 @@
 	ul.unstyled, ol.unstyled {
 		margin: 0;
 	}
-	.wrapper {
-		max-width: theme.$wrapper-base;
+	.container {
+		max-width: theme.$container-base;
 		margin: 0 auto;
 		padding: 0 $base-elements-spacing;
 	}
