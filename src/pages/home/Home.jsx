@@ -125,20 +125,22 @@ export const Home = () => {
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{supporting
 						? supporting.map((support) => {
-								const { total_amount_raised } = support.amounts;
+							const { total_amount_raised } = support.amounts;
 
-								return (
-									<div className="column column-width-50" key={support.id}>
-										<div className="blue-section">
-											<DetailsParagraph label={'Campaign'} content={support?.name} />
+							return (
+								<div className="column column-width-50" key={support.id}>
+									<div className="blue-section">
+										<DetailsParagraph label={'Participant'} content={support?.username} />
 
-											<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
+										<DetailsParagraph label={'Campaign'} content={support?.name} />
 
-											<DetailsLinks links={support?.links} />
-										</div>
+										<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
+
+										<DetailsLinks links={support?.links} />
 									</div>
-								);
-						  })
+								</div>
+							);
+						})
 						: null}
 
 					<Skeleton columns={8} perRow={2} paragraphs={4} />
