@@ -14,10 +14,10 @@ export const variables = {
 	urls: {
 		tiltify: '//tiltify.com',
 		team: '//tiltify.com/+ff7-for-st-jude',
-		campaign: '//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-7',
+		campaign: '//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-8',
 	},
 	placeholders: {
-		endDate: '2024-05-30T24:00:00Z',
-		endDateReadable: 'May 30, 2024',
+		endDate: '2024-12-31T23:59:59Z',
+		endDateReadable: 'December 31, 2024',
 	},
 };
