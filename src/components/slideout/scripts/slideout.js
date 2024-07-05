@@ -6,7 +6,7 @@ export const slideout = {
 			active: 'slideout-active',
 			overlay: 'slideout-overlay',
 			slideout: 'slideout',
-			content: 'slideout-content',
+			menu: 'slideout-menu',
 		},
 		values: {
 			// Default values if props are not defined
@@ -28,21 +28,11 @@ export const slideout = {
 			const body = document.querySelector('body');
 			state == 'add' ? body.classList.add(classes.activeBody) : body.classList.remove(classes.activeBody);
 		},
-		overlay: () => {
-			// Create slideout overlay if not present and append to body
-			const classes = slideout.config.classes;
-			if (!document.querySelector(`.${classes.overlay}`)) {
-				const overlay = document.createElement('div');
-				overlay.setAttribute('class', classes.overlay);
-				overlay.onclick = (e) => slideout.toggle(e, false);
-				document.querySelector('body').appendChild(overlay);
-			}
-		},
 		slideout: (element, state) => {
 			// Helper function to toggle slideout properties
 			const config = slideout.config;
 			const { classes, values } = config;
-			const content = element.querySelector(`.${classes.content}`);
+			const menu = element.querySelector(`.${classes.menu}`);
 
 			// Get data attributes
 			const width = element.dataset.width;
@@ -52,10 +42,10 @@ export const slideout = {
 			// Update elements depending on state
 			if (state == 'add') {
 				element.classList.add(classes.active);
-				content.style[direction] = 0;
+				menu.style[direction] = 0;
 			} else {
 				element.classList.remove(classes.active);
-				content.style[direction] = orientation == 'vertical' ? values.vertical : `-${width}`;
+				menu.style[direction] = orientation == 'vertical' ? values.vertical : `-${width}`;
 			}
 		},
 	},

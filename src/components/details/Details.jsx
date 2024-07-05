@@ -1,6 +1,5 @@
 /* React */
-import React from 'react';
-import { useId, useContext } from 'react';
+import React, { useId, useContext } from 'react';
 
 /* Local styles */
 import './styles/details.scss';

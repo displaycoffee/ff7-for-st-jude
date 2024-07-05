@@ -80,6 +80,19 @@ export const utils = {
 			.replace(/\s/g, '-')
 			.trim();
 	},
+	isSticky: (element, stickyClass) => {
+		if (element) {
+			// Create options and callback for observer
+			const stickyOptions = { threshold: [1] };
+			const stickyCallback = (e) => {
+				e.target.classList.toggle(stickyClass, e.intersectionRatio < 1);
+			};
+
+			// Observe to toggle sticky class
+			const stickyObserver = new IntersectionObserver(([e]) => stickyCallback(e), stickyOptions);
+			stickyObserver.observe(element);
+		}
+	},
 	merge: (array) => {
 		// Merge array of arrays
 		return array.reduce((merge, next) => merge.concat(next), []);
@@ -96,6 +109,12 @@ export const utils = {
 			},
 		};
 		window.scroll({ top: anchor.position(), left: 0, behavior: 'smooth' });
+	},
+	setAttributes: (element, atttributes) => {
+		// Set multiple attributes on an element
+		for (const attribute in atttributes) {
+			element.setAttribute(attribute, atttributes[attribute]);
+		}
 	},
 	sort: (list, type, field, direction) => {
 		// Sort values in a list based on type, field, and direction
