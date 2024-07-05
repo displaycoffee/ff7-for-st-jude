@@ -16,6 +16,9 @@
 		.header-title {
 			width: 100%;
 			margin: 0 0 theme.$spacing-x3 0;
+			a {
+				text-decoration: none;
+			}
 		}
 		.header-button {
 			&.spinning {

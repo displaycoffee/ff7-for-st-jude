@@ -13,7 +13,7 @@ import { useBodyClass, useRespond } from '../../_config/scripts/hooks';
 import { Context } from '../../entry/context/Context';
 import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
 import { Navigation } from '../../components/navigation/Navigation';
-import { Slideout } from '../../components/slideout/Slideout';
+import { Slideout, SlideoutOverlay } from '../../components/slideout/Slideout';
 import { Header } from '../../layout/header/Header';
 import { Content } from '../../layout/content/Content';
 import { Footer } from '../../layout/footer/Footer';
@@ -30,7 +30,7 @@ const queryClient = new QueryClient({
 
 export const Container = (props) => {
 	const { theme } = props;
-	const isDesktop = useRespond(theme.bps.bp03);
+	const isDesktop = useRespond(theme.bps.bp04);
 
 	// Set body class using custom hook
 	useBodyClass('home');
@@ -57,10 +57,12 @@ export const Container = (props) => {
 			<Context.Provider value={contextProps}>
 				<div className="container">
 					<ErrorBoundary message={<ContainerError />}>
+						<SlideoutOverlay isDesktop={isDesktop} />
+
 						{isDesktop ? (
 							<Navigation location={'header'} />
 						) : (
-							<Slideout id={'menu'} label={'Menu'} content={<Navigation location={'slideout'} />} closeOnClick={true} />
+							<Slideout id={'menu'} label={'Menu'} content={<Navigation location={'slideout'} />} />
 						)}
 
 						<Header buttonClick={false} />

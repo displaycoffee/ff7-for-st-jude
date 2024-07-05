@@ -9,7 +9,7 @@
 	// Colors
 
 	$slideout-color-01: theme.$color-07; // overlay
-	$slideout-color-02: false; // content background
+	$slideout-color-02: false; // menu background
 
 	// Configuration
 
@@ -26,7 +26,7 @@
 			visibility: visible;
 		}
 	}
-	.slideout-overlay, .slideout .slideout-content {
+	.slideout-overlay, .slideout .slideout-menu {
 		@include mixins.position($type: fixed);
 	}
 	.slideout-overlay {
@@ -36,10 +36,24 @@
 		z-index: -1;
 		opacity: 0;
 		visibility: hidden;
+		cursor: pointer;
 	}
 	.slideout {
+		@include mixins.position($type: sticky, $top: -1px, $z: 9999);
+		min-height: 10px;
+		&.is-sticky {
+			.slideout-button-fixed {
+				@include mixins.position($type: fixed, $top: 0, $left: 0, $right: 0);
+				padding: theme.$spacing-x2 theme.$spacing-x4;
+				background-color: theme.$color-01;
+				border-bottom: 3px solid theme.$color-02;
+			}
+			.slideout-button {
+				margin: 0 theme.$spacing-x4;
+			}
+		}
 		&.slideout-vertical {
-			.slideout-content {
+			.slideout-menu {
 				height: 80%;
 				height: calc(100% - calc($slideout-spacing * 2));
 				@include mixins.position($left: 0, $right: 0);
@@ -47,7 +61,7 @@
 			}
 		}
 		&.slideout-horizontal {
-			.slideout-content {
+			.slideout-menu {
 				@include mixins.position($top: 0, $bottom: 0);
 			}
 		}
@@ -57,8 +71,7 @@
 				margin: 0 theme.$spacing-x2 0 0;
 			}
 		}
-		.slideout-content {
-			//background-color: $slideout-color-02;
+		.slideout-menu {
 			max-width: 100%;
 			border-width: 0;
 			border-right-width: 3px;
@@ -85,16 +98,25 @@
 				height: 100%;
 				max-height: 90%;
 				max-height: calc(100% - ($slideout-header + $slideout-spacing));
-				.navigation {
-					.navigation-list {
-						.navigation-list-item {
-							font-size: functions.em(16px, rem);
-						}
-						.navigation-list-item-separator {
-							display: none;
+				.slideout-content {
+					.navigation {
+						.navigation-list {
+							.navigation-list-item {
+								display: block;
+								font-size: functions.em(16px, rem);
+							}
+							.navigation-list-item-separator {
+								display: none;
+							}
 						}
 					}
 				}
 			}
+		}
+	}
+	@include mixins.respond-min(theme.$bp-02) {
+		.slideout.is-sticky .slideout-button-fixed {
+			padding-left: theme.$spacing-x8;
+			padding-right: theme.$spacing-x8;
 		}
 	}
