@@ -142,9 +142,9 @@ export const ParticipantGuide = () => {
 						</a>{' '}
 						and click "View Campaign" for the active campaign near the top of the page.
 					</li>
-					<li>Click "Support Campaign".</li>
+					<li>Click "Start Fundraising".</li>
 					<li>
-						Enter a campaign name. <strong>For example:</strong> "Toast_Matt's FF7 for St. Jude #7".
+						Enter a campaign name. <strong>For example:</strong> "Toast_Matt's FF7 for St. Jude #8".
 					</li>
 					<li>Customize the campaign description if desired.</li>
 					<li>Click "Next" and choose Livestream &gt; Twitch and enter your twitch channel's username.</li>
