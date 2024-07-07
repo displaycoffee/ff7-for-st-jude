@@ -82,7 +82,7 @@ export const Donations = () => {
 										<div className="blue-section">
 											{donation.amount ? (
 												<p>
-													<strong>Donation:</strong> ${amount.toFixed(2)} from {donation.donor_name} to{' '}
+													<strong>Donation:</strong> ${amount.toFixed(2)} from <strong>{donation.donor_name}</strong> to{' '}
 													<DetailsLinks links={donation?.links} wrapper={false} />
 												</p>
 											) : null}
@@ -91,7 +91,7 @@ export const Donations = () => {
 										</div>
 									</div>
 								);
-						  })
+							})
 						: null}
 
 					{donationsStatus == 'success' && donations.length === 0 ? (

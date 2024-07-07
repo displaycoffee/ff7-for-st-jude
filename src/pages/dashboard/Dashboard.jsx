@@ -131,7 +131,7 @@ export const Dashboard = () => {
 										<div className="blue-section">
 											{donation.amount ? (
 												<p>
-													<strong>Donation:</strong> ${amount.toFixed(2)} from {donation.donor_name} to{' '}
+													<strong>Donation:</strong> ${amount.toFixed(2)} from <strong>{donation.donor_name}</strong> to{' '}
 													<DetailsLinks links={donation?.links} wrapper={false} />
 												</p>
 											) : null}
@@ -140,7 +140,7 @@ export const Dashboard = () => {
 										</div>
 									</div>
 								);
-						  })
+							})
 						: null}
 
 					{donationsStatus == 'success' && donations.length === 0 ? (
@@ -176,7 +176,7 @@ export const Dashboard = () => {
 										</div>
 									</div>
 								) : null;
-						  })
+							})
 						: null}
 
 					{rewardsStatus == 'success' && rewards.length === 0 ? (
@@ -215,7 +215,7 @@ export const Dashboard = () => {
 										</div>
 									</div>
 								) : null;
-						  })
+							})
 						: null}
 
 					{targetsStatus == 'success' && targets.length === 0 ? (
