@@ -51,14 +51,13 @@ export const ParticipantGuide = () => {
 
 				<ol>
 					<li>
-						Keep an eye on the <strong>#ff7-for-st-jude</strong> channel in the{' '}
-						<a href="//discord.gg/jb38ssbnt" target="_blank" rel="noreferrer">
-							Coffee and Toast discord
+						Keep an eye on the <strong>#upcoming-events</strong> channel in the{' '}
+						<a href="//discord.gg/U7PjxqbRBj2" target="_blank" rel="noreferrer">
+							Official FF7 Discord
 						</a>
 						.
 					</li>
 					<li>Start your stream at least 20 minutes before the event starts.</li>
-					<li>Restart your stream until you get resolution quality options (360p must be available).</li>
 					<li>Join the racetime.gg race in LiveSplit and click "I'm ready" when you're ready.</li>
 					<li>Wait on the "New Game" screen and move cursor until the race starts.</li>
 				</ol>
@@ -70,12 +69,6 @@ export const ParticipantGuide = () => {
 						<strong>Tiltify Team:</strong>{' '}
 						<a href="//tiltify.com/+ff7-for-st-jude/profile" target="_blank" rel="noreferrer">
 							tiltify.com/+ff7-for-st-jude/profile
-						</a>
-					</li>
-					<li>
-						<strong>Coffee and Toast Discord:</strong>{' '}
-						<a href="//discord.gg/jb38ssbnt" target="_blank" rel="noreferrer">
-							discord.gg/jb38ssbnt
 						</a>
 					</li>
 					<li>
@@ -144,7 +137,7 @@ export const ParticipantGuide = () => {
 					</li>
 					<li>Click "Start Fundraising".</li>
 					<li>
-						Enter a campaign name. <strong>For example:</strong> "Toast_Matt's FF7 for St. Jude #8".
+						Enter a campaign name. <strong>For example:</strong> "cornfed's FF7 for St. Jude #8".
 					</li>
 					<li>Customize the campaign description if desired.</li>
 					<li>Click "Next" and choose Livestream &gt; Twitch and enter your twitch channel's username.</li>
