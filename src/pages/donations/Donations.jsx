@@ -5,7 +5,7 @@ import { useContext, useEffect } from 'react';
 import { useCampaign, useDonations, useSupporting } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Context } from '../../entry/context/Context';
+import { Context } from '../../context/Context';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 

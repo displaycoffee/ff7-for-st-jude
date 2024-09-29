@@ -1,6 +1,5 @@
 /* React */
 import { BrowserRouter as Router } from 'react-router-dom';
-import { createRoot } from 'react-dom/client';
 
 /* Local scripts */
 import { campaigns } from '../../_config/scripts/campaigns';
@@ -20,10 +19,5 @@ const Index = () => {
 	);
 };
 
-/* Create root into app entry point */
-const rootElement = document.getElementById('root');
-const rootHasChildren = rootElement && rootElement?.children && rootElement.children.length !== 0 ? true : false;
-if (!rootHasChildren) {
-	const rootTarget = createRoot(rootElement);
-	rootTarget.render(<Index />);
-}
+/* Create main target entry point */
+utils.renderTarget('#index', <Index />);
