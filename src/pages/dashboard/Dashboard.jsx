@@ -8,7 +8,7 @@ import './styles/dashboard.scss';
 import { useCampaign, useDonations, useSupporting, useMultiQueries } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Context } from '../../entry/context/Context';
+import { Context } from '../../context/Context';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 

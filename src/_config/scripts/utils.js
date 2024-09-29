@@ -1,3 +1,6 @@
+/* React */
+import { createRoot } from 'react-dom/client';
+
 export const utils = {
 	checkAmount: (number) => {
 		// Check number to always return a value
@@ -96,6 +99,15 @@ export const utils = {
 	merge: (array) => {
 		// Merge array of arrays
 		return array.reduce((merge, next) => merge.concat(next), []);
+	},
+	renderTarget: (element, component) => {
+		// Render target for app
+		const targetElement = document.querySelector(element);
+		const targetHasChildren = targetElement && targetElement?.children && targetElement.children.length !== 0 ? true : false;
+		if (!targetHasChildren) {
+			const targetTarget = createRoot(targetElement);
+			targetTarget.render(component);
+		}
 	},
 	scrollTo: (e, selector, offset) => {
 		// Scroll to element on page

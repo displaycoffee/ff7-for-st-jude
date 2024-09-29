@@ -8,7 +8,7 @@ import './styles/home.scss';
 import { useCampaign, useSupporting } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Context } from '../../entry/context/Context';
+import { Context } from '../../context/Context';
 import { Details, DetailsParagraph, DetailsLinks } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 

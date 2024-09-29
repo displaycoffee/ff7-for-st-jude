@@ -4,7 +4,7 @@ export const navigation = [
 		label: 'Commentary Stream',
 		alt: 'Commentary Stream',
 		url: '//twitch.tv/MonetaryDragon',
-		showInNav: true,
+		showInNav: false,
 		isRoute: false,
 	},
 	{
@@ -28,7 +28,7 @@ export const navigation = [
 		label: 'Signup Sheet',
 		alt: 'Signup Sheet',
 		url: '//docs.google.com/spreadsheets/d/1ebdDFWFl4UzS20Htymp_S3Wzc905N5aeawNysLPUsHg/edit',
-		showInNav: true,
+		showInNav: false,
 		isRoute: false,
 	},
 	{
@@ -36,7 +36,7 @@ export const navigation = [
 		label: 'Participant Guide',
 		alt: 'Participant Guide',
 		url: '/participant-guide',
-		showInNav: true,
+		showInNav: false,
 		isRoute: true,
 	},
 	{
@@ -51,3 +51,21 @@ export const navigation = [
 	// Sort navigation by id
 	return a.id - b.id;
 });
+
+/* Function to filter out navigation links */
+export const createNavigationList = (navigation, isRoute) => {
+	// Determine initial navigaton check
+	let hasNavigation = navigation && navigation.length !== 0 ? true : false;
+
+	// Filter out navigation links
+	navigation = navigation.filter((nav) => {
+		const hasNavLink = (isRoute && nav.isRoute) || (!isRoute && nav.showInNav) ? true : false;
+		return hasNavLink;
+	});
+
+	// Check navigation again
+	hasNavigation = navigation && navigation.length !== 0 ? true : false;
+
+	// Return final navigation
+	return hasNavigation ? navigation : [];
+};

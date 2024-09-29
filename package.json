@@ -1,8 +1,8 @@
 {
 	"name": "ff7-for-st-jude",
-	"version": "1.0.0",
+	"version": "2.3.0",
 	"description": "Information and dashboard for the FF7 for St. Jude campaign.",
-	"main": "index.js",
+	"main": "bundle.js",
 	"type": "module",
 	"keywords": [],
 	"author": "displaycoffee",
@@ -16,23 +16,23 @@
 	},
 	"devDependencies": {
 		"@vitejs/plugin-basic-ssl": "^1.1.0",
-		"@vitejs/plugin-react": "^4.2.1",
-		"eslint": "^8.49.0",
+		"@vitejs/plugin-react": "^4.3.1",
+		"eslint": "^8.57.1",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-import": "^2.29.1",
-		"eslint-plugin-jsx-a11y": "^6.8.0",
-		"eslint-plugin-react": "^7.34.1",
-		"eslint-plugin-react-hooks": "^4.6.0",
-		"prettier": "^3.2.5",
-		"sass": "^1.75.0",
-		"vite": "^5.2.9"
+		"eslint-plugin-import": "^2.30.0",
+		"eslint-plugin-jsx-a11y": "^6.10.0",
+		"eslint-plugin-react": "^7.36.1",
+		"eslint-plugin-react-hooks": "^4.6.2",
+		"prettier": "^3.3.3",
+		"sass": "1.78.0",
+		"vite": "^5.4.7"
 	},
 	"dependencies": {
-		"@tanstack/react-query": "^5.29.2",
-		"react": "^18.2.0",
-		"react-cookie": "^7.1.4",
-		"react-dom": "^18.2.0",
-		"react-router-dom": "^6.22.3"
+		"@tanstack/react-query": "^5.56.2",
+		"react": "^18.3.1",
+		"react-cookie": "^7.2.0",
+		"react-dom": "^18.3.1",
+		"react-router-dom": "^6.26.2"
 	},
 	"repository": {
 		"type": "git",

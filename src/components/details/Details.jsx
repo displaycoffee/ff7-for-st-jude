@@ -5,7 +5,7 @@ import React, { useId, useContext } from 'react';
 import './styles/details.scss';
 
 /* Local components */
-import { Context } from '../../entry/context/Context';
+import { Context } from '../../context/Context';
 
 export const Details = (props) => {
 	const { header, scrollLink, hasRow } = props;
