@@ -17,7 +17,7 @@ const ids = {
 
 export const campaigns = {
 	current: {
-		id: ids[8],
+		id: ids[9],
 		name: 'FF7 for St. Jude #9',
 		date: 'February 15th, 2025',
 		links: [
