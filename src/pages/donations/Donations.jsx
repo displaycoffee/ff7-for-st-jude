@@ -82,8 +82,8 @@ export const Donations = () => {
 										<div className="blue-section">
 											{donation.amount ? (
 												<p>
-													<strong>Donation:</strong> ${amount.toFixed(2)} from <strong>{donation.donor_name}</strong> to{' '}
-													<DetailsLinks links={donation?.links} wrapper={false} />
+													<strong>Donation:</strong> {utils.formatCurrency(amount)} from{' '}
+													<strong>{donation.donor_name}</strong> to <DetailsLinks links={donation?.links} wrapper={false} />
 												</p>
 											) : null}
 

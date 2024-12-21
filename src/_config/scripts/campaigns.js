@@ -12,13 +12,14 @@ const ids = {
 	6: '6805c495-d02f-42ea-81d8-9b6c5ff5d3b5',
 	7: 'a2308711-88cd-470c-80f5-e59286063517',
 	8: '34efb69f-b259-424b-84a9-a5b7cc99dde2',
+	9: '0230fcce-6d9f-4e2b-8fc1-abd7660463cd',
 };
 
 export const campaigns = {
 	current: {
-		id: ids[8],
-		name: 'FF7 for St. Jude #8',
-		date: 'July 27th, 2024',
+		id: ids[9],
+		name: 'FF7 for St. Jude #9',
+		date: 'February 15th, 2025',
 		links: [
 			{
 				label: variables.urls.campaign.replace('https://', '').replace('//', ''),
@@ -27,6 +28,18 @@ export const campaigns = {
 		],
 	},
 	previous: [
+		{
+			id: ids[8],
+			name: 'FF7 for St. Jude #8',
+			amounts: utils.getAmounts({ total_amount_raised: { value: 7038.69 } }),
+			date: 'July 27th, 2024',
+			links: [
+				{
+					label: 'See campaign',
+					url: `${variables.urls.team}/ff7-for-st-jude-8`,
+				},
+			],
+		},
 		{
 			id: ids[7],
 			name: 'FF7 for St. Jude #7',
