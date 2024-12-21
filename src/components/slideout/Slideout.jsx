@@ -68,9 +68,7 @@ export const Slideout = (props) => {
 								}
 							}
 						}}
-						role="button"
-						tabIndex={0}
-						aria-hidden="true"
+						role="presentation"
 					>
 						{content ? content : null}
 					</div>

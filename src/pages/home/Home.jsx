@@ -83,7 +83,7 @@ export const Home = () => {
 				</p>
 
 				<p>
-					In total, we have raised <strong>${totalRaised.toFixed(2)}</strong>.
+					In total, we have raised <strong>{utils.formatCurrency(totalRaised)}</strong>.
 				</p>
 
 				<p className="mission-statement">
@@ -102,7 +102,7 @@ export const Home = () => {
 					<strong>Raised:</strong>
 					<div className="level-bar">
 						<div className="level-bar-label">
-							${amountRaised ? amountRaised.toFixed(2) : 'xxx.xx'} out of ${goal ? goal.toFixed(2) : 'xxxx.xx'}
+							{utils.formatCurrency(amountRaised ? amountRaised : 0)} out of {utils.formatCurrency(goal ? goal : 0)}
 						</div>
 
 						<div className="level-bar-outof">
@@ -134,7 +134,7 @@ export const Home = () => {
 
 											<DetailsParagraph label={'Campaign'} content={support?.name} />
 
-											<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
+											<DetailsParagraph label={'Raised'} content={utils.formatCurrency(total_amount_raised)} />
 
 											<DetailsLinks links={support?.links} />
 										</div>
@@ -159,7 +159,7 @@ export const Home = () => {
 
 									<DetailsParagraph label={'Ends'} content={campaign?.date} />
 
-									<DetailsParagraph label={'Raised'} content={`$${total_amount_raised.toFixed(2)}`} />
+									<DetailsParagraph label={'Raised'} content={utils.formatCurrency(total_amount_raised)} />
 
 									<DetailsLinks links={campaign?.links} />
 								</div>

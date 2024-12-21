@@ -4,7 +4,7 @@ export const navigation = [
 		label: 'Commentary Stream',
 		alt: 'Commentary Stream',
 		url: '//twitch.tv/MonetaryDragon',
-		showInNav: false,
+		showInNav: true,
 		isRoute: false,
 	},
 	{
@@ -27,8 +27,8 @@ export const navigation = [
 		id: 2,
 		label: 'Signup Sheet',
 		alt: 'Signup Sheet',
-		url: '//docs.google.com/spreadsheets/d/1ebdDFWFl4UzS20Htymp_S3Wzc905N5aeawNysLPUsHg/edit',
-		showInNav: false,
+		url: '//docs.google.com/spreadsheets/d/1pxX1Pf7qK3eO2nKksbLGp3VbWV7ZByPC6dxVNmo8pds/edit',
+		showInNav: true,
 		isRoute: false,
 	},
 	{
@@ -36,7 +36,7 @@ export const navigation = [
 		label: 'Participant Guide',
 		alt: 'Participant Guide',
 		url: '/participant-guide',
-		showInNav: false,
+		showInNav: true,
 		isRoute: true,
 	},
 	{

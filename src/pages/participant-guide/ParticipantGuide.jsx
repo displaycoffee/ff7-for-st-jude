@@ -31,7 +31,7 @@ export const ParticipantGuide = () => {
 				<h5>Before the day of the event</h5>
 
 				<ol>
-					<li>Create your Tiltify campaign, create incentives, publish your campaign, activate incentives.</li>
+					<li>Create your Tiltify campaign, create incentives, publish your campaign, and activate incentives.</li>
 					<li>
 						Create bot commands and timers with links to your campaign page and the commentary stream (
 						<a href="//twitch.tv/monetarydragon" target="_blank" rel="noreferrer">
@@ -137,7 +137,7 @@ export const ParticipantGuide = () => {
 					</li>
 					<li>Click "Start Fundraising".</li>
 					<li>
-						Enter a campaign name. <strong>For example:</strong> "cornfed's FF7 for St. Jude #8".
+						Enter a campaign name. <strong>For example:</strong> "cornfed's FF7 for St. Jude #9".
 					</li>
 					<li>Customize the campaign description if desired.</li>
 					<li>Click "Next" and choose Livestream &gt; Twitch and enter your twitch channel's username.</li>

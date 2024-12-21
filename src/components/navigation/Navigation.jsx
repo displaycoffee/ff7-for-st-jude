@@ -1,6 +1,6 @@
 /* React */
 import React, { useEffect, createRef, useContext } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 
 /* Local styles */
 import './styles/navigation.scss';
@@ -17,13 +17,21 @@ import { ParticipantGuide } from '../../pages/participant-guide/ParticipantGuide
 
 export const Navigation = (props) => {
 	const { location } = props;
+	const { pathname } = useLocation();
 	const context = useContext(Context);
+	const utils = context.utils;
 	const navigationList = createNavigationList(navigation, false);
 	const navigationRef = createRef();
 
+	// Scroll to top when navigation link is clicked on
+	useEffect(() => {
+		utils.scrollTo();
+	}, [pathname]);
+
+	// Make header sticky
 	useEffect(() => {
 		if (location == 'header') {
-			context.utils.isSticky(navigationRef?.current, 'is-sticky');
+			utils.isSticky(navigationRef?.current, 'is-sticky');
 		}
 	}, []);
 

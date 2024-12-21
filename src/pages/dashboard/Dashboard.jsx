@@ -131,8 +131,8 @@ export const Dashboard = () => {
 										<div className="blue-section">
 											{donation.amount ? (
 												<p>
-													<strong>Donation:</strong> ${amount.toFixed(2)} from <strong>{donation.donor_name}</strong> to{' '}
-													<DetailsLinks links={donation?.links} wrapper={false} />
+													<strong>Donation:</strong> {utils.formatCurrency(amount)} from{' '}
+													<strong>{donation.donor_name}</strong> to <DetailsLinks links={donation?.links} wrapper={false} />
 												</p>
 											) : null}
 
@@ -164,7 +164,7 @@ export const Dashboard = () => {
 
 											<DetailsParagraph label={'Description'} content={reward?.description} />
 
-											<DetailsParagraph label={'Cost'} content={`$${amount.toFixed(2)}`} />
+											<DetailsParagraph label={'Cost'} content={utils.formatCurrency(amount)} />
 
 											{reward.date && !reward.date.includes(variables.placeholders.endDateReadable) && (
 												<p>
@@ -202,7 +202,7 @@ export const Dashboard = () => {
 
 											<DetailsParagraph
 												label={'Raised'}
-												content={`$${amount_raised.toFixed(2)} out of $${amount.toFixed(2)}`}
+												content={`${utils.formatCurrency(amount_raised)} out of ${utils.formatCurrency(amount)}`}
 											/>
 
 											{target.date && !target.date.includes(variables.placeholders.endDateReadable) && (

@@ -1,6 +1,15 @@
 /* React */
 import { createRoot } from 'react-dom/client';
 
+/* Create Intl.NumberFormat instance for utils.formatCurrency function */
+const formatterOptions = {
+	minimumFractionDigits: 2,
+	maximumFractionDigits: 2,
+	style: 'currency',
+	currency: 'USD',
+};
+const formatter = new Intl.NumberFormat('en-US', formatterOptions);
+
 export const utils = {
 	checkAmount: (number) => {
 		// Check number to always return a value
@@ -53,6 +62,10 @@ export const utils = {
 			contentActive = !isExpired && data.active && data.amounts.amount_raised < data.amounts.amount;
 		}
 		return contentActive;
+	},
+	formatCurrency: (number) => {
+		// Format currency using formatter
+		return formatter.format(number);
 	},
 	getAmounts: (detail) => {
 		// Set values from currency data
@@ -111,7 +124,9 @@ export const utils = {
 	},
 	scrollTo: (e, selector, offset) => {
 		// Scroll to element on page
-		e.preventDefault();
+		if (e) {
+			e.preventDefault();
+		}
 		const anchor = {
 			selector: selector ? selector : false,
 			offset: offset ? offset : 0,
