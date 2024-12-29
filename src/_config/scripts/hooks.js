@@ -38,13 +38,17 @@ export function useSupporting(content, current) {
 	const { supporting } = content;
 	const key = 'supporting';
 	const requestData = !supporting ? true : false;
-	const { data: data, status: status } = useQuery({
+	const {
+		data: data,
+		isPending: isPending,
+		isSuccess: isSuccess,
+	} = useQuery({
 		queryKey: [key, current],
 		queryFn: requests.supporting,
 		enabled: requestData,
 	});
 
-	return [data, status];
+	return [data, { pending: isPending, success: isSuccess }];
 }
 
 export function useCampaign(content, current) {
@@ -52,13 +56,17 @@ export function useCampaign(content, current) {
 	const { campaign } = content;
 	const key = 'campaign';
 	const requestData = !campaign || (campaign && utils.checkTotals(content)) ? true : false;
-	const { data: data, status: status } = useQuery({
+	const {
+		data: data,
+		isPending: isPending,
+		isSuccess: isSuccess,
+	} = useQuery({
 		queryKey: [key, current],
 		queryFn: requests.campaign,
 		enabled: requestData,
 	});
 
-	return [data, status];
+	return [data, { pending: isPending, success: isSuccess }];
 }
 
 export function useDonations(content, current) {
@@ -67,13 +75,17 @@ export function useDonations(content, current) {
 	const key = 'donations';
 	const hasSupporting = supporting && supporting.length !== 0 ? true : false;
 	const requestData = hasSupporting && (!donations || (donations && utils.checkTotals(content))) ? true : false;
-	const { data: data, status: status } = useQuery({
+	const {
+		data: data,
+		isPending: isPending,
+		isSuccess: isSuccess,
+	} = useQuery({
 		queryKey: [key, current, supporting],
 		queryFn: requests.donations,
 		enabled: requestData,
 	});
 
-	return [data, status];
+	return [data, { pending: isPending, success: isSuccess }];
 }
 
 export function useMultiQueries(content, key) {
@@ -88,7 +100,11 @@ export function useMultiQueries(content, key) {
 	// Get data from multiple queries
 	const { supporting } = content;
 	const hasSupporting = supporting && supporting.length !== 0 ? true : false;
-	const { data: data, status: status } = useQueries({
+	const {
+		data: data,
+		pending: pending,
+		success: success,
+	} = useQueries({
 		queries:
 			requestType && hasSupporting
 				? supporting.map((result) => {
@@ -100,20 +116,14 @@ export function useMultiQueries(content, key) {
 				: [], // if supporting is undefined, an empty array will be returned
 		combine: (results) => {
 			return {
-				data: results.map((result) => result.data).filter((result) => result),
-				status: results
-					.map((result, index) => {
-						if (index == results.length - 1) {
-							return result.status;
-						}
-					})
-					.filter((result) => result)
-					.pop(),
+				data: results.map((result) => result.data),
+				pending: results.some((result) => result.isPending),
+				success: results.some((result) => result.isSuccess),
 			};
 		},
 	});
 
-	return [utils.merge(data), status];
+	return [utils.merge(data), { pending: pending, success: success }];
 }
 
 export function useRespond(bp) {

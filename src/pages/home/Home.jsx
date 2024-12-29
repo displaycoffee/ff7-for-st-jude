@@ -25,40 +25,47 @@ export const Home = () => {
 
 	// Use custom hook to get supporting campaigns
 	const [supportingData, supportingStatus] = useSupporting(content, current);
+	const supportingComplete = !supportingStatus.pending && supportingStatus.success ? true : false;
 
 	// Use custom hook to get campaign
 	const [campaignData, campaignStatus] = useCampaign(content, current);
+	const campaignComplete = !campaignStatus.pending && campaignStatus.success ? true : false;
+
+	if (supportingComplete && campaignComplete) {
+		// Update supporting
+		supporting = utils.updateSupporting(supportingData);
+		content.supporting = supporting;
+
+		// Set team campaign (and add details)
+		campaign = utils.updateCampaign(campaignData, campaigns);
+		content.campaign = campaign;
+
+		// Set variables for progress bar
+		amountRaised =
+			campaign?.amounts?.total_amount_raised && campaign.amounts.total_amount_raised !== false ? campaign.amounts.total_amount_raised : 0;
+		goal = campaign?.amounts?.goal && campaign.amounts.goal !== false ? campaign.amounts.goal : 0;
+
+		// Reset totalRaised and get amount raised from all campaigns
+		totalRaised = 0;
+		previous.forEach((campaign) => {
+			totalRaised += campaign.amounts.total_amount_raised;
+		});
+		if (amountRaised) {
+			totalRaised += amountRaised;
+		}
+	}
 
 	useEffect(() => {
-		if (supportingStatus == 'success' && campaignStatus == 'success') {
-			// Update supporting
-			supporting = utils.updateSupporting(supportingData);
-
-			// Set team campaign (and add details)
-			campaign = utils.updateCampaign(campaignData, campaigns);
-
-			// Set content state
-			content = { ...content, supporting: supporting, campaign: campaign };
+		if (supportingComplete && campaignComplete) {
+			// Set content
 			setContent(content);
 
-			// Set variables for progress bar
-			amountRaised =
-				campaign?.amounts?.total_amount_raised && campaign.amounts.total_amount_raised !== false ? campaign.amounts.total_amount_raised : 0;
+			// Set amounts and totals
 			setAmountRaised(amountRaised);
-			goal = campaign?.amounts?.goal && campaign.amounts.goal !== false ? campaign.amounts.goal : 0;
 			setGoal(goal);
-
-			// Reset totalRaised and get amount raised from all campaigns
-			totalRaised = 0;
-			previous.forEach((campaign) => {
-				totalRaised += campaign.amounts.total_amount_raised;
-			});
-			if (amountRaised) {
-				totalRaised += amountRaised;
-			}
 			setTotalRaised(totalRaised);
 		}
-	}, [supportingStatus, campaignStatus]);
+	}, []);
 
 	return (
 		<>

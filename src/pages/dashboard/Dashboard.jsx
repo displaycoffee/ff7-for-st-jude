@@ -20,57 +20,60 @@ export const Dashboard = () => {
 
 	// Use custom hook to get supporting campaigns
 	const [supportingData, supportingStatus] = useSupporting(content, current);
+	const supportingComplete = !supportingStatus.pending && supportingStatus.success ? true : false;
 
 	// Use custom hook to get campaign
 	const [campaignData, campaignStatus] = useCampaign(content, current);
+	const campaignComplete = !campaignStatus.pending && campaignStatus.success ? true : false;
 
-	useEffect(() => {
-		if (supportingStatus == 'success' && campaignStatus == 'success') {
-			// Update supporting
-			supporting = utils.updateSupporting(supportingData);
+	if (supportingComplete && campaignComplete) {
+		// Update supporting
+		supporting = utils.updateSupporting(supportingData);
+		content.supporting = supporting;
 
-			// Set team campaign (and add details)
-			campaign = utils.updateCampaign(campaignData, campaigns);
-
-			// Set content state
-			content = { ...content, supporting: supporting, campaign: campaign };
-			setContent(content);
-		}
-	}, [supportingStatus, campaignStatus]);
+		// Set team campaign (and add details)
+		campaign = utils.updateCampaign(campaignData, campaigns);
+		content.campaign = campaign;
+	}
 
 	// Use custom hook to get donations
 	const [donationsData, donationsStatus] = useDonations(content, current);
+	const dontationsComplete = !donationsStatus.pending && donationsStatus.success ? true : false;
 
-	// Use ustom hook to get rewards
+	// Set donations
+	if (dontationsComplete) {
+		donations = utils.updateDonations(donationsData);
+		content.donations = donations;
+	}
+
+	// Use custom hook to get rewards
 	const [rewardsData, rewardsStatus] = useMultiQueries(content, 'rewards');
+	const rewardsComplete = !rewardsStatus.pending && rewardsStatus.success ? true : false;
 
-	// Use ustom hook to get targets
+	// Set rewards
+	if (rewardsComplete) {
+		rewards = utils.checkArray(rewardsData);
+		rewards = utils.sort(rewards, 'integer', 'milliseconds', 'asc');
+		content.rewards = rewards;
+	}
+
+	// Use custom hook to get targets
 	const [targetsData, targetsStatus] = useMultiQueries(content, 'targets');
+	const targetsComplete = !targetsStatus.pending && targetsStatus.success ? true : false;
 
+	// Set targets
+	if (targetsComplete) {
+		targets = utils.checkArray(targetsData);
+		targets = utils.sort(targets, 'integer', 'milliseconds', 'asc');
+		content.targets = targets;
+	}
+
+	// Set content
 	useEffect(() => {
-		if (donationsStatus == 'success') {
-			// Set donations
-			donations = utils.updateDonations(donationsData);
-			content = { ...content, donations: donations };
-		}
-		if (rewardsStatus == 'success') {
-			// Set rewards
-			rewards = utils.checkArray(rewardsData);
-			rewards = utils.sort(rewards, 'integer', 'milliseconds', 'asc');
-			content = { ...content, rewards: rewards };
-		}
-		if (targetsStatus == 'success') {
-			// Set targets
-			targets = utils.checkArray(targetsData);
-			targets = utils.sort(targets, 'integer', 'milliseconds', 'asc');
-			content = { ...content, targets: targets };
-		}
-
-		if (donationsStatus == 'success' || rewardsStatus == 'success' || targetsStatus == 'success') {
-			// Set content state
+		if (supportingComplete && campaignComplete && (dontationsComplete || rewardsComplete || targetsComplete)) {
 			setContent(content);
 		}
-	}, [donationsStatus, rewardsStatus, targetsStatus]);
+	}, []);
 
 	return (
 		<>
@@ -103,7 +106,9 @@ export const Dashboard = () => {
 									e.preventDefault();
 
 									// Reset and set content state
-									content = { ...content, donations: false, rewards: false, targets: false };
+									content.donations = false;
+									content.rewards = false;
+									content.targets = false;
 									setContent(content);
 
 									// Reset queries
@@ -143,7 +148,7 @@ export const Dashboard = () => {
 							})
 						: null}
 
-					{donationsStatus == 'success' && donations.length === 0 ? (
+					{dontationsComplete && donations.length === 0 ? (
 						<DetailsNotFound type={'donations'} />
 					) : (
 						<Skeleton columns={15} perRow={3} paragraphs={2} />
@@ -179,7 +184,7 @@ export const Dashboard = () => {
 							})
 						: null}
 
-					{rewardsStatus == 'success' && rewards.length === 0 ? (
+					{rewardsComplete && rewards.length === 0 ? (
 						<DetailsNotFound type={'rewards'} />
 					) : (
 						<Skeleton columns={6} perRow={3} paragraphs={6} />
@@ -218,7 +223,7 @@ export const Dashboard = () => {
 							})
 						: null}
 
-					{targetsStatus == 'success' && targets.length === 0 ? (
+					{targetsComplete && targets.length === 0 ? (
 						<DetailsNotFound type={'targets'} />
 					) : (
 						<Skeleton columns={6} perRow={3} paragraphs={5} />
