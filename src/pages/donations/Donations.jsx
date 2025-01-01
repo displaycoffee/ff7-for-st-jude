@@ -20,37 +20,38 @@ export const Donations = () => {
 
 	// Use custom hook to get supporting campaigns
 	const [supportingData, supportingStatus] = useSupporting(content, current);
+	const supportingComplete = (!supportingStatus.pending && supportingStatus.success) || supportingStatus.isFetched ? true : false;
 
 	// Use custom hook to get campaign
 	const [campaignData, campaignStatus] = useCampaign(content, current);
+	const campaignComplete = (!campaignStatus.pending && campaignStatus.success) || campaignStatus.isFetched ? true : false;
 
-	useEffect(() => {
-		if (supportingStatus == 'success' && campaignStatus == 'success') {
-			// Update supporting
-			supporting = utils.updateSupporting(supportingData);
+	if (supportingComplete && campaignComplete) {
+		// Update supporting
+		supporting = utils.updateSupporting(supportingData);
+		content.supporting = supporting;
 
-			// Set team campaign (and add details)
-			campaign = utils.updateCampaign(campaignData, campaigns);
-
-			// Set content state
-			content = { ...content, supporting: supporting, campaign: campaign };
-			setContent(content);
-		}
-	}, [supportingStatus, campaignStatus]);
+		// Set team campaign (and add details)
+		campaign = utils.updateCampaign(campaignData, campaigns);
+		content.campaign = campaign;
+	}
 
 	// Use custom hook to get donations
 	const [donationsData, donationsStatus] = useDonations(content, current);
+	const dontationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.isFetched ? true : false;
 
+	// Set donations
+	if (dontationsComplete) {
+		donations = utils.updateDonations(donationsData);
+		content.donations = donations;
+	}
+
+	// Set content
 	useEffect(() => {
-		if (donationsStatus == 'success') {
-			// Set donations
-			donations = utils.updateDonations(donationsData);
-
-			// Set content state
-			content = { ...content, donations: donations };
+		if (supportingComplete && campaignComplete && dontationsComplete) {
 			setContent(content);
 		}
-	}, [donationsStatus]);
+	}, []);
 
 	useEffect(() => {
 		if (timeout) {
@@ -94,7 +95,7 @@ export const Donations = () => {
 							})
 						: null}
 
-					{donationsStatus == 'success' && donations.length === 0 ? (
+					{dontationsComplete && donations.length === 0 ? (
 						<DetailsNotFound type={'donations'} />
 					) : (
 						<Skeleton columns={15} perRow={3} paragraphs={2} />
