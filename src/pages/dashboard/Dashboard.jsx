@@ -20,11 +20,11 @@ export const Dashboard = () => {
 
 	// Use custom hook to get supporting campaigns
 	const [supportingData, supportingStatus] = useSupporting(content, current);
-	const supportingComplete = !supportingStatus.pending && supportingStatus.success ? true : false;
+	const supportingComplete = (!supportingStatus.pending && supportingStatus.success) || supportingStatus.isFetched ? true : false;
 
 	// Use custom hook to get campaign
 	const [campaignData, campaignStatus] = useCampaign(content, current);
-	const campaignComplete = !campaignStatus.pending && campaignStatus.success ? true : false;
+	const campaignComplete = (!campaignStatus.pending && campaignStatus.success) || campaignStatus.isFetched ? true : false;
 
 	if (supportingComplete && campaignComplete) {
 		// Update supporting
@@ -38,7 +38,7 @@ export const Dashboard = () => {
 
 	// Use custom hook to get donations
 	const [donationsData, donationsStatus] = useDonations(content, current);
-	const dontationsComplete = !donationsStatus.pending && donationsStatus.success ? true : false;
+	const dontationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.isFetched ? true : false;
 
 	// Set donations
 	if (dontationsComplete) {
@@ -48,7 +48,7 @@ export const Dashboard = () => {
 
 	// Use custom hook to get rewards
 	const [rewardsData, rewardsStatus] = useMultiQueries(content, 'rewards');
-	const rewardsComplete = !rewardsStatus.pending && rewardsStatus.success ? true : false;
+	const rewardsComplete = (!rewardsStatus.pending && rewardsStatus.success) || rewardsStatus.isFetched ? true : false;
 
 	// Set rewards
 	if (rewardsComplete) {
@@ -59,7 +59,7 @@ export const Dashboard = () => {
 
 	// Use custom hook to get targets
 	const [targetsData, targetsStatus] = useMultiQueries(content, 'targets');
-	const targetsComplete = !targetsStatus.pending && targetsStatus.success ? true : false;
+	const targetsComplete = (!targetsStatus.pending && targetsStatus.success) || targetsStatus.isFetched ? true : false;
 
 	// Set targets
 	if (targetsComplete) {
@@ -74,7 +74,6 @@ export const Dashboard = () => {
 			setContent(content);
 		}
 	}, []);
-
 	return (
 		<>
 			<nav className="floating">

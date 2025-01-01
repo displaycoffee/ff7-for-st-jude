@@ -123,47 +123,48 @@ export const ParticipantGuide = () => {
 				<ol>
 					<li>
 						Browse to{' '}
-						<a href="//tiltify.com" target="_blank" rel="noreferrer">
-							tiltify.com
+						<a href="//app.tiltify.com" target="_blank" rel="noreferrer">
+							app.tiltify.com
 						</a>{' '}
 						and log in using your twitch account.
 					</li>
 					<li>
-						Browse to{' '}
-						<a href="//tiltify.com/+ff7-for-st-jude/profile" target="_blank" rel="noreferrer">
-							tiltify.com/+ff7-for-st-jude/profile
+						Then in the same or new browser tab, go to{' '}
+						<a href="//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9" target="_blank" rel="noreferrer">
+							tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9
 						</a>{' '}
-						and click "View Campaign" for the active campaign near the top of the page.
+						and click the "Support this campaign" button.
 					</li>
-					<li>Click "Start Fundraising".</li>
+					<li>"Charity details" are already selected, so click "Continue".</li>
 					<li>
-						Enter a campaign name. <strong>For example:</strong> "cornfed's FF7 for St. Jude #9".
+						On step two of setup ("Your campaign") enter a campaign name and change the description if desired.{' '}
+						<strong>For example:</strong> "cornfed's FF7 for St. Jude #9".
 					</li>
-					<li>Customize the campaign description if desired.</li>
-					<li>Click "Next" and choose Livestream &gt; Twitch and enter your twitch channel's username.</li>
+					<li>Select "Continue" again and choose "Livestream" &gt; "Twitch" and enter your twitch channel's username.</li>
 					<li>
-						Click "Next" and set a campaign goal. This goal does not affect anything including prizes. It is just to encourage donations
-						to reach goals. You can raise your goal at any time but cannot lower it! It's best to set it to achievable amounts and raise
-						the goal each time it's reached during the event.
+						Click "Continue" and set a campaign goal. This goal does not affect anything including prizes. It is just to encourage
+						donations to reach goals. You can raise your goal at any time but cannot lower it! It is best to set it to achievable amounts
+						and raise the goal each time it is reached during the event.
 					</li>
 					<li>
-						Enter your address, click "Continue", and enter your phone number and t-shirt size.
+						In step three ("Event registration"), you will be asked to register with St. Jude PLAY LIVE. Click "Add address" and after
+						using the address, enter your phone number, birthday, and t-shirt fit and size.
 						<ul>
 							<li>
-								St. Jude PLAY LIVE sends prize packages out after the event. You might get a t-shirt and/or hoodie. Also a bunch of
+								St. Jude PLAY LIVE sends prize packages out after the event. You might get a t-shirt and/or hoodie. Also, a bunch of
 								other random stuff.
 							</li>
 						</ul>
 					</li>
-					<li>Click "Create", but don't publish yet.</li>
 					<li>
-						Your campaign dashboard will open. From here you can manage all aspects of your campaign including incentives which are a big
-						part of the campaign.
+						On step four ("Summary"), click "Create", but do not publish yet. Your campaign dashboard will open. From here you can manage
+						all aspects of your campaign including "Incentives" which are a big part of the campaign.
 					</li>
 					<li>
-						Once you've completed your campaign you can publish it from the "Overview" tab. This will allow people to donate. Once
-						published, you cannot change some details such as name and description. You can unpublish your campaign but only if no
-						donations have been made yet.
+						Once you have completed your campaign, you can publish it by selecting "Overview" from the main navigation. (Note: The
+						"Incentives" page has an "Overview" tab, but this is not the same thing.) This will allow people to donate. Once published,
+						you cannot change certain details such as name and description. You can unpublish your campaign, but only if no donations have
+						been made.
 					</li>
 				</ol>
 			</Details>

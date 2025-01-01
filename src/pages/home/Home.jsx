@@ -25,11 +25,11 @@ export const Home = () => {
 
 	// Use custom hook to get supporting campaigns
 	const [supportingData, supportingStatus] = useSupporting(content, current);
-	const supportingComplete = !supportingStatus.pending && supportingStatus.success ? true : false;
+	const supportingComplete = (!supportingStatus.pending && supportingStatus.success) || supportingStatus.isFetched ? true : false;
 
 	// Use custom hook to get campaign
 	const [campaignData, campaignStatus] = useCampaign(content, current);
-	const campaignComplete = !campaignStatus.pending && campaignStatus.success ? true : false;
+	const campaignComplete = (!campaignStatus.pending && campaignStatus.success) || campaignStatus.isFetched ? true : false;
 
 	if (supportingComplete && campaignComplete) {
 		// Update supporting

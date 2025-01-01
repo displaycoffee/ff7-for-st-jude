@@ -42,13 +42,14 @@ export function useSupporting(content, current) {
 		data: data,
 		isPending: isPending,
 		isSuccess: isSuccess,
+		isFetched: isFetched,
 	} = useQuery({
 		queryKey: [key, current],
 		queryFn: requests.supporting,
 		enabled: requestData,
 	});
 
-	return [data, { pending: isPending, success: isSuccess }];
+	return [data, { pending: isPending, success: isSuccess, fetched: isFetched }];
 }
 
 export function useCampaign(content, current) {
@@ -60,13 +61,14 @@ export function useCampaign(content, current) {
 		data: data,
 		isPending: isPending,
 		isSuccess: isSuccess,
+		isFetched: isFetched,
 	} = useQuery({
 		queryKey: [key, current],
 		queryFn: requests.campaign,
 		enabled: requestData,
 	});
 
-	return [data, { pending: isPending, success: isSuccess }];
+	return [data, { pending: isPending, success: isSuccess, fetched: isFetched }];
 }
 
 export function useDonations(content, current) {
@@ -79,13 +81,14 @@ export function useDonations(content, current) {
 		data: data,
 		isPending: isPending,
 		isSuccess: isSuccess,
+		isFetched: isFetched,
 	} = useQuery({
 		queryKey: [key, current, supporting],
 		queryFn: requests.donations,
 		enabled: requestData,
 	});
 
-	return [data, { pending: isPending, success: isSuccess }];
+	return [data, { pending: isPending, success: isSuccess, fetched: isFetched }];
 }
 
 export function useMultiQueries(content, key) {
@@ -104,6 +107,7 @@ export function useMultiQueries(content, key) {
 		data: data,
 		pending: pending,
 		success: success,
+		fetched: fetched,
 	} = useQueries({
 		queries:
 			requestType && hasSupporting
@@ -119,11 +123,12 @@ export function useMultiQueries(content, key) {
 				data: results.map((result) => result.data),
 				pending: results.some((result) => result.isPending),
 				success: results.some((result) => result.isSuccess),
+				fetched: results.some((result) => result.isFetched),
 			};
 		},
 	});
 
-	return [utils.merge(data), { pending: pending, success: success }];
+	return [utils.merge(data), { pending: pending, success: success, fetched: fetched }];
 }
 
 export function useRespond(bp) {
