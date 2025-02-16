@@ -1,11 +1,18 @@
+/* Local components */
+import { Home } from '../../../pages/home/Home';
+import { Dashboard } from '../../../pages/dashboard/Dashboard';
+import { Donations } from '../../../pages/donations/Donations';
+import { ParticipantGuide } from '../../../pages/participant-guide/ParticipantGuide';
+
 export const navigation = [
 	{
 		id: 5,
 		label: 'Commentary Stream',
 		alt: 'Commentary Stream',
 		url: '//twitch.tv/MonetaryDragon',
-		showInNav: true,
+		showInNav: false,
 		isRoute: false,
+		hasChildren: false,
 	},
 	{
 		id: 4,
@@ -14,6 +21,8 @@ export const navigation = [
 		url: '/donations',
 		showInNav: true,
 		isRoute: true,
+		hasChildren: false,
+		component: Donations,
 	},
 	{
 		id: 3,
@@ -22,22 +31,27 @@ export const navigation = [
 		url: '/dashboard',
 		showInNav: true,
 		isRoute: true,
+		hasChildren: false,
+		component: Dashboard,
 	},
 	{
 		id: 2,
 		label: 'Signup Sheet',
 		alt: 'Signup Sheet',
 		url: '//docs.google.com/spreadsheets/d/1pxX1Pf7qK3eO2nKksbLGp3VbWV7ZByPC6dxVNmo8pds/edit',
-		showInNav: true,
+		showInNav: false,
 		isRoute: false,
+		hasChildren: false,
 	},
 	{
 		id: 1,
 		label: 'Participant Guide',
 		alt: 'Participant Guide',
 		url: '/participant-guide',
-		showInNav: true,
+		showInNav: false,
 		isRoute: true,
+		hasChildren: false,
+		component: ParticipantGuide,
 	},
 	{
 		id: 0,
@@ -46,6 +60,8 @@ export const navigation = [
 		url: '/',
 		showInNav: true,
 		isRoute: true,
+		hasChildren: false,
+		component: Home,
 	},
 ].sort((a, b) => {
 	// Sort navigation by id

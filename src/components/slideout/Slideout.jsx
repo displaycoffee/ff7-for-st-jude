@@ -1,5 +1,5 @@
 /* React */
-import { useId, useEffect, useContext, useRef } from 'react';
+import { useId, useContext, useRef } from 'react';
 
 /* Local styles */
 import './styles/slideout.scss';
@@ -11,15 +11,14 @@ import { slideout } from './scripts/slideout';
 import { Context } from '../../context/Context';
 
 export const Slideout = (props) => {
-	let { id, width, direction, label, content } = props;
-	const context = useContext(Context);
+	let { options } = props;
 	const { config, get, toggle } = slideout;
 	const fallbackId = useId().replace(/:/g, '');
-	const slideoutId = `slideout-${id ? id : fallbackId}`;
+	const slideoutId = `slideout-${options?.id ? options.id : fallbackId}`;
 
 	// Get default attributes for slideout
-	width = width ? width : config.values.width;
-	direction = direction ? direction : config.values.direction;
+	const width = options?.width ? options.width : config.values.width;
+	const direction = options?.direction ? options.direction : config.values.direction;
 	const orientation = get.orientation(direction);
 	const styles = {
 		width: width,
@@ -27,11 +26,21 @@ export const Slideout = (props) => {
 		[direction]: orientation == 'vertical' ? config.values.vertical : `-${width}`,
 	};
 
-	useEffect(() => {
-		context.utils.isSticky(document.querySelector(`#${slideoutId}`), 'is-sticky');
-	}, []);
+	// Create shared slideout button
+	const slideoutButton = (
+		<div className="slideout-button-fixed">
+			<button className="slideout-button pointer unstyled a" type="button" onClick={(e) => toggle(e, slideoutId)}>
+				{options.label} &gt;
+			</button>
+		</div>
+	);
 
-	return (
+	// Set button properties
+	const button = typeof options?.button == 'object' ? options.button : { outside: false, show: true };
+
+	return button.outside && button.show ? (
+		slideoutButton
+	) : (
 		<div
 			id={slideoutId}
 			className={`${config.classes.slideout} slideout-${orientation}`}
@@ -39,15 +48,11 @@ export const Slideout = (props) => {
 			data-direction={direction}
 			data-orientation={orientation}
 		>
-			<div className="slideout-button-fixed">
-				<button className="slideout-button pointer unstyled a" type="button" onClick={(e) => toggle(e, slideoutId)}>
-					{label} &gt;
-				</button>
-			</div>
+			{!button.outside && button.show ? slideoutButton : null}
 
 			<div className={`${config.classes.menu} blue-background`} style={styles}>
 				<header className="slideout-header flex-nowrap flex-align-items-center">
-					<h3 className="slideout-title">{label}</h3>
+					<h3 className="slideout-title">{options.label}</h3>
 
 					<button className="slideout-close pointer unstyled" type="button" onClick={(e) => toggle(e, false)}>
 						x
@@ -70,7 +75,7 @@ export const Slideout = (props) => {
 						}}
 						role="presentation"
 					>
-						{content ? content : null}
+						{options?.content ? options?.content : null}
 					</div>
 				</div>
 			</div>
@@ -79,7 +84,7 @@ export const Slideout = (props) => {
 };
 
 export const SlideoutOverlay = (props) => {
-	const { isDesktop } = props;
+	const { options } = props;
 	const context = useContext(Context);
 	const { config, set, toggle } = slideout;
 
@@ -94,7 +99,7 @@ export const SlideoutOverlay = (props) => {
 	if (!elementRef.current) {
 		elementRef.current = document.createElement('div');
 		context.utils.setAttributes(elementRef.current, {
-			class: 'slideout-overlay',
+			class: 'slideout-overlay pointer',
 			role: 'presentation',
 		});
 		elementRef.current.onclick = (e) => toggle(e, false);
@@ -103,7 +108,7 @@ export const SlideoutOverlay = (props) => {
 
 	// If we are no desktop and slideout is active, remove body classes to hide overlay
 	const body = document.querySelector('body');
-	if (body && body.classList.contains(config.classes.activeBody) && isDesktop) {
+	if (body && body.classList.contains(config.classes.activeBody) && options.isDesktop) {
 		set.body('remove');
 	}
 };

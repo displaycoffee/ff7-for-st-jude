@@ -16,7 +16,7 @@
 
 // Create an optimized svg url - version: 1.0.6
 // From: https://codepen.io/jakob-e/full/doMoML
-@function svg-encode($svg){
+@function svg-encode($svg) {
 	// Add missing namespace
 	@if not str-index($svg,xmlns) {
 		$svg: svg-str-replace($svg, '<svg','<svg xmlns="http://www.w3.org/2000/svg"');   
