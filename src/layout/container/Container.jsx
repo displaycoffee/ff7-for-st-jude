@@ -35,6 +35,19 @@ export const Container = (props) => {
 	// Set body class using custom hook
 	useBodyClass('home');
 
+	// Slideout options
+	const slideoutOptions = {
+		id: 'menu',
+		isDesktop: isDesktop,
+		label: 'Menu',
+		content: <Navigation />,
+		closeOnClick: true,
+		button: {
+			outside: false,
+			show: true,
+		},
+	};
+
 	// Create state for app
 	let [content, setContent] = useState({
 		campaign: false,
@@ -57,13 +70,9 @@ export const Container = (props) => {
 			<Context.Provider value={contextProps}>
 				<div className="container">
 					<ErrorBoundary message={<ContainerError />}>
-						<SlideoutOverlay isDesktop={isDesktop} />
+						<SlideoutOverlay options={slideoutOptions} />
 
-						{isDesktop ? (
-							<Navigation location={'header'} />
-						) : (
-							<Slideout id={'menu'} label={'Menu'} content={<Navigation location={'slideout'} />} />
-						)}
+						{isDesktop ? <Navigation location={'header'} /> : <Slideout options={slideoutOptions} />}
 
 						<Header buttonClick={false} />
 

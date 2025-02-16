@@ -1,6 +1,6 @@
 /* React */
 import React, { useEffect, createRef, useContext } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 
 /* Local styles */
 import './styles/navigation.scss';
@@ -10,10 +10,6 @@ import { navigation, createNavigationList } from './scripts/navigation';
 
 /* Local components */
 import { Context } from '../../context/Context';
-import { Home } from '../../pages/home/Home';
-import { Dashboard } from '../../pages/dashboard/Dashboard';
-import { Donations } from '../../pages/donations/Donations';
-import { ParticipantGuide } from '../../pages/participant-guide/ParticipantGuide';
 
 export const Navigation = (props) => {
 	const { location } = props;
@@ -22,6 +18,7 @@ export const Navigation = (props) => {
 	const utils = context.utils;
 	const navigationList = createNavigationList(navigation, false);
 	const navigationRef = createRef();
+	const windowPath = window.location.pathname;
 
 	// Scroll to top when navigation link is clicked on
 	useEffect(() => {
@@ -40,11 +37,23 @@ export const Navigation = (props) => {
 			<div className="navigation-fixed">
 				<ul className="navigation-list unstyled">
 					{navigationList.map((nav, index) => {
+						const isIndex = nav.url == '/' ? true : false;
+						const isIndexWindow = windowPath == '/' ? true : false;
+
+						// Determine active navigation link
+						let isActive = isIndex && isIndexWindow ? true : false;
+						if (!isIndex && !isIndexWindow) {
+							const windowSlash = `${windowPath}/`;
+							const navSlash = `${nav.url}/`;
+							isActive = windowSlash.includes(navSlash) ? true : false;
+						}
+
+						// Get alt label
 						const navAlt = nav.alt || nav.label;
 
 						return (
 							<React.Fragment key={nav.id}>
-								<li className="navigation-list-item">
+								<li className={`navigation-list-item${isActive ? ' active' : ''}`}>
 									{nav.isRoute ? (
 										<Link to={nav.url} alt={navAlt} title={navAlt}>
 											{nav.label}
@@ -71,15 +80,14 @@ export const NavigationRoutes = () => {
 
 	return navigationList && navigationList.length != 0 ? (
 		<Routes>
-			{navigationList.map((nav) => (
-				<React.Fragment key={nav.id}>
-					{{
-						'participant guide': <Route path={nav.url} element={<ParticipantGuide />} />,
-						dashboard: <Route path={nav.url} element={<Dashboard />} />,
-						donations: <Route path={nav.url} element={<Donations />} />,
-					}[nav.label.toLowerCase()] || <Route path={nav.url} element={<Home />} />}
-				</React.Fragment>
-			))}
+			{navigationList.map((nav) => {
+				const path = nav.hasChildren ? `${nav.url}/*` : nav.url;
+				const navProps = nav?.props ? nav.props : {};
+
+				return <Route path={path} element={<nav.component {...navProps} />} key={nav.id} />;
+			})}
+
+			<Route path="*" element={<Navigate to="/" />} />
 		</Routes>
 	) : null;
 };
