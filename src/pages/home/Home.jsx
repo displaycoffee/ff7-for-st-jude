@@ -14,7 +14,7 @@ import { Skeleton } from '../../components/skeleton/Skeleton';
 
 export const Home = () => {
 	const context = useContext(Context);
-	let { campaigns, utils, content, setContent } = context;
+	let { campaigns, utils, queryClient, content, setContent } = context;
 	let { supporting, campaign } = content;
 	let { current, previous } = campaigns;
 
@@ -27,9 +27,33 @@ export const Home = () => {
 	const [supportingData, supportingStatus] = useSupporting(content, current);
 	const supportingComplete = (!supportingStatus.pending && supportingStatus.success) || supportingStatus.isFetched ? true : false;
 
+	// If there is no supporting data, reset and try again
+	useEffect(() => {
+		if (!supportingData) {
+			// Reset and set content state
+			content = { ...content, supporting: false };
+			setContent(content);
+
+			// Reset queries
+			queryClient.resetQueries({ queryKey: ['supporting'] });
+		}
+	}, [supportingData]);
+
 	// Use custom hook to get campaign
 	const [campaignData, campaignStatus] = useCampaign(content, current);
 	const campaignComplete = (!campaignStatus.pending && campaignStatus.success) || campaignStatus.isFetched ? true : false;
+
+	// If there is no campaign data, reset and try again
+	useEffect(() => {
+		if (!campaignData) {
+			// Reset and set content state
+			content = { ...content, campaign: false };
+			setContent(content);
+
+			// Reset queries
+			queryClient.resetQueries({ queryKey: ['campaign'] });
+		}
+	}, [campaignData]);
 
 	if (supportingComplete && campaignComplete) {
 		// Update supporting
