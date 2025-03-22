@@ -1,14 +1,8 @@
-import { fileURLToPath } from 'url';
 import react from '@vitejs/plugin-react';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 
 export const viteUtils = {
 	plugins: [react(), basicSsl()],
-	setInput: (name, path) => {
-		return {
-			[`${name}`]: fileURLToPath(new URL(`./src/${path}/index.js`, import.meta.url)),
-		};
-	},
 	assetFileNames: (file) => {
 		if (file.name.includes('.css')) {
 			const suffix = file.name == 'index.css' ? `.css` : `.${file.name.toLowerCase()}`;
