@@ -1,32 +1,28 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import basicSsl from '@vitejs/plugin-basic-ssl';
+import { viteUtils } from './vite.utils';
 
 export default defineConfig({
 	root: 'src',
 	publicDir: '../public',
-	plugins: [react(), basicSsl()],
+	plugins: viteUtils.plugins,
 	server: {
 		host: 'localhost',
 		port: 3000,
 	},
 	build: {
 		outDir: '../dist',
-		emptyOutDir: true,
+		emptyOutDir: false,
 		rollupOptions: {
 			output: {
 				assetFileNames: (file) => {
-					if (file.name.includes('.css')) {
-						const suffix = file.name == 'index.css' ? `.css` : `.${file.name.toLowerCase()}`;
-						return `assets/[ext]/styles${suffix}`;
-					} else {
-						return `assets/[ext]/[name].[ext]`;
-					}
+					return viteUtils.assetFileNames(file);
 				},
 				chunkFileNames: (file) => {
-					return `assets/js/bundle.${file.name.toLowerCase()}.js`;
+					return viteUtils.chunkFileNames(file);
 				},
-				entryFileNames: 'assets/js/bundle.js',
+				entryFileNames: () => {
+					return viteUtils.entryFileNames();
+				},
 			},
 		},
 	},
