@@ -17,8 +17,11 @@ export const Home = () => {
 	let { campaigns, utils, queryClient, content, setContent } = context;
 	let { supporting, campaign } = content;
 	let { current, previous } = campaigns;
+	let retryLimit = 3;
 
 	// State variables
+	let [supportingCount, setSupportingCount] = useState(0);
+	let [campaignCount, setCampaignCount] = useState(0);
 	let [amountRaised, setAmountRaised] = useState(0);
 	let [goal, setGoal] = useState(0);
 	let [totalRaised, setTotalRaised] = useState(0);
@@ -29,7 +32,11 @@ export const Home = () => {
 
 	// If there is no supporting data, reset and try again
 	useEffect(() => {
-		if (!supportingData) {
+		if (!supportingData && supportingCount < retryLimit) {
+			// Set supporting count retries
+			supportingCount += 1;
+			setSupportingCount(supportingCount);
+
 			// Reset and set content state
 			content = { ...content, supporting: false };
 			setContent(content);
@@ -45,7 +52,11 @@ export const Home = () => {
 
 	// If there is no campaign data, reset and try again
 	useEffect(() => {
-		if (!campaignData) {
+		if (!campaignData && campaignCount < retryLimit) {
+			// Set campaign count retries
+			campaignCount += 1;
+			setCampaignCount(campaignCount);
+
 			// Reset and set content state
 			content = { ...content, campaign: false };
 			setContent(content);
