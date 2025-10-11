@@ -74,6 +74,7 @@ export const Dashboard = () => {
 			setContent(content);
 		}
 	}, []);
+
 	return (
 		<>
 			<nav className="floating">
