@@ -1,23 +1,33 @@
 /* React */
 import { QueryClient } from '@tanstack/react-query';
 
+/* Type definitions */
+
+type ContextDetails = {
+	id: string;
+	content: ObjectPrimitiveType;
+	sort: boolean | ObjectPrimitiveType;
+	layout: ObjectPrimitiveType;
+	skeleton: ObjectPrimitiveType;
+};
+
 /* Export types */
+
 export type ContextValuesType = {
-	campaigns: {
-		current: CampaignType;
-		previous: CampaignType[];
-	};
-	content: {
-		campaign: boolean;
-		supporting: boolean;
-		donations: boolean;
-		rewards: boolean;
-		targets: boolean;
-	};
+	campaigns: CampaignsType;
+	content: ContentType;
 	queryClient: QueryClient;
 	setContent: Dispatch;
 	theme: {
-		[key: string]: ObjectPrimitiveType;
+		bps: ObjectPrimitiveType;
+		details: {
+			campaign: ContextDetails;
+			donations: ContextDetails;
+			previous: ContextDetails;
+			rewards: ContextDetails;
+			supporting: ContextDetails;
+			targets: ContextDetails;
+		};
 	};
 	utils: {
 		[key: string]: Function;

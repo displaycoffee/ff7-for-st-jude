@@ -1,6 +1,11 @@
 /* React */
 import { RefObject, useEffect, useRef, useState } from 'react';
+import { useQuery, useQueries } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
+
+/* Local scripts */
+import { requests } from './requests';
+import { utils } from './utils';
 
 /* Set pageCache to get previous page */
 let pageCache = {
@@ -28,6 +33,26 @@ export function useBodyClass(defaultPrefix: string) {
 	}
 
 	return null;
+}
+
+export function useCampaign(content: ContentType, current: CampaignType) {
+	// Get campaign data if totals have changed or if not in cache
+	const { campaign } = content;
+	const key = 'campaign';
+	const requestData = !campaign || (campaign && utils.checkTotals(content)) ? true : false;
+
+	const {
+		data: data,
+		isPending: isPending,
+		isSuccess: isSuccess,
+		isFetched: isFetched,
+	} = useQuery({
+		queryKey: [key, current],
+		queryFn: requests.campaign,
+		enabled: requestData,
+	});
+
+	return [data, { fetched: isFetched, pending: isPending, success: isSuccess }];
 }
 
 export const useClickOutside = (callback: Function) => {
@@ -64,4 +89,23 @@ export function useRespond(bp: number) {
 	};
 
 	return match;
+}
+
+export function useSupporting(content: ContentType, current: CampaignType) {
+	// Use query to get supporting campaigns
+	const { supporting } = content;
+	const key = 'supporting';
+	const requestData = !supporting ? true : false;
+	const {
+		data: data,
+		isPending: isPending,
+		isSuccess: isSuccess,
+		isFetched: isFetched,
+	} = useQuery({
+		queryKey: [key, current],
+		queryFn: requests.supporting,
+		enabled: requestData,
+	});
+
+	return [data, { fetched: isFetched, pending: isPending, success: isSuccess }];
 }
