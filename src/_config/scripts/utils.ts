@@ -204,7 +204,7 @@ export const utils = {
 	},
 	updateSupporting: (supporting: ContentSupportingType) => {
 		// Update supporting details
-		if (supporting) {
+		if (supporting && typeof supporting == 'object') {
 			supporting = utils.checkArray(supporting as ObjectPrimitiveType[]);
 			supporting = utils.sort(supporting, 'integer', 'total_amount_raised', 'desc');
 		} else {
