@@ -9,7 +9,7 @@
 	// Colors
 
 	$slideout-color-01: theme.$color-07; // overlay
-	$slideout-color-02: false; // menu background
+	$slideout-color-02: theme.$color-01; // menu background
 
 	// Configuration
 
@@ -36,22 +36,13 @@
 		z-index: -1;
 		opacity: 0;
 		visibility: hidden;
-		cursor: pointer;
+	}
+	.slideout-button {
+		margin: 0 0 $slideout-spacing 0;
+		@include mixins.flex-layout((align-items: center));
+		@include mixins.gap(theme.$spacing-x2);
 	}
 	.slideout {
-		@include mixins.position($type: sticky, $top: -1px, $z: 9999);
-		min-height: 10px;
-		&.is-sticky {
-			.slideout-button-fixed {
-				@include mixins.position($type: fixed, $top: 0, $left: 0, $right: 0);
-				padding: theme.$spacing-x2 theme.$spacing-x4;
-				background-color: theme.$color-01;
-				border-bottom: 3px solid theme.$color-02;
-			}
-			.slideout-button {
-				margin: 0 theme.$spacing-x4;
-			}
-		}
 		&.slideout-vertical {
 			.slideout-menu {
 				height: 80%;
@@ -65,31 +56,22 @@
 				@include mixins.position($top: 0, $bottom: 0);
 			}
 		}
-		.slideout-button {
-			margin: 0 0 $slideout-spacing 0;
-			.icon-wrapper {
-				margin: 0 theme.$spacing-x2 0 0;
-			}
-		}
 		.slideout-menu {
 			max-width: 100%;
-			border-width: 0;
-			border-right-width: 3px;
+			background-color: $slideout-color-02;
 			z-index: 9999;
 			padding: $slideout-spacing;
 			.slideout-header {
 				margin: 0 0 $slideout-spacing 0;
 				height: $slideout-header;
-				.slideout-title {
+				@include mixins.flex-layout((align-items: center));
+				@include mixins.gap(theme.$spacing-x2);
+				.slideout-title, .slideout-close {
 					margin: 0;
-					padding-right: theme.$spacing-x2;
 					line-height: 1;
 				}
 				.slideout-close {
 					margin-left: auto;
-					font-size: functions.em(20px, rem);
-					font-family: theme.$font-family-02;
-					color: theme.$color-02;
 				}
 			}
 			.slideout-scrollbar {
@@ -98,25 +80,18 @@
 				height: 100%;
 				max-height: 90%;
 				max-height: calc(100% - ($slideout-header + $slideout-spacing));
-				.slideout-content {
-					.navigation {
-						.navigation-list {
-							.navigation-list-item {
-								display: block;
-								font-size: functions.em(16px, rem);
-							}
-							.navigation-list-item-separator {
-								display: none;
+				.navigation {
+					.navigation-list {
+						display: block;
+						.navigation-list-item {
+							font-size: functions.em(16px, rem);
+							margin: 0  0 theme.$spacing-x2 0;
+							&:last-child {
+								margin-bottom: 0;
 							}
 						}
 					}
 				}
 			}
-		}
-	}
-	@include mixins.respond-min(theme.$bp-02) {
-		.slideout.is-sticky .slideout-button-fixed {
-			padding-left: theme.$spacing-x8;
-			padding-right: theme.$spacing-x8;
 		}
 	}
