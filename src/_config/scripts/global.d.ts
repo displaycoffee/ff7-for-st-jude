@@ -25,16 +25,16 @@ type Campaign = {
 	amounts?: Amounts;
 	date: string;
 	id: string;
-	links: CampaignLinks[];
+	links: Links[];
 	name: string;
 };
 
-type CampaignLinks = {
+type Events = SyntheticEvent | Event;
+
+type Links = {
 	label: string;
 	url: string;
 };
-
-type Events = SyntheticEvent | Event;
 
 type ObjectString = {
 	[key: string]: string;
@@ -53,6 +53,8 @@ declare global {
 	type CampaignType = Campaign;
 
 	type EventsType = Events;
+
+	type LinksType = Links;
 
 	type ObjectStringType = ObjectString;
 

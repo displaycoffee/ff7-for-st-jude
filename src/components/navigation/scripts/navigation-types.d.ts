@@ -17,6 +17,10 @@ type NavigationListItem = {
 	parent?: string;
 };
 
+type NavigationLocation = {
+	location?: ReactNode;
+};
+
 type NavigationMap = {
 	[key: string]: JSX.Element;
 };
@@ -38,5 +42,7 @@ export type NavigationType = Navigation;
 
 /* Export prop types */
 export type NavigationListItemProps = NavigationListItem;
+
+export type NavigationLocationProps = NavigationLocation;
 
 export type NavigationRoutesProps = NavigationRoutes;

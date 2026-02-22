@@ -13,8 +13,9 @@ import { Context } from '../../context/Context';
 
 export const Slideout = (props: SlideoutProps) => {
 	let { options } = props;
+	const context = useContext(Context);
 	const { config, get, toggle } = slideout;
-	const fallbackId = useId().replace(/:/g, '');
+	const fallbackId = context.utils.setId(useId());
 	const slideoutId = `slideout-${options?.id ? options.id : fallbackId}`;
 
 	// Get default attributes for slideout
@@ -29,14 +30,11 @@ export const Slideout = (props: SlideoutProps) => {
 
 	// Create shared slideout button
 	const slideoutButton = (
-		<button className="slideout-button unstyled pointer" type="button" onClick={(e) => toggle(e, slideoutId)}>
-			<span className="icon-wrapper icon-wrapper-large">
-				<svg className="icon icon-equalizer">
-					<use xlinkHref="#icon-equalizer"></use>
-				</svg>
-			</span>
-			{options.label}
-		</button>
+		<div className="slideout-button-fixed">
+			<button className="slideout-button unstyled pointer a" type="button" onClick={(e) => toggle(e, slideoutId)}>
+				{options.label} &gt;
+			</button>
+		</div>
 	);
 
 	// Set button properties
@@ -54,16 +52,12 @@ export const Slideout = (props: SlideoutProps) => {
 		>
 			{!button.outside && button.show ? slideoutButton : null}
 
-			<div className={config.classes.menu} style={styles}>
+			<div className={`${config.classes.menu} blue-background`} style={styles}>
 				<header className="slideout-header flex-nowrap flex-align-items-center">
 					<h3 className="slideout-title">{options.label}</h3>
 
 					<button className="slideout-close pointer unstyled" type="button" onClick={(e) => toggle(e, false)}>
-						<span className="icon-wrapper">
-							<svg className="icon icon-close-thin">
-								<use xlinkHref="#icon-close-thin"></use>
-							</svg>
-						</span>
+						x
 					</button>
 				</header>
 

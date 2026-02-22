@@ -97,4 +97,11 @@ export const utils = {
 			element.setAttribute(attribute, attributes[attribute]);
 		}
 	},
+	setId: (id: string) => {
+		// Take id (typically from useId) and update it
+		return id
+			.slice(1, -1)
+			.replace(/^\_|\_$/g, '')
+			.replace(/\_/g, '-');
+	},
 };

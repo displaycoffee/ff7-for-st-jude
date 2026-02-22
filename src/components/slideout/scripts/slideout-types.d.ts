@@ -10,7 +10,7 @@ type SlideoutOptions = {
 		closeOnClick: boolean;
 		content: ReactNode;
 		direction?: string;
-		id: string;
+		id?: string;
 		isDesktop: boolean;
 		label: string;
 		orientation?: string;

@@ -2,12 +2,18 @@
 import './styles/footer.scss';
 
 export const Footer = () => {
-	const date = new Date().getFullYear();
-
 	return (
 		<footer className="footer">
-			<p>
-				&copy; {date} <a href="//github.com/displaycoffee">displaycoffee</a>
+			<p className="credits">
+				Created by{' '}
+				<a href="//display.coffee" target="_blank" rel="noreferrer">
+					displaycoffee
+				</a>
+				. Built and organized with{' '}
+				<a href="//tiltify.com" target="_blank" rel="noreferrer">
+					tiltify
+				</a>
+				.
 			</p>
 		</footer>
 	);

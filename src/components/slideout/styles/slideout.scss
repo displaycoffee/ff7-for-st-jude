@@ -9,7 +9,7 @@
 	// Colors
 
 	$slideout-color-01: theme.$color-07; // overlay
-	$slideout-color-02: theme.$color-01; // menu background
+	$slideout-color-02: false; // menu background
 
 	// Configuration
 
@@ -41,8 +41,24 @@
 		margin: 0 0 $slideout-spacing 0;
 		@include mixins.flex-layout((align-items: center));
 		@include mixins.gap(theme.$spacing-x2);
+		.icon-wrapper {
+			margin: 0 theme.$spacing-x2 0 0;
+		}
 	}
 	.slideout {
+		@include mixins.position($type: sticky, $top: -1px, $z: 9999);
+		min-height: 10px;
+		&.is-sticky {
+			.slideout-button-fixed {
+				@include mixins.position($type: fixed, $top: 0, $left: 0, $right: 0);
+				padding: theme.$spacing-x2 theme.$spacing-x4;
+				background-color: theme.$color-01;
+				border-bottom: 3px solid theme.$color-02;
+			}
+			.slideout-button {
+				margin: 0 theme.$spacing-x4;
+			}
+		}
 		&.slideout-vertical {
 			.slideout-menu {
 				height: 80%;
@@ -57,8 +73,9 @@
 			}
 		}
 		.slideout-menu {
+			border-width: 0;
+			border-right-width: 3px;
 			max-width: 100%;
-			background-color: $slideout-color-02;
 			z-index: 9999;
 			padding: $slideout-spacing;
 			.slideout-header {
@@ -72,6 +89,9 @@
 				}
 				.slideout-close {
 					margin-left: auto;
+					font-size: functions.em(20px, rem);
+					font-family: theme.$font-family-02;
+					color: theme.$color-02;
 				}
 			}
 			.slideout-scrollbar {
@@ -85,13 +105,22 @@
 						display: block;
 						.navigation-list-item {
 							font-size: functions.em(16px, rem);
-							margin: 0  0 theme.$spacing-x2 0;
+							margin: 0  0 theme.$spacing-x4 0;
 							&:last-child {
 								margin-bottom: 0;
 							}
 						}
+						.navigation-list-item-separator {
+							display: none;
+						}
 					}
 				}
 			}
+		}
+	}
+	@include mixins.respond-min(theme.$bp-02) {
+		.slideout.is-sticky .slideout-button-fixed {
+			padding-left: theme.$spacing-x8;
+			padding-right: theme.$spacing-x8;
 		}
 	}

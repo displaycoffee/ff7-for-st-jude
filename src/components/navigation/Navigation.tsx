@@ -1,56 +1,56 @@
 /* React */
-import { Fragment, useContext, useEffect } from 'react';
+import { createRef, Fragment, RefObject, useContext, useEffect } from 'react';
 import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 /* Local styles */
 import './styles/navigation.scss';
 
 /* Local scripts */
-import { NavigationListItemProps, NavigationRoutesProps } from './scripts/navigation-types';
+import { NavigationListItemProps, NavigationLocationProps, NavigationRoutesProps } from './scripts/navigation-types';
 import { navigationUtils } from './scripts/navigation-utils';
 import { navigationRoutes } from './scripts/navigation-routes';
 
 /* Local components */
 import { Context } from '../../context/Context';
-import { Dropdown } from '../dropdown/Dropdown';
 
 /* Get navigation menu */
 const navigationList = navigationUtils.get.list();
 
-export const Navigation = () => {
+export const Navigation = (props: NavigationLocationProps) => {
+	const { location } = props;
 	const { pathname } = useLocation();
 	const context = useContext(Context);
 	const utils = context.utils;
 	const navigationLinkClass = 'navigation-link';
+	const navigationRef: RefObject<HTMLDivElement | null> = createRef();
 
 	// Scroll to top when navigation link is clicked on
 	useEffect(() => {
 		utils.scrollTo();
 	}, [pathname]);
 
+	// Make header sticky
+	useEffect(() => {
+		if (location == 'header') {
+			utils.isSticky(navigationRef?.current, 'is-sticky');
+		}
+	}, []);
+
 	return navigationList && navigationList.length != 0 ? (
-		<nav className="navigation">
-			<ul className="navigation-list unstyled">
-				{navigationList.map((nav) => {
-					return (
-						<Fragment key={nav.id}>
-							{nav?.children && nav.children.length !== 0 ? (
-								<li className="navigation-list-item">
-									<Dropdown buttonLabel={nav.label} buttonLinkClass={navigationLinkClass} buttonUrl={nav.url} closeOnClick={true}>
-										<ul className="navigation-list-submenu unstyled">
-											{nav.children.map((child) => {
-												return <NavigationListItem nav={child} navigationLinkClass={navigationLinkClass} key={child.id} />;
-											})}
-										</ul>
-									</Dropdown>
-								</li>
-							) : (
+		<nav className={`navigation navigation-${location}`} ref={navigationRef}>
+			<div className="navigation-fixed">
+				<ul className="navigation-list unstyled">
+					{navigationList.map((nav, index) => {
+						return (
+							<Fragment key={nav.id}>
 								<NavigationListItem navigationLinkClass={navigationLinkClass} nav={nav} />
-							)}
-						</Fragment>
-					);
-				})}
-			</ul>
+
+								{index != navigationList.length - 1 && <li className="navigation-list-item navigation-list-item-separator">-</li>}
+							</Fragment>
+						);
+					})}
+				</ul>
+			</div>
 		</nav>
 	) : null;
 };
@@ -61,9 +61,19 @@ export const NavigationListItem = (props: NavigationListItemProps) => {
 
 	return (
 		<li className="navigation-list-item">
-			<NavLink to={nav.url} title={nav.alt || nav.label} className={({ isActive }) => (isActive ? navigationActiveClass : navigationLinkClass)}>
-				{nav.label}
-			</NavLink>
+			{nav.isRoute ? (
+				<NavLink
+					to={nav.url}
+					title={nav.alt || nav.label}
+					className={({ isActive }) => (isActive ? navigationActiveClass : navigationLinkClass)}
+				>
+					{nav.label}
+				</NavLink>
+			) : (
+				<a href={nav.url} title={nav.alt || nav.label} target="_blank" rel="noreferrer">
+					{nav.label}
+				</a>
+			)}
 
 			{children ? children : null}
 		</li>
