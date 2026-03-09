@@ -7,7 +7,6 @@ import './styles/colors.scss';
 /* Local scripts */
 import { ColorsProps, ColorsFieldProps } from './scripts/color-types';
 import { colors as colorsUtils } from './scripts/colors';
-console.log(colorsUtils);
 
 /* Local components */
 import { Context } from '../../context/Context';

@@ -7,7 +7,7 @@ export const navigation = [
 		alt: 'Commentary Stream',
 		isRoute: false,
 		label: 'Commentary Stream',
-		showInNav: true,
+		showInNav: false,
 		url: '//twitch.tv/MonetaryDragon',
 	},
 	{
@@ -31,7 +31,7 @@ export const navigation = [
 		alt: 'Signup Sheet',
 		isRoute: false,
 		label: 'Signup Sheet',
-		showInNav: true,
+		showInNav: false,
 		url: '//docs.google.com/spreadsheets/d/1pxX1Pf7qK3eO2nKksbLGp3VbWV7ZByPC6dxVNmo8pds/edit',
 	},
 	{
