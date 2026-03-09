@@ -35,27 +35,7 @@ export function useBodyClass(defaultPrefix: string) {
 	return null;
 }
 
-export function useCampaign(content: ContentType, current: CampaignType) {
-	// Get campaign data if totals have changed or if not in cache
-	const { campaign } = content;
-	const key = 'campaign';
-	const requestData = !campaign || (campaign && utils.checkTotals(content)) ? true : false;
-
-	const {
-		data: data,
-		isPending: isPending,
-		isSuccess: isSuccess,
-		isFetched: isFetched,
-	} = useQuery({
-		queryKey: [key, current],
-		queryFn: requests.campaign,
-		enabled: requestData,
-	});
-
-	return [data, { fetched: isFetched, pending: isPending, success: isSuccess }];
-}
-
-export const useClickOutside = (callback: Function) => {
+export function useClickOutside(callback: Function) {
 	const clickRef: RefObject<HTMLDivElement | null> = useRef(null);
 
 	// Determine if a click has been performed outside an element
@@ -72,7 +52,92 @@ export const useClickOutside = (callback: Function) => {
 	}, [clickRef, callback]);
 
 	return clickRef;
-};
+}
+
+export function useReactQuery(content: ContentType, current: CampaignType, key: string) {
+	// Get donations data if supporting is available and if not in cache or if totals have changed
+	const { campaign, donations, supporting } = content;
+
+	// Set initial variables
+	let hasData = false;
+	let requestData = false;
+	let queryKey = [key, current] as QueryKeyType;
+
+	// Update variables per key type
+	if (key == 'campaign') {
+		requestData = !campaign.fetched ? true : false;
+	} else if (key == 'donations') {
+		hasData = supporting.fetched && supporting.values.length !== 0 ? true : false;
+		requestData = hasData && !donations.fetched ? true : false;
+		queryKey = [key, current, supporting] as QueryKeyType;
+	} else if (key == 'supporting') {
+		requestData = !supporting.fetched ? true : false;
+	}
+
+	// Create query request
+	const {
+		data: data,
+		isPending: isPending,
+		isSuccess: isSuccess,
+		isFetched: isFetched,
+	} = useQuery({
+		queryKey: queryKey,
+		queryFn: requests[key],
+		enabled: requestData,
+	});
+
+	// Set fetched data without modifications
+	let fetchedData = data;
+
+	if (key == 'supporting') {
+		// Set initial supporting data
+		const supportingData = data as SupportingType[];
+
+		// Re-sort supporting data
+		const sortedData =
+			supportingData && supportingData.length !== 0 ? utils.sort(data as SortType[], 'integer', 'total_amount_raised', 'desc') : [];
+
+		// Set fetched data after sorting
+		fetchedData = sortedData as SupportingType[];
+	}
+
+	return [fetchedData, { fetched: isFetched, pending: isPending, success: isSuccess }];
+}
+
+export function useReactQueries(content: ContentType, key: string) {
+	// Get data from multiple queries
+	const { supporting } = content;
+	const hasSupporting = supporting.fetched && supporting.values.length !== 0 ? true : false;
+	const queryValues = hasSupporting ? supporting.values : [];
+
+	const {
+		data: data,
+		pending: pending,
+		success: success,
+		fetched: fetched,
+	} = useQueries({
+		queries: queryValues.map((value) => ({
+			queryKey: [key, value],
+			queryFn: requests[key],
+		})),
+		combine: (results) => {
+			return {
+				data: results.map((result) => result.data),
+				pending: results.some((result) => result.isPending),
+				success: results.some((result) => result.isSuccess),
+				fetched: results.some((result) => result.isFetched),
+			};
+		},
+	});
+
+	// Merge data
+	const mergedData = utils.merge(data as []);
+
+	// Re-sort merged data
+	const sortedData = mergedData && mergedData.length !== 0 ? utils.sort(mergedData as SortType[], 'integer', 'milliseconds', 'asc') : [];
+
+	return [sortedData, { fetched: fetched, pending: pending, success: success }];
+}
 
 export function useRespond(bp: number) {
 	const rule = window.matchMedia(`(min-width: ${bp}px)`);
@@ -89,23 +154,4 @@ export function useRespond(bp: number) {
 	};
 
 	return match;
-}
-
-export function useSupporting(content: ContentType, current: CampaignType) {
-	// Use query to get supporting campaigns
-	const { supporting } = content;
-	const key = 'supporting';
-	const requestData = !supporting ? true : false;
-	const {
-		data: data,
-		isPending: isPending,
-		isSuccess: isSuccess,
-		isFetched: isFetched,
-	} = useQuery({
-		queryKey: [key, current],
-		queryFn: requests.supporting,
-		enabled: requestData,
-	});
-
-	return [data, { fetched: isFetched, pending: isPending, success: isSuccess }];
 }

@@ -15,7 +15,6 @@ export const theme = {
 				header: 'Current campaign',
 				name: 'Campaign',
 			},
-			sort: false,
 			layout: {
 				columns: 'whole',
 				top: false,
@@ -50,7 +49,6 @@ export const theme = {
 				header: 'Previous campaigns',
 				name: 'Campaign',
 			},
-			sort: false,
 			layout: {
 				columns: 'half',
 				top: false,

@@ -2,41 +2,23 @@
 import { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 
+/* Create Intl.NumberFormat instance for utils.formatCurrency function */
+const formatter = new Intl.NumberFormat('en-US', {
+	minimumFractionDigits: 2,
+	maximumFractionDigits: 2,
+	style: 'currency',
+	currency: 'USD',
+});
+
 export const utils = {
 	checkAmount: (number?: number) => {
 		// Check number to always return a value
-		return number || number === 0 ? utils.convertDecimal(number) : 0;
+		number = number ? number : 0;
+		return Math.round(number * 100) / 100;
 	},
 	checkArray: (array: ObjectPrimitiveType[]) => {
 		// Ensure array has length and if not, reset to false
 		return array && array.length !== 0 ? array : [];
-	},
-	checkTotals: (content: ContentType) => {
-		const { campaign, supporting } = content;
-		let totalChanged = false; // Variable to see if total has changed
-
-		if (campaign && typeof campaign == 'object' && supporting && typeof supporting == 'object') {
-			// Get total amount for checking if prices have changed
-			let campaignTotal = campaign.amounts.amount_raised;
-			supporting.forEach((d: AmountsValueType) => {
-				const amountRaised = d?.amount_raised?.value ?? 0;
-				const dValue = amountRaised ? utils.convertDecimal(amountRaised) : d.amount_raised;
-				campaignTotal += dValue as number;
-			});
-
-			// Request campaign from api if amount has changed
-			if (campaignTotal != campaign.amounts.total_amount_raised) {
-				totalChanged = true;
-			}
-		} else {
-			// If nothing is in cache, we should request
-			totalChanged = true;
-		}
-		return totalChanged;
-	},
-	convertDecimal: (number: number) => {
-		// Convert number to two decimal places
-		return Math.round(number * 100) / 100;
 	},
 	filterContent: (type: string, data: FilterContentType) => {
 		// Get time for checking if content has expired
@@ -56,7 +38,11 @@ export const utils = {
 		}
 		return contentActive;
 	},
-	getAmounts: (detail?: AmountsValueType) => {
+	formatCurrency: (number: number) => {
+		// Format currency using formatter
+		return formatter.format(number);
+	},
+	getAmounts: (detail?: AmountsUnformattedType) => {
 		// Setup initial amount details
 		let amounts = {
 			amount: 0,
@@ -118,6 +104,10 @@ export const utils = {
 			stickyObserver.observe(element);
 		}
 	},
+	merge: (array: []) => {
+		// Merge array of arrays
+		return array.reduce((merge, next) => merge.concat(next), []);
+	},
 	renderTarget: (element: string, component: ReactNode) => {
 		// Render target for app
 		const targetElement = document.querySelector(element);
@@ -163,6 +153,9 @@ export const utils = {
 			let sortedValue = 0;
 
 			if (type == 'string' || type == 'boolean') {
+				a = a as ObjectPrimitiveType;
+				b = b as ObjectPrimitiveType;
+
 				// Make sure booleans are strings
 				const sortValueA = String(a[field]);
 				const sortValueB = String(b[field]);
@@ -174,9 +167,13 @@ export const utils = {
 				if (direction == 'desc') {
 					sortedValue = sortValueB.localeCompare(sortValueA);
 				}
-			} else if (type == 'integer' && a?.amounts && b?.amounts) {
-				const sortValueA = a.amounts[field];
-				const sortValueB = b.amounts[field];
+			} else if (type == 'integer') {
+				a = a.amounts as AmountsType;
+				b = b.amounts as AmountsType;
+
+				// Make sure values are numbers
+				const sortValueA = Number(a[field]);
+				const sortValueB = Number(b[field]);
 
 				// Sorting method for numbers
 				if (direction == 'asc') {
@@ -191,25 +188,5 @@ export const utils = {
 		});
 
 		return list;
-	},
-	updateCampaign: (campaign: ContentCampaignType, campaigns: CampaignsType) => {
-		// Update campaign details
-		if (campaign && typeof campaign == 'object') {
-			campaign.date = campaigns.current.date;
-			campaign.links = campaigns.current.links;
-		} else {
-			campaign = false;
-		}
-		return campaign;
-	},
-	updateSupporting: (supporting: ContentSupportingType) => {
-		// Update supporting details
-		if (supporting && typeof supporting == 'object') {
-			supporting = utils.checkArray(supporting as ObjectPrimitiveType[]);
-			supporting = utils.sort(supporting, 'integer', 'total_amount_raised', 'desc');
-		} else {
-			supporting = false;
-		}
-		return supporting;
 	},
 };

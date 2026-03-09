@@ -16,7 +16,7 @@ type DetailsNotFound = {
 };
 
 type DetailsParagraph = {
-	content?: string;
+	content?: string | boolean;
 	label: string;
 };
 
