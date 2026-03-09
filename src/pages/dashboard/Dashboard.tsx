@@ -12,9 +12,13 @@ import { Context } from '../../context/Context';
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 
-export const Dashboard = (props: ObjectPrimitiveProps) => {
+/* Static variables */
+const truncateLimit = 75;
+const scrollToOffset = 100;
+
+export const Dashboard = () => {
 	const context = useContext(Context);
-	let { campaigns, utils, queryClient, content } = context;
+	let { campaigns, utils, variables, queryClient, content } = context;
 	let { supporting, campaign, donations, rewards, targets } = content;
 	const { current } = campaigns;
 
@@ -67,26 +71,37 @@ export const Dashboard = (props: ObjectPrimitiveProps) => {
 		targets = { fetched: true, values: targetsData };
 		content.targets = targets;
 	}
-
 	return (
 		<>
 			<nav className="floating">
 				<div className="blue-section">
 					<ul className="floating-list unstyled">
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-donations', 100)} type="button">
+							<button
+								className="pointer unstyled a"
+								onClick={(e) => utils.scrollTo(e, '#details-donations', scrollToOffset)}
+								type="button"
+							>
 								Donations
 							</button>
 						</li>
 
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-rewards', 100)} type="button">
+							<button
+								className="pointer unstyled a"
+								onClick={(e) => utils.scrollTo(e, '#details-rewards', scrollToOffset)}
+								type="button"
+							>
 								Rewards
 							</button>
 						</li>
 
 						<li className="floating-list-item">
-							<button className="pointer unstyled a" onClick={(e) => utils.scrollTo(e, '#details-targets', 100)} type="button">
+							<button
+								className="pointer unstyled a"
+								onClick={(e) => utils.scrollTo(e, '#details-targets', scrollToOffset)}
+								type="button"
+							>
 								Targets
 							</button>
 						</li>
@@ -124,7 +139,7 @@ export const Dashboard = (props: ObjectPrimitiveProps) => {
 								const { amount } = donation.amounts;
 
 								return (
-									<div className="column column-width-33" key={donation.id}>
+									<div className="column column-width-33" key={donation.key}>
 										<div className="blue-section">
 											<p>
 												<strong>Donation:</strong> {utils.formatCurrency(amount)} from <strong>{donation.from}</strong> to{' '}
@@ -142,6 +157,91 @@ export const Dashboard = (props: ObjectPrimitiveProps) => {
 						<DetailsNotFound type={'donations'} />
 					) : (
 						<Skeleton columns={15} perRow={3} paragraphs={2} />
+					)}
+				</div>
+			</Details>
+
+			<Details header={'Rewards'} hasRow={true} scrollLink={true}>
+				<div className="row row-auto row-spacing-20 row-wrap">
+					{rewards.fetched && rewards.values && rewards.values.length !== 0
+						? rewards.values.map((reward) => {
+								const { amount } = reward.amounts;
+								const ended = !reward.date.includes(variables.placeholders.endDateReadable as string);
+
+								return (
+									<div className="column column-width-33" key={reward.key}>
+										<div className={`blue-section${reward.active ? '' : ' inactive'}`}>
+											<DetailsParagraph label={'Reward'} content={reward.name} />
+
+											<DetailsParagraph label={'Description'} content={utils.truncate(reward.description, truncateLimit)} />
+
+											{reward.active ? (
+												<>
+													<DetailsParagraph label={'Cost'} content={utils.formatCurrency(amount)} />
+
+													{!ended ? null : <DetailsParagraph label={'Ends'} content={reward.date} />}
+
+													<DetailsLinks links={reward.links} />
+												</>
+											) : (
+												<p>
+													<em>This reward from "{reward.username}" is no longer active.</em>
+												</p>
+											)}
+										</div>
+									</div>
+								);
+							})
+						: null}
+
+					{rewardsComplete && rewards.values.length === 0 ? (
+						<DetailsNotFound type={'rewards'} />
+					) : (
+						<Skeleton columns={6} perRow={3} paragraphs={6} />
+					)}
+				</div>
+			</Details>
+
+			<Details header={'Targets'} hasRow={true} scrollLink={true}>
+				<div className="row row-auto row-spacing-20 row-wrap">
+					{targets.fetched && targets.values && targets.values.length !== 0
+						? targets.values.map((target) => {
+								const { amount_raised, amount } = target.amounts;
+								const ended = !target.date.includes(variables.placeholders.endDateReadable as string);
+
+								return (
+									<div className="column column-width-33" key={target.key}>
+										<div className={`blue-section${target.active ? '' : ' inactive'}`}>
+											<DetailsParagraph label={'Target'} content={target.name} />
+
+											<DetailsParagraph label={'Description'} content={utils.truncate(target.description, truncateLimit)} />
+
+											<DetailsParagraph
+												label={'Raised'}
+												content={`${utils.formatCurrency(amount_raised)} out of ${utils.formatCurrency(amount)}`}
+											/>
+
+											{target.active ? (
+												<>
+													{!ended ? null : <DetailsParagraph label={'Ends'} content={target.date} />}
+
+													<DetailsLinks links={target.links} />
+												</>
+											) : (
+												<p>
+													<em>This target from "{target.username}" is no longer active.</em>
+												</p>
+											)}
+										</div>
+									</div>
+								);
+							})
+						: null}
+
+					{targetsComplete && targets.values.length === 0 ? (
+						<DetailsNotFound type={'targets'} />
+					) : (
+						<Skeleton columns={6} perRow={3} paragraphs={5} />
 					)}
 				</div>
 			</Details>

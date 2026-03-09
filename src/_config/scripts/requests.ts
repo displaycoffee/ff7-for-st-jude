@@ -32,6 +32,7 @@ export const requests: RequestsType = {
 			campaign = {
 				...current,
 				amounts: utils.getAmounts(json.data),
+				key: `campaign-${current.id.split('-')[0]}-0`,
 			};
 		}
 
@@ -50,13 +51,14 @@ export const requests: RequestsType = {
 
 		if (json && json.data) {
 			// Add details to donations data
-			json.data.forEach((data: DonationsUnformattedType) => {
+			json.data.forEach((data: DonationsUnformattedType, index: number) => {
 				// Format donations data
 				let donationsData = {
 					id: data.id,
 					amounts: utils.getAmounts(data),
 					comment: data?.donor_comment ? data.donor_comment : false,
 					from: data.donor_name,
+					key: `donation-${data.id.split('-')[0]}-${index}`,
 					links: [] as LinksType[],
 					milliseconds: new Date(data.completed_at).getTime(),
 				};
@@ -86,6 +88,7 @@ export const requests: RequestsType = {
 	},
 	rewards: async ({ queryKey }: RewardsQueryKeyType) => {
 		const current = queryKey[1];
+		const queryIndex = queryKey[2];
 
 		// Storage for rewards data
 		let rewards = [] as RewardsType[];
@@ -96,25 +99,31 @@ export const requests: RequestsType = {
 
 		if (json && json.data) {
 			// Add details to rewards data
-			json.data.forEach((data: RewardsUnformattedType) => {
+			json.data.forEach((data: RewardsUnformattedType, index: number) => {
 				const date = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 
 				// Format rewards data
 				let rewardsData = {
 					id: data.id,
+					active: data.active,
 					amounts: utils.getAmounts(data),
-					date: date,
+					date: utils.getDate(date),
 					description: data?.description ? data.description : false,
-					links: [] as LinksType[],
+					key: `reward-${data.id.split('-')[0]}-${queryIndex}-${index}`,
 					milliseconds: new Date(date).getTime(),
 					name: data.name,
+					remaining: data?.quantity_remaining && typeof data.quantity_remaining == 'number' ? data.quantity_remaining : 0,
+					username: current.name,
+					links: [
+						{
+							label: `Redeem at ${current.name}`,
+							url: current.campaign,
+						},
+					],
 				};
 
-				// Add links
-				rewardsData.links.push({
-					label: `Redeem at ${current.name}`,
-					url: current.campaign,
-				});
+				// Re-check active state
+				rewardsData.active = utils.setActive('rewards', rewardsData);
 
 				rewards.push(rewardsData);
 			});
@@ -134,7 +143,7 @@ export const requests: RequestsType = {
 
 		if (json && json.data) {
 			// Add details to supporting data
-			json.data.forEach((data: SupportingUnformattedType) => {
+			json.data.forEach((data: SupportingUnformattedType, index: number) => {
 				const username = data.user.username.trim();
 				const campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
 
@@ -143,6 +152,7 @@ export const requests: RequestsType = {
 					id: data.id,
 					amounts: utils.getAmounts(data),
 					campaign: campaign,
+					key: `supporting-${data.id.split('-')[0]}-${index}`,
 					name: data.name,
 					username: username,
 					links: [
@@ -169,6 +179,7 @@ export const requests: RequestsType = {
 	},
 	targets: async ({ queryKey }: TargetsQueryKeyType) => {
 		const current = queryKey[1];
+		const queryIndex = queryKey[2];
 
 		// Storage for targets data
 		let targets = [] as TargetsType[];
@@ -178,25 +189,30 @@ export const requests: RequestsType = {
 		const json = await response.json();
 
 		if (json && json.data) {
-			json.data.forEach((data: TargetsUnformattedType) => {
+			json.data.forEach((data: TargetsUnformattedType, index: number) => {
 				const date = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 
 				// Format targets data
 				let targetsData = {
 					id: data.id,
+					active: data.active,
 					amounts: utils.getAmounts(data),
-					date: date,
+					date: utils.getDate(date),
 					description: data?.description ? data.description : false,
-					links: [] as LinksType[],
+					key: `target-${data.id.split('-')[0]}-${queryIndex}-${index}`,
 					milliseconds: new Date(date).getTime(),
 					name: data.name,
+					username: current.name,
+					links: [
+						{
+							label: `Participate at ${current.name}`,
+							url: current.campaign,
+						},
+					],
 				};
 
-				// Add links
-				targetsData.links.push({
-					label: `Participate at ${current.name}`,
-					url: current.campaign,
-				});
+				// Re-check active state
+				targetsData.active = utils.setActive('targets', targetsData);
 
 				targets.push(targetsData);
 			});

@@ -124,4 +124,7 @@
 		padding: theme.$spacing-x4;
 		@extend .blue-background;		
 		@include mixins.border-radius(10px);
+		&.inactive {
+			opacity: 0.65;
+		}
 	}

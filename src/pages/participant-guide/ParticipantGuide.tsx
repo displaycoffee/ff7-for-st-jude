@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 /* Local components */
 import { Details } from '../../components/details/Details';
 
-export const ParticipantGuide = (props: ObjectPrimitiveProps) => {
+export const ParticipantGuide = () => {
 	return (
 		<>
 			<Details header={'Top 5 Important Things'} scrollLink={true}>

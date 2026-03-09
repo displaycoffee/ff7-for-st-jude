@@ -116,27 +116,31 @@ export function useReactQueries(content: ContentType, key: string) {
 		success: success,
 		fetched: fetched,
 	} = useQueries({
-		queries: queryValues.map((value) => ({
-			queryKey: [key, value],
+		queries: queryValues.map((value, index) => ({
+			queryKey: [key, value, index],
 			queryFn: requests[key],
 		})),
 		combine: (results) => {
 			return {
-				data: results.map((result) => result.data),
-				pending: results.some((result) => result.isPending),
-				success: results.some((result) => result.isSuccess),
-				fetched: results.some((result) => result.isFetched),
+				data: results.flatMap((result) => result.data as []),
+				pending: results.map((result) => result.isPending),
+				success: results.map((result) => result.isSuccess),
+				fetched: results.map((result) => result.isFetched),
 			};
 		},
 	});
 
-	// Merge data
-	const mergedData = utils.merge(data as []);
+	// Helper function to check status
+	const checkStatus = (statues: boolean[]) => statues.every((status) => status === statues[0]);
+
+	// Check to see if every value in statuses are the same
+	const checkPending = checkStatus(pending);
+	const checkSuccess = checkStatus(success);
+	const checkFetched = checkStatus(fetched);
 
 	// Re-sort merged data
-	const sortedData = mergedData && mergedData.length !== 0 ? utils.sort(mergedData as SortType[], 'integer', 'milliseconds', 'asc') : [];
-
-	return [sortedData, { fetched: fetched, pending: pending, success: success }];
+	const sortedData = data && data.length !== 0 ? utils.sort(data as SortType[], 'integer', 'milliseconds', 'asc') : [];
+	return [sortedData, { fetched: checkFetched && fetched[0], pending: checkPending && pending[0], success: checkSuccess && success[0] }];
 }
 
 export function useRespond(bp: number) {

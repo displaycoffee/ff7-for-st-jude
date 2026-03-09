@@ -18,6 +18,7 @@ const ids = {
 export const campaigns = {
 	current: {
 		id: ids[9],
+		key: `campaign-${ids[9].split('-')[0]}-8`,
 		name: 'FF7 for St. Jude #9',
 		date: 'February 15th, 2025',
 		amounts: utils.getAmounts({ total_amount_raised: { value: 0 } }),
@@ -31,6 +32,7 @@ export const campaigns = {
 	previous: [
 		{
 			id: ids[8],
+			key: `campaign-${ids[8].split('-')[0]}-7`,
 			name: 'FF7 for St. Jude #8',
 			date: 'July 27th, 2024',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 7038.69 } }),
@@ -43,6 +45,7 @@ export const campaigns = {
 		},
 		{
 			id: ids[7],
+			key: `campaign-${ids[7].split('-')[0]}-6`,
 			name: 'FF7 for St. Jude #7',
 			date: 'December 16th, 2023',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 7177.77 } }),
@@ -55,6 +58,7 @@ export const campaigns = {
 		},
 		{
 			id: ids[6],
+			key: `campaign-${ids[6].split('-')[0]}-5`,
 			name: 'FF7 for St. Jude #6',
 			date: 'June 24, 2023',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 5397.74 } }),
@@ -67,6 +71,7 @@ export const campaigns = {
 		},
 		{
 			id: ids[5],
+			key: `campaign-${ids[5].split('-')[0]}-4`,
 			name: 'FF7 for St. Jude #5',
 			date: 'December 10, 2022',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 9254.38 } }),
@@ -79,6 +84,7 @@ export const campaigns = {
 		},
 		{
 			id: ids[4],
+			key: `campaign-${ids[4].split('-')[0]}-3`,
 			name: 'FF7 No-Slots for St. Jude #4',
 			date: 'June 25, 2022',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 8770.46 } }),
@@ -91,6 +97,7 @@ export const campaigns = {
 		},
 		{
 			id: ids[3],
+			key: `campaign-${ids[3].split('-')[0]}-2`,
 			name: 'FF7 No-Slots for St. Jude #3',
 			date: 'December 11, 2021',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 6448.34 } }),
@@ -103,6 +110,7 @@ export const campaigns = {
 		},
 		{
 			id: ids[2],
+			key: `campaign-${ids[2].split('-')[0]}-1`,
 			name: 'FF7 No-Slots For St. Jude #2',
 			date: 'June 26, 2021',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 4469.69 } }),
@@ -115,6 +123,7 @@ export const campaigns = {
 		},
 		{
 			id: ids[1],
+			key: `campaign-${ids[1].split('-')[0]}-0`,
 			name: 'FF7 No-Slots For St. Jude',
 			date: 'December 28, 2020',
 			amounts: utils.getAmounts({ total_amount_raised: { value: 2313.06 } }),

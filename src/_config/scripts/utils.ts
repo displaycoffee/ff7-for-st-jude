@@ -20,24 +20,6 @@ export const utils = {
 		// Ensure array has length and if not, reset to false
 		return array && array.length !== 0 ? array : [];
 	},
-	filterContent: (type: string, data: FilterContentType) => {
-		// Get time for checking if content has expired
-		const currentDate = new Date(Date.now());
-		const currentMilliseconds = currentDate.getTime();
-
-		// Variables for checking if content should be returned
-		const isExpired = data.milliseconds < currentMilliseconds;
-
-		// Set state for checks
-		let contentActive = true;
-		if (type == 'rewards') {
-			const isRemaining = typeof data.quantity_remaining == 'number' && data.quantity_remaining > 0 ? true : false;
-			contentActive = !isExpired && isRemaining && data.active;
-		} else if (type == 'targets') {
-			contentActive = !isExpired && data.active && data.amounts.amount_raised < data.amounts.amount;
-		}
-		return contentActive;
-	},
 	formatCurrency: (number: number) => {
 		// Format currency using formatter
 		return formatter.format(number);
@@ -134,6 +116,26 @@ export const utils = {
 		};
 		window.scroll({ top: anchor.position(), left: 0, behavior: 'smooth' });
 	},
+	setActive: (type: string, data: RewardsType | TargetsType) => {
+		// Get time for checking if content has expired
+		const currentDate = new Date(Date.now());
+		const currentMilliseconds = currentDate.getTime();
+
+		// Variables for checking if content should be returned
+		const isExpired = data.milliseconds < currentMilliseconds;
+
+		// Determine if content is active
+		let contentActive = true;
+		if (type == 'rewards') {
+			const rewardsData = data as RewardsType;
+			contentActive = !isExpired && rewardsData.remaining > 0 && rewardsData.active;
+		} else if (type == 'targets') {
+			const targetsData = data as TargetsType;
+			contentActive = !isExpired && targetsData.active && targetsData.amounts.amount_raised < targetsData.amounts.amount;
+		}
+
+		return contentActive;
+	},
 	setAttributes: (element: HTMLElement, attributes: ObjectStringType) => {
 		// Set multiple attributes on an element
 		for (const attribute in attributes) {
@@ -188,5 +190,13 @@ export const utils = {
 		});
 
 		return list;
+	},
+	truncate: (string: string, limit: number) => {
+		// Limit characters in string
+		if (string.length > limit) {
+			return `${string.slice(0, limit - 3)}...`;
+		} else {
+			return string;
+		}
 	},
 };

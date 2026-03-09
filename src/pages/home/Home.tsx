@@ -130,7 +130,7 @@ export const Home = () => {
 								const { total_amount_raised } = support.amounts;
 
 								return (
-									<div className="column column-width-50" key={support.id}>
+									<div className="column column-width-50" key={support.key}>
 										<div className="blue-section">
 											<DetailsParagraph label={'Participant'} content={support.username} />
 
@@ -155,7 +155,7 @@ export const Home = () => {
 						const { total_amount_raised } = campaign.amounts;
 
 						return (
-							<div className="column column-width-50" key={campaign.id}>
+							<div className="column column-width-50" key={campaign.key}>
 								<div className="blue-section">
 									<DetailsParagraph label={'Campaign'} content={campaign.name} />
 
