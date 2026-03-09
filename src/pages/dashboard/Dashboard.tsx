@@ -184,7 +184,7 @@ export const Dashboard = () => {
 													<DetailsLinks links={reward.links} />
 												</>
 											) : (
-												<p>
+												<p className="no-longer-active">
 													<em>This reward from "{reward.username}" is no longer active.</em>
 												</p>
 											)}
@@ -228,7 +228,7 @@ export const Dashboard = () => {
 													<DetailsLinks links={target.links} />
 												</>
 											) : (
-												<p>
+												<p className="no-longer-active">
 													<em>This target from "{target.username}" is no longer active.</em>
 												</p>
 											)}

@@ -12,7 +12,7 @@ import { Skeleton } from '../../components/skeleton/Skeleton';
 /* Static variables */
 const timeout = false; // 60000 == one minute
 
-export const Donations = (props: ObjectPrimitiveProps) => {
+export const Donations = () => {
 	const context = useContext(Context);
 	let { campaigns, utils, queryClient, content } = context;
 	let { supporting, campaign, donations } = content;

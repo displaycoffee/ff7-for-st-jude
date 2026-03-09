@@ -1,5 +1,5 @@
 /* React */
-import { RefObject, useContext, useId, useRef } from 'react';
+import { createRef, RefObject, useContext, useEffect, useId, useRef } from 'react';
 
 /* Local styles */
 import './styles/slideout.scss';
@@ -17,6 +17,7 @@ export const Slideout = (props: SlideoutProps) => {
 	const { config, get, toggle } = slideout;
 	const fallbackId = context.utils.setId(useId());
 	const slideoutId = `slideout-${options?.id ? options.id : fallbackId}`;
+	const slideoutRef: RefObject<HTMLDivElement | null> = createRef();
 
 	// Get default attributes for slideout
 	const width = options?.width ? options.width : config.values.width;
@@ -30,7 +31,7 @@ export const Slideout = (props: SlideoutProps) => {
 
 	// Create shared slideout button
 	const slideoutButton = (
-		<div className="slideout-button-fixed">
+		<div className="slideout-button-fixed blue-section">
 			<button className="slideout-button unstyled pointer a" type="button" onClick={(e) => toggle(e, slideoutId)}>
 				{options.label} &gt;
 			</button>
@@ -39,6 +40,11 @@ export const Slideout = (props: SlideoutProps) => {
 
 	// Set button properties
 	const button = typeof options?.button == 'object' ? options.button : { outside: false, show: true };
+
+	// Set sticky class on slideout
+	useEffect(() => {
+		context.utils.isSticky(slideoutRef?.current, 'is-sticky');
+	}, []);
 
 	return button.outside && button.show ? (
 		slideoutButton
@@ -49,6 +55,7 @@ export const Slideout = (props: SlideoutProps) => {
 			data-width={width}
 			data-direction={direction}
 			data-orientation={orientation}
+			ref={slideoutRef}
 		>
 			{!button.outside && button.show ? slideoutButton : null}
 
