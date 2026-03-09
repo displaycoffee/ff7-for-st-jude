@@ -12,6 +12,7 @@ import { navigationRoutes } from './scripts/navigation-routes';
 
 /* Local components */
 import { Context } from '../../context/Context';
+import { Colors } from '../colors/Colors';
 
 /* Get navigation menu */
 const navigationList = navigationUtils.get.list();
@@ -49,6 +50,12 @@ export const Navigation = (props: NavigationLocationProps) => {
 							</Fragment>
 						);
 					})}
+
+					<li className="navigation-list-item navigation-list-item-separator">-</li>
+
+					<li className="navigation-list-item">
+						<Colors showButton={true} />
+					</li>
 				</ul>
 			</div>
 		</nav>

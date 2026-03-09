@@ -131,7 +131,7 @@ export const Home = () => {
 
 								return (
 									<div className="column column-width-50" key={support.key}>
-										<div className="blue-section">
+										<div className="gradient-section">
 											<DetailsParagraph label={'Participant'} content={support.username} />
 
 											<DetailsParagraph label={'Campaign'} content={support.name} />
@@ -156,7 +156,7 @@ export const Home = () => {
 
 						return (
 							<div className="column column-width-50" key={campaign.key}>
-								<div className="blue-section">
+								<div className="gradient-section">
 									<DetailsParagraph label={'Campaign'} content={campaign.name} />
 
 									<DetailsParagraph label={'Ends'} content={campaign.date} />

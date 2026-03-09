@@ -233,8 +233,6 @@ declare global {
 
 	type CampaignRequestType = CampaignRequest;
 
-	type CampaignsType = Campaigns;
-
 	type ContentType = Content;
 
 	type DonationsType = Donations;

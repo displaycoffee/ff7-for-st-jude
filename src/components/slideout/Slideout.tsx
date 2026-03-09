@@ -31,7 +31,7 @@ export const Slideout = (props: SlideoutProps) => {
 
 	// Create shared slideout button
 	const slideoutButton = (
-		<div className="slideout-button-fixed blue-section">
+		<div className="slideout-button-fixed gradient-section">
 			<button className="slideout-button unstyled pointer a" type="button" onClick={(e) => toggle(e, slideoutId)}>
 				{options.label} &gt;
 			</button>
@@ -59,7 +59,7 @@ export const Slideout = (props: SlideoutProps) => {
 		>
 			{!button.outside && button.show ? slideoutButton : null}
 
-			<div className={`${config.classes.menu} blue-background`} style={styles}>
+			<div className={`${config.classes.menu} gradient-background`} style={styles}>
 				<header className="slideout-header flex-nowrap flex-align-items-center">
 					<h3 className="slideout-title">{options.label}</h3>
 

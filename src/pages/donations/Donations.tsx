@@ -74,7 +74,7 @@ export const Donations = () => {
 
 							return (
 								<div className="column column-width-33" key={donation.key}>
-									<div className="blue-section">
+									<div className="gradient-section">
 										<p>
 											<strong>Donation:</strong> {utils.formatCurrency(amount)} from <strong>{donation.from}</strong> to{' '}
 											<DetailsLinks links={donation.links} wrapper={false} />

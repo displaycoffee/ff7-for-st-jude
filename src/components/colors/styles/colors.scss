@@ -1,0 +1,62 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// COLORS
+//// --------------------------------------------------------------------------
+
+	body:has(.colors.colors-active) {
+		overflow: hidden;
+	}
+	.colors {
+		position: fixed;
+		&:not(.colors-active) {
+			display: none;
+		}
+		&, .colors-overlay {
+			@include mixins.position($top: 0, $left: 0, $right: 0, $bottom: 0, $z: 99991);
+			margin: auto;
+		}
+		.colors-container, .colors-overlay {
+			@include mixins.flex(1 1 100%);
+			min-width: 1px;
+		}
+		.colors-container {
+			max-width: 500px;
+			@include mixins.position($type: relative, $z: 99992);
+			margin: 0 theme.$spacing-x4;
+		}
+		.colors-form {
+			& > * {
+				margin: 0 0 theme.$spacing-x2 0;
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+			.row {
+				.column-input {
+					@include mixins.flex(0 1 auto);
+				}
+				.column-button {
+					text-align: center;
+				}
+			}
+			.colors-picker {
+				input[type='color'] {
+					@include mixins.sizing(30px, 30px);
+					border: 0;
+					background-color: theme.$color-02;
+					cursor: pointer;
+				}
+			}
+			.colors-actions {
+				margin-top: theme.$spacing-x4;
+			}
+		}
+		.colors-overlay {
+			position: absolute;
+			background-color: theme.$color-07;
+			cursor: pointer;
+		}
+	}

@@ -74,7 +74,7 @@ export const Dashboard = () => {
 	return (
 		<>
 			<nav className="floating">
-				<div className="blue-section">
+				<div className="gradient-section">
 					<ul className="floating-list unstyled">
 						<li className="floating-list-item">
 							<button
@@ -140,7 +140,7 @@ export const Dashboard = () => {
 
 								return (
 									<div className="column column-width-33" key={donation.key}>
-										<div className="blue-section">
+										<div className="gradient-section">
 											<p>
 												<strong>Donation:</strong> {utils.formatCurrency(amount)} from <strong>{donation.from}</strong> to{' '}
 												<DetailsLinks links={donation.links} wrapper={false} />
@@ -170,7 +170,7 @@ export const Dashboard = () => {
 
 								return (
 									<div className="column column-width-33" key={reward.key}>
-										<div className={`blue-section${reward.active ? '' : ' inactive'}`}>
+										<div className={`gradient-section${reward.active ? '' : ' inactive'}`}>
 											<DetailsParagraph label={'Reward'} content={reward.name} />
 
 											<DetailsParagraph label={'Description'} content={utils.truncate(reward.description, truncateLimit)} />
@@ -211,7 +211,7 @@ export const Dashboard = () => {
 
 								return (
 									<div className="column column-width-33" key={target.key}>
-										<div className={`blue-section${target.active ? '' : ' inactive'}`}>
+										<div className={`gradient-section${target.active ? '' : ' inactive'}`}>
 											<DetailsParagraph label={'Target'} content={target.name} />
 
 											<DetailsParagraph label={'Description'} content={utils.truncate(target.description, truncateLimit)} />

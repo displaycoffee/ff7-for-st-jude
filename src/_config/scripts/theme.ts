@@ -8,6 +8,12 @@ export const theme = {
 		bp03: checkSassVar(themeVars.bp03),
 		bp04: checkSassVar(themeVars.bp04),
 	},
+	colors: {
+		color01: checkSassVar(themeVars.color01),
+		color02: checkSassVar(themeVars.color02),
+		color03: checkSassVar(themeVars.color03),
+		color04: checkSassVar(themeVars.color04),
+	},
 	details: {
 		campaign: {
 			id: 'campaign',

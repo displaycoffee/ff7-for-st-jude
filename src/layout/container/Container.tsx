@@ -10,6 +10,7 @@ import { useBodyClass, useRespond } from '../../_config/scripts/hooks';
 
 /* Local components */
 import { Context } from '../../context/Context';
+import { Colors } from '../../components/colors/Colors';
 import { Navigation } from '../../components/navigation/Navigation';
 import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
 import { Slideout, SlideoutOverlay } from '../../components/slideout/Slideout';
@@ -41,6 +42,8 @@ export const Container = () => {
 	return (
 		<div className="container">
 			<ErrorBoundary message={<ContainerError />}>
+				<Colors showButton={false} />
+
 				<SlideoutOverlay options={slideoutOptions} />
 
 				{isDesktop ? <Navigation location={'header'} /> : <Slideout options={slideoutOptions} />}

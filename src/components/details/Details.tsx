@@ -21,7 +21,7 @@ export const Details = (props: DetailsProps) => {
 		<section id={`details-${detailsId}`} className={`details details-${detailsId}`}>
 			{header && <h3 className="details-title">{header}</h3>}
 
-			{props?.children && <div className={`details-content${hasRow ? '' : ' spacing-reset blue-section'}`}>{props.children}</div>}
+			{props?.children && <div className={`details-content${hasRow ? '' : ' spacing-reset gradient-section'}`}>{props.children}</div>}
 
 			{scrollLink && (
 				<button className="details-to-top pointer unstyled a" type="button" onClick={(e) => utils.scrollTo(e)}>
@@ -65,7 +65,7 @@ export const DetailsNotFound = (props: DetailsNotFoundProps) => {
 
 	return (
 		<div className="column column-width-100">
-			<div className="blue-section">
+			<div className="gradient-section">
 				<p>No {type} found.</p>
 			</div>
 		</div>

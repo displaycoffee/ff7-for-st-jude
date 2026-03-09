@@ -118,14 +118,12 @@
 	.scrollbar {
 		@include mixins.scrollbar('&', $base-helpers-scrollbar-width, $base-helpers-scrollbar-height, $base-helpers-color-01, $base-helpers-color-02);
 	}
-	.blue-background {
-		background-color: theme.$color-04;
-		background-image: linear-gradient(160deg, theme.$color-04 35%, theme.$color-05);
+	.gradient-background {
 		border: 3px solid theme.$color-02;
 	}
-	.blue-section {
+	.gradient-section {
 		padding: theme.$spacing-x4;
-		@extend .blue-background;		
+		@extend .gradient-background;		
 		@include mixins.border-radius(10px);
 		&.inactive {
 			position: relative;

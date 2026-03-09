@@ -22,7 +22,7 @@ export const Skeleton = (props: SkeletonProps) => {
 
 	return skeletonColumns.map((c, index) => (
 		<div className={`column column-width-${Math.floor(100 / perRow)} column-skeleton`} key={c + index}>
-			<div className="blue-section">
+			<div className="gradient-section">
 				{skeletonParagraphs.map((p, index) => {
 					return <p key={p + index}>&nbsp;</p>;
 				})}

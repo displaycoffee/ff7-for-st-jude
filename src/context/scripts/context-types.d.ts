@@ -24,11 +24,15 @@ type ThemeDetails = {
 
 /* Export types */
 export type ContextValuesType = {
-	campaigns: CampaignsType;
+	campaigns: {
+		current: Campaign;
+		previous: Campaign[];
+	};
 	content: ContentType;
 	queryClient: QueryClient;
 	theme: {
 		bps: ObjectPrimitiveType;
+		colors: ObjectPrimitiveType;
 		details: {
 			campaign: ThemeDetails;
 			donations: ThemeDetails;
