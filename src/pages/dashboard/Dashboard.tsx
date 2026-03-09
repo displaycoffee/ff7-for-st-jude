@@ -14,7 +14,7 @@ import { Skeleton } from '../../components/skeleton/Skeleton';
 
 export const Dashboard = (props: ObjectPrimitiveProps) => {
 	const context = useContext(Context);
-	let { campaigns, utils, queryClient, variables, content, setContent } = context;
+	let { campaigns, utils, queryClient, content } = context;
 	let { supporting, campaign, donations, rewards, targets } = content;
 	const { current } = campaigns;
 
@@ -102,7 +102,6 @@ export const Dashboard = (props: ObjectPrimitiveProps) => {
 									content.donations = { fetched: false, values: [] };
 									content.rewards = { fetched: false, values: [] };
 									content.targets = { fetched: false, values: [] };
-									setContent(content);
 
 									// Reset queries
 									queryClient.resetQueries({ queryKey: ['donations'] });
