@@ -26,19 +26,12 @@
 			.navigation-list {			
 				max-width: 1600px;
 				padding: 0 theme.$spacing-x3;
-				margin-left: auto;
-				margin-right: auto;
+				margin: 0 auto;
 			}
 		}
-		.navigation-list {
-			margin: 0 -#{theme.$spacing-x1} -#{theme.$spacing-x4} -#{theme.$spacing-x1};
-			.navigation-list-item {
-				@if $navigation-is-inline == true {
-					@include mixins.inline-block(middle);
-				}
-				padding: 0 theme.$spacing-x1;
-				margin: 0 0 theme.$spacing-x4 0;
-			}
+		.navigation-list {	
+			@include mixins.flex-layout((align-items: center));
+			@include mixins.gap(theme.$spacing-x2);
 		}
 	}
 	@include mixins.respond-min(theme.$bp-02) {
