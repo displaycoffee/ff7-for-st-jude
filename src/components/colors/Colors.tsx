@@ -63,7 +63,7 @@ export const Colors = (props: ColorsProps) => {
 
 	return showButton ? (
 		<button className="colors-buttons unstyled a" type="button" onClick={(e) => colorsUtils.toggle(e)}>
-			Change Colors
+			Window Color
 		</button>
 	) : (
 		<>
