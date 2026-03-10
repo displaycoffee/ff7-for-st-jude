@@ -1,5 +1,5 @@
 /* React */
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useId, useRef, useState } from 'react';
 import { useQuery, useQueries } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ let pageCache = {
 	previous: '',
 };
 
-export function useBodyClass(defaultPrefix: string) {
+export const useBodyClass = (defaultPrefix: string) => {
 	const location = useLocation();
 	const bodySelector = document.querySelector('body');
 	const bodyPrefix = 'page-';
@@ -33,9 +33,9 @@ export function useBodyClass(defaultPrefix: string) {
 	}
 
 	return null;
-}
+};
 
-export function useClickOutside(callback: Function) {
+export const useClickOutside = (callback: Function) => {
 	const clickRef: RefObject<HTMLDivElement | null> = useRef(null);
 
 	// Determine if a click has been performed outside an element
@@ -52,9 +52,18 @@ export function useClickOutside(callback: Function) {
 	}, [clickRef, callback]);
 
 	return clickRef;
-}
+};
 
-export function useReactQuery(content: ContentType, current: CampaignType, key: string) {
+export const useFormattedId = () => {
+	// Updates the format of useId hook
+	const id = useId();
+	return id
+		.slice(1, -1)
+		.replace(/^\_|\_$/g, '')
+		.replace(/\_/g, '-');
+};
+
+export const useReactQuery = (content: ContentType, current: CampaignType, key: string) => {
 	// Get donations data if supporting is available and if not in cache or if totals have changed
 	const { campaign, donations, supporting } = content;
 
@@ -102,9 +111,9 @@ export function useReactQuery(content: ContentType, current: CampaignType, key: 
 	}
 
 	return [fetchedData, { fetched: isFetched, pending: isPending, success: isSuccess }];
-}
+};
 
-export function useReactQueries(content: ContentType, key: string) {
+export const useReactQueries = (content: ContentType, key: string) => {
 	// Get data from multiple queries
 	const { supporting } = content;
 	const hasSupporting = supporting.fetched && supporting.values.length !== 0 ? true : false;
@@ -141,9 +150,9 @@ export function useReactQueries(content: ContentType, key: string) {
 	// Re-sort merged data
 	const sortedData = data && data.length !== 0 ? utils.sort(data as SortType[], 'integer', 'milliseconds', 'asc') : [];
 	return [sortedData, { fetched: checkFetched && fetched[0], pending: checkPending && pending[0], success: checkSuccess && success[0] }];
-}
+};
 
-export function useRespond(bp: number) {
+export const useRespond = (bp: number) => {
 	const rule = window.matchMedia(`(min-width: ${bp}px)`);
 	let [match, setMatch] = useState(rule.matches);
 
@@ -158,4 +167,4 @@ export function useRespond(bp: number) {
 	};
 
 	return match;
-}
+};

@@ -108,6 +108,9 @@
 							&:last-child {
 								margin-bottom: 0;
 							}
+							a, button, .pointer {
+								cursor: url('/assets/images/theme/hand-cursor-left.png') 8 8, pointer;
+							}
 						}
 						.navigation-list-item-separator {
 							display: none;

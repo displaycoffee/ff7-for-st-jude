@@ -116,7 +116,7 @@ export const Colors = (props: ColorsProps) => {
 					</form>
 				</div>
 
-				<div className="colors-overlay" role="presentation" onClick={(e) => colorsUtils.toggle(e, 'close')}></div>
+				<div className="colors-overlay pointer" role="presentation" onClick={(e) => colorsUtils.toggle(e, 'close')}></div>
 			</div>
 		</>
 	);
@@ -135,6 +135,7 @@ export const ColorsField = (props: ColorsFieldProps) => {
 				<input
 					type="color"
 					id={colorId}
+					className="pointer"
 					name={colorId}
 					value={colors[colorId] as string}
 					onChange={(e) => {

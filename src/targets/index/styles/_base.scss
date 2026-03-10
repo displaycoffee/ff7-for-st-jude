@@ -81,8 +81,8 @@
 			}
 		}
 	}
-	a, button {		
-		cursor: url('/assets/images/theme/hand-cursor.png') 16 16, pointer;
+	a, button, .pointer {		
+		cursor: url('/assets/images/theme/hand-cursor-up.png') 8 8, pointer;
 	}
 	@include mixins.respond-min(theme.$bp-02) {
 		body {
@@ -108,9 +108,6 @@
 
 	.sr-only {
 		@include mixins.sr-only;
-	}
-	.pointer {
-		cursor: pointer;
 	}
 	.clearfix {
 		@include mixins.clearfix('&');

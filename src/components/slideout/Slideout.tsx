@@ -1,10 +1,11 @@
 /* React */
-import { createRef, RefObject, useContext, useEffect, useId, useRef } from 'react';
+import { createRef, RefObject, useContext, useEffect, useRef } from 'react';
 
 /* Local styles */
 import './styles/slideout.scss';
 
 /* Local scripts */
+import { useFormattedId } from '../../_config/scripts/hooks';
 import { SlideoutOverlayProps, SlideoutProps } from './scripts/slideout-types';
 import { slideout } from './scripts/slideout';
 
@@ -15,7 +16,7 @@ export const Slideout = (props: SlideoutProps) => {
 	let { options } = props;
 	const context = useContext(Context);
 	const { config, get, toggle } = slideout;
-	const fallbackId = context.utils.setId(useId());
+	const fallbackId = useFormattedId();
 	const slideoutId = `slideout-${options?.id ? options.id : fallbackId}`;
 	const slideoutRef: RefObject<HTMLDivElement | null> = createRef();
 
