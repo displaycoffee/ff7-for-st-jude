@@ -82,7 +82,7 @@
 		}
 	}
 	a, button, .pointer {		
-		cursor: url('/assets/images/theme/hand-cursor-up.png') 8 8, pointer;
+		cursor: url('/assets/images/theme/hand-cursor-up.svg') 8 8, pointer;
 	}
 	@include mixins.respond-min(theme.$bp-02) {
 		body {

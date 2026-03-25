@@ -28,7 +28,7 @@ export const ParticipantGuide = () => {
 			</Details>
 
 			<Details header={'Checklist'} scrollLink={true}>
-				<h5>Before the day of the event</h5>
+				<h3>Before the day of the event</h3>
 
 				<ol>
 					<li>Create your Tiltify campaign, create incentives, publish your campaign, and activate incentives.</li>
@@ -47,7 +47,7 @@ export const ParticipantGuide = () => {
 					</li>
 				</ol>
 
-				<h5>Day of the event</h5>
+				<h3>Day of the event</h3>
 
 				<ol>
 					<li>
@@ -196,7 +196,7 @@ export const ParticipantGuide = () => {
 
 				<p>Below are examples of incentives.</p>
 
-				<h5>Rewards</h5>
+				<h3>Rewards</h3>
 
 				<ul>
 					<li>Name a character</li>
@@ -206,7 +206,7 @@ export const ParticipantGuide = () => {
 					<li>Eat a Bamboozled jelly bean</li>
 				</ul>
 
-				<h5>Targets</h5>
+				<h3>Targets</h3>
 
 				<ul>
 					<li>Get a special Gold Saucer date</li>
@@ -215,14 +215,14 @@ export const ParticipantGuide = () => {
 					<li>Do part of the game blindfolded</li>
 				</ul>
 
-				<h5>Polls</h5>
+				<h3>Polls</h3>
 
 				<ul>
 					<li>Omnislash vs. Counter Attack on Sephiroth</li>
 					<li>Best girl</li>
 				</ul>
 
-				<h5>Tips for how to price rewards and targets</h5>
+				<h3>Tips for how to price rewards and targets</h3>
 
 				<ul>
 					<li>You can charge more than you think you can.</li>
@@ -244,7 +244,7 @@ export const ParticipantGuide = () => {
 					as a "Browser Source" in OBS.
 				</p>
 
-				<h5>Common Commands</h5>
+				<h3>Common Commands</h3>
 
 				<ul>
 					<li>

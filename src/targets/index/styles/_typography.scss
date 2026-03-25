@@ -3,23 +3,6 @@
 @use '../../../_config/styles/utils/_mixins';
 @use '../../../_config/styles/theme/_theme';
 
-//// FONT FACE
-//// --------------------------------------------------------------------------
-
-	// Configuration
-
-	$typography-font-01: Dogica Pixel;
-	$typography-font-02: Dogica Pixel Bold;
-
-	// Style block
-
-	@if $typography-font-01 != false {
-		@include mixins.font-face($typography-font-01, theme.$font-path, dogica-pixel);
-	}
-	@if $typography-font-02 != false {
-		@include mixins.font-face($typography-font-02, theme.$font-path, dogica-pixel-bold);
-	}
-
 //// GENERAL TEXT ELEMENTS
 //// --------------------------------------------------------------------------
 
@@ -100,19 +83,16 @@
 		}
 	}
 	h1, .h1 {
-		font-size: functions.em(22px, rem);
+		font-size: functions.em(24px, rem);
 	}
 	h2, .h2 {
-		font-size: functions.em(20px, rem);
-	}
-	h3, .h3 {
 		font-size: functions.em(18px, rem);
 	}
-	h4, .h4 {
+	h3, .h3 {
 		font-size: functions.em(16px, rem);
 	}
-	h5, h6, .h5, .h6 {
-		font-size: functions.em(16px, rem);
+	h4, .h4, h5, h6, .h5, .h6 {
+		font-size: functions.em(14px, rem);
 	}
 
 //// CONTENT BLOCKS

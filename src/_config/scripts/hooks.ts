@@ -80,7 +80,7 @@ export const useReactQuery = (content: ContentType, current: CampaignType, key: 
 		requestData = hasData && !donations.fetched ? true : false;
 		queryKey = [key, current, supporting] as QueryKeyType;
 	} else if (key == 'supporting') {
-		requestData = !supporting.fetched ? true : false;
+		requestData = !supporting.fetched || (supporting.fetched && supporting.values.length != 0) ? true : false;
 	}
 
 	// Create query request

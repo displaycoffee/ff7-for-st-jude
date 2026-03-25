@@ -12,8 +12,15 @@ export default defineConfig({
 	build: {
 		outDir: '../dist',
 		emptyOutDir: false,
+		modulePreload: {
+			polyfill: true,
+		},
 		rollupOptions: {
 			output: {
+				manualChunks: {
+					vendor: ['react', 'react-dom', 'react-router-dom'],
+					tanstack: ['@tanstack/react-query'],
+				},
 				assetFileNames: (file) => {
 					return viteUtils.assetFileNames(file);
 				},

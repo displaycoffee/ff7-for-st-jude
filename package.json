@@ -1,14 +1,15 @@
 {
 	"name": "ff7-for-st-jude",
-	"version": "9.9.8",
-	"description": "Information and dashboard for the FF7 for St. Jude campaign..",
+	"version": "10.0.0",
+	"description": "Informational dashboard for the FF7 for St. Jude campaign.",
 	"main": "bundle.js",
 	"type": "module",
 	"keywords": [],
 	"author": "displaycoffee",
 	"license": "ISC",
+	"homepage": "https://ff7forstjude.org",
 	"scripts": {
-		"build": "vite build",
+		"build": "vite build && node optimize-html.js && npx prettier --write dist/index.html --ignore-path /dev/null",
 		"dev": "vite --host",
 		"format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
 		"lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
@@ -31,12 +32,12 @@
 		"prettier": "^3.8.1",
 		"sass": "1.78.0",
 		"typescript": "^5.9.3",
-		"vite": "^7.3.1"
+		"vite": "^7.3.1",
+		"vite-plugin-sitemap": "^0.8.2"
 	},
 	"dependencies": {
 		"@tanstack/react-query": "^5.90.21",
 		"react": "^19.2.4",
-		"react-cookie": "^8.0.1",
 		"react-dom": "^19.2.4",
 		"react-router-dom": "^7.13.0"
 	},
@@ -47,7 +48,6 @@
 	"bugs": {
 		"url": "https://github.com/displaycoffee/ff7-for-st-jude/issues"
 	},
-	"homepage": "https://github.com/displaycoffee/ff7-for-st-jude#readme",
 	"browserslist": [
 		"last 2 versions"
 	]

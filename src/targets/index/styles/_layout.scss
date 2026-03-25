@@ -120,6 +120,7 @@
 	// Style block
 
 	.main {
+		min-height: 80vh;
 		margin: 0 0 theme.$spacing-x8 0;
 		.main-layout {
 			@include mixins.gap($layout-main-spacing);

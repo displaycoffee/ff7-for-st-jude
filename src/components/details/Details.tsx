@@ -20,7 +20,7 @@ export const Details = (props: DetailsProps) => {
 
 	return (
 		<section id={`details-${detailsId}`} className={`details details-${detailsId}`}>
-			{header && <h3 className="details-title">{header}</h3>}
+			{header && <h2 className="details-title">{header}</h2>}
 
 			{props?.children && <div className={`details-content${hasRow ? '' : ' spacing-reset gradient-section'}`}>{props.children}</div>}
 
