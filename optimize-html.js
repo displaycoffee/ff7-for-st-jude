@@ -24,9 +24,9 @@ if (fs.existsSync(htmlPath)) {
 		html = html.replace(preloadedStylesRegex, '');
 	}
 
-	// 3. Re-inject font-face block after bundle.vendor.js
+	// 3. Re-inject font-face block after bundle.tanstack.js
 	if (fullStyleBlock) {
-		const linkTag = '<link rel="modulepreload" crossorigin href="/assets/js/bundle.vendor.js">';
+		const linkTag = '<link rel="modulepreload" crossorigin href="/assets/js/bundle.tanstack.js">';
 		html = html.replace(linkTag, `${linkTag}\n${fullStyleBlock}`);
 	}
 

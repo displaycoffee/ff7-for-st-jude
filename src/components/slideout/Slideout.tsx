@@ -62,7 +62,7 @@ export const Slideout = (props: SlideoutProps) => {
 
 			<div className={`${config.classes.menu} gradient-background`} style={styles}>
 				<header className="slideout-header flex-nowrap flex-align-items-center">
-					<h3 className="slideout-title">{options.label}</h3>
+					<h2 className="slideout-title">{options.label}</h2>
 
 					<button className="slideout-close pointer unstyled" type="button" onClick={(e) => toggle(e, false)}>
 						x

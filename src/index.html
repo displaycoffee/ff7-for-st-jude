@@ -1,24 +1,57 @@
 <!doctype html>
 <html lang="en">
 	<head>
+		<title>FF7 for St. Jude</title>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="description" content="" />
-		<meta property="og:title" content="" />
-		<meta property="og:type" content="" />
-		<meta property="og:url" content="" />
-		<meta property="og:image" content="" />
-		<title>FF7 for St. Jude</title>
-		<link rel="manifest" href="/assets/images/theme/site.webmanifest" />
-		<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/theme/favicon-180x180.png" />
-		<link rel="icon" type="image/png" sizes="192x192" href="/assets/images/theme/favicon-192x192.png" />
-		<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/theme/favicon-32x32.png" />
-		<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/theme/favicon-16x16.png" />
+		<meta name="description" content="FF7 for St. Jude - Raising money for St. Jude through speedrunning Final Fantasy 7." />
+		<meta property="og:title" content="FF7 for St. Jude" />
+		<meta property="og:site_name" content="FF7 for St. Jude" />
+		<meta property="og:url" content="https://ff7forstjude.org" />
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:description" content="FF7 for St. Jude - Raising money for St. Jude through speedrunning Final Fantasy 7." />
+		<meta property="og:type" content="website" />
+		<meta name="theme-color" content="#003a90" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="icon" href="/favicon-92x92.png" type="image/png" sizes="92x92" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/manifest.json" />
+		<link rel="preload" href="/assets/fonts/dogica-pixel.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+		<link rel="preload" href="/assets/fonts/dogica-pixel-bold.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+		<script type="module" src="./targets/index/Index.tsx"></script>
+		<style id="preloaded-styles">
+			@font-face {
+				font-family: 'Fallback';
+				src: local('Courier New');
+				size-adjust: 135%;
+			}
+			@font-face {
+				font-family: 'Fallback Bold';
+				src: local('Courier New Bold'), local('Courier New');
+				font-weight: bold;
+				size-adjust: 135%;
+			}
+			@font-face {
+				font-family: 'Dogica Pixel';
+				src: url('/assets/fonts/dogica-pixel.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+			}
+			@font-face {
+				font-family: 'Dogica Pixel Bold';
+				src: url('/assets/fonts/dogica-pixel-bold.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+			}
+		</style>
 	</head>
 
 	<body>
 		<div id="index"></div>
-		<script type="module" src="./targets/index/Index.tsx"></script>
 	</body>
 </html>

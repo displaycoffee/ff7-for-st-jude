@@ -44,13 +44,11 @@
 	.slideout-button {
 		@include mixins.flex-layout((align-items: center));
 		@include mixins.gap(theme.$spacing-x2);
-		.icon-wrapper {
-			margin: 0 theme.$spacing-x2 0 0;
-		}
 	}
 	.slideout {
 		@include mixins.position($type: sticky, $top: -1px, $z: 9999);
 		min-height: 10px;
+		display: inline-block;
 		&.is-sticky {
 			.slideout-button-fixed {
 				margin-top: 20px;
@@ -109,7 +107,7 @@
 								margin-bottom: 0;
 							}
 							a, button, .pointer {
-								cursor: url('/assets/images/theme/hand-cursor-left.png') 8 8, pointer;
+								cursor: url('/assets/images/theme/hand-cursor-left.svg') 8 8, pointer;
 							}
 						}
 						.navigation-list-item-separator {
