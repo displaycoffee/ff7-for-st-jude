@@ -1,8 +1,10 @@
 import react from '@vitejs/plugin-react';
 import basicSsl from '@vitejs/plugin-basic-ssl';
+import sitemap from 'vite-plugin-sitemap';
+import { sitemapConfig } from './vite.sitemap';
 
 export const viteUtils = {
-	plugins: [react(), basicSsl()],
+	plugins: [react(), basicSsl(), sitemap(sitemapConfig)],
 	assetFileNames: (file) => {
 		if (file.name.includes('.css')) {
 			const suffix = file.name == 'index.css' ? `.css` : `.${file.name.toLowerCase()}`;

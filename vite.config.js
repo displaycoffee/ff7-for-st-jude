@@ -12,8 +12,14 @@ export default defineConfig({
 	build: {
 		outDir: '../dist',
 		emptyOutDir: false,
+		modulePreload: {
+			polyfill: true,
+		},
 		rollupOptions: {
 			output: {
+				manualChunks: {
+					vendor: ['react', 'react-dom', 'react-router-dom'],
+				},
 				assetFileNames: (file) => {
 					return viteUtils.assetFileNames(file);
 				},

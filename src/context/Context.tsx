@@ -13,8 +13,22 @@ import { variables } from '../_config/scripts/variables';
 const queryConfig: DefaultOptions = {
 	queries: {
 		gcTime: Infinity,
-		retry: 2,
 		staleTime: Infinity,
+		retryDelay: 500,
+		retry: (failureCount: number, error: Error) => {
+			const has401 = 'status' in error && error.status === 401 ? true : false;
+
+			// Adding this for debugging... can possibly be removed later
+			if (has401) {
+				console.log(error, failureCount);
+			}
+
+			// Re-try if initial fetch gives a 401
+			if (has401 && failureCount < 2) {
+				return true;
+			}
+			return false;
+		},
 	},
 };
 const queryClient = new QueryClient({
