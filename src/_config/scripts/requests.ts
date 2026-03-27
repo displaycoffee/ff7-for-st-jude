@@ -141,6 +141,13 @@ export const requests: RequestsType = {
 		const response = await fetch(`${variables.api.teams}/${current.id}/supporting_campaigns?limit=50`, parameters.tiltify.options());
 		const json = await response.json();
 
+		// If the API returns an error, throw an error to trigger retry logic in QueryClientProvider
+		if (json?.error) {
+			const error = new Error(json.error.message || 'API Error');
+			(error as RequestErrorType).status = json.error.status;
+			throw error;
+		}
+
 		if (json && json.data) {
 			// Add details to supporting data
 			json.data.forEach((data: SupportingUnformattedType, index: number) => {

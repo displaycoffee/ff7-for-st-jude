@@ -36,6 +36,10 @@ type ObjectPrimitive = {
 	[key: string]: string | number | boolean;
 };
 
+type RequestError = Error & {
+	status?: number;
+};
+
 type Sort = ObjectPrimitive | { amounts: Amounts };
 
 /* Content type definitions */
@@ -223,6 +227,8 @@ declare global {
 	type ObjectStringType = ObjectString;
 
 	type ObjectPrimitiveType = ObjectPrimitive;
+
+	type RequestErrorType = RequestError;
 
 	type SortType = Sort;
 
