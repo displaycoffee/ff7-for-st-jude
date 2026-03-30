@@ -40,6 +40,10 @@ type RequestError = Error & {
 	status?: number;
 };
 
+type ResponseError = Response & {
+	error?: RequestError;
+};
+
 type Sort = ObjectPrimitive | { amounts: Amounts };
 
 /* Content type definitions */
@@ -229,6 +233,8 @@ declare global {
 	type ObjectPrimitiveType = ObjectPrimitive;
 
 	type RequestErrorType = RequestError;
+
+	type ResponseErrorType = ResponseError;
 
 	type SortType = Sort;
 
