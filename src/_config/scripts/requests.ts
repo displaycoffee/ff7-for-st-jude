@@ -16,6 +16,15 @@ const parameters = {
 	},
 };
 
+/* If the API returns an error (401, 404, etc.), throw an error to trigger retry logic in QueryClientProvider */
+const throwError = (json: ResponseErrorType) => {
+	if (json?.error) {
+		const error = new Error(json.error.message || 'API Error');
+		(error as RequestErrorType).status = json.error.status;
+		throw error;
+	}
+};
+
 export const requests: RequestsType = {
 	campaign: async ({ queryKey }: CampaignQueryKeyType) => {
 		const current = queryKey[1];
@@ -26,6 +35,9 @@ export const requests: RequestsType = {
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}`, parameters.tiltify.options());
 		const json = await response.json();
+
+		// Check for API errors
+		throwError(json);
 
 		if (json && json.data) {
 			// Add details to campaign data
@@ -141,12 +153,8 @@ export const requests: RequestsType = {
 		const response = await fetch(`${variables.api.teams}/${current.id}/supporting_campaigns?limit=50`, parameters.tiltify.options());
 		const json = await response.json();
 
-		// If the API returns an error, throw an error to trigger retry logic in QueryClientProvider
-		if (json?.error) {
-			const error = new Error(json.error.message || 'API Error');
-			(error as RequestErrorType).status = json.error.status;
-			throw error;
-		}
+		// Check for API errors
+		throwError(json);
 
 		if (json && json.data) {
 			// Add details to supporting data
