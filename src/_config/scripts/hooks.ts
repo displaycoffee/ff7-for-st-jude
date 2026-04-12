@@ -1,69 +1,44 @@
 /* React */
-import { RefObject, useEffect, useId, useRef, useState } from 'react';
-import { useQuery, useQueries } from '@tanstack/react-query';
+import { useEffect, useId, useState } from 'react';
+import { QueryFunction, useQuery, useQueries } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
 /* Local scripts */
 import { requests } from './requests';
 import { utils } from './utils';
 
-/* Set pageCache to get previous page */
-let pageCache = {
-	previous: '',
-};
+/* Variables for useBodyClass */
+const bodyPrefix = 'page-';
+const bodySelector = document.querySelector('body');
+let previousPage = '';
 
 export const useBodyClass = (defaultPrefix: string) => {
 	const location = useLocation();
-	const bodySelector = document.querySelector('body');
-	const bodyPrefix = 'page-';
-	const bodyDefault = defaultPrefix;
 
-	if (bodySelector) {
-		useEffect(() => {
-			// Remove any previous body class
-			bodySelector.classList.remove(`${bodyPrefix}${pageCache.previous || bodyDefault}`);
+	useEffect(() => {
+		if (!bodySelector) return;
 
-			// Update previous location path
-			// Replace any body prefix, remove first slash, and replace any other slash with hyphen
-			pageCache.previous = location.pathname.replace(bodyPrefix, '').replace('/', '').replace(/\//g, '-');
+		// Remove any previous body class
+		bodySelector.classList.remove(`${bodyPrefix}${previousPage || defaultPrefix}`);
 
-			// Add new body class
-			bodySelector.classList.add(`${bodyPrefix}${pageCache.previous || bodyDefault}`);
-		}, [location]);
-	}
+		// Update previous location path
+		// Replace any body prefix, remove first slash, and replace any other slash with hyphen
+		previousPage = location.pathname.replace(bodyPrefix, '').replace('/', '').replace(/\//g, '-');
+
+		// Add new body class
+		bodySelector.classList.add(`${bodyPrefix}${previousPage || defaultPrefix}`);
+	}, [location, defaultPrefix]);
 
 	return null;
-};
-
-export const useClickOutside = (callback: Function) => {
-	const clickRef: RefObject<HTMLDivElement | null> = useRef(null);
-
-	// Determine if a click has been performed outside an element
-	useEffect(() => {
-		const handleClickOutside = (e: Event) => {
-			if (clickRef.current && !clickRef.current.contains(e.target as Node)) {
-				callback();
-			}
-		};
-
-		document.addEventListener('mousedown', handleClickOutside);
-
-		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, [clickRef, callback]);
-
-	return clickRef;
 };
 
 export const useFormattedId = () => {
 	// Updates the format of useId hook
 	const id = useId();
-	return id
-		.slice(1, -1)
-		.replace(/^\_|\_$/g, '')
-		.replace(/\_/g, '-');
+	return id.slice(1, -1).replace(/^_|_$/g, '').replace(/_/g, '-');
 };
 
-export const useReactQuery = (content: ContentType, current: CampaignType, key: string) => {
+export const useReactQuery = (key: string, content: ContentType, current: CampaignType) => {
 	// Get donations data if supporting is available and if not in cache or if totals have changed
 	const { campaign, donations, supporting } = content;
 
@@ -74,13 +49,13 @@ export const useReactQuery = (content: ContentType, current: CampaignType, key: 
 
 	// Update variables per key type
 	if (key == 'campaign') {
-		requestData = !campaign.fetched ? true : false;
+		requestData = !campaign.fetched;
 	} else if (key == 'donations') {
-		hasData = supporting.fetched && supporting.values.length !== 0 ? true : false;
-		requestData = hasData && !donations.fetched ? true : false;
+		hasData = supporting.fetched && supporting.values.length !== 0;
+		requestData = hasData && !donations.fetched;
 		queryKey = [key, current, supporting] as QueryKeyType;
 	} else if (key == 'supporting') {
-		requestData = !supporting.fetched || (supporting.fetched && supporting.values.length != 0) ? true : false;
+		requestData = !supporting.fetched;
 	}
 
 	// Create query request
@@ -91,7 +66,7 @@ export const useReactQuery = (content: ContentType, current: CampaignType, key: 
 		isFetched: isFetched,
 	} = useQuery({
 		queryKey: queryKey,
-		queryFn: requests[key],
+		queryFn: requests[key as keyof RequestsType] as QueryFunction,
 		enabled: requestData,
 	});
 
@@ -113,28 +88,28 @@ export const useReactQuery = (content: ContentType, current: CampaignType, key: 
 	return [fetchedData, { fetched: isFetched, pending: isPending, success: isSuccess }];
 };
 
-export const useReactQueries = (content: ContentType, key: string) => {
+export const useReactQueries = (key: string, content: ContentType) => {
 	// Get data from multiple queries
 	const { supporting } = content;
-	const hasSupporting = supporting.fetched && supporting.values.length !== 0 ? true : false;
+	const hasSupporting = supporting.fetched && supporting.values.length !== 0;
 	const queryValues = hasSupporting ? supporting.values : [];
 
 	const {
 		data: data,
-		pending: pending,
-		success: success,
-		fetched: fetched,
+		isPending: isPending,
+		isSuccess: isSuccess,
+		isFetched: isFetched,
 	} = useQueries({
 		queries: queryValues.map((value, index) => ({
 			queryKey: [key, value, index],
-			queryFn: requests[key],
+			queryFn: requests[key as keyof RequestsType] as QueryFunction,
 		})),
 		combine: (results) => {
 			return {
-				data: results.flatMap((result) => result.data as []),
-				pending: results.map((result) => result.isPending),
-				success: results.map((result) => result.isSuccess),
-				fetched: results.map((result) => result.isFetched),
+				data: results.flatMap((result) => (result.data ? (result.data as []) : [])),
+				isPending: results.map((result) => result.isPending),
+				isSuccess: results.map((result) => result.isSuccess),
+				isFetched: results.map((result) => result.isFetched),
 			};
 		},
 	});
@@ -143,28 +118,25 @@ export const useReactQueries = (content: ContentType, key: string) => {
 	const checkStatus = (statues: boolean[]) => statues.every((status) => status === statues[0]);
 
 	// Check to see if every value in statuses are the same
-	const checkPending = checkStatus(pending);
-	const checkSuccess = checkStatus(success);
-	const checkFetched = checkStatus(fetched);
+	const checkPending = checkStatus(isPending);
+	const checkSuccess = checkStatus(isSuccess);
+	const checkFetched = checkStatus(isFetched);
 
 	// Re-sort merged data
 	const sortedData = data && data.length !== 0 ? utils.sort(data as SortType[], 'integer', 'milliseconds', 'asc') : [];
-	return [sortedData, { fetched: checkFetched && fetched[0], pending: checkPending && pending[0], success: checkSuccess && success[0] }];
+	return [sortedData, { fetched: checkFetched && isFetched[0], pending: checkPending && isPending[0], success: checkSuccess && isSuccess[0] }];
 };
 
 export const useRespond = (bp: number) => {
-	const rule = window.matchMedia(`(min-width: ${bp}px)`);
-	let [match, setMatch] = useState(rule.matches);
+	const [match, setMatch] = useState(() => window.matchMedia(`(min-width: ${bp}px)`).matches);
 
 	// Update match state on media change
-	rule.onchange = (e) => {
-		if (e.matches) {
-			match = true;
-		} else {
-			match = false;
-		}
-		setMatch(match);
-	};
+	useEffect(() => {
+		const mediaQuery = window.matchMedia(`(min-width: ${bp}px)`);
+		const handler = (e: MediaQueryListEvent) => setMatch(e.matches);
+		mediaQuery.addEventListener('change', handler);
+		return () => mediaQuery.removeEventListener('change', handler);
+	}, [bp]);
 
 	return match;
 };

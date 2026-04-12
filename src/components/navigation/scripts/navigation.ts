@@ -1,10 +1,20 @@
+/* React */
+import { lazy } from 'react';
+
 /* Local scripts */
 import { NavigationType } from './navigation-types';
+
+/* Local components */
+const Home = lazy(() => import('../../../pages/home/Home').then((m) => ({ default: m.Home })));
+const Dashboard = lazy(() => import('../../../pages/dashboard/Dashboard').then((m) => ({ default: m.Dashboard })));
+const Donations = lazy(() => import('../../../pages/donations/Donations').then((m) => ({ default: m.Donations })));
+const ParticipantGuide = lazy(() => import('../../../pages/participant-guide/ParticipantGuide').then((m) => ({ default: m.ParticipantGuide })));
 
 export const navigation = [
 	{
 		id: 5,
 		alt: 'Commentary Stream',
+		element: Home,
 		isRoute: false,
 		label: 'Commentary Stream',
 		showInNav: false,
@@ -13,6 +23,7 @@ export const navigation = [
 	{
 		id: 4,
 		alt: 'Donations',
+		element: Donations,
 		isRoute: true,
 		label: 'Donations',
 		showInNav: true,
@@ -21,6 +32,7 @@ export const navigation = [
 	{
 		id: 3,
 		alt: 'Dashboard',
+		element: Dashboard,
 		isRoute: true,
 		label: 'Dashboard',
 		showInNav: true,
@@ -37,6 +49,7 @@ export const navigation = [
 	{
 		id: 1,
 		alt: 'Participant Guide',
+		element: ParticipantGuide,
 		isRoute: true,
 		label: 'Participant Guide',
 		url: '/participant-guide',
@@ -45,6 +58,7 @@ export const navigation = [
 	{
 		id: 0,
 		alt: 'Home',
+		element: Home,
 		isRoute: true,
 		label: 'Home',
 		url: '/',

@@ -1,3 +1,6 @@
+/* React */
+import { QueryFunctionContext } from '@tanstack/react-query';
+
 /* Local scripts */
 import { variables } from './variables';
 import { utils } from './utils';
@@ -26,8 +29,9 @@ const throwError = (json: ResponseErrorType) => {
 };
 
 export const requests: RequestsType = {
-	campaign: async ({ queryKey }: CampaignQueryKeyType) => {
-		const current = queryKey[1];
+	campaign: async ({ queryKey }: QueryFunctionContext) => {
+		// queryKey: ['campaign', campaign]
+		const current = queryKey[1] as CampaignType;
 
 		// Storage for campaign data
 		let campaign = {} as CampaignType;
@@ -50,12 +54,13 @@ export const requests: RequestsType = {
 
 		return campaign;
 	},
-	donations: async ({ queryKey }: DonationsQueryKeyType) => {
-		const current = queryKey[1];
-		const supporting = queryKey[2];
+	donations: async ({ queryKey }: QueryFunctionContext) => {
+		// queryKey: ['donations', campaign, supporting content]
+		const current = queryKey[1] as CampaignType;
+		const supporting = queryKey[2] as SupportingContentType;
 
 		// Storage for donations data
-		let donations = [] as DonationsType[];
+		const donations = [] as DonationsType[];
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}/donations?limit=100`, parameters.tiltify.options());
@@ -65,7 +70,7 @@ export const requests: RequestsType = {
 			// Add details to donations data
 			json.data.forEach((data: DonationsUnformattedType, index: number) => {
 				// Format donations data
-				let donationsData = {
+				const donationsData = {
 					id: data.id,
 					amounts: utils.getAmounts(data),
 					comment: data?.donor_comment ? data.donor_comment : false,
@@ -98,12 +103,13 @@ export const requests: RequestsType = {
 
 		return donations;
 	},
-	rewards: async ({ queryKey }: RewardsQueryKeyType) => {
-		const current = queryKey[1];
-		const queryIndex = queryKey[2];
+	rewards: async ({ queryKey }: QueryFunctionContext) => {
+		// queryKey: ['rewards', campaign, number]
+		const current = queryKey[1] as CampaignType;
+		const queryIndex = queryKey[2] as number;
 
 		// Storage for rewards data
-		let rewards = [] as RewardsType[];
+		const rewards = [] as RewardsType[];
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.campaigns}/${current.id}/rewards?limit=100`, parameters.tiltify.options());
@@ -115,7 +121,7 @@ export const requests: RequestsType = {
 				const date = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 
 				// Format rewards data
-				let rewardsData = {
+				const rewardsData = {
 					id: data.id,
 					active: data.active,
 					amounts: utils.getAmounts(data),
@@ -143,11 +149,12 @@ export const requests: RequestsType = {
 
 		return rewards;
 	},
-	supporting: async ({ queryKey }: SupportingQueryKeyType) => {
-		const current = queryKey[1];
+	supporting: async ({ queryKey }: QueryFunctionContext) => {
+		// queryKey: ['supporting', campaign]
+		const current = queryKey[1] as CampaignType;
 
 		// Storage for supporting data
-		let supporting = [] as SupportingType[];
+		const supporting = [] as SupportingType[];
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}/supporting_campaigns?limit=50`, parameters.tiltify.options());
@@ -163,7 +170,7 @@ export const requests: RequestsType = {
 				const campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
 
 				// Format supporting data
-				let supportingData = {
+				const supportingData = {
 					id: data.id,
 					amounts: utils.getAmounts(data),
 					campaign: campaign,
@@ -192,12 +199,13 @@ export const requests: RequestsType = {
 
 		return supporting;
 	},
-	targets: async ({ queryKey }: TargetsQueryKeyType) => {
-		const current = queryKey[1];
-		const queryIndex = queryKey[2];
+	targets: async ({ queryKey }: QueryFunctionContext) => {
+		// queryKey: ['targets', campaign, number]
+		const current = queryKey[1] as CampaignType;
+		const queryIndex = queryKey[2] as number;
 
 		// Storage for targets data
-		let targets = [] as TargetsType[];
+		const targets = [] as TargetsType[];
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.campaigns}/${current.id}/targets?limit=100`, parameters.tiltify.options());
@@ -208,7 +216,7 @@ export const requests: RequestsType = {
 				const date = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 
 				// Format targets data
-				let targetsData = {
+				const targetsData = {
 					id: data.id,
 					active: data.active,
 					amounts: utils.getAmounts(data),

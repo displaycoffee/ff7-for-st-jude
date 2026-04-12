@@ -4,6 +4,11 @@ import path from 'path';
 // Path to your built index.html
 const htmlPath = path.resolve('dist/index.html');
 
+// Bundle script
+// Note: this is the name of the bundle you want to inject font blocks after.
+// It can be configured in vite.config.js > manualChunks
+const bundle = 'bundle.tanstack';
+
 if (fs.existsSync(htmlPath)) {
 	let html = fs.readFileSync(htmlPath, 'utf8');
 
@@ -24,9 +29,9 @@ if (fs.existsSync(htmlPath)) {
 		html = html.replace(preloadedStylesRegex, '');
 	}
 
-	// 3. Re-inject font-face block after bundle.tanstack.js
+	// 3. Re-inject font-face block after bundle
 	if (fullStyleBlock) {
-		const linkTag = '<link rel="modulepreload" crossorigin href="/assets/js/bundle.tanstack.js">';
+		const linkTag = `<link rel="modulepreload" crossorigin href="/assets/js/${bundle}.js">`;
 		html = html.replace(linkTag, `${linkTag}\n${fullStyleBlock}`);
 	}
 

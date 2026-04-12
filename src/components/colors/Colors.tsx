@@ -62,7 +62,7 @@ export const Colors = (props: ColorsProps) => {
 	};
 
 	return showButton ? (
-		<button className="colors-buttons unstyled a" type="button" onClick={(e) => colorsUtils.toggle(e)}>
+		<button className="colors-buttons unstyled a" type="button" aria-label="Window Color Button" onClick={(e) => colorsUtils.toggle(e)}>
 			Window Color
 		</button>
 	) : (
@@ -98,17 +98,21 @@ export const Colors = (props: ColorsProps) => {
 
 						<div className="colors-actions row row-nowrap row-align-items-center row-fit row-spacing-10">
 							<div className="column column-button">
-								<button className="colors-buttons unstyled a" type="submit">
+								<button className="colors-buttons unstyled a" type="submit" aria-label="Change Colors Button">
 									Change
 								</button>
 							</div>
 							<div className="column column-button">
-								<button className="colors-buttons unstyled a" type="reset">
+								<button className="colors-buttons unstyled a" type="reset" aria-label="Reset Colors Button">
 									Reset
 								</button>
 							</div>
 							<div className="column column-button">
-								<button className="colors-buttons unstyled a" onClick={(e) => colorsUtils.toggle(e, 'close')}>
+								<button
+									className="colors-buttons unstyled a"
+									onClick={(e) => colorsUtils.toggle(e, 'close')}
+									aria-label="Close Colors Button"
+								>
 									x Close
 								</button>
 							</div>

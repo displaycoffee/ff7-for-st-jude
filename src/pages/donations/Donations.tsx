@@ -1,5 +1,6 @@
 /* React */
 import { useContext, useEffect } from 'react';
+import { produce, Draft } from 'immer';
 
 /* Local scripts */
 import { useReactQuery } from '../../_config/scripts/hooks';
@@ -14,48 +15,66 @@ const timeout = false; // 60000 == one minute
 
 export const Donations = () => {
 	const context = useContext(Context);
-	let { campaigns, utils, queryClient, content } = context;
-	let { supporting, campaign, donations } = content;
+	const { campaigns, utils, queryClient, content, setContent } = context;
+	const { supporting, campaign, donations } = content;
 	const { current } = campaigns;
 
 	// Use custom hook to get supporting campaigns
-	const [supportingData, supportingStatus] = useReactQuery(content, current, 'supporting') as SupportingRequestType;
-	const supportingComplete = (!supportingStatus.pending && supportingStatus.success) || supportingStatus.fetched ? true : false;
+	const [supportingData] = useReactQuery('supporting', content, current) as SupportingRequestType;
 
 	// Use custom hook to get campaign
-	const [campaignData, campaignStatus] = useReactQuery(content, current, 'campaign') as CampaignRequestType;
-	const campaignComplete = (!campaignStatus.pending && campaignStatus.success) || campaignStatus.fetched ? true : false;
-
-	// Set content for supporting
-	if (supportingComplete && utils.checkArray(supportingData)) {
-		supporting = { fetched: true, values: supportingData };
-		content.supporting = supporting;
-	}
-
-	// Set content for campaign
-	if (campaignComplete && campaignData && Object.keys(campaignData).length !== 0) {
-		campaign = { ...campaignData, fetched: true };
-		content.campaign = campaign;
-	}
+	const [campaignData] = useReactQuery('campaign', content, current) as CampaignRequestType;
 
 	// Use custom hook to get donations
-	const [donationsData, donationsStatus] = useReactQuery(content, current, 'donations') as DonationsRequestType;
-	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched ? true : false;
+	const [donationsData, donationsStatus] = useReactQuery('donations', content, current) as DonationsRequestType;
+	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched;
 
-	// Set content state for dontations
-	if (donationsComplete && utils.checkArray(donationsData)) {
-		donations = { fetched: true, values: donationsData };
-		content.donations = donations;
-	}
+	useEffect(() => {
+		const supportingUpdated = !supporting.fetched && supportingData && utils.checkArray(supportingData);
+		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
+		const donationsUpdated = !donations.fetched && donationsData && utils.checkArray(donationsData);
+
+		if (supportingUpdated || campaignUpdated || donationsUpdated) {
+			setContent(
+				produce((draft: Draft<ContentType>) => {
+					// Update supporting
+					if (supportingUpdated) {
+						draft.supporting.fetched = true;
+						draft.supporting.values = supportingData;
+					}
+
+					// Update campaign
+					if (campaignUpdated) {
+						draft.campaign = {
+							...campaignData,
+							fetched: true,
+						};
+					}
+
+					if (draft.supporting.fetched && draft.campaign.fetched) {
+						// Update donations
+						if (donationsUpdated) {
+							draft.donations.fetched = true;
+							draft.donations.values = donationsData;
+						}
+					}
+				}),
+			);
+		}
+	}, [utils, setContent, supportingData, supporting.fetched, campaignData, campaign.fetched, donationsData, donations.fetched]);
 
 	useEffect(() => {
 		if (timeout) {
 			const interval = setInterval(() => {
-				// Reset and set content state
-				content.donations = { fetched: false, values: [] };
-
 				// Reset queries
-				queryClient.resetQueries({ queryKey: ['donations'] });
+				void queryClient.resetQueries({ queryKey: ['donations'] });
+
+				// Reset and set content state
+				setContent(
+					produce((draft: Draft<ContentType>) => {
+						draft.donations = { fetched: false, values: [] };
+					}),
+				);
 			}, timeout);
 
 			return () => {
@@ -63,7 +82,7 @@ export const Donations = () => {
 				clearInterval(interval);
 			};
 		}
-	}, []);
+	}, [queryClient, setContent]);
 
 	return (
 		<Details header={'Donations'} hasRow={true} scrollLink={true}>

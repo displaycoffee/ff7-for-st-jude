@@ -1,3 +1,8 @@
+/// <reference types="vite/client" />
+
+/* React */
+import { QueryFunctionContext } from '@tanstack/react-query';
+
 /* Generic type definitions */
 type Amounts = {
 	amount: number;
@@ -36,14 +41,6 @@ type ObjectPrimitive = {
 	[key: string]: string | number | boolean;
 };
 
-type RequestError = Error & {
-	status?: number;
-};
-
-type ResponseError = Response & {
-	error?: RequestError;
-};
-
 type Sort = ObjectPrimitive | { amounts: Amounts };
 
 /* Content type definitions */
@@ -59,18 +56,14 @@ type Campaign = {
 
 type CampaignContent = Fetched | (Fetched & Campaign);
 
-type CampaignQueryKey = {
-	queryKey: [string, Campaign];
-};
-
 type CampaignRequest = [Campaign, Statuses];
 
-type Campaigns = {
-	current: Campaign;
-	previous: Campaign[];
-};
-
 type Content = {
+	totals: {
+		amountRaised: number;
+		goal: number;
+		totalRaised: number;
+	};
 	campaign: CampaignContent;
 	donations: DonationsContent;
 	rewards: RewardsContent;
@@ -89,10 +82,6 @@ type Donations = {
 };
 
 type DonationsContent = Fetched & { values: [] | Donations[] };
-
-type DonationsQueryKey = {
-	queryKey: [string, Campaign, SupportingContent];
-};
 
 type DonationsUnformatted = {
 	id: string;
@@ -125,10 +114,6 @@ type Rewards = {
 
 type RewardsContent = Fetched & { values: [] | Rewards[] };
 
-type RewardsQueryKey = {
-	queryKey: [string, Campaign, number];
-};
-
 type RewardsUnformatted = {
 	active: boolean;
 	id: string;
@@ -151,10 +136,6 @@ type Supporting = {
 };
 
 type SupportingContent = Fetched & { values: [] | Supporting[] };
-
-type SupportingQueryKey = {
-	queryKey: [string, Campaign];
-};
 
 type SupportingUnformatted = {
 	id: string;
@@ -187,10 +168,6 @@ type Targets = {
 
 type TargetsContent = Fetched & { values: [] | Targets[] };
 
-type TargetsQueryKey = {
-	queryKey: [string, Campaign, number];
-};
-
 type TargetsUnformatted = {
 	active: boolean;
 	id: string;
@@ -208,8 +185,20 @@ type Fetched = {
 
 type QueryKey = [string, Campaign] | [string, Campaign, SupportingContent];
 
+type RequestError = Error & {
+	status?: number;
+};
+
 type Requests = {
-	[key: string]: (args: any) => Promise<Supporting[] | Campaign | Donations[] | Rewards[] | Targets[]>;
+	campaign: (context: QueryFunctionContext) => Promise<Campaign>;
+	donations: (context: QueryFunctionContext) => Promise<Donations[]>;
+	rewards: (context: QueryFunctionContext) => Promise<Rewards[]>;
+	supporting: (context: QueryFunctionContext) => Promise<Supporting[]>;
+	targets: (context: QueryFunctionContex) => Promise<Targets[]>;
+};
+
+type ResponseError = Response & {
+	error?: RequestError;
 };
 
 type Statuses = {
@@ -232,16 +221,10 @@ declare global {
 
 	type ObjectPrimitiveType = ObjectPrimitive;
 
-	type RequestErrorType = RequestError;
-
-	type ResponseErrorType = ResponseError;
-
 	type SortType = Sort;
 
 	/* Declare global content types */
 	type CampaignType = Campaign;
-
-	type CampaignQueryKeyType = CampaignQueryKey;
 
 	type CampaignRequestType = CampaignRequest;
 
@@ -249,15 +232,11 @@ declare global {
 
 	type DonationsType = Donations;
 
-	type DonationsQueryKeyType = DonationsQueryKey;
-
 	type DonationsRequestType = DonationsRequest;
 
 	type DonationsUnformattedType = DonationsUnformatted;
 
 	type RewardsType = Rewards;
-
-	type RewardsQueryKeyType = RewardsQueryKey;
 
 	type RewardsRequestType = RewardsRequest;
 
@@ -265,15 +244,13 @@ declare global {
 
 	type SupportingType = Supporting;
 
-	type SupportingQueryKeyType = SupportingQueryKey;
+	type SupportingContentType = SupportingContent;
 
 	type SupportingRequestType = SupportingRequest;
 
 	type SupportingUnformattedType = SupportingUnformatted;
 
 	type TargetsType = Targets;
-
-	type TargetsQueryKeyType = TargetsQueryKey;
 
 	type TargetsRequestType = TargetsRequest;
 
@@ -282,7 +259,11 @@ declare global {
 	/* Declare global request types */
 	type QueryKeyType = QueryKey;
 
+	type RequestErrorType = RequestError;
+
 	type RequestsType = Requests;
+
+	type ResponseErrorType = ResponseError;
 }
 
 /* Export global types */

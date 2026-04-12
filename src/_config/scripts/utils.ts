@@ -17,8 +17,8 @@ export const utils = {
 		return Math.round(number * 100) / 100;
 	},
 	checkArray: (array: ObjectPrimitiveType[]) => {
-		// Ensure array has length and if not, reset to false
-		return array && array.length !== 0 ? array : [];
+		// Check if array has length
+		return array && array.length !== 0;
 	},
 	formatCurrency: (number: number) => {
 		// Format currency using formatter
@@ -26,7 +26,7 @@ export const utils = {
 	},
 	getAmounts: (detail?: AmountsUnformattedType) => {
 		// Setup initial amount details
-		let amounts = {
+		const amounts = {
 			amount: 0,
 			amount_raised: 0,
 			goal: 0,
@@ -61,10 +61,6 @@ export const utils = {
 		}
 		return valueArray[valueArray.length - 1];
 	},
-	getPage: () => {
-		// Get previous / parent page
-		return window.location.pathname.split('/').slice(0, -1).join('/');
-	},
 	handleize: (value: string) => {
 		// Format value for html classes
 		return value
@@ -86,15 +82,11 @@ export const utils = {
 			stickyObserver.observe(element);
 		}
 	},
-	merge: (array: []) => {
-		// Merge array of arrays
-		return array.reduce((merge, next) => merge.concat(next), []);
-	},
 	renderTarget: (element: string, component: ReactNode) => {
 		// Render target for app
 		const targetElement = document.querySelector(element);
 		if (targetElement) {
-			const targetHasChildren = targetElement?.children && targetElement.children.length !== 0 ? true : false;
+			const targetHasChildren = targetElement.children.length > 0;
 			if (!targetHasChildren) {
 				const target = createRoot(targetElement);
 				target.render(component);
@@ -144,7 +136,7 @@ export const utils = {
 	},
 	sort: (list: SortType[], type: string | number | boolean, field: string, direction: string) => {
 		// Sort values in a list based on type, field, and direction
-		list.sort((a, b) => {
+		return [...list].sort((a, b) => {
 			let sortedValue = 0;
 
 			if (type == 'string' || type == 'boolean') {
@@ -158,8 +150,7 @@ export const utils = {
 				// Sorting method for strings
 				if (direction == 'asc') {
 					sortedValue = sortValueA.localeCompare(sortValueB);
-				}
-				if (direction == 'desc') {
+				} else if (direction == 'desc') {
 					sortedValue = sortValueB.localeCompare(sortValueA);
 				}
 			} else if (type == 'integer') {
@@ -173,16 +164,13 @@ export const utils = {
 				// Sorting method for numbers
 				if (direction == 'asc') {
 					sortedValue = sortValueA - sortValueB;
-				}
-				if (direction == 'desc') {
+				} else if (direction == 'desc') {
 					sortedValue = sortValueB - sortValueA;
 				}
 			}
 
 			return sortedValue;
 		});
-
-		return list;
 	},
 	truncate: (string: string, limit: number) => {
 		// Limit characters in string

@@ -25,7 +25,12 @@ export const Details = (props: DetailsProps) => {
 			{props?.children && <div className={`details-content${hasRow ? '' : ' spacing-reset gradient-section'}`}>{props.children}</div>}
 
 			{scrollLink && (
-				<button className="details-to-top pointer unstyled a" type="button" onClick={(e) => utils.scrollTo(e)}>
+				<button
+					className="details-to-top pointer unstyled a"
+					type="button"
+					aria-label="Back to Top Button"
+					onClick={(e) => utils.scrollTo(e)}
+				>
 					^ Back to top
 				</button>
 			)}
@@ -45,7 +50,7 @@ export const DetailsParagraph = (props: DetailsParagraphProps) => {
 
 export const DetailsLinks = (props: DetailsLinksProps) => {
 	const { links, wrapper } = props;
-	const hasWrapper = !wrapper && wrapper !== false ? true : false;
+	const hasWrapper = !wrapper && wrapper !== false;
 
 	// Create loop for links
 	const linksLoop = links.map((link, index) => (

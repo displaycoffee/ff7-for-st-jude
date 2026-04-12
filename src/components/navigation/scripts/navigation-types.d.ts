@@ -2,6 +2,7 @@
 type Navigation = {
 	alt?: string;
 	children?: Navigation[];
+	element?: JSX.Element;
 	id: number;
 	isRoute?: boolean;
 	label: string;
@@ -21,10 +22,6 @@ type NavigationLocation = {
 	location?: ReactNode;
 };
 
-type NavigationMap = {
-	[key: string]: JSX.Element;
-};
-
 type NavigationRoutes = {
 	children?: NavigationRoutes[];
 	element: JSX.Element;
@@ -34,8 +31,6 @@ type NavigationRoutes = {
 };
 
 /* Export types */
-export type NavigationMapType = NavigationMap;
-
 export type NavigationRoutesType = NavigationRoutes;
 
 export type NavigationType = Navigation;

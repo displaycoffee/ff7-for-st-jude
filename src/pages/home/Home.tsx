@@ -1,5 +1,6 @@
 /* React */
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { produce, Draft } from 'immer';
 
 /* Local styles */
 import './styles/home.scss';
@@ -14,53 +15,55 @@ import { Skeleton } from '../../components/skeleton/Skeleton';
 
 export const Home = () => {
 	const context = useContext(Context);
-	let { campaigns, utils, content } = context;
-	let { supporting, campaign } = content;
+	const { content, setContent, campaigns, utils } = context;
+	const { supporting, campaign, totals } = content;
 	const { current, previous } = campaigns;
 
-	// Initial variables
-	let amountRaised = 0;
-	let goal = 0;
-	let totalRaised = 0;
+	// Get total of all previous campaigns
+	let previousTotals = 0;
+	previous.forEach((campaign) => {
+		previousTotals += campaign.amounts.total_amount_raised;
+	});
 
 	// Use custom hook to get supporting campaigns
-	const [supportingData, supportingStatus] = useReactQuery(content, current, 'supporting') as SupportingRequestType;
-	const supportingComplete = (!supportingStatus.pending && supportingStatus.success) || supportingStatus.fetched ? true : false;
+	const [supportingData] = useReactQuery('supporting', content, current) as SupportingRequestType;
 
 	// Use custom hook to get campaign
-	const [campaignData, campaignStatus] = useReactQuery(content, current, 'campaign') as CampaignRequestType;
-	const campaignComplete = (!campaignStatus.pending && campaignStatus.success) || campaignStatus.fetched ? true : false;
+	const [campaignData] = useReactQuery('campaign', content, current) as CampaignRequestType;
 
-	// Set content for supporting
-	if (supportingComplete && utils.checkArray(supportingData)) {
-		supporting = { fetched: true, values: supportingData };
-		content.supporting = supporting;
-	}
+	useEffect(() => {
+		const supportingUpdated = !supporting.fetched && supportingData && utils.checkArray(supportingData);
+		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
+		const totalsUpdated = !totals.totalRaised && supporting.fetched && campaign.fetched;
 
-	// Set content for campaign
-	if (campaignComplete && campaignData && Object.keys(campaignData).length !== 0) {
-		campaign = { ...campaignData, fetched: true };
-		content.campaign = campaign;
-	}
+		if (supportingUpdated || campaignUpdated || totalsUpdated) {
+			setContent(
+				produce((draft: Draft<ContentType>) => {
+					// Update supporting
+					if (supportingUpdated) {
+						draft.supporting.fetched = true;
+						draft.supporting.values = supportingData;
+					}
 
-	// Check if main content is available
-	const hasMainContent = supporting.fetched && campaign.fetched ? true : false;
+					// Update campaign
+					if (campaignUpdated) {
+						draft.campaign = {
+							...campaignData,
+							fetched: true,
+						};
+					}
 
-	if (hasMainContent) {
-		// Set variables for progress bar
-		const campaignContent = campaign as CampaignType;
-		amountRaised = campaignContent.amounts.total_amount_raised;
-		goal = campaignContent.amounts.goal;
-
-		// Reset totalRaised and get amount raised from all campaigns
-		totalRaised = 0;
-		previous.forEach((campaign) => {
-			totalRaised += campaign.amounts.total_amount_raised;
-		});
-
-		// Add totalRaised and amountRaised to get grand totalaa
-		totalRaised += amountRaised;
-	}
+					// Update totals
+					if (draft.supporting.fetched && draft.campaign.fetched) {
+						const campaignDraft = draft.campaign as CampaignType;
+						draft.totals.amountRaised = campaignDraft.amounts.total_amount_raised;
+						draft.totals.goal = campaignDraft.amounts.goal;
+						draft.totals.totalRaised = campaignDraft.amounts.total_amount_raised + previousTotals;
+					}
+				}),
+			);
+		}
+	}, [utils, setContent, previousTotals, supportingData, supporting.fetched, campaignData, campaign.fetched, totals.totalRaised]);
 
 	return (
 		<>
@@ -85,7 +88,7 @@ export const Home = () => {
 				</p>
 
 				<p>
-					In total, we have raised <strong>{utils.formatCurrency(totalRaised)}</strong>.
+					In total, we have raised <strong>{utils.formatCurrency(totals.totalRaised)}</strong>.
 				</p>
 
 				<p className="mission-statement">
@@ -104,14 +107,14 @@ export const Home = () => {
 					<strong>Raised:</strong>
 					<div className="level-bar">
 						<div className="level-bar-label">
-							{utils.formatCurrency(amountRaised ? amountRaised : 0)} out of {utils.formatCurrency(goal ? goal : 0)}
+							{utils.formatCurrency(totals.amountRaised)} out of {utils.formatCurrency(totals.goal)}
 						</div>
 
 						<div className="level-bar-outof">
 							<div
 								className="level-bar-progress"
 								style={{
-									width: amountRaised && goal ? `${(amountRaised / goal) * 100}%` : `0%`,
+									width: totals.amountRaised && totals.goal ? `${(totals.amountRaised / totals.goal) * 100}%` : `0%`,
 								}}
 							></div>
 
