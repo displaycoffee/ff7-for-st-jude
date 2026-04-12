@@ -1,9 +1,14 @@
-/* Export prop types */
-export type ErrorBoundaryProps = {
+/* Type definitions */
+type ErrorBoundary = {
 	children: ReactNode;
 	message: ReactNode;
 };
 
-export type ErrorBoundaryState = {
+type ErrorBoundaryState = {
 	hasError: boolean;
 };
+
+/* Export prop types */
+export type ErrorBoundaryProps = ErrorBoundary;
+
+export type ErrorBoundaryStateProps = ErrorBoundaryState;

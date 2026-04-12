@@ -4,6 +4,7 @@ import { viteUtils } from './vite.utils';
 export default defineConfig({
 	root: 'src',
 	publicDir: '../public',
+	envDir: '../',
 	plugins: viteUtils.plugins,
 	server: {
 		host: 'localhost',
@@ -13,13 +14,13 @@ export default defineConfig({
 		outDir: '../dist',
 		emptyOutDir: false,
 		modulePreload: {
-			polyfill: true,
+			polyfill: false,
 		},
 		rollupOptions: {
 			output: {
 				manualChunks: {
-					vendor: ['react', 'react-dom', 'react-router-dom'],
 					tanstack: ['@tanstack/react-query'],
+					vendor: ['react', 'react-dom', 'react-router-dom'],
 				},
 				assetFileNames: (file) => {
 					return viteUtils.assetFileNames(file);

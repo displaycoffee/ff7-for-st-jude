@@ -79,8 +79,9 @@ export const Dashboard = () => {
 						<li className="floating-list-item">
 							<button
 								className="pointer unstyled a"
-								onClick={(e) => utils.scrollTo(e, '#details-donations', scrollToOffset)}
 								type="button"
+								aria-label="Donations Button"
+								onClick={(e) => utils.scrollTo(e, '#details-donations', scrollToOffset)}
 							>
 								Donations
 							</button>
@@ -89,8 +90,9 @@ export const Dashboard = () => {
 						<li className="floating-list-item">
 							<button
 								className="pointer unstyled a"
-								onClick={(e) => utils.scrollTo(e, '#details-rewards', scrollToOffset)}
 								type="button"
+								aria-label="Rewards Button"
+								onClick={(e) => utils.scrollTo(e, '#details-rewards', scrollToOffset)}
 							>
 								Rewards
 							</button>
@@ -99,8 +101,9 @@ export const Dashboard = () => {
 						<li className="floating-list-item">
 							<button
 								className="pointer unstyled a"
-								onClick={(e) => utils.scrollTo(e, '#details-targets', scrollToOffset)}
 								type="button"
+								aria-label="Targets Button"
+								onClick={(e) => utils.scrollTo(e, '#details-targets', scrollToOffset)}
 							>
 								Targets
 							</button>
@@ -109,6 +112,8 @@ export const Dashboard = () => {
 						<li className="floating-list-item">
 							<button
 								className="pointer unstyled a"
+								type="button"
+								aria-label="Refresh Button"
 								onClick={(e) => {
 									// Refresh content
 									e.preventDefault();
@@ -123,7 +128,6 @@ export const Dashboard = () => {
 									queryClient.resetQueries({ queryKey: ['rewards'] });
 									queryClient.resetQueries({ queryKey: ['targets'] });
 								}}
-								type="button"
 							>
 								Refresh
 							</button>

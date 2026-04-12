@@ -6,10 +6,40 @@
 //// CONTAINER
 //// --------------------------------------------------------------------------
 
+	// Configuration 
+
+	$container-main-bp: theme.$bp-02; // breakpoint
+	$container-main-spacing: theme.$spacing-x4; // spacing for layout
+	$container-main-sidebar-width: 250px; // width of sidebar
+
 	// Style block
 	
 	.container {
 		max-width: theme.$container-base;
 		margin: 0 auto;
 		padding: 0 theme.$spacing-x4;
+	}
+	.main {
+		min-height: 80vh;
+		margin: 0 0 theme.$spacing-x8 0;
+		.main-layout {
+			@include mixins.gap($container-main-spacing);
+			.content, .sidebar {
+				@include mixins.flex(0 1 auto);
+				width: 100%;
+			}
+		}
+	}
+	@include mixins.respond-min($container-main-bp) {
+		.main {
+			.main-layout {
+				.content {
+					@include mixins.flex;
+					width: auto;
+				}
+				.sidebar {
+					width: $container-main-sidebar-width;
+				}
+			}
+		}
 	}

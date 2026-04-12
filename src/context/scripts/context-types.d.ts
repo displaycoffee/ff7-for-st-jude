@@ -2,6 +2,38 @@
 import { QueryClient } from '@tanstack/react-query';
 
 /* Type definitions */
+type ContextValues = {
+	campaigns: {
+		current: Campaign;
+		previous: Campaign[];
+	};
+	content: ContentType;
+	queryClient: QueryClient;
+	theme: {
+		bps: ObjectPrimitiveType;
+		colors: ObjectPrimitiveType;
+		details: {
+			campaign: ThemeDetails;
+			donations: ThemeDetails;
+			previous: ThemeDetails;
+			rewards: ThemeDetails;
+			supporting: ThemeDetails;
+			targets: ThemeDetails;
+		};
+	};
+	utils: {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		[key: string]: (...args: any[]) => any;
+	};
+	variables: {
+		[key: string]: ObjectPrimitiveType;
+	};
+};
+
+type Context = {
+	children: ReactNode;
+};
+
 type ThemeDetails = {
 	id: string;
 	content: {
@@ -23,34 +55,7 @@ type ThemeDetails = {
 };
 
 /* Export types */
-export type ContextValuesType = {
-	campaigns: {
-		current: Campaign;
-		previous: Campaign[];
-	};
-	content: ContentType;
-	queryClient: QueryClient;
-	theme: {
-		bps: ObjectPrimitiveType;
-		colors: ObjectPrimitiveType;
-		details: {
-			campaign: ThemeDetails;
-			donations: ThemeDetails;
-			previous: ThemeDetails;
-			rewards: ThemeDetails;
-			supporting: ThemeDetails;
-			targets: ThemeDetails;
-		};
-	};
-	utils: {
-		[key: string]: Function;
-	};
-	variables: {
-		[key: string]: ObjectPrimitiveType;
-	};
-};
+export type ContextValuesType = ContextValues;
 
 /* Export prop types */
-export type ContextProps = {
-	children: ReactNode;
-};
+export type ContextProps = Context;

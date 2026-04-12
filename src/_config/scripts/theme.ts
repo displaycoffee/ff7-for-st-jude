@@ -1,5 +1,5 @@
 /* Import variables from sass */
-import * as themeVars from '../styles/theme/_theme.module.scss';
+import themeVars from '../styles/theme/_theme.module.scss';
 
 export const theme = {
 	bps: {
@@ -127,9 +127,9 @@ export const theme = {
 /* Ensure an empty or undefined sass value is false */
 function checkSassVar(value: string) {
 	if (value) {
-		if (value == 'true') {
+		if (value === 'true') {
 			return true;
-		} else if (value == 'false') {
+		} else if (value === 'false') {
 			return false;
 		} else {
 			const valueAsNumber = Number(value);

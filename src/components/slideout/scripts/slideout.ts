@@ -18,7 +18,7 @@ export const slideout = {
 	get: {
 		orientation: (direction: string) => {
 			// Get orientation of slideout
-			return direction == 'top' || direction == 'bottom' ? 'vertical' : 'horizontal';
+			return direction === 'top' || direction === 'bottom' ? 'vertical' : 'horizontal';
 		},
 	},
 	set: {
@@ -27,7 +27,7 @@ export const slideout = {
 			const classes = slideout.config.classes;
 			const body = document.querySelector('body');
 			if (body) {
-				if (state == 'add') {
+				if (state === 'add') {
 					body.classList.add(classes.activeBody);
 				} else {
 					body.classList.remove(classes.activeBody);
@@ -47,12 +47,12 @@ export const slideout = {
 				const orientation = element.dataset.orientation;
 
 				// Update elements depending on state
-				if (state == 'add') {
+				if (state === 'add') {
 					element.classList.add(classes.active);
 					menu.style.setProperty(direction, '0');
 				} else {
 					element.classList.remove(classes.active);
-					menu.style.setProperty(direction, orientation == 'vertical' ? values.vertical : `-${width}`);
+					menu.style.setProperty(direction, orientation === 'vertical' ? values.vertical : `-${width}`);
 				}
 			}
 		},

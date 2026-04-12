@@ -5,4 +5,4 @@ This is an app to display content for the ["FF7 for St. Jude" campaign](https://
 ### Built with
 
 ![Built with](https://skillicons.dev/icons?i=react,ts,js,css,sass,html,vite)<br />
-Also uses TanStack Query, ESLint, and Prettier.
+Also uses Immer, TanStack Query, ESLint, and Prettier.

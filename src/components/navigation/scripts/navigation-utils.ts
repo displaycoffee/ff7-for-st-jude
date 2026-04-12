@@ -1,13 +1,12 @@
 /* Local scripts */
-import { utils } from '../../../_config/scripts/utils';
-import { NavigationMapType, NavigationRoutesType, NavigationType } from './navigation-types';
+import { NavigationRoutesType, NavigationType } from './navigation-types';
 import { navigation } from './navigation';
 
 export const navigationUtils = {
 	get: {
 		list: () => {
 			// Create navigation clone
-			let navigationClone = [] as NavigationType[];
+			const navigationClone = [] as NavigationType[];
 
 			navigation.forEach((nav) => {
 				// Create child array navigation
@@ -37,7 +36,7 @@ export const navigationUtils = {
 		},
 		children: (listId: number) => {
 			// Create navigation clone
-			let navigationClone = [] as NavigationType[];
+			const navigationClone = [] as NavigationType[];
 
 			navigation.forEach((nav) => {
 				if (listId == nav.id && nav?.children && nav.children.length !== 0) {
@@ -57,11 +56,11 @@ export const navigationUtils = {
 	},
 	routes: {
 		build: {
-			config: (nav: NavigationType, map: NavigationMapType) => {
+			config: (nav: NavigationType) => {
 				// Build route config
 				const config = {
 					id: nav.id,
-					element: map[navigationUtils.routes.build.key(nav.url)],
+					element: nav.element,
 					path: nav.url,
 				} as NavigationRoutesType;
 
@@ -71,11 +70,6 @@ export const navigationUtils = {
 				}
 
 				return config;
-			},
-			key: (url: string) => {
-				// Build map key for routes
-				const last = utils.getLast(url, '/');
-				return last ? last : 'home';
 			},
 		},
 	},

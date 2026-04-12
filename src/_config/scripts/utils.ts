@@ -26,7 +26,7 @@ export const utils = {
 	},
 	getAmounts: (detail?: AmountsUnformattedType) => {
 		// Setup initial amount details
-		let amounts = {
+		const amounts = {
 			amount: 0,
 			amount_raised: 0,
 			goal: 0,
@@ -61,10 +61,6 @@ export const utils = {
 		}
 		return valueArray[valueArray.length - 1];
 	},
-	getPage: () => {
-		// Get previous / parent page
-		return window.location.pathname.split('/').slice(0, -1).join('/');
-	},
 	handleize: (value: string) => {
 		// Format value for html classes
 		return value
@@ -86,15 +82,11 @@ export const utils = {
 			stickyObserver.observe(element);
 		}
 	},
-	merge: (array: []) => {
-		// Merge array of arrays
-		return array.reduce((merge, next) => merge.concat(next), []);
-	},
 	renderTarget: (element: string, component: ReactNode) => {
 		// Render target for app
 		const targetElement = document.querySelector(element);
 		if (targetElement) {
-			const targetHasChildren = targetElement?.children && targetElement.children.length !== 0 ? true : false;
+			const targetHasChildren = targetElement.children.length > 0;
 			if (!targetHasChildren) {
 				const target = createRoot(targetElement);
 				target.render(component);

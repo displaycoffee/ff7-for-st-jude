@@ -1,5 +1,5 @@
 /* Tiltify API proxy */
-const tiltifyApi = 'https://api.ff7forstjude.org';
+const api = import.meta.env.VITE_API_URL as string;
 
 /* This config contains variables to use through application */
 const directory = '/ff7-st-jude';
@@ -8,8 +8,8 @@ export const variables = {
 		basename: window.location.pathname.includes(directory) ? directory : '',
 	},
 	api: {
-		campaigns: `${tiltifyApi}/api/public/campaigns`,
-		teams: `${tiltifyApi}/api/public/team_campaigns`,
+		campaigns: `${api}/api/public/campaigns`,
+		teams: `${api}/api/public/team_campaigns`,
 	},
 	urls: {
 		tiltify: '//tiltify.com',
