@@ -58,6 +58,7 @@ export const navigation = [
 	{
 		id: 0,
 		alt: 'Home',
+		element: Home,
 		isRoute: true,
 		label: 'Home',
 		url: '/',

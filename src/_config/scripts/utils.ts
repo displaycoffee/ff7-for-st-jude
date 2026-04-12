@@ -17,8 +17,8 @@ export const utils = {
 		return Math.round(number * 100) / 100;
 	},
 	checkArray: (array: ObjectPrimitiveType[]) => {
-		// Ensure array has length and if not, reset to false
-		return array && array.length !== 0 ? array : [];
+		// Check if array has length
+		return array && array.length !== 0 ? true : false;
 	},
 	formatCurrency: (number: number) => {
 		// Format currency using formatter
@@ -136,7 +136,7 @@ export const utils = {
 	},
 	sort: (list: SortType[], type: string | number | boolean, field: string, direction: string) => {
 		// Sort values in a list based on type, field, and direction
-		list.sort((a, b) => {
+		return [...list].sort((a, b) => {
 			let sortedValue = 0;
 
 			if (type == 'string' || type == 'boolean') {
@@ -173,8 +173,6 @@ export const utils = {
 
 			return sortedValue;
 		});
-
-		return list;
 	},
 	truncate: (string: string, limit: number) => {
 		// Limit characters in string

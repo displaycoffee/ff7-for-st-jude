@@ -3,11 +3,12 @@ import { QueryClient } from '@tanstack/react-query';
 
 /* Type definitions */
 type ContextValues = {
+	content: ContentType;
+	setContent: React.Dispatch;
 	campaigns: {
 		current: Campaign;
 		previous: Campaign[];
 	};
-	content: ContentType;
 	queryClient: QueryClient;
 	theme: {
 		bps: ObjectPrimitiveType;

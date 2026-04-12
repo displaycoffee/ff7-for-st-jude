@@ -23,11 +23,11 @@ export const Dashboard = () => {
 	const { current } = campaigns;
 
 	// Use custom hook to get supporting campaigns
-	const [supportingData, supportingStatus] = useReactQuery(content, current, 'supporting') as SupportingRequestType;
+	const [supportingData, supportingStatus] = useReactQuery('supporting', content, current) as SupportingRequestType;
 	const supportingComplete = (!supportingStatus.pending && supportingStatus.success) || supportingStatus.fetched ? true : false;
 
 	// Use custom hook to get campaign
-	const [campaignData, campaignStatus] = useReactQuery(content, current, 'campaign') as CampaignRequestType;
+	const [campaignData, campaignStatus] = useReactQuery('campaign', content, current) as CampaignRequestType;
 	const campaignComplete = (!campaignStatus.pending && campaignStatus.success) || campaignStatus.fetched ? true : false;
 
 	// Set content for supporting
@@ -43,15 +43,15 @@ export const Dashboard = () => {
 	}
 
 	// Use custom hook to get donations
-	const [donationsData, donationsStatus] = useReactQuery(content, current, 'donations') as DonationsRequestType;
+	const [donationsData, donationsStatus] = useReactQuery('donations', content, current) as DonationsRequestType;
 	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched ? true : false;
 
 	// Use custom hook to get rewards
-	const [rewardsData, rewardsStatus] = useReactQueries(content, 'rewards') as RewardsRequestType;
+	const [rewardsData, rewardsStatus] = useReactQueries('rewards', content) as RewardsRequestType;
 	const rewardsComplete = (!rewardsStatus.pending && rewardsStatus.success) || rewardsStatus.fetched ? true : false;
 
 	// Use custom hook to get targets
-	const [targetsData, targetsStatus] = useReactQueries(content, 'targets') as TargetsRequestType;
+	const [targetsData, targetsStatus] = useReactQueries('targets', content) as TargetsRequestType;
 	const targetsComplete = (!targetsStatus.pending && targetsStatus.success) || targetsStatus.fetched ? true : false;
 
 	// Set content state for dontations

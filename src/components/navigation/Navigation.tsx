@@ -63,7 +63,7 @@ export const Navigation = (props: NavigationLocationProps) => {
 };
 
 export const NavigationListItem = (props: NavigationListItemProps) => {
-	const { children, nav, navigationLinkClass } = props;
+	const { nav, navigationLinkClass } = props;
 	const navigationActiveClass = `${navigationLinkClass} ${navigationLinkClass}-active`;
 
 	return (
@@ -81,8 +81,6 @@ export const NavigationListItem = (props: NavigationListItemProps) => {
 					{nav.label}
 				</a>
 			)}
-
-			{children ? children : null}
 		</li>
 	);
 };
@@ -96,18 +94,7 @@ export const NavigationRoutes = () => {
 
 					return (
 						<Fragment key={nav.id}>
-							{nav?.children && nav.children.length !== 0 ? (
-								<>
-									<Route path={`${nav.path}/*`} element={<nav.element {...navProps} />} />
-
-									{nav.children.map((child: NavigationRoutesProps) => {
-										const childProps = child?.props ? child.props : false;
-										return <Route path={child.path} element={<child.element {...childProps} />} key={child.id} />;
-									})}
-								</>
-							) : (
-								<Route path={nav.path} element={<nav.element {...navProps} />} />
-							)}
+							<Route path={nav.path} element={<nav.element {...navProps} />} />
 						</Fragment>
 					);
 				})}

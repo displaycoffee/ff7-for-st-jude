@@ -75,7 +75,7 @@ export const navigationUtils = {
 	},
 	sort: (list: NavigationType[]) => {
 		// Function to sort navigation list
-		return list.sort((a, b) => {
+		return [...list].sort((a, b) => {
 			return a.id - b.id;
 		});
 	},

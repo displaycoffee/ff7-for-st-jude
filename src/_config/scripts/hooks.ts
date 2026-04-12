@@ -1,6 +1,6 @@
 /* React */
 import { useEffect, useId, useState } from 'react';
-import { useQuery, useQueries } from '@tanstack/react-query';
+import { QueryFunction, useQuery, useQueries } from '@tanstack/react-query';
 import { useLocation } from 'react-router-dom';
 
 /* Local scripts */
@@ -38,7 +38,7 @@ export const useFormattedId = () => {
 	return id.slice(1, -1).replace(/^_|_$/g, '').replace(/_/g, '-');
 };
 
-export const useReactQuery = (content: ContentType, current: CampaignType, key: string) => {
+export const useReactQuery = (key: string, content: ContentType, current: CampaignType) => {
 	// Get donations data if supporting is available and if not in cache or if totals have changed
 	const { campaign, donations, supporting } = content;
 
@@ -55,7 +55,7 @@ export const useReactQuery = (content: ContentType, current: CampaignType, key: 
 		requestData = hasData && !donations.fetched ? true : false;
 		queryKey = [key, current, supporting] as QueryKeyType;
 	} else if (key == 'supporting') {
-		requestData = !supporting.fetched || (supporting.fetched && supporting.values.length != 0) ? true : false;
+		requestData = !supporting.fetched ? true : false;
 	}
 
 	// Create query request
@@ -66,7 +66,7 @@ export const useReactQuery = (content: ContentType, current: CampaignType, key: 
 		isFetched: isFetched,
 	} = useQuery({
 		queryKey: queryKey,
-		queryFn: requests[key],
+		queryFn: requests[key as keyof RequestsType] as QueryFunction,
 		enabled: requestData,
 	});
 
@@ -88,7 +88,7 @@ export const useReactQuery = (content: ContentType, current: CampaignType, key: 
 	return [fetchedData, { fetched: isFetched, pending: isPending, success: isSuccess }];
 };
 
-export const useReactQueries = (content: ContentType, key: string) => {
+export const useReactQueries = (key: string, content: ContentType) => {
 	// Get data from multiple queries
 	const { supporting } = content;
 	const hasSupporting = supporting.fetched && supporting.values.length !== 0 ? true : false;
@@ -102,7 +102,7 @@ export const useReactQueries = (content: ContentType, key: string) => {
 	} = useQueries({
 		queries: queryValues.map((value, index) => ({
 			queryKey: [key, value, index],
-			queryFn: requests[key],
+			queryFn: requests[key as keyof RequestsType] as QueryFunction,
 		})),
 		combine: (results) => {
 			return {

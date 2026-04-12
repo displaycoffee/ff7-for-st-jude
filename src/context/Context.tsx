@@ -1,5 +1,5 @@
 /* React */
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 import { DefaultOptions, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Local scripts */
@@ -18,11 +18,9 @@ const queryConfig: DefaultOptions = {
 		retry: (failureCount: number, error: RequestErrorType) => {
 			const status = error?.status ? error.status : 9999;
 
-			// This will now log correctly!
-			console.warn(`Retry attempt ${failureCount + 1} for status: ${status}`);
-
 			// Only retry for 401s (the intermittent issue)
 			if (status === 401 && failureCount < 2) {
+				console.warn(`Retry attempt ${failureCount + 1} for status: ${status}`);
 				return true;
 			}
 
@@ -41,7 +39,12 @@ export const Context = createContext({} as ContextValuesType);
 /* Create Context.Provider wrapper */
 export const ContextProvider = ({ children }: ContextProps) => {
 	// Create state for app
-	const content = {
+	const contentConfig: ContentType = {
+		totals: {
+			amountRaised: 0,
+			goal: 0,
+			totalRaised: 0,
+		},
 		campaign: {
 			fetched: false,
 		},
@@ -63,10 +66,14 @@ export const ContextProvider = ({ children }: ContextProps) => {
 		},
 	};
 
+	// Set content state
+	const [content, setContent] = useState(contentConfig);
+
 	// Set contact values
 	const values: ContextValuesType = {
+		content,
+		setContent,
 		campaigns,
-		content: content,
 		theme,
 		utils,
 		variables,

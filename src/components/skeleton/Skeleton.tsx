@@ -5,12 +5,12 @@ import './styles/skeleton.scss';
 import { SkeletonProps } from './scripts/skeleton-types';
 
 export const Skeleton = (props: SkeletonProps) => {
-	let { columns, paragraphs, perRow } = props;
+	const { columns, paragraphs, perRow } = props;
 
 	// Function to build details in skeleton
 	const buildSkeleton = (length: number) => {
-		let skeleton = [];
-		for (var i = 0; i < length; i++) {
+		const skeleton = [];
+		for (let i = 0; i < length; i++) {
 			skeleton.push(i);
 		}
 		return skeleton;
