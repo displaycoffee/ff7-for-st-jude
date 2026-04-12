@@ -49,13 +49,13 @@ export const useReactQuery = (key: string, content: ContentType, current: Campai
 
 	// Update variables per key type
 	if (key == 'campaign') {
-		requestData = !campaign.fetched ? true : false;
+		requestData = !campaign.fetched;
 	} else if (key == 'donations') {
-		hasData = supporting.fetched && supporting.values.length !== 0 ? true : false;
-		requestData = hasData && !donations.fetched ? true : false;
+		hasData = supporting.fetched && supporting.values.length !== 0;
+		requestData = hasData && !donations.fetched;
 		queryKey = [key, current, supporting] as QueryKeyType;
 	} else if (key == 'supporting') {
-		requestData = !supporting.fetched ? true : false;
+		requestData = !supporting.fetched;
 	}
 
 	// Create query request
@@ -91,14 +91,14 @@ export const useReactQuery = (key: string, content: ContentType, current: Campai
 export const useReactQueries = (key: string, content: ContentType) => {
 	// Get data from multiple queries
 	const { supporting } = content;
-	const hasSupporting = supporting.fetched && supporting.values.length !== 0 ? true : false;
+	const hasSupporting = supporting.fetched && supporting.values.length !== 0;
 	const queryValues = hasSupporting ? supporting.values : [];
 
 	const {
 		data: data,
-		pending: pending,
-		success: success,
-		fetched: fetched,
+		isPending: isPending,
+		isSuccess: isSuccess,
+		isFetched: isFetched,
 	} = useQueries({
 		queries: queryValues.map((value, index) => ({
 			queryKey: [key, value, index],
@@ -106,10 +106,10 @@ export const useReactQueries = (key: string, content: ContentType) => {
 		})),
 		combine: (results) => {
 			return {
-				data: results.flatMap((result) => result.data as []),
-				pending: results.map((result) => result.isPending),
-				success: results.map((result) => result.isSuccess),
-				fetched: results.map((result) => result.isFetched),
+				data: results.flatMap((result) => (result.data ? (result.data as []) : [])),
+				isPending: results.map((result) => result.isPending),
+				isSuccess: results.map((result) => result.isSuccess),
+				isFetched: results.map((result) => result.isFetched),
 			};
 		},
 	});
@@ -118,13 +118,13 @@ export const useReactQueries = (key: string, content: ContentType) => {
 	const checkStatus = (statues: boolean[]) => statues.every((status) => status === statues[0]);
 
 	// Check to see if every value in statuses are the same
-	const checkPending = checkStatus(pending);
-	const checkSuccess = checkStatus(success);
-	const checkFetched = checkStatus(fetched);
+	const checkPending = checkStatus(isPending);
+	const checkSuccess = checkStatus(isSuccess);
+	const checkFetched = checkStatus(isFetched);
 
 	// Re-sort merged data
 	const sortedData = data && data.length !== 0 ? utils.sort(data as SortType[], 'integer', 'milliseconds', 'asc') : [];
-	return [sortedData, { fetched: checkFetched && fetched[0], pending: checkPending && pending[0], success: checkSuccess && success[0] }];
+	return [sortedData, { fetched: checkFetched && isFetched[0], pending: checkPending && isPending[0], success: checkSuccess && isSuccess[0] }];
 };
 
 export const useRespond = (bp: number) => {

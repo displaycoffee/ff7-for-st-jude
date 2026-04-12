@@ -32,10 +32,11 @@ export const Home = () => {
 	const [campaignData] = useReactQuery('campaign', content, current) as CampaignRequestType;
 
 	useEffect(() => {
-		const supportingUpdated = !supporting.fetched && utils.checkArray(supportingData) ? true : false;
-		const campaignUpdated = !campaign.fetched && campaignData && Object.keys(campaignData).length !== 0 ? true : false;
+		const supportingUpdated = !supporting.fetched && supportingData && utils.checkArray(supportingData);
+		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
+		const totalsUpdated = !totals.totalRaised && supporting.fetched && campaign.fetched;
 
-		if (supportingUpdated || campaignUpdated) {
+		if (supportingUpdated || campaignUpdated || totalsUpdated) {
 			setContent(
 				produce((draft: Draft<ContentType>) => {
 					// Update supporting
@@ -62,7 +63,7 @@ export const Home = () => {
 				}),
 			);
 		}
-	}, [supportingData, supporting.fetched, campaignData, campaign.fetched, utils, setContent, previousTotals]);
+	}, [utils, setContent, previousTotals, supportingData, supporting.fetched, campaignData, campaign.fetched, totals.totalRaised]);
 
 	return (
 		<>

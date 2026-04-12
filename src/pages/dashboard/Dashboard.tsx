@@ -1,5 +1,6 @@
 /* React */
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { produce, Draft } from 'immer';
 
 /* Local styles */
 import './styles/dashboard.scss';
@@ -18,59 +19,91 @@ const scrollToOffset = 100;
 
 export const Dashboard = () => {
 	const context = useContext(Context);
-	let { campaigns, utils, variables, queryClient, content } = context;
-	let { supporting, campaign, donations, rewards, targets } = content;
+	const { campaigns, utils, variables, queryClient, content, setContent } = context;
+	const { supporting, campaign, donations, rewards, targets } = content;
 	const { current } = campaigns;
 
 	// Use custom hook to get supporting campaigns
-	const [supportingData, supportingStatus] = useReactQuery('supporting', content, current) as SupportingRequestType;
-	const supportingComplete = (!supportingStatus.pending && supportingStatus.success) || supportingStatus.fetched ? true : false;
+	const [supportingData] = useReactQuery('supporting', content, current) as SupportingRequestType;
 
 	// Use custom hook to get campaign
-	const [campaignData, campaignStatus] = useReactQuery('campaign', content, current) as CampaignRequestType;
-	const campaignComplete = (!campaignStatus.pending && campaignStatus.success) || campaignStatus.fetched ? true : false;
-
-	// Set content for supporting
-	if (supportingComplete && utils.checkArray(supportingData)) {
-		supporting = { fetched: true, values: supportingData };
-		content.supporting = supporting;
-	}
-
-	// Set content for campaign
-	if (campaignComplete && campaignData && Object.keys(campaignData).length !== 0) {
-		campaign = { ...campaignData, fetched: true };
-		content.campaign = campaign;
-	}
+	const [campaignData] = useReactQuery('campaign', content, current) as CampaignRequestType;
 
 	// Use custom hook to get donations
 	const [donationsData, donationsStatus] = useReactQuery('donations', content, current) as DonationsRequestType;
-	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched ? true : false;
+	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched;
 
 	// Use custom hook to get rewards
 	const [rewardsData, rewardsStatus] = useReactQueries('rewards', content) as RewardsRequestType;
-	const rewardsComplete = (!rewardsStatus.pending && rewardsStatus.success) || rewardsStatus.fetched ? true : false;
+	const rewardsComplete = (!rewardsStatus.pending && rewardsStatus.success) || rewardsStatus.fetched;
 
 	// Use custom hook to get targets
 	const [targetsData, targetsStatus] = useReactQueries('targets', content) as TargetsRequestType;
-	const targetsComplete = (!targetsStatus.pending && targetsStatus.success) || targetsStatus.fetched ? true : false;
+	const targetsComplete = (!targetsStatus.pending && targetsStatus.success) || targetsStatus.fetched;
 
-	// Set content state for dontations
-	if (donationsComplete && utils.checkArray(donationsData)) {
-		donations = { fetched: true, values: donationsData };
-		content.donations = donations;
-	}
+	useEffect(() => {
+		const supportingUpdated = !supporting.fetched && supportingData && utils.checkArray(supportingData);
+		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
+		const donationsUpdated = !donations.fetched && donationsData && utils.checkArray(donationsData);
+		const rewardsUpdated = !rewards.fetched && rewardsStatus.fetched && utils.checkArray(rewardsData);
+		const targetsUpdated = !targets.fetched && targetsStatus.fetched && utils.checkArray(targetsData);
 
-	// Set content state for rewards
-	if (rewardsComplete && utils.checkArray(rewardsData)) {
-		rewards = { fetched: true, values: rewardsData };
-		content.rewards = rewards;
-	}
+		if (supportingUpdated || campaignUpdated || donationsUpdated || rewardsUpdated || targetsUpdated) {
+			setContent(
+				produce((draft: Draft<ContentType>) => {
+					// Update supporting
+					if (supportingUpdated) {
+						draft.supporting.fetched = true;
+						draft.supporting.values = supportingData;
+					}
 
-	// Set content state for targets
-	if (targetsComplete && utils.checkArray(targetsData)) {
-		targets = { fetched: true, values: targetsData };
-		content.targets = targets;
-	}
+					// Update campaign
+					if (campaignUpdated) {
+						draft.campaign = {
+							...campaignData,
+							fetched: true,
+						};
+					}
+
+					if (draft.supporting.fetched && draft.campaign.fetched) {
+						// Update donations
+						if (donationsUpdated) {
+							draft.donations.fetched = true;
+							draft.donations.values = donationsData;
+						}
+
+						// Update rewards
+						if (rewardsUpdated) {
+							draft.rewards.fetched = true;
+							draft.rewards.values = rewardsData;
+						}
+
+						// Update targets
+						if (targetsUpdated) {
+							draft.targets.fetched = true;
+							draft.targets.values = targetsData;
+						}
+					}
+				}),
+			);
+		}
+	}, [
+		utils,
+		setContent,
+		supportingData,
+		supporting.fetched,
+		campaignData,
+		campaign.fetched,
+		donationsData,
+		donations.fetched,
+		rewardsData,
+		rewards.fetched,
+		rewardsStatus.fetched,
+		targetsData,
+		targets.fetched,
+		targetsStatus.fetched,
+	]);
+
 	return (
 		<>
 			<nav className="floating">
@@ -118,15 +151,22 @@ export const Dashboard = () => {
 									// Refresh content
 									e.preventDefault();
 
-									// Reset and set content state
-									content.donations = { fetched: false, values: [] };
-									content.rewards = { fetched: false, values: [] };
-									content.targets = { fetched: false, values: [] };
-
 									// Reset queries
-									queryClient.resetQueries({ queryKey: ['donations'] });
-									queryClient.resetQueries({ queryKey: ['rewards'] });
-									queryClient.resetQueries({ queryKey: ['targets'] });
+									void queryClient.resetQueries({ queryKey: ['donations'] });
+									void queryClient.resetQueries({ queryKey: ['rewards'] });
+									void queryClient.resetQueries({ queryKey: ['targets'] });
+
+									// Content config for reset
+									const contentConfig = { fetched: false, values: [] };
+
+									// Reset and set content state
+									setContent(
+										produce((draft: Draft<ContentType>) => {
+											draft.donations = contentConfig;
+											draft.rewards = contentConfig;
+											draft.targets = contentConfig;
+										}),
+									);
 								}}
 							>
 								Refresh

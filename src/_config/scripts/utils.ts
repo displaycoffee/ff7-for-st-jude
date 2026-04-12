@@ -18,7 +18,7 @@ export const utils = {
 	},
 	checkArray: (array: ObjectPrimitiveType[]) => {
 		// Check if array has length
-		return array && array.length !== 0 ? true : false;
+		return array && array.length !== 0;
 	},
 	formatCurrency: (number: number) => {
 		// Format currency using formatter
@@ -150,8 +150,7 @@ export const utils = {
 				// Sorting method for strings
 				if (direction == 'asc') {
 					sortedValue = sortValueA.localeCompare(sortValueB);
-				}
-				if (direction == 'desc') {
+				} else if (direction == 'desc') {
 					sortedValue = sortValueB.localeCompare(sortValueA);
 				}
 			} else if (type == 'integer') {
@@ -165,8 +164,7 @@ export const utils = {
 				// Sorting method for numbers
 				if (direction == 'asc') {
 					sortedValue = sortValueA - sortValueB;
-				}
-				if (direction == 'desc') {
+				} else if (direction == 'desc') {
 					sortedValue = sortValueB - sortValueA;
 				}
 			}

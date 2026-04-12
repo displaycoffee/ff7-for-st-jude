@@ -50,7 +50,7 @@ export const DetailsParagraph = (props: DetailsParagraphProps) => {
 
 export const DetailsLinks = (props: DetailsLinksProps) => {
 	const { links, wrapper } = props;
-	const hasWrapper = !wrapper && wrapper !== false ? true : false;
+	const hasWrapper = !wrapper && wrapper !== false;
 
 	// Create loop for links
 	const linksLoop = links.map((link, index) => (
