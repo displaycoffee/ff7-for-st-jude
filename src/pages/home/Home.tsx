@@ -1,5 +1,5 @@
 /* React */
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { produce, Draft } from 'immer';
 
 /* Local styles */
@@ -9,13 +9,12 @@ import './styles/home.scss';
 import { useReactQuery } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Context } from '../../context/Context';
+import { useAppContext } from '../../context/Context';
 import { Details, DetailsParagraph, DetailsLinks } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 
 export const Home = () => {
-	const context = useContext(Context);
-	const { content, setContent, campaigns, utils } = context;
+	const { content, setContent, campaigns, utils } = useAppContext();
 	const { supporting, campaign, totals } = content;
 	const { current, previous } = campaigns;
 

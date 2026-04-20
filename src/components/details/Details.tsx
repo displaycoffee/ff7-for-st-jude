@@ -1,5 +1,5 @@
 /* React */
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 
 /* Local styles */
 import './styles/details.scss';
@@ -9,12 +9,11 @@ import { useFormattedId } from '../../_config/scripts/hooks';
 import { DetailsProps, DetailsLinksProps, DetailsNotFoundProps, DetailsParagraphProps } from './scripts/details-types';
 
 /* Local components */
-import { Context } from '../../context/Context';
+import { useAppContext } from '../../context/Context';
 
 export const Details = (props: DetailsProps) => {
 	const { hasRow, header, scrollLink } = props;
-	const context = useContext(Context);
-	const utils = context.utils;
+	const { utils } = useAppContext();
 	const fallbackId = useFormattedId();
 	const detailsId = header ? utils.handleize(header) : fallbackId;
 
