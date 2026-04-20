@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './styles/index.scss';
 
 /* Local scripts */
-import { utils } from '../../_config/scripts/utils';
+import { index } from './scripts';
 import { variables } from '../../_config/scripts/variables';
 
 /* Local components */
@@ -24,4 +24,4 @@ const Index = () => {
 };
 
 /* Create main target entry point */
-utils.renderTarget('#index', <Index />);
+index.renderTarget('#index', <Index />);
