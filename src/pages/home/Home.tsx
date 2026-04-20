@@ -7,9 +7,9 @@ import './styles/home.scss';
 
 /* Local scripts */
 import { useReactQuery } from '../../_config/scripts/hooks';
+import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Local components */
-import { useAppContext } from '../../context/Context';
 import { Details, DetailsParagraph, DetailsLinks } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 

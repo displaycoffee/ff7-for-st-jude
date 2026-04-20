@@ -1,5 +1,5 @@
 /* React */
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import { DefaultOptions, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Local scripts */
@@ -35,9 +35,6 @@ const queryClient = new QueryClient({
 
 /* Create context */
 export const Context = createContext({} as ContextValuesType);
-
-/* Custom hook for consuming context */
-export const useAppContext = () => useContext(Context);
 
 /* Create Context.Provider wrapper */
 export const ContextProvider = ({ children }: ContextProps) => {

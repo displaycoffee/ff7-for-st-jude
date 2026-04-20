@@ -5,11 +5,9 @@ import { useState } from 'react';
 import './styles/colors.scss';
 
 /* Local scripts */
+import { useAppContext } from '../../context/scripts/context-hooks';
 import { ColorsProps, ColorsFieldProps } from './scripts/color-types';
 import { colors as colorsUtils } from './scripts/colors';
-
-/* Local components */
-import { useAppContext } from '../../context/Context';
 
 export const Colors = (props: ColorsProps) => {
 	const { showButton } = props;

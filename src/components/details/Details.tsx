@@ -6,10 +6,8 @@ import './styles/details.scss';
 
 /* Local scripts */
 import { useFormattedId } from '../../_config/scripts/hooks';
+import { useAppContext } from '../../context/scripts/context-hooks';
 import { DetailsProps, DetailsLinksProps, DetailsNotFoundProps, DetailsParagraphProps } from './scripts/details-types';
-
-/* Local components */
-import { useAppContext } from '../../context/Context';
 
 export const Details = (props: DetailsProps) => {
 	const { hasRow, header, scrollLink } = props;

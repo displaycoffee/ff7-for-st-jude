@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import './styles/container.scss';
 
 /* Local scripts */
-import { useBodyClass } from './scripts/container-hooks';
 import { useRespond } from '../../_config/scripts/hooks';
+import { useAppContext } from '../../context/scripts/context-hooks';
+import { useBodyClass } from './scripts/container-hooks';
 
 /* Local components */
-import { useAppContext } from '../../context/Context';
 import { Colors } from '../../components/colors/Colors';
 import { Navigation } from '../../components/navigation/Navigation';
 import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';

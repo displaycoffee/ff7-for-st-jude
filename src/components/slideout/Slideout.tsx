@@ -6,11 +6,9 @@ import './styles/slideout.scss';
 
 /* Local scripts */
 import { useFormattedId } from '../../_config/scripts/hooks';
+import { useAppContext } from '../../context/scripts/context-hooks';
 import { SlideoutOverlayProps, SlideoutProps } from './scripts/slideout-types';
 import { slideout } from './scripts/slideout';
-
-/* Local components */
-import { useAppContext } from '../../context/Context';
 
 export const Slideout = (props: SlideoutProps) => {
 	const { options } = props;

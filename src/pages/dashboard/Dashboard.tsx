@@ -7,9 +7,9 @@ import './styles/dashboard.scss';
 
 /* Local scripts */
 import { useReactQuery, useReactQueries } from '../../_config/scripts/hooks';
+import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Local components */
-import { useAppContext } from '../../context/Context';
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 
