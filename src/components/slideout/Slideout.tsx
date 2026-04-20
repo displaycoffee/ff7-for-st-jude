@@ -1,5 +1,5 @@
 /* React */
-import { createRef, RefObject, useContext, useEffect, useRef } from 'react';
+import { createRef, RefObject, useEffect, useRef } from 'react';
 
 /* Local styles */
 import './styles/slideout.scss';
@@ -10,11 +10,11 @@ import { SlideoutOverlayProps, SlideoutProps } from './scripts/slideout-types';
 import { slideout } from './scripts/slideout';
 
 /* Local components */
-import { Context } from '../../context/Context';
+import { useAppContext } from '../../context/Context';
 
 export const Slideout = (props: SlideoutProps) => {
 	const { options } = props;
-	const context = useContext(Context);
+	const { utils } = useAppContext();
 	const { config, get, toggle } = slideout;
 	const fallbackId = useFormattedId();
 	const slideoutId = `slideout-${options?.id ? options.id : fallbackId}`;
@@ -44,8 +44,8 @@ export const Slideout = (props: SlideoutProps) => {
 
 	// Set sticky class on slideout
 	useEffect(() => {
-		context.utils.isSticky(slideoutRef?.current, 'is-sticky');
-	}, [context.utils, slideoutRef]);
+		utils.isSticky(slideoutRef?.current, 'is-sticky');
+	}, [utils, slideoutRef]);
 
 	return button.outside && button.show ? (
 		slideoutButton
@@ -101,7 +101,7 @@ export const Slideout = (props: SlideoutProps) => {
 
 export const SlideoutOverlay = (props: SlideoutOverlayProps) => {
 	const { options } = props;
-	const context = useContext(Context);
+	const { utils } = useAppContext();
 	const { config, set, toggle } = slideout;
 	const elementRef: RefObject<HTMLDivElement | null> = useRef(null);
 
@@ -111,7 +111,7 @@ export const SlideoutOverlay = (props: SlideoutOverlayProps) => {
 		if (!slideoutTarget) return;
 
 		const overlay = document.createElement('div');
-		context.utils.setAttributes(overlay, {
+		utils.setAttributes(overlay, {
 			class: 'slideout-overlay pointer',
 			role: 'presentation',
 		});
@@ -123,7 +123,7 @@ export const SlideoutOverlay = (props: SlideoutOverlayProps) => {
 			overlay.remove();
 			elementRef.current = null;
 		};
-	}, [context.utils, toggle]);
+	}, [utils, toggle]);
 
 	// If we are on desktop and slideout is active, remove body classes to hide overlay
 	useEffect(() => {

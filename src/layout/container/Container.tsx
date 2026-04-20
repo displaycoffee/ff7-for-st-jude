@@ -1,15 +1,15 @@
 /* React */
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 /* Local styles */
 import './styles/container.scss';
 
 /* Local scripts */
-import { useBodyClass, useRespond } from '../../_config/scripts/hooks';
+import { useBodyClass } from './scripts/container-hooks';
+import { useRespond } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Context } from '../../context/Context';
+import { useAppContext } from '../../context/Context';
 import { Colors } from '../../components/colors/Colors';
 import { Navigation } from '../../components/navigation/Navigation';
 import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
@@ -19,8 +19,7 @@ import { Content } from '../content/Content';
 import { Footer } from '../footer/Footer';
 
 export const Container = () => {
-	const context = useContext(Context);
-	const { theme } = context;
+	const { theme } = useAppContext();
 	const isDesktop = useRespond(theme.bps.bp02 as number);
 
 	// Set body class using custom hook

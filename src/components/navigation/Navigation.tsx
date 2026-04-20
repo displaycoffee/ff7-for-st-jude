@@ -1,5 +1,5 @@
 /* React */
-import { createRef, Fragment, RefObject, Suspense, useContext, useEffect } from 'react';
+import { createRef, Fragment, RefObject, Suspense, useEffect } from 'react';
 import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 /* Local styles */
@@ -11,7 +11,7 @@ import { navigationUtils } from './scripts/navigation-utils';
 import { navigationRoutes } from './scripts/navigation-routes';
 
 /* Local components */
-import { Context } from '../../context/Context';
+import { useAppContext } from '../../context/Context';
 import { Colors } from '../colors/Colors';
 
 /* Get navigation menu */
@@ -20,8 +20,7 @@ const navigationList = navigationUtils.get.list();
 export const Navigation = (props: NavigationLocationProps) => {
 	const { location } = props;
 	const { pathname } = useLocation();
-	const context = useContext(Context);
-	const utils = context.utils;
+	const { utils } = useAppContext();
 	const navigationLinkClass = 'navigation-link';
 	const navigationRef: RefObject<HTMLDivElement | null> = createRef();
 

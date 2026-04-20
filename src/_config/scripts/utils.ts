@@ -1,7 +1,3 @@
-/* React */
-import { ReactNode } from 'react';
-import { createRoot } from 'react-dom/client';
-
 /* Create Intl.NumberFormat instance for utils.formatCurrency function */
 const formatter = new Intl.NumberFormat('en-US', {
 	minimumFractionDigits: 2,
@@ -80,17 +76,6 @@ export const utils = {
 			// Observe to toggle sticky class
 			const stickyObserver = new IntersectionObserver(([e]) => stickyCallback(e), stickyOptions);
 			stickyObserver.observe(element);
-		}
-	},
-	renderTarget: (element: string, component: ReactNode) => {
-		// Render target for app
-		const targetElement = document.querySelector(element);
-		if (targetElement) {
-			const targetHasChildren = targetElement.children.length > 0;
-			if (!targetHasChildren) {
-				const target = createRoot(targetElement);
-				target.render(component);
-			}
 		}
 	},
 	scrollTo: (e: EventsType, selector: string | undefined, offset: number) => {

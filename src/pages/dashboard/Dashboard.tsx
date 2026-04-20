@@ -1,5 +1,5 @@
 /* React */
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { produce, Draft } from 'immer';
 
 /* Local styles */
@@ -9,7 +9,7 @@ import './styles/dashboard.scss';
 import { useReactQuery, useReactQueries } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Context } from '../../context/Context';
+import { useAppContext } from '../../context/Context';
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 
@@ -18,8 +18,7 @@ const truncateLimit = 75;
 const scrollToOffset = 100;
 
 export const Dashboard = () => {
-	const context = useContext(Context);
-	const { campaigns, utils, variables, queryClient, content, setContent } = context;
+	const { campaigns, utils, variables, queryClient, content, setContent } = useAppContext();
 	const { supporting, campaign, donations, rewards, targets } = content;
 	const { current } = campaigns;
 

@@ -1,5 +1,5 @@
 /* React */
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
 /* Local styles */
 import './styles/colors.scss';
@@ -9,19 +9,18 @@ import { ColorsProps, ColorsFieldProps } from './scripts/color-types';
 import { colors as colorsUtils } from './scripts/colors';
 
 /* Local components */
-import { Context } from '../../context/Context';
+import { useAppContext } from '../../context/Context';
 
 export const Colors = (props: ColorsProps) => {
 	const { showButton } = props;
-	const context = useContext(Context);
-	const themeColors = context.theme.colors;
+	const { theme } = useAppContext();
 
 	// Default color and style rules
 	const defaultColors = {
-		color01: themeColors.color01,
-		color02: themeColors.color02,
-		color03: themeColors.color03,
-		color04: themeColors.color04,
+		color01: theme.colors.color01,
+		color02: theme.colors.color02,
+		color03: theme.colors.color03,
+		color04: theme.colors.color04,
 	};
 	const defaultStyles = `.gradient-section, .gradient-background {
 		background-color: ${defaultColors.color01};

@@ -1,12 +1,12 @@
 /* React */
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { produce, Draft } from 'immer';
 
 /* Local scripts */
 import { useReactQuery } from '../../_config/scripts/hooks';
 
 /* Local components */
-import { Context } from '../../context/Context';
+import { useAppContext } from '../../context/Context';
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 
@@ -14,8 +14,7 @@ import { Skeleton } from '../../components/skeleton/Skeleton';
 const timeout = false; // 60000 == one minute
 
 export const Donations = () => {
-	const context = useContext(Context);
-	const { campaigns, utils, queryClient, content, setContent } = context;
+	const { campaigns, utils, queryClient, content, setContent } = useAppContext();
 	const { supporting, campaign, donations } = content;
 	const { current } = campaigns;
 
