@@ -3,8 +3,8 @@ import { NavigationRoutes } from '../../components/navigation/Navigation';
 
 export const Content = () => {
 	return (
-		<section className="content">
+		<div className="content">
 			<NavigationRoutes />
-		</section>
+		</div>
 	);
 };
