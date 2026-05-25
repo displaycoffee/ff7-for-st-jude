@@ -41,9 +41,9 @@ export const ContextProvider = ({ children }: ContextProps) => {
 	// Create state for app
 	const contentConfig: ContentType = {
 		totals: {
-			amountRaised: 0,
-			goal: 0,
-			totalRaised: 0,
+			amountRaised: 3011.68,
+			goal: 3000.0,
+			totalRaised: 53881.81,
 		},
 		campaign: {
 			fetched: false,

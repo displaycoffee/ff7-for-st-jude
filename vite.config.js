@@ -10,6 +10,9 @@ export default defineConfig({
 		host: 'localhost',
 		port: 3000,
 	},
+	resolve: {
+		dedupe: ['react', 'react-dom'],
+	},
 	build: {
 		outDir: '../dist',
 		emptyOutDir: false,
