@@ -1,10 +1,10 @@
-/* React */
-import { useState } from 'react';
-
-/* Local styles */
+/* Styles */
 import './styles/colors.scss';
 
-/* Local scripts */
+/* Packages */
+import { useState } from 'react';
+
+/* Scripts */
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { ColorsProps, ColorsFieldProps } from './scripts/color-types';
 import { colors as colorsUtils } from './scripts/colors';

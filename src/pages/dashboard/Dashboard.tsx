@@ -1,15 +1,15 @@
-/* React */
+/* Styles */
+import './styles/dashboard.scss';
+
+/* Packages */
 import { useEffect } from 'react';
 import { produce, Draft } from 'immer';
 
-/* Local styles */
-import './styles/dashboard.scss';
-
-/* Local scripts */
+/* Scripts */
 import { useReactQuery, useReactQueries } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
-/* Local components */
+/* Components */
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 

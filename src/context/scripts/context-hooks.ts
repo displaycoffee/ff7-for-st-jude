@@ -1,7 +1,7 @@
-/* React */
+/* Packages */
 import { useContext } from 'react';
 
-/* Local components */
+/* Components */
 import { Context } from '../Context';
 
 /* Custom hook for consuming context */

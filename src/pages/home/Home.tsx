@@ -1,15 +1,15 @@
-/* React */
+/* Styles */
+import './styles/home.scss';
+
+/* Packages */
 import { useEffect } from 'react';
 import { produce, Draft } from 'immer';
 
-/* Local styles */
-import './styles/home.scss';
-
-/* Local scripts */
+/* Scripts */
 import { useReactQuery } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
-/* Local components */
+/* Components */
 import { Details, DetailsParagraph, DetailsLinks } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 

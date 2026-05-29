@@ -1,7 +1,7 @@
-/* React */
+/* Packages */
 import { QueryFunctionContext } from '@tanstack/react-query';
 
-/* Local scripts */
+/* Scripts */
 import { variables } from './variables';
 import { utils } from './utils';
 

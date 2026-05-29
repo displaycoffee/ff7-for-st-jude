@@ -1,4 +1,4 @@
-/* Local components */
+/* Components */
 import { NavigationRoutes } from '../../components/navigation/Navigation';
 
 export const Content = () => {

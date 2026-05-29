@@ -1,4 +1,4 @@
-/* Local styles */
+/* Styles */
 import './styles/footer.scss';
 
 export const Footer = () => {
