@@ -1,10 +1,10 @@
-/* React */
-import { createRef, RefObject, useEffect, useRef } from 'react';
-
-/* Local styles */
+/* Styles */
 import './styles/slideout.scss';
 
-/* Local scripts */
+/* Packages */
+import { createRef, RefObject, useEffect, useRef } from 'react';
+
+/* Scripts */
 import { useFormattedId } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { SlideoutOverlayProps, SlideoutProps } from './scripts/slideout-types';

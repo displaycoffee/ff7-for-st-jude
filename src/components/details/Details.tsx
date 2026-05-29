@@ -1,10 +1,10 @@
-/* React */
-import { Fragment } from 'react';
-
-/* Local styles */
+/* Styles */
 import './styles/details.scss';
 
-/* Local scripts */
+/* Packages */
+import { Fragment } from 'react';
+
+/* Scripts */
 import { useFormattedId } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { DetailsProps, DetailsLinksProps, DetailsNotFoundProps, DetailsParagraphProps } from './scripts/details-types';

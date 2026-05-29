@@ -1,17 +1,17 @@
-/* React */
+/* Styles */
+import './styles/navigation.scss';
+
+/* Packages */
 import { createRef, Fragment, RefObject, Suspense, useEffect } from 'react';
 import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
-/* Local styles */
-import './styles/navigation.scss';
-
-/* Local scripts */
+/* Scripts */
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { NavigationListItemProps, NavigationLocationProps, NavigationRoutesProps } from './scripts/navigation-types';
 import { navigationUtils } from './scripts/navigation-utils';
 import { navigationRoutes } from './scripts/navigation-routes';
 
-/* Local components */
+/* Components */
 import { Colors } from '../colors/Colors';
 
 /* Get navigation menu */

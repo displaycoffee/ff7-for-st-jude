@@ -1,4 +1,4 @@
-/* Local scripts */
+/* Scripts */
 import { NavigationRoutesType, NavigationType } from './navigation-types';
 import { navigation } from './navigation';
 

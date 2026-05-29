@@ -1,4 +1,4 @@
-/* Local scripts */
+/* Scripts */
 import { utils } from '../../../src/_config/scripts/utils';
 import { variables } from '../../../src/_config/scripts/variables';
 

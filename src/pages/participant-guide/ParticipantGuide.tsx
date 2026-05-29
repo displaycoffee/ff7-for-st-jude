@@ -1,7 +1,7 @@
-/* React */
+/* Packages */
 import { Link } from 'react-router-dom';
 
-/* Local components */
+/* Components */
 import { Details } from '../../components/details/Details';
 
 export const ParticipantGuide = () => {

@@ -1,7 +1,7 @@
-/* Local styles */
+/* Styles */
 import './styles/skeleton.scss';
 
-/* Local scripts */
+/* Scripts */
 import { SkeletonProps } from './scripts/skeleton-types';
 
 export const Skeleton = (props: SkeletonProps) => {

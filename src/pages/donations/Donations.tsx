@@ -1,12 +1,12 @@
-/* React */
+/* Packages */
 import { useEffect } from 'react';
 import { produce, Draft } from 'immer';
 
-/* Local scripts */
+/* Scripts */
 import { useReactQuery } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
-/* Local components */
+/* Components */
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 

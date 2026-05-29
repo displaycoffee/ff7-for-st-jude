@@ -1,8 +1,8 @@
-/* React */
+/* Packages */
 import { useEffect, useId, useState } from 'react';
 import { QueryFunction, useQuery, useQueries } from '@tanstack/react-query';
 
-/* Local scripts */
+/* Scripts */
 import { requests } from './requests';
 import { utils } from './utils';
 

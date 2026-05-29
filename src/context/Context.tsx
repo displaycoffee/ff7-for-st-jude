@@ -1,8 +1,8 @@
-/* React */
+/* Packages */
 import { createContext, useState } from 'react';
 import { DefaultOptions, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-/* Local scripts */
+/* Scripts */
 import { ContextProps, ContextValuesType } from './scripts/context-types';
 import { campaigns } from '../_config/scripts/campaigns';
 import { theme } from '../_config/scripts/theme';

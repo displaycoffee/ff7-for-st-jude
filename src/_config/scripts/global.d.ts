@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-/* React */
+/* Packages */
 import { QueryFunctionContext } from '@tanstack/react-query';
 
 /* Generic type definitions */
