@@ -61,9 +61,9 @@ export const utils = {
 		// Format value for html classes
 		return value
 			.toLowerCase()
+			.trim()
 			.replace(/[^\w\s]/g, '')
-			.replace(/\s/g, '-')
-			.trim();
+			.replace(/\s/g, '-');
 	},
 	isSticky: (element: HTMLElement, stickyClass: string) => {
 		if (element) {
