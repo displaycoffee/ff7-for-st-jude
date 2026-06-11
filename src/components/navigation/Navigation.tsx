@@ -89,7 +89,7 @@ export const NavigationRoutes = () => {
 		<Suspense fallback={null}>
 			<Routes>
 				{navigationRoutes.map((nav: NavigationRoutesProps) => {
-					const navProps = nav?.props ?? false;
+					const navProps = nav?.props ?? {};
 
 					return (
 						<Fragment key={nav.id}>

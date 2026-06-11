@@ -99,15 +99,15 @@ type Utils = {
 	checkAmount: (number?: number) => number;
 	checkArray: (array: unknown[]) => boolean;
 	formatCurrency: (number: number) => string;
-	getAmounts: (detail?: AmountsRawType) => Amounts;
+	getAmounts: (detail?: AmountsRaw) => Amounts;
 	getDate: (time: string) => string;
 	getLast: (value: string | string[], delimeter?: string) => string | number;
 	handleize: (value: string) => string;
 	isSticky: (element: HTMLElement | null, stickyClass: string) => void;
-	scrollTo: (e?: EventsType, selector?: string, offset?: number) => void;
-	setActive: (type: string, data: RewardsType | TargetsType) => boolean;
+	scrollTo: (e?: Events, selector?: string, offset?: number) => void;
+	setActive: (type: string, data: Rewards | Targets) => boolean;
 	setAttributes: (element: HTMLElement, attributes: ObjectString) => void;
-	sort: (list: SortType[], type: Primitive, field: string, direction: string) => SortType[];
+	sort: (list: Sort[], type: Primitive, field: string, direction: string) => Sort[];
 	truncate: (string: string, limit: number) => string;
 };
 
