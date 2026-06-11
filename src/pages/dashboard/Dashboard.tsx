@@ -177,7 +177,7 @@ export const Dashboard = () => {
 
 			<Details header={'Donations'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{donations.fetched && donations.values && donations.values.length !== 0
+					{donations.fetched && utils.checkArray(donations.values)
 						? donations.values.map((donation) => {
 								const { amount } = donation.amounts;
 
@@ -206,10 +206,10 @@ export const Dashboard = () => {
 
 			<Details header={'Rewards'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{rewards.fetched && rewards.values && rewards.values.length !== 0
+					{rewards.fetched && utils.checkArray(rewards.values)
 						? rewards.values.map((reward) => {
 								const { amount } = reward.amounts;
-								const ended = !reward.date.includes(variables.placeholders.endDateReadable as string);
+								const ended = !reward.date.includes(variables.placeholders.endDateReadable);
 
 								return (
 									<div className="column column-width-33" key={reward.key}>
@@ -247,10 +247,10 @@ export const Dashboard = () => {
 
 			<Details header={'Targets'} hasRow={true} scrollLink={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{targets.fetched && targets.values && targets.values.length !== 0
+					{targets.fetched && utils.checkArray(targets.values)
 						? targets.values.map((target) => {
 								const { amount_raised, amount } = target.amounts;
-								const ended = !target.date.includes(variables.placeholders.endDateReadable as string);
+								const ended = !target.date.includes(variables.placeholders.endDateReadable);
 
 								return (
 									<div className="column column-width-33" key={target.key}>

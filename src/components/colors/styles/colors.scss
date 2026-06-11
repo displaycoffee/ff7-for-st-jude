@@ -46,7 +46,7 @@
 				input[type='color'] {
 					@include mixins.sizing(30px, 30px);
 					border: 0;
-					background-color: theme.$color-02;
+					background-color: theme.$color-04;
 				}
 			}
 			.colors-actions {
@@ -55,6 +55,6 @@
 		}
 		.colors-overlay {
 			position: absolute;
-			background-color: theme.$color-07;
+			background-color: theme.$color-09;
 		}
 	}

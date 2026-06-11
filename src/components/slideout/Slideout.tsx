@@ -11,16 +11,16 @@ import { SlideoutOverlayProps, SlideoutProps } from './scripts/slideout-types';
 import { slideout } from './scripts/slideout';
 
 export const Slideout = (props: SlideoutProps) => {
-	const { options } = props;
+	const { children, options } = props;
 	const { utils } = useAppContext();
 	const { config, get, toggle } = slideout;
 	const fallbackId = useFormattedId();
-	const slideoutId = `slideout-${options?.id ? options.id : fallbackId}`;
+	const slideoutId = `slideout-${options?.id ?? fallbackId}`;
 	const slideoutRef: RefObject<HTMLDivElement | null> = createRef();
 
 	// Get default attributes for slideout
-	const width = options?.width ? options.width : config.values.width;
-	const direction = options?.direction ? options.direction : config.values.direction;
+	const width = options?.width ?? config.values.width;
+	const direction = options?.direction ?? config.values.direction;
 	const orientation = get.orientation(direction);
 	const styles = {
 		width: width,
@@ -89,7 +89,7 @@ export const Slideout = (props: SlideoutProps) => {
 						}}
 						role="presentation"
 					>
-						{options?.content ? options?.content : null}
+						{children}
 					</div>
 				</div>
 			</div>

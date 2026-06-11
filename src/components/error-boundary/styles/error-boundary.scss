@@ -8,7 +8,7 @@
 
 	// Colors
 
-	$error-boundary-color-01: theme.$color-10; // body background
+	$error-boundary-color-01: theme.$color-12; // body background
 
 	// Configuration
 
@@ -19,7 +19,7 @@
 	.error-boundary {
 		background-color: $error-boundary-color-01;
 		padding: theme.$spacing-x4;
-		color: theme.$color-13;
+		color: theme.$color-15;
 		&:last-child {
 			margin-bottom: 0;
 		}

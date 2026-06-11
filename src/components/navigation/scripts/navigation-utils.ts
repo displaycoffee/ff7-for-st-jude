@@ -32,7 +32,7 @@ export const navigationUtils = {
 			});
 
 			// Return final navigation
-			return navigationClone && navigationClone.length !== 0 ? navigationUtils.sort(navigationClone) : [];
+			return navigationClone.length !== 0 ? navigationUtils.sort(navigationClone) : [];
 		},
 		children: (listId: number) => {
 			// Create navigation clone
@@ -51,17 +51,17 @@ export const navigationUtils = {
 			});
 
 			// Return final navigation
-			return navigationClone && navigationClone.length !== 0 ? navigationUtils.sort(navigationClone) : [];
+			return navigationClone.length !== 0 ? navigationUtils.sort(navigationClone) : [];
 		},
 	},
 	routes: {
 		build: (nav: NavigationType) => {
 			// Build route config
-			const config = {
+			const config: NavigationRoutesType = {
 				id: nav.id,
 				element: nav.element,
 				path: nav.url,
-			} as NavigationRoutesType;
+			};
 
 			// Add props if there are any
 			if (nav?.props) {

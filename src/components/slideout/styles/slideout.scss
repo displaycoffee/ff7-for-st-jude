@@ -8,7 +8,7 @@
 
 	// Colors
 
-	$slideout-color-01: theme.$color-07; // overlay
+	$slideout-color-01: theme.$color-09; // overlay
 	$slideout-color-02: false; // menu background
 
 	// Configuration
@@ -39,11 +39,11 @@
 	}
 	.slideout-button-fixed {
 		display: inline-block;
-		margin: 0 0 theme.$spacing-x8 0;
 	}
 	.slideout-button {
 		@include mixins.flex-layout((align-items: center));
 		@include mixins.gap(theme.$spacing-x2);
+		margin: 0;
 	}
 	.slideout {
 		@include mixins.position($type: sticky, $top: -1px, $z: 9999);
@@ -88,7 +88,7 @@
 					margin-left: auto;
 					font-size: functions.em(20px, rem);
 					font-family: theme.$font-family-02;
-					color: theme.$color-02;
+					color: theme.$color-04;
 				}
 			}
 			.slideout-scrollbar {

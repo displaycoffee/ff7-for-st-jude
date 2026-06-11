@@ -1,6 +1,3 @@
-/* Styles */
-import './styles/index.scss';
-
 /* Packages */
 import { BrowserRouter } from 'react-router-dom';
 

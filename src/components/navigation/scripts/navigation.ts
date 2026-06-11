@@ -10,7 +10,7 @@ const Dashboard = lazy(() => import('../../../pages/dashboard/Dashboard').then((
 const Donations = lazy(() => import('../../../pages/donations/Donations').then((m) => ({ default: m.Donations })));
 const ParticipantGuide = lazy(() => import('../../../pages/participant-guide/ParticipantGuide').then((m) => ({ default: m.ParticipantGuide })));
 
-export const navigation = [
+export const navigation: NavigationType[] = [
 	{
 		id: 5,
 		alt: 'Commentary Stream',
@@ -64,4 +64,4 @@ export const navigation = [
 		url: '/',
 		showInNav: true,
 	},
-] as NavigationType[];
+];

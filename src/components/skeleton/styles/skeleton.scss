@@ -11,7 +11,7 @@
 			opacity: 1;
 			@include mixins.transition(opacity 0.3s ease);
 			p, .p {
-				background-color: theme.$color-02;
+				background-color: theme.$color-04;
 				width: 80%;
 				opacity: 0.8;
 				&:nth-child(2) {

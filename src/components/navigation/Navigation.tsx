@@ -36,7 +36,7 @@ export const Navigation = (props: NavigationLocationProps) => {
 		}
 	}, [location, navigationRef, utils]);
 
-	return navigationList && navigationList.length != 0 ? (
+	return navigationList.length != 0 ? (
 		<nav className={`navigation navigation-${location}`} ref={navigationRef}>
 			<div className="navigation-fixed">
 				<ul className="navigation-list unstyled">
@@ -85,11 +85,11 @@ export const NavigationListItem = (props: NavigationListItemProps) => {
 };
 
 export const NavigationRoutes = () => {
-	return navigationRoutes && navigationRoutes.length != 0 ? (
+	return navigationRoutes.length != 0 ? (
 		<Suspense fallback={null}>
 			<Routes>
 				{navigationRoutes.map((nav: NavigationRoutesProps) => {
-					const navProps = nav?.props ? nav.props : false;
+					const navProps = nav?.props ?? false;
 
 					return (
 						<Fragment key={nav.id}>

@@ -68,12 +68,12 @@ export const requests: RequestsType = {
 
 		if (json && json.data) {
 			// Add details to donations data
-			json.data.forEach((data: DonationsUnformattedType, index: number) => {
+			json.data.forEach((data: DonationsRawType, index: number) => {
 				// Format donations data
 				const donationsData = {
 					id: data.id,
 					amounts: utils.getAmounts(data),
-					comment: data?.donor_comment ? data.donor_comment : false,
+					comment: data?.donor_comment || false,
 					from: data.donor_name,
 					key: `donation-${data.id.split('-')[0]}-${index}`,
 					links: [] as LinksType[],
@@ -117,7 +117,7 @@ export const requests: RequestsType = {
 
 		if (json && json.data) {
 			// Add details to rewards data
-			json.data.forEach((data: RewardsUnformattedType, index: number) => {
+			json.data.forEach((data: RewardsRawType, index: number) => {
 				const date = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 
 				// Format rewards data
@@ -126,7 +126,7 @@ export const requests: RequestsType = {
 					active: data.active,
 					amounts: utils.getAmounts(data),
 					date: utils.getDate(date),
-					description: data?.description ? data.description : false,
+					description: data?.description ?? '',
 					key: `reward-${data.id.split('-')[0]}-${queryIndex}-${index}`,
 					milliseconds: new Date(date).getTime(),
 					name: data.name,
@@ -165,7 +165,7 @@ export const requests: RequestsType = {
 
 		if (json && json.data) {
 			// Add details to supporting data
-			json.data.forEach((data: SupportingUnformattedType, index: number) => {
+			json.data.forEach((data: SupportingRawType, index: number) => {
 				const username = data.user.username.trim();
 				const campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
 
@@ -212,7 +212,7 @@ export const requests: RequestsType = {
 		const json = await response.json();
 
 		if (json && json.data) {
-			json.data.forEach((data: TargetsUnformattedType, index: number) => {
+			json.data.forEach((data: TargetsRawType, index: number) => {
 				const date = data.ends_at ? data.ends_at : variables.placeholders.endDate;
 
 				// Format targets data
@@ -221,7 +221,7 @@ export const requests: RequestsType = {
 					active: data.active,
 					amounts: utils.getAmounts(data),
 					date: utils.getDate(date),
-					description: data?.description ? data.description : false,
+					description: data?.description ?? '',
 					key: `target-${data.id.split('-')[0]}-${queryIndex}-${index}`,
 					milliseconds: new Date(date).getTime(),
 					name: data.name,

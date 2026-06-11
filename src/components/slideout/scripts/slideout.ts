@@ -80,7 +80,7 @@ export const slideout = {
 		// Note: using a slight timeout to ensure slideout actions have processed
 		setTimeout(() => {
 			const slideoutActiveElements = document.querySelectorAll(activeSelector);
-			const bodyState = slideoutActiveElements && slideoutActiveElements.length !== 0 ? 'add' : 'remove';
+			const bodyState = slideoutActiveElements.length !== 0 ? 'add' : 'remove';
 			set.body(bodyState);
 		}, 100);
 	},
