@@ -12,10 +12,10 @@
 		height: 40px;
 		line-height: 40px;	
 		padding: 0 theme.$spacing-x3;
-		background-color: theme.$color-03;
-		border: 3px solid theme.$color-02;
+		background-color: theme.$color-05;
+		border: 3px solid theme.$color-04;
 		@include mixins.border-radius(10px);
-		color: theme.$color-01; 
+		color: theme.$color-03; 
 		@include mixins.ellipsis;
 	}
 	button.unstyled {

@@ -15,13 +15,12 @@
 	.navigation {
 		@include mixins.position($type: sticky, $top: -1px, $z: 5);
 		min-height: 10px;
-		margin: 0 0 theme.$spacing-x8 0;
 		&.is-sticky {
 			.navigation-fixed {
 				@include mixins.position($type: fixed, $top: 0, $left: 0, $right: 0);
 				padding: theme.$spacing-x4;
-				background-color: theme.$color-01;
-				border-bottom: 3px solid theme.$color-02;
+				background-color: theme.$color-03;
+				border-bottom: 3px solid theme.$color-04;
 			}
 			.navigation-list {			
 				max-width: 1600px;

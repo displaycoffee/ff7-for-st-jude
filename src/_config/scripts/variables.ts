@@ -3,7 +3,7 @@ const api = import.meta.env.VITE_API_URL as string;
 
 /* This config contains variables to use through application */
 const directory = '/ff7-st-jude';
-export const variables = {
+export const variables: VariablesType = {
 	paths: {
 		basename: window.location.pathname.includes(directory) ? directory : '',
 	},

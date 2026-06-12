@@ -15,10 +15,10 @@ export const Colors = (props: ColorsProps) => {
 
 	// Default color and style rules
 	const defaultColors = {
-		color01: theme.colors.color01,
-		color02: theme.colors.color02,
-		color03: theme.colors.color03,
-		color04: theme.colors.color04,
+		color01: theme.colors.color06,
+		color02: theme.colors.color06,
+		color03: theme.colors.color07,
+		color04: theme.colors.color07,
 	};
 	const defaultStyles = `.gradient-section, .gradient-background {
 		background-color: ${defaultColors.color01};

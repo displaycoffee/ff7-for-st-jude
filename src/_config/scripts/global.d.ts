@@ -11,7 +11,7 @@ type Amounts = {
 	total_amount_raised: number;
 };
 
-type AmountsUnformatted = {
+type AmountsRaw = {
 	amount?: {
 		value?: number;
 	};
@@ -38,10 +38,97 @@ type ObjectString = {
 };
 
 type ObjectPrimitive = {
-	[key: string]: string | number | boolean;
+	[key: string]: Primitive;
 };
 
+type Primitive = string | number | boolean;
+
 type Sort = ObjectPrimitive | { amounts: Amounts };
+
+type Theme = {
+	bps: {
+		bp01: Primitive;
+		bp02: Primitive;
+		bp03: Primitive;
+		bp04: Primitive;
+	};
+	colors: {
+		color01: Primitive;
+		color02: Primitive;
+		color03: Primitive;
+		color04: Primitive;
+		color05: Primitive;
+		color06: Primitive;
+		color07: Primitive;
+		color08: Primitive;
+		color09: Primitive;
+		color10: Primitive;
+		color11: Primitive;
+		color12: Primitive;
+		color13: Primitive;
+		color14: Primitive;
+		color15: Primitive;
+		color16: Primitive;
+		color17: Primitive;
+		color18: Primitive;
+	};
+	details: {
+		[key: string]: {
+			id: string;
+			content: {
+				header: string;
+				name: string;
+			};
+			layout: {
+				columns: string;
+				top: boolean;
+			};
+			skeleton: {
+				columns: number;
+				paragraphs: number;
+			};
+			sort?: {
+				field: string;
+				direction: string;
+			};
+		};
+	};
+};
+
+type Utils = {
+	checkAmount: (number?: number) => number;
+	checkArray: (array: unknown[]) => boolean;
+	formatCurrency: (number: number) => string;
+	getAmounts: (detail?: AmountsRaw) => Amounts;
+	getDate: (time: string) => string;
+	getLast: (value: string | string[], delimeter?: string) => string | number;
+	handleize: (value: string) => string;
+	isSticky: (element: HTMLElement | null, stickyClass: string) => void;
+	scrollTo: (e?: Events, selector?: string, offset?: number) => void;
+	setActive: (type: string, data: Rewards | Targets) => boolean;
+	setAttributes: (element: HTMLElement, attributes: ObjectString) => void;
+	sort: (list: Sort[], type: Primitive, field: string, direction: string) => Sort[];
+	truncate: (string: string, limit: number) => string;
+};
+
+type Variables = {
+	paths: {
+		basename: string;
+	};
+	api: {
+		campaigns: string;
+		teams: string;
+	};
+	urls: {
+		tiltify: string;
+		team: string;
+		campaign: string;
+	};
+	placeholders: {
+		endDate: string;
+		endDateReadable: string;
+	};
+};
 
 /* Content type definitions */
 type Campaign = {
@@ -83,7 +170,7 @@ type Donations = {
 
 type DonationsContent = Fetched & { values: [] | Donations[] };
 
-type DonationsUnformatted = {
+type DonationsRaw = {
 	id: string;
 	campaign_id?: string;
 	completed_at: string;
@@ -94,7 +181,7 @@ type DonationsUnformatted = {
 		username: string;
 		url: string;
 	};
-} & AmountsUnformatted;
+} & AmountsRaw;
 
 type DonationsRequest = [Donations[], Statuses];
 
@@ -102,7 +189,7 @@ type Rewards = {
 	active: boolean;
 	amounts: Amounts;
 	date: string;
-	description: string | boolean;
+	description: string;
 	id: string;
 	key: string;
 	links: Links[];
@@ -114,14 +201,14 @@ type Rewards = {
 
 type RewardsContent = Fetched & { values: [] | Rewards[] };
 
-type RewardsUnformatted = {
+type RewardsRaw = {
 	active: boolean;
 	id: string;
 	description?: string;
 	ends_at?: string;
 	name: string;
 	quantity_remaining?: number;
-} & AmountsUnformatted;
+} & AmountsRaw;
 
 type RewardsRequest = [Rewards[], Statuses];
 
@@ -137,7 +224,7 @@ type Supporting = {
 
 type SupportingContent = Fetched & { values: [] | Supporting[] };
 
-type SupportingUnformatted = {
+type SupportingRaw = {
 	id: string;
 	livestream?: {
 		channel: string;
@@ -149,7 +236,7 @@ type SupportingUnformatted = {
 		username: string;
 		url: string;
 	};
-} & AmountsUnformatted;
+} & AmountsRaw;
 
 type SupportingRequest = [Supporting[], Statuses];
 
@@ -157,7 +244,7 @@ type Targets = {
 	active: boolean;
 	amounts: Amounts;
 	date: string;
-	description: string | boolean;
+	description: string;
 	id: string;
 	key: string;
 	links: Links[];
@@ -168,13 +255,13 @@ type Targets = {
 
 type TargetsContent = Fetched & { values: [] | Targets[] };
 
-type TargetsUnformatted = {
+type TargetsRaw = {
 	active: boolean;
 	id: string;
 	description?: string;
 	ends_at?: string;
 	name: string;
-} & AmountsUnformatted;
+} & AmountsRaw;
 
 type TargetsRequest = [Targets[], Statuses];
 
@@ -211,7 +298,7 @@ declare global {
 	/* Declare global generic types */
 	type AmountsType = Amounts;
 
-	type AmountsUnformattedType = AmountsUnformatted;
+	type AmountsRawType = AmountsRaw;
 
 	type EventsType = Events;
 
@@ -221,7 +308,15 @@ declare global {
 
 	type ObjectPrimitiveType = ObjectPrimitive;
 
+	type PrimitiveType = Primitive;
+
 	type SortType = Sort;
+
+	type ThemeType = Theme;
+
+	type UtilsType = Utils;
+
+	type VariablesType = Variables;
 
 	/* Declare global content types */
 	type CampaignType = Campaign;
@@ -234,13 +329,13 @@ declare global {
 
 	type DonationsRequestType = DonationsRequest;
 
-	type DonationsUnformattedType = DonationsUnformatted;
+	type DonationsRawType = DonationsRaw;
 
 	type RewardsType = Rewards;
 
 	type RewardsRequestType = RewardsRequest;
 
-	type RewardsUnformattedType = RewardsUnformatted;
+	type RewardsRawType = RewardsRaw;
 
 	type SupportingType = Supporting;
 
@@ -248,13 +343,13 @@ declare global {
 
 	type SupportingRequestType = SupportingRequest;
 
-	type SupportingUnformattedType = SupportingUnformatted;
+	type SupportingRawType = SupportingRaw;
 
 	type TargetsType = Targets;
 
 	type TargetsRequestType = TargetsRequest;
 
-	type TargetsUnformattedType = TargetsUnformatted;
+	type TargetsRawType = TargetsRaw;
 
 	/* Declare global request types */
 	type QueryKeyType = QueryKey;

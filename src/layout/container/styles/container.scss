@@ -3,14 +3,27 @@
 @use '../../../_config/styles/utils/_mixins';
 @use '../../../_config/styles/theme/_theme';
 
+//// BASE STYLES
+//// --------------------------------------------------------------------------
+//// Note: all base styles are connected here. 
+
+	// Imports
+
+	@use './_normalize';
+	@use './_typography';
+	@use './_base';
+	@use './_forms';
+	@use './_images';
+	@use './_layout';
+
 //// CONTAINER
 //// --------------------------------------------------------------------------
 
 	// Configuration 
 
 	$container-main-bp: theme.$bp-02; // breakpoint
-	$container-main-spacing: theme.$spacing-x4; // spacing for layout
-	$container-main-sidebar-width: 250px; // width of sidebar
+	$container-main-spacing: theme.$spacing-x8; // spacing for layout
+	$container-main-sidebar-width: 300px; // width of sidebar
 
 	// Style block
 	
@@ -18,10 +31,15 @@
 		max-width: theme.$container-base;
 		margin: 0 auto;
 		padding: 0 theme.$spacing-x4;
+		& > * {
+			margin: 0 0 theme.$spacing-x8 0;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
 	}
 	.main {
 		min-height: 80vh;
-		margin: 0 0 theme.$spacing-x8 0;
 		.main-layout {
 			@include mixins.gap($container-main-spacing);
 			.content, .sidebar {

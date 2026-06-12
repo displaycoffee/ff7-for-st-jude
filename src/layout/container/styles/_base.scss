@@ -17,7 +17,7 @@
 
 	// Colors
 
-	$base-elements-color-01: theme.$color-01; // body background
+	$base-elements-color-01: theme.$color-03; // body background
 
 	// Configuration
 
@@ -36,10 +36,10 @@
 			padding: $base-elements-body-spacing-vertical $base-elements-body-spacing-horizontal;
 		}
 	}
-	p, h1, h2, h3, h4, h5, h6, .spacing-reset > div, .spacing-reset > section {
+	p, h1, h2, h3, h4, h5, h6, .margin-trim > div, .margin-trim > section {
 		margin: 0 0 $base-elements-spacing 0;
 	}
-	.spacing-reset > *:last-child {
+	.margin-trim > *:last-child {
 		margin-bottom: 0;
 	}
 	ul, ol {
@@ -96,8 +96,8 @@
 
 	// Colors
 
-	$base-helpers-color-01: theme.$color-01; // scrollbar background
-	$base-helpers-color-02: theme.$color-02; // scrollbar foreground
+	$base-helpers-color-01: theme.$color-03; // scrollbar background
+	$base-helpers-color-02: theme.$color-04; // scrollbar foreground
 
 	// Configuration
 
@@ -116,7 +116,7 @@
 		@include mixins.scrollbar('&', $base-helpers-scrollbar-width, $base-helpers-scrollbar-height, $base-helpers-color-01, $base-helpers-color-02);
 	}
 	.gradient-background {
-		border: 3px solid theme.$color-02;
+		border: 3px solid theme.$color-04;
 	}
 	.gradient-section {
 		padding: theme.$spacing-x4;

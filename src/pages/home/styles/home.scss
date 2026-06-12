@@ -26,17 +26,17 @@
 		.level-bar-outof {		
 			@include mixins.sizing(100%, 20px);
 			max-width: 600px;
-			border: 2px solid theme.$color-02;
-			background-color: theme.$color-11;
-			background-image: linear-gradient(theme.$color-13 0%, theme.$color-12 50%, theme.$color-11 75%);
+			border: 2px solid theme.$color-04;
+			background-color: theme.$color-13;
+			background-image: linear-gradient(theme.$color-15 0%, theme.$color-14 50%, theme.$color-13 75%);
 			position: relative;
 			overflow: hidden;
 			.level-bar-progress, .level-bar-shadow {
 				@include mixins.sizing(100%, 100%);
 			}
 			.level-bar-progress {
-				background-color: theme.$color-14;
-				background-image: linear-gradient(theme.$color-16 0%, theme.$color-15 50%, theme.$color-14 75%);
+				background-color: theme.$color-16;
+				background-image: linear-gradient(theme.$color-18 0%, theme.$color-17 50%, theme.$color-16 75%);
 			}
 			.level-bar-shadow {
 				border: 2px solid rgba(0, 0, 0, 0.30);

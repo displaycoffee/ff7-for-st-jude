@@ -30,7 +30,6 @@ export const Container = () => {
 		id: 'menu',
 		isDesktop: isDesktop,
 		label: 'Menu',
-		content: <Navigation />,
 		closeOnClick: true,
 		button: {
 			outside: false,
@@ -45,7 +44,13 @@ export const Container = () => {
 
 				<SlideoutOverlay options={slideoutOptions} />
 
-				{isDesktop ? <Navigation location={'header'} /> : <Slideout options={slideoutOptions} />}
+				{isDesktop ? (
+					<Navigation location={'header'} />
+				) : (
+					<Slideout options={slideoutOptions}>
+						<Navigation />
+					</Slideout>
+				)}
 
 				<Header />
 

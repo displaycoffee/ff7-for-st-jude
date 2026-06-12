@@ -5,10 +5,10 @@ type SlideoutButton = {
 };
 
 type SlideoutOptions = {
+	children?: ReactNode;
 	options: {
 		button: SlideoutButton;
 		closeOnClick: boolean;
-		content: ReactNode;
 		direction?: string;
 		id?: string;
 		isDesktop: boolean;

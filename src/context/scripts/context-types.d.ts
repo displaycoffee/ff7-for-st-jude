@@ -10,49 +10,13 @@ type ContextValues = {
 		previous: Campaign[];
 	};
 	queryClient: QueryClient;
-	theme: {
-		bps: ObjectPrimitiveType;
-		colors: ObjectPrimitiveType;
-		details: {
-			campaign: ThemeDetails;
-			donations: ThemeDetails;
-			previous: ThemeDetails;
-			rewards: ThemeDetails;
-			supporting: ThemeDetails;
-			targets: ThemeDetails;
-		};
-	};
-	utils: {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		[key: string]: (...args: any[]) => any;
-	};
-	variables: {
-		[key: string]: ObjectPrimitiveType;
-	};
+	theme: ThemeType;
+	utils: UtilsType;
+	variables: VariablesType;
 };
 
 type Context = {
 	children: ReactNode;
-};
-
-type ThemeDetails = {
-	id: string;
-	content: {
-		header: string;
-		name: string;
-	};
-	layout: {
-		columns: string;
-		top: boolean;
-	};
-	skeleton: {
-		columns: number;
-		paragraphs: number;
-	};
-	sort?: {
-		field: string;
-		direction: string;
-	};
 };
 
 /* Export types */

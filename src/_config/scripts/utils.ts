@@ -6,13 +6,13 @@ const formatter = new Intl.NumberFormat('en-US', {
 	currency: 'USD',
 });
 
-export const utils = {
+export const utils: UtilsType = {
 	checkAmount: (number?: number) => {
 		// Check number to always return a value
-		number = number ? number : 0;
+		number = number ?? 0;
 		return Math.round(number * 100) / 100;
 	},
-	checkArray: (array: ObjectPrimitiveType[]) => {
+	checkArray: (array: unknown[]) => {
 		// Check if array has length
 		return array && array.length !== 0;
 	},
@@ -20,7 +20,7 @@ export const utils = {
 		// Format currency using formatter
 		return formatter.format(number);
 	},
-	getAmounts: (detail?: AmountsUnformattedType) => {
+	getAmounts: (detail?: AmountsRawType) => {
 		// Setup initial amount details
 		const amounts = {
 			amount: 0,
@@ -47,15 +47,15 @@ export const utils = {
 			timeStyle: 'long',
 		}).format(date);
 	},
-	getLast: (value: string | [], delimeter?: string) => {
+	getLast: (value: string | string[], delimeter?: string) => {
 		// Get last item in array
-		let valueArray = [] as string[] | number[];
+		let valueArray: string[] | number[] = [];
 		if (Array.isArray(value)) {
 			valueArray = value;
 		} else if (delimeter) {
 			valueArray = value.split(delimeter);
 		}
-		return valueArray[valueArray.length - 1];
+		return valueArray[valueArray.length - 1] ?? '';
 	},
 	handleize: (value: string) => {
 		// Format value for html classes
@@ -65,7 +65,7 @@ export const utils = {
 			.replace(/[^\w\s]/g, '')
 			.replace(/\s/g, '-');
 	},
-	isSticky: (element: HTMLElement, stickyClass: string) => {
+	isSticky: (element: HTMLElement | null, stickyClass: string) => {
 		if (element) {
 			// Create options and callback for observer
 			const stickyOptions = { threshold: [1] };
@@ -78,17 +78,17 @@ export const utils = {
 			stickyObserver.observe(element);
 		}
 	},
-	scrollTo: (e: EventsType, selector: string | undefined, offset: number) => {
+	scrollTo: (e?: EventsType, selector?: string, offset?: number) => {
 		// Scroll to element on page
 		if (e) {
 			e.preventDefault();
 		}
 		const anchor = {
-			selector: selector,
-			offset: offset ? offset : 0,
+			selector: selector ?? '',
+			offset: offset ?? 0,
 			position: () => {
-				const anchorElement = anchor.selector && document.querySelector(anchor.selector) ? document.querySelector(anchor.selector) : false;
-				return anchorElement ? anchorElement.getBoundingClientRect().top + window.scrollY - anchor.offset : 0 - anchor.offset;
+				const anchorElement = anchor.selector ? document.querySelector(anchor.selector) : false;
+				return anchorElement ? anchorElement.getBoundingClientRect().top + window.scrollY - anchor.offset : -anchor.offset;
 			},
 		};
 		window.scroll({ top: anchor.position(), left: 0, behavior: 'smooth' });
@@ -119,7 +119,7 @@ export const utils = {
 			element.setAttribute(attribute, attributes[attribute]);
 		}
 	},
-	sort: (list: SortType[], type: string | number | boolean, field: string, direction: string) => {
+	sort: (list: SortType[], type: PrimitiveType, field: string, direction: string) => {
 		// Sort values in a list based on type, field, and direction
 		return [...list].sort((a, b) => {
 			let sortedValue = 0;
