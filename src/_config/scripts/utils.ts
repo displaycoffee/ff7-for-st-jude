@@ -49,7 +49,7 @@ export const utils: UtilsType = {
 	},
 	getLast: (value: string | string[], delimeter?: string) => {
 		// Get last item in array
-		let valueArray = [] as string[] | number[];
+		let valueArray: string[] | number[] = [];
 		if (Array.isArray(value)) {
 			valueArray = value;
 		} else if (delimeter) {
