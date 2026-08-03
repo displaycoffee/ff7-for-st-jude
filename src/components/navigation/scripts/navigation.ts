@@ -13,7 +13,6 @@ const ParticipantGuide = lazy(() => import('../../../pages/participant-guide/Par
 export const navigation: NavigationType[] = [
 	{
 		id: 5,
-		alt: 'Commentary Stream',
 		element: Home,
 		isRoute: false,
 		label: 'Commentary Stream',
@@ -22,7 +21,6 @@ export const navigation: NavigationType[] = [
 	},
 	{
 		id: 4,
-		alt: 'Donations',
 		element: Donations,
 		isRoute: true,
 		label: 'Donations',
@@ -31,7 +29,6 @@ export const navigation: NavigationType[] = [
 	},
 	{
 		id: 3,
-		alt: 'Dashboard',
 		element: Dashboard,
 		isRoute: true,
 		label: 'Dashboard',
@@ -40,7 +37,6 @@ export const navigation: NavigationType[] = [
 	},
 	{
 		id: 2,
-		alt: 'Signup Sheet',
 		isRoute: false,
 		label: 'Signup Sheet',
 		showInNav: false,
@@ -48,7 +44,6 @@ export const navigation: NavigationType[] = [
 	},
 	{
 		id: 1,
-		alt: 'Participant Guide',
 		element: ParticipantGuide,
 		isRoute: true,
 		label: 'Participant Guide',
@@ -57,7 +52,6 @@ export const navigation: NavigationType[] = [
 	},
 	{
 		id: 0,
-		alt: 'Home',
 		element: Home,
 		isRoute: true,
 		label: 'Home',

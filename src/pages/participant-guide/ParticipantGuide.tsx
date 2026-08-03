@@ -258,9 +258,7 @@ export const ParticipantGuide = () => {
 					</li>
 					<li>
 						<strong>!stjude</strong> - Info about St. Jude. I recommend using their official mission statement found{' '}
-						<Link to="/" title="Home">
-							at the top of the home page
-						</Link>
+						<Link to="/">at the top of the home page</Link>
 					</li>
 				</ul>
 

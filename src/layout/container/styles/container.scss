@@ -27,6 +27,18 @@
 
 	// Style block
 	
+	.skip-link {
+		z-index: 9999;
+		&:focus {
+			@include mixins.position($type: fixed, $top: theme.$spacing-x4, $left: theme.$spacing-x4);
+			@include mixins.sizing(auto, auto);
+			margin: 0;
+			padding: theme.$spacing-x2 theme.$spacing-x4;
+			overflow: visible;
+			background-color: theme.$color-03;
+			border: 1px solid theme.$color-08;
+		}
+	}
 	.container {
 		max-width: theme.$container-base;
 		margin: 0 auto;

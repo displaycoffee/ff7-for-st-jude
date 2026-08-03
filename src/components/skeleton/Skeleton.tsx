@@ -21,7 +21,7 @@ export const Skeleton = (props: SkeletonProps) => {
 	const skeletonParagraphs = buildSkeleton(paragraphs);
 
 	return skeletonColumns.map((c, index) => (
-		<div className={`column column-width-${Math.floor(100 / perRow)} column-skeleton`} key={c + index}>
+		<div className={`column column-width-${Math.floor(100 / perRow)} column-skeleton`} key={c + index} aria-hidden="true">
 			<div className="gradient-section">
 				{skeletonParagraphs.map((p, index) => {
 					return <p key={p + index}>&nbsp;</p>;

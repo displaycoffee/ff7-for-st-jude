@@ -11,11 +11,14 @@ import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
 import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
+import { DonationsSection } from '../../components/donations-section/DonationsSection';
+import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
 import { Skeleton } from '../../components/skeleton/Skeleton';
 
 /* Static variables */
 const truncateLimit = 75;
 const scrollToOffset = 100;
+const refreshableTypes = ['donations', 'rewards', 'targets'] as const;
 
 export const Dashboard = () => {
 	const { campaigns, utils, variables, queryClient, content, setContent } = useAppContext();
@@ -105,7 +108,7 @@ export const Dashboard = () => {
 
 	return (
 		<>
-			<nav className="floating">
+			<nav className="floating" aria-label="Dashboard Section Navigation">
 				<div className="gradient-section">
 					<ul className="floating-list unstyled">
 						<li className="floating-list-item">
@@ -150,20 +153,17 @@ export const Dashboard = () => {
 									// Refresh content
 									e.preventDefault();
 
-									// Reset queries
-									void queryClient.resetQueries({ queryKey: ['donations'] });
-									void queryClient.resetQueries({ queryKey: ['rewards'] });
-									void queryClient.resetQueries({ queryKey: ['targets'] });
+									// Reset queries for each refreshable data type
+									refreshableTypes.forEach((type) => {
+										void queryClient.resetQueries({ queryKey: [type] });
+									});
 
-									// Content config for reset
-									const contentConfig = { fetched: false, values: [] };
-
-									// Reset and set content state
+									// Reset content state for each refreshable data type
 									setContent(
 										produce((draft: Draft<ContentType>) => {
-											draft.donations = contentConfig;
-											draft.rewards = contentConfig;
-											draft.targets = contentConfig;
+											refreshableTypes.forEach((type) => {
+												draft[type] = { fetched: false, values: [] };
+											});
 										}),
 									);
 								}}
@@ -175,119 +175,104 @@ export const Dashboard = () => {
 				</div>
 			</nav>
 
-			<Details header={'Donations'} hasRow={true} scrollLink={true}>
-				<div className="row row-auto row-spacing-20 row-wrap">
-					{donations.fetched && utils.checkArray(donations.values)
-						? donations.values.map((donation) => {
-								const { amount } = donation.amounts;
+			<DonationsSection donations={donations} donationsComplete={donationsComplete} />
 
-								return (
-									<div className="column column-width-33" key={donation.key}>
-										<div className="gradient-section">
-											<p>
-												<strong>Donation:</strong> {utils.formatCurrency(amount)} from <strong>{donation.from}</strong> to{' '}
-												<DetailsLinks links={donation.links} wrapper={false} />
-											</p>
+			<ErrorBoundary message="Something went wrong loading rewards.">
+				<Details header={'Rewards'} hasRow={true} scrollLink={true}>
+					<p className="sr-only" role="status">
+						{!rewardsComplete ? 'Loading rewards...' : utils.checkArray(rewards.values) ? 'Rewards loaded.' : ''}
+					</p>
 
-											<DetailsParagraph label={'Comment'} content={donation.comment} />
+					<div className="row row-auto row-spacing-20 row-wrap">
+						{rewards.fetched && utils.checkArray(rewards.values)
+							? rewards.values.map((reward) => {
+									const { amount } = reward.amounts;
+									const ended = !reward.date.includes(variables.placeholders.endDateReadable);
+
+									return (
+										<div className="column column-width-33" key={reward.key}>
+											<div className={`gradient-section${reward.active ? '' : ' inactive'}`}>
+												<DetailsParagraph label={'Reward'} content={reward.name} />
+
+												<DetailsParagraph label={'Description'} content={utils.truncate(reward.description, truncateLimit)} />
+
+												{reward.active ? (
+													<>
+														<DetailsParagraph label={'Cost'} content={utils.formatCurrency(amount)} />
+
+														{!ended ? null : <DetailsParagraph label={'Ends'} content={reward.date} />}
+
+														<DetailsLinks links={reward.links} />
+													</>
+												) : (
+													<p className="no-longer-active">
+														<em>This reward from "{reward.username}" is no longer active.</em>
+													</p>
+												)}
+											</div>
 										</div>
-									</div>
-								);
-							})
-						: null}
+									);
+								})
+							: null}
 
-					{donationsComplete && donations.values.length === 0 ? (
-						<DetailsNotFound type={'donations'} />
-					) : (
-						<Skeleton columns={15} perRow={3} paragraphs={2} />
-					)}
-				</div>
-			</Details>
+						{!rewardsComplete ? (
+							<Skeleton columns={6} perRow={3} paragraphs={6} />
+						) : rewards.values.length === 0 ? (
+							<DetailsNotFound type={'rewards'} />
+						) : null}
+					</div>
+				</Details>
+			</ErrorBoundary>
 
-			<Details header={'Rewards'} hasRow={true} scrollLink={true}>
-				<div className="row row-auto row-spacing-20 row-wrap">
-					{rewards.fetched && utils.checkArray(rewards.values)
-						? rewards.values.map((reward) => {
-								const { amount } = reward.amounts;
-								const ended = !reward.date.includes(variables.placeholders.endDateReadable);
+			<ErrorBoundary message="Something went wrong loading targets.">
+				<Details header={'Targets'} hasRow={true} scrollLink={true}>
+					<p className="sr-only" role="status">
+						{!targetsComplete ? 'Loading targets...' : utils.checkArray(targets.values) ? 'Targets loaded.' : ''}
+					</p>
 
-								return (
-									<div className="column column-width-33" key={reward.key}>
-										<div className={`gradient-section${reward.active ? '' : ' inactive'}`}>
-											<DetailsParagraph label={'Reward'} content={reward.name} />
+					<div className="row row-auto row-spacing-20 row-wrap">
+						{targets.fetched && utils.checkArray(targets.values)
+							? targets.values.map((target) => {
+									const { amount_raised, amount } = target.amounts;
+									const ended = !target.date.includes(variables.placeholders.endDateReadable);
 
-											<DetailsParagraph label={'Description'} content={utils.truncate(reward.description, truncateLimit)} />
+									return (
+										<div className="column column-width-33" key={target.key}>
+											<div className={`gradient-section${target.active ? '' : ' inactive'}`}>
+												<DetailsParagraph label={'Target'} content={target.name} />
 
-											{reward.active ? (
-												<>
-													<DetailsParagraph label={'Cost'} content={utils.formatCurrency(amount)} />
+												<DetailsParagraph label={'Description'} content={utils.truncate(target.description, truncateLimit)} />
 
-													{!ended ? null : <DetailsParagraph label={'Ends'} content={reward.date} />}
+												<DetailsParagraph
+													label={'Raised'}
+													content={`${utils.formatCurrency(amount_raised)} out of ${utils.formatCurrency(amount)}`}
+												/>
 
-													<DetailsLinks links={reward.links} />
-												</>
-											) : (
-												<p className="no-longer-active">
-													<em>This reward from "{reward.username}" is no longer active.</em>
-												</p>
-											)}
+												{target.active ? (
+													<>
+														{!ended ? null : <DetailsParagraph label={'Ends'} content={target.date} />}
+
+														<DetailsLinks links={target.links} />
+													</>
+												) : (
+													<p className="no-longer-active">
+														<em>This target from "{target.username}" is no longer active.</em>
+													</p>
+												)}
+											</div>
 										</div>
-									</div>
-								);
-							})
-						: null}
+									);
+								})
+							: null}
 
-					{rewardsComplete && rewards.values.length === 0 ? (
-						<DetailsNotFound type={'rewards'} />
-					) : (
-						<Skeleton columns={6} perRow={3} paragraphs={6} />
-					)}
-				</div>
-			</Details>
-
-			<Details header={'Targets'} hasRow={true} scrollLink={true}>
-				<div className="row row-auto row-spacing-20 row-wrap">
-					{targets.fetched && utils.checkArray(targets.values)
-						? targets.values.map((target) => {
-								const { amount_raised, amount } = target.amounts;
-								const ended = !target.date.includes(variables.placeholders.endDateReadable);
-
-								return (
-									<div className="column column-width-33" key={target.key}>
-										<div className={`gradient-section${target.active ? '' : ' inactive'}`}>
-											<DetailsParagraph label={'Target'} content={target.name} />
-
-											<DetailsParagraph label={'Description'} content={utils.truncate(target.description, truncateLimit)} />
-
-											<DetailsParagraph
-												label={'Raised'}
-												content={`${utils.formatCurrency(amount_raised)} out of ${utils.formatCurrency(amount)}`}
-											/>
-
-											{target.active ? (
-												<>
-													{!ended ? null : <DetailsParagraph label={'Ends'} content={target.date} />}
-
-													<DetailsLinks links={target.links} />
-												</>
-											) : (
-												<p className="no-longer-active">
-													<em>This target from "{target.username}" is no longer active.</em>
-												</p>
-											)}
-										</div>
-									</div>
-								);
-							})
-						: null}
-
-					{targetsComplete && targets.values.length === 0 ? (
-						<DetailsNotFound type={'targets'} />
-					) : (
-						<Skeleton columns={6} perRow={3} paragraphs={5} />
-					)}
-				</div>
-			</Details>
+						{!targetsComplete ? (
+							<Skeleton columns={6} perRow={3} paragraphs={5} />
+						) : targets.values.length === 0 ? (
+							<DetailsNotFound type={'targets'} />
+						) : null}
+					</div>
+				</Details>
+			</ErrorBoundary>
 		</>
 	);
 };

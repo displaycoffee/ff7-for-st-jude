@@ -7,7 +7,7 @@ import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 /* Scripts */
 import { useAppContext } from '../../context/scripts/context-hooks';
-import { NavigationListItemProps, NavigationLocationProps, NavigationRoutesProps } from './scripts/navigation-types';
+import { NavigationComponentProps, NavigationListItemProps, NavigationRoutesProps } from './scripts/navigation-types';
 import { navigationUtils } from './scripts/navigation-utils';
 import { navigationRoutes } from './scripts/navigation-routes';
 
@@ -17,8 +17,8 @@ import { Colors } from '../colors/Colors';
 /* Get navigation menu */
 const navigationList = navigationUtils.get.list();
 
-export const Navigation = (props: NavigationLocationProps) => {
-	const { location } = props;
+export const Navigation = (props: NavigationComponentProps) => {
+	const { label, location } = props;
 	const { pathname } = useLocation();
 	const { utils } = useAppContext();
 	const navigationLinkClass = 'navigation-link';
@@ -37,7 +37,7 @@ export const Navigation = (props: NavigationLocationProps) => {
 	}, [location, navigationRef, utils]);
 
 	return navigationList.length != 0 ? (
-		<nav className={`navigation navigation-${location}`} ref={navigationRef}>
+		<nav className={`navigation navigation-${location}`} aria-label={label} ref={navigationRef}>
 			<div className="navigation-fixed">
 				<ul className="navigation-list unstyled">
 					{navigationList.map((nav, index) => {
@@ -68,15 +68,11 @@ export const NavigationListItem = (props: NavigationListItemProps) => {
 	return (
 		<li className="navigation-list-item">
 			{nav.isRoute ? (
-				<NavLink
-					to={nav.url}
-					title={nav.alt || nav.label}
-					className={({ isActive }) => (isActive ? navigationActiveClass : navigationLinkClass)}
-				>
+				<NavLink to={nav.url} className={({ isActive }) => (isActive ? navigationActiveClass : navigationLinkClass)}>
 					{nav.label}
 				</NavLink>
 			) : (
-				<a href={nav.url} title={nav.alt || nav.label} target="_blank" rel="noreferrer">
+				<a href={nav.url} target="_blank" rel="noreferrer">
 					{nav.label}
 				</a>
 			)}

@@ -16,7 +16,7 @@ export const Details = (props: DetailsProps) => {
 	const detailsId = header ? utils.handleize(header) : fallbackId;
 
 	return (
-		<section id={`details-${detailsId}`} className={`details details-${detailsId}`}>
+		<section id={`details-${detailsId}`} className={`details details-${detailsId}`} tabIndex={-1}>
 			{header && <h2 className="details-title">{header}</h2>}
 
 			{props?.children && <div className={`details-content${hasRow ? '' : ' margin-trim gradient-section'}`}>{props.children}</div>}
@@ -69,7 +69,7 @@ export const DetailsNotFound = (props: DetailsNotFoundProps) => {
 	return (
 		<div className="column column-width-100">
 			<div className="gradient-section">
-				<p>No {type} found.</p>
+				<p role="status">No {type} found.</p>
 			</div>
 		</div>
 	);

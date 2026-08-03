@@ -7,8 +7,7 @@ import { useReactQuery } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
-import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
-import { Skeleton } from '../../components/skeleton/Skeleton';
+import { DonationsSection } from '../../components/donations-section/DonationsSection';
 
 /* Static variables */
 const timeout = false; // 60000 == one minute
@@ -83,34 +82,5 @@ export const Donations = () => {
 		}
 	}, [queryClient, setContent]);
 
-	return (
-		<Details header={'Donations'} hasRow={true} scrollLink={true}>
-			<div className="row row-auto row-spacing-20 row-wrap">
-				{donations.fetched && donations.values && donations.values.length !== 0
-					? donations.values.map((donation) => {
-							const { amount } = donation.amounts;
-
-							return (
-								<div className="column column-width-33" key={donation.key}>
-									<div className="gradient-section">
-										<p>
-											<strong>Donation:</strong> {utils.formatCurrency(amount)} from <strong>{donation.from}</strong> to{' '}
-											<DetailsLinks links={donation.links} wrapper={false} />
-										</p>
-
-										<DetailsParagraph label={'Comment'} content={donation.comment} />
-									</div>
-								</div>
-							);
-						})
-					: null}
-
-				{donationsComplete && donations.values.length === 0 ? (
-					<DetailsNotFound type={'donations'} />
-				) : (
-					<Skeleton columns={15} perRow={3} paragraphs={2} />
-				)}
-			</div>
-		</Details>
-	);
+	return <DonationsSection donations={donations} donationsComplete={donationsComplete} />;
 };
