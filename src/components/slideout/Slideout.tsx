@@ -16,6 +16,7 @@ export const Slideout = (props: SlideoutProps) => {
 	const { config, get, toggle } = slideout;
 	const fallbackId = useFormattedId();
 	const slideoutId = `slideout-${options?.id ?? fallbackId}`;
+	const slideoutTitle = `${slideoutId}-title`;
 	const slideoutRef: RefObject<HTMLDivElement | null> = createRef();
 
 	// Get default attributes for slideout
@@ -58,9 +59,18 @@ export const Slideout = (props: SlideoutProps) => {
 		>
 			{!button.outside && button.show ? slideoutButton : null}
 
-			<div className={`${config.classes.menu} gradient-background`} style={styles}>
+			<div
+				className={`${config.classes.menu} gradient-background`}
+				style={styles}
+				inert
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby={slideoutTitle}
+			>
 				<header className="slideout-header flex-nowrap flex-align-items-center">
-					<h2 className="slideout-title">{options.label}</h2>
+					<h2 id={slideoutTitle} className="slideout-title">
+						{options.label}
+					</h2>
 
 					<button
 						className="slideout-close pointer unstyled"
@@ -130,6 +140,22 @@ export const SlideoutOverlay = (props: SlideoutOverlayProps) => {
 			set.body('remove');
 		}
 	}, [config, options.isDesktop, set]);
+
+	// Close active slideout(s) when escape is pressed
+	// Note: set.slideout already restores focus to whatever opened the menu
+	useEffect(() => {
+		const activeSelector = `.${config.classes.slideout}.${config.classes.active}`;
+
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key !== 'Escape') return;
+			if (document.querySelectorAll(activeSelector).length === 0) return;
+			toggle(e, false);
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => document.removeEventListener('keydown', handleKeyDown);
+	}, [config, toggle]);
 
 	return null;
 };

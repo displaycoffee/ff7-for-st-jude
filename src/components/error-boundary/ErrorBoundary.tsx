@@ -27,7 +27,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
 	render() {
 		if (this.state.hasError) {
-			return <div className="error-boundary margin-trim">{this.props.message}</div>;
+			return (
+				<div className="error-boundary margin-trim" role="alert">
+					{this.props.message}
+				</div>
+			);
 		}
 
 		return this.props.children;

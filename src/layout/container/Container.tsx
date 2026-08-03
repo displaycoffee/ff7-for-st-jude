@@ -44,17 +44,21 @@ export const Container = () => {
 
 				<SlideoutOverlay options={slideoutOptions} />
 
+				<a href="#main-content" className="skip-link sr-only">
+					Skip to main content
+				</a>
+
 				{isDesktop ? (
-					<Navigation location={'header'} />
+					<Navigation label={'Header Navigation'} location={'header'} />
 				) : (
 					<Slideout options={slideoutOptions}>
-						<Navigation />
+						<Navigation label={'Mobile Navigation'} />
 					</Slideout>
 				)}
 
 				<Header />
 
-				<main className="main">
+				<main id="main-content" className="main">
 					<div className="main-layout flex-wrap">
 						<Content />
 					</div>

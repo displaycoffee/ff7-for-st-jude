@@ -327,6 +327,8 @@ declare global {
 
 	type DonationsType = Donations;
 
+	type DonationsContentType = DonationsContent;
+
 	type DonationsRequestType = DonationsRequest;
 
 	type DonationsRawType = DonationsRaw;

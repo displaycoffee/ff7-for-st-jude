@@ -127,7 +127,7 @@ export const Home = () => {
 
 			<Details header={'Supporting Campaigns'} hasRow={true}>
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{supporting.fetched && supporting.values && supporting.values.length !== 0
+					{supporting.fetched && utils.checkArray(supporting.values)
 						? supporting.values.map((support) => {
 								const { total_amount_raised } = support.amounts;
 

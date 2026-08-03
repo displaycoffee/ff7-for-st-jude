@@ -92,6 +92,12 @@ export const utils: UtilsType = {
 			},
 		};
 		window.scroll({ top: anchor.position(), left: 0, behavior: 'smooth' });
+
+		// Move focus to the target so keyboard/screen-reader users know where they landed
+		if (anchor.selector) {
+			const anchorElement = document.querySelector<HTMLElement>(anchor.selector);
+			anchorElement?.focus({ preventScroll: true });
+		}
 	},
 	setActive: (type: string, data: RewardsType | TargetsType) => {
 		// Get time for checking if content has expired

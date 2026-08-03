@@ -2,7 +2,7 @@
 import './styles/colors.scss';
 
 /* Packages */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 /* Scripts */
 import { useAppContext } from '../../context/scripts/context-hooks';
@@ -12,6 +12,23 @@ import { colors as colorsUtils } from './scripts/colors';
 export const Colors = (props: ColorsProps) => {
 	const { showButton } = props;
 	const { theme } = useAppContext();
+
+	// Close the panel when Escape is pressed
+	// Note: colorsUtils.close already restores focus to whatever opened the panel
+	useEffect(() => {
+		if (showButton) return;
+
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key !== 'Escape') return;
+			const element = document.querySelector<HTMLElement>(`#${colorsUtils.config.id}`);
+			if (!element?.classList.contains(colorsUtils.config.classes.active)) return;
+			colorsUtils.close(element);
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => document.removeEventListener('keydown', handleKeyDown);
+	}, [showButton]);
 
 	// Default color and style rules
 	const defaultColors = {
@@ -47,8 +64,8 @@ export const Colors = (props: ColorsProps) => {
 					color04: color04,
 				});
 				setStyles(`.gradient-section, .gradient-background {
-					background-color: ${colors.color01};
-					background-image: linear-gradient(160deg, ${colors.color01} 20%, ${colors.color02} 40%, ${colors.color03} 60%, ${colors.color04});
+					background-color: ${color01};
+					background-image: linear-gradient(160deg, ${color01} 20%, ${color02} 40%, ${color03} 60%, ${color04});
 				}`);
 			}
 		} else {
@@ -66,8 +83,16 @@ export const Colors = (props: ColorsProps) => {
 		<>
 			<style className="colors-styles">{styles}</style>
 
-			<div id={colorsUtils.config.id} className="colors flex-wrap flex-align-items-center flex-justify-content-center">
+			<div
+				id={colorsUtils.config.id}
+				className="colors flex-wrap flex-align-items-center flex-justify-content-center"
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="colors-title"
+			>
 				<div className="colors-container container">
+					<h2 id="colors-title">Window Color</h2>
+
 					<form
 						className="colors-form gradient-section"
 						onSubmit={(e) => {
