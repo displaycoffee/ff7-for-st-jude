@@ -133,10 +133,18 @@ export const SlideoutOverlay = (props: SlideoutOverlayProps) => {
 		};
 	}, [utils, toggle]);
 
-	// If we are on desktop and slideout is active, remove body classes to hide overlay
+	// If we are on desktop and a slideout is active, fully close it (menu state, focus trap, focus restore, overlay)
 	useEffect(() => {
-		const body = document.querySelector('body');
-		if (body && body.classList.contains(config.classes.activeBody) && options.isDesktop) {
+		if (!options.isDesktop) return;
+
+		const activeSelector = `.${config.classes.slideout}.${config.classes.active}`;
+		const activeElements = document.querySelectorAll<HTMLElement>(activeSelector);
+
+		activeElements.forEach((element) => {
+			set.slideout(element, 'remove');
+		});
+
+		if (activeElements.length !== 0) {
 			set.body('remove');
 		}
 	}, [config, options.isDesktop, set]);
