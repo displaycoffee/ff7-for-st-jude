@@ -98,6 +98,10 @@ type Theme = {
 type Utils = {
 	checkAmount: (number?: number) => number;
 	checkArray: (array: unknown[]) => boolean;
+	focusTrap: {
+		activate: (container: HTMLElement, focusSelector?: string) => void;
+		deactivate: (container: HTMLElement) => void;
+	};
 	formatCurrency: (number: number) => string;
 	getAmounts: (detail?: AmountsRaw) => Amounts;
 	getDate: (time: string) => string;
