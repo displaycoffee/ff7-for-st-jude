@@ -46,11 +46,11 @@
 			}
 		}
 	}
-	.details-supporting-campaigns {
+	.section-supporting-campaigns {
 		.row {
 			.column {
 				&:nth-child(-n+3) {
-					.details-links {
+					.section-links {
 						position: relative;
 						padding: 0 0 0 70px;
 						min-height: 50px;
@@ -65,13 +65,13 @@
 						}
 					}
 				}
-				&:nth-child(1) .details-links:before {
+				&:nth-child(1) .section-links:before {
 					background-image: url('/assets/images/theme/chocobo-01.svg');
 				}
-				&:nth-child(2) .details-links:before {
+				&:nth-child(2) .section-links:before {
 					background-image: url('/assets/images/theme/chocobo-02.svg');
 				}
-				&:nth-child(3) .details-links:before {
+				&:nth-child(3) .section-links:before {
 					background-image: url('/assets/images/theme/chocobo-03.svg');
 				}			
 			}

@@ -181,7 +181,7 @@ export const utils: UtilsType = {
 			const rewardsData = data as RewardsType;
 			contentActive = !isExpired && rewardsData.remaining > 0 && rewardsData.active;
 		} else if (type == 'targets') {
-			const targetsData = data as TargetsType;
+			const targetsData = data;
 			contentActive = !isExpired && targetsData.active && targetsData.amounts.amount_raised < targetsData.amounts.amount;
 		}
 
@@ -199,12 +199,12 @@ export const utils: UtilsType = {
 			let sortedValue = 0;
 
 			if (type == 'string' || type == 'boolean') {
-				a = a as ObjectPrimitiveType;
-				b = b as ObjectPrimitiveType;
+				const objectA = a as ObjectPrimitiveType;
+				const objectB = b as ObjectPrimitiveType;
 
 				// Make sure booleans are strings
-				const sortValueA = String(a[field]);
-				const sortValueB = String(b[field]);
+				const sortValueA = String(objectA[field]);
+				const sortValueB = String(objectB[field]);
 
 				// Sorting method for strings
 				if (direction == 'asc') {
@@ -213,12 +213,12 @@ export const utils: UtilsType = {
 					sortedValue = sortValueB.localeCompare(sortValueA);
 				}
 			} else if (type == 'integer') {
-				a = a.amounts as AmountsType;
-				b = b.amounts as AmountsType;
+				const amountsA = a.amounts as AmountsType;
+				const amountsB = b.amounts as AmountsType;
 
 				// Make sure values are numbers
-				const sortValueA = Number(a[field]);
-				const sortValueB = Number(b[field]);
+				const sortValueA = Number(amountsA[field as keyof AmountsType]);
+				const sortValueB = Number(amountsB[field as keyof AmountsType]);
 
 				// Sorting method for numbers
 				if (direction == 'asc') {

@@ -44,8 +44,6 @@
 		display: inline-block;
 	}
 	.slideout-button {
-		@include mixins.flex-layout((align-items: center));
-		@include mixins.gap(theme.$spacing-x2);
 		margin: 0;
 	}
 	.slideout {

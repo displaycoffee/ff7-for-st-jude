@@ -13,6 +13,7 @@ import { navigationRoutes } from './scripts/navigation-routes';
 
 /* Components */
 import { Colors } from '../colors/Colors';
+import { LinkExternal, List } from '../blocks/Blocks';
 
 /* Get navigation menu */
 const navigationList = navigationUtils.get.list();
@@ -39,7 +40,7 @@ export const Navigation = (props: NavigationComponentProps) => {
 	return navigationList.length != 0 ? (
 		<nav className={`navigation navigation-${location}`} aria-label={label} ref={navigationRef}>
 			<div className="navigation-fixed">
-				<ul className="navigation-list unstyled">
+				<List className="navigation-list" variant={'ul-unstyled'}>
 					{navigationList.map((nav, index) => {
 						return (
 							<Fragment key={nav.id}>
@@ -55,7 +56,7 @@ export const Navigation = (props: NavigationComponentProps) => {
 					<li className="navigation-list-item">
 						<Colors showButton={true} />
 					</li>
-				</ul>
+				</List>
 			</div>
 		</nav>
 	) : null;
@@ -72,9 +73,7 @@ export const NavigationListItem = (props: NavigationListItemProps) => {
 					{nav.label}
 				</NavLink>
 			) : (
-				<a href={nav.url} target="_blank" rel="noreferrer">
-					{nav.label}
-				</a>
+				<LinkExternal href={nav.url}>{nav.label}</LinkExternal>
 			)}
 		</li>
 	);

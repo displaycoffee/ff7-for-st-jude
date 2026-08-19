@@ -1,19 +1,15 @@
 /* Styles */
 import './styles/footer.scss';
 
+/* Components */
+import { LinkExternal } from '../../components/blocks/Blocks';
+
 export const Footer = () => {
 	return (
 		<footer className="footer">
 			<p className="credits">
-				Created by{' '}
-				<a href="//display.coffee" target="_blank" rel="noreferrer">
-					displaycoffee
-				</a>
-				. Built and organized with{' '}
-				<a href="//tiltify.com" target="_blank" rel="noreferrer">
-					tiltify
-				</a>
-				.
+				Created by <LinkExternal href="//display.coffee">displaycoffee</LinkExternal>. Built and organized with{' '}
+				<LinkExternal href="//tiltify.com">tiltify</LinkExternal>.
 			</p>
 		</footer>
 	);

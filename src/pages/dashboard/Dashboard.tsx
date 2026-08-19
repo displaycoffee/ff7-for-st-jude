@@ -10,10 +10,10 @@ import { useReactQuery, useReactQueries } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
-import { Details, DetailsParagraph, DetailsLinks, DetailsNotFound } from '../../components/details/Details';
+import { List, Section, SectionParagraph, SectionLinks, SectionNotFound, Skeleton } from '../../components/blocks/Blocks';
+import { Button, ButtonScroll } from '../../components/forms/Forms';
 import { DonationsSection } from '../../components/donations-section/DonationsSection';
 import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
-import { Skeleton } from '../../components/skeleton/Skeleton';
 
 /* Static variables */
 const truncateLimit = 75;
@@ -110,45 +110,23 @@ export const Dashboard = () => {
 		<>
 			<nav className="floating" aria-label="Dashboard Section Navigation">
 				<div className="gradient-section">
-					<ul className="floating-list unstyled">
+					<List className={'floating-list'} variant={'ul-unstyled'}>
 						<li className="floating-list-item">
-							<button
-								className="pointer unstyled a"
-								type="button"
-								aria-label="Donations Button"
-								onClick={(e) => utils.scrollTo(e, '#details-donations', scrollToOffset)}
-							>
-								Donations
-							</button>
+							<ButtonScroll offset={scrollToOffset} target={'#section-donations'} label="Donations" />
 						</li>
 
 						<li className="floating-list-item">
-							<button
-								className="pointer unstyled a"
-								type="button"
-								aria-label="Rewards Button"
-								onClick={(e) => utils.scrollTo(e, '#details-rewards', scrollToOffset)}
-							>
-								Rewards
-							</button>
+							<ButtonScroll offset={scrollToOffset} target={'#section-rewards'} label="Rewards" />
 						</li>
 
 						<li className="floating-list-item">
-							<button
-								className="pointer unstyled a"
-								type="button"
-								aria-label="Targets Button"
-								onClick={(e) => utils.scrollTo(e, '#details-targets', scrollToOffset)}
-							>
-								Targets
-							</button>
+							<ButtonScroll offset={scrollToOffset} target={'#section-targets'} label="Targets" />
 						</li>
 
 						<li className="floating-list-item">
-							<button
-								className="pointer unstyled a"
-								type="button"
-								aria-label="Refresh Button"
+							<Button
+								label="Refresh"
+								variant="link"
 								onClick={(e) => {
 									// Refresh content
 									e.preventDefault();
@@ -167,18 +145,16 @@ export const Dashboard = () => {
 										}),
 									);
 								}}
-							>
-								Refresh
-							</button>
+							/>
 						</li>
-					</ul>
+					</List>
 				</div>
 			</nav>
 
 			<DonationsSection donations={donations} donationsComplete={donationsComplete} />
 
 			<ErrorBoundary message="Something went wrong loading rewards.">
-				<Details header={'Rewards'} hasRow={true} scrollLink={true}>
+				<Section title={'Rewards'} hasRow={true}>
 					<p className="sr-only" role="status">
 						{!rewardsComplete ? 'Loading rewards...' : utils.checkArray(rewards.values) ? 'Rewards loaded.' : ''}
 					</p>
@@ -192,17 +168,17 @@ export const Dashboard = () => {
 									return (
 										<div className="column column-width-33" key={reward.key}>
 											<div className={`gradient-section${reward.active ? '' : ' inactive'}`}>
-												<DetailsParagraph label={'Reward'} content={reward.name} />
+												<SectionParagraph label={'Reward'} content={reward.name} />
 
-												<DetailsParagraph label={'Description'} content={utils.truncate(reward.description, truncateLimit)} />
+												<SectionParagraph label={'Description'} content={utils.truncate(reward.description, truncateLimit)} />
 
 												{reward.active ? (
 													<>
-														<DetailsParagraph label={'Cost'} content={utils.formatCurrency(amount)} />
+														<SectionParagraph label={'Cost'} content={utils.formatCurrency(amount)} />
 
-														{!ended ? null : <DetailsParagraph label={'Ends'} content={reward.date} />}
+														{!ended ? null : <SectionParagraph label={'Ends'} content={reward.date} />}
 
-														<DetailsLinks links={reward.links} />
+														<SectionLinks links={reward.links} />
 													</>
 												) : (
 													<p className="no-longer-active">
@@ -218,14 +194,14 @@ export const Dashboard = () => {
 						{!rewardsComplete ? (
 							<Skeleton columns={6} perRow={3} paragraphs={6} />
 						) : rewards.values.length === 0 ? (
-							<DetailsNotFound type={'rewards'} />
+							<SectionNotFound type={'rewards'} />
 						) : null}
 					</div>
-				</Details>
+				</Section>
 			</ErrorBoundary>
 
 			<ErrorBoundary message="Something went wrong loading targets.">
-				<Details header={'Targets'} hasRow={true} scrollLink={true}>
+				<Section title={'Targets'} hasRow={true}>
 					<p className="sr-only" role="status">
 						{!targetsComplete ? 'Loading targets...' : utils.checkArray(targets.values) ? 'Targets loaded.' : ''}
 					</p>
@@ -239,20 +215,20 @@ export const Dashboard = () => {
 									return (
 										<div className="column column-width-33" key={target.key}>
 											<div className={`gradient-section${target.active ? '' : ' inactive'}`}>
-												<DetailsParagraph label={'Target'} content={target.name} />
+												<SectionParagraph label={'Target'} content={target.name} />
 
-												<DetailsParagraph label={'Description'} content={utils.truncate(target.description, truncateLimit)} />
+												<SectionParagraph label={'Description'} content={utils.truncate(target.description, truncateLimit)} />
 
-												<DetailsParagraph
+												<SectionParagraph
 													label={'Raised'}
 													content={`${utils.formatCurrency(amount_raised)} out of ${utils.formatCurrency(amount)}`}
 												/>
 
 												{target.active ? (
 													<>
-														{!ended ? null : <DetailsParagraph label={'Ends'} content={target.date} />}
+														{!ended ? null : <SectionParagraph label={'Ends'} content={target.date} />}
 
-														<DetailsLinks links={target.links} />
+														<SectionLinks links={target.links} />
 													</>
 												) : (
 													<p className="no-longer-active">
@@ -268,10 +244,10 @@ export const Dashboard = () => {
 						{!targetsComplete ? (
 							<Skeleton columns={6} perRow={3} paragraphs={5} />
 						) : targets.values.length === 0 ? (
-							<DetailsNotFound type={'targets'} />
+							<SectionNotFound type={'targets'} />
 						) : null}
 					</div>
-				</Details>
+				</Section>
 			</ErrorBoundary>
 		</>
 	);

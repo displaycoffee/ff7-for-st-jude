@@ -57,45 +57,6 @@
 	.margin-trim > *:last-child {
 		margin-bottom: 0;
 	}
-	ul, ol {
-		list-style: none;
-		padding: 0;
-	}
-	ul.unstyled, ol.unstyled {
-		margin: 0;
-	}
-	ul:not(.unstyled), ol:not(.unstyled) {
-		margin: 0 0 $base-elements-spacing 0;
-		& > li {
-			position: relative;
-			margin: 0 0 calc(theme.$spacing-x1 / 2) 0;
-			padding: 0 0 0 theme.$spacing-x4;
-			&:before {
-				display: block;
-				@include mixins.position($type: absolute, $left: 0);
-			}
-			&:last-child, ul, ol {
-				margin-bottom: 0;
-			}
-		}
-	}
-	ul:not(.unstyled) > li:before {
-		top: 4px;
-		content: '\0025AA';
-		font-size: functions.em(16px, rem);
-		line-height: 1;
-	}
-	ol:not(.unstyled) {
-		counter-reset: section;
-		& > li {
-			padding-left: theme.$spacing-x10;
-			&:before {
-				top: 0;
-				counter-increment: section;
-				content: counter(section)'.';
-			}
-		}
-	}
 	a, button, .pointer {		
 		cursor: url('/assets/images/theme/hand-cursor-up.svg') 8 8, pointer;
 	}
@@ -123,6 +84,9 @@
 
 	.sr-only {
 		@include mixins.sr-only;
+	}
+	.sr-only-important {
+		@include mixins.sr-only(true);
 	}
 	.clearfix {
 		@include mixins.clearfix('&');

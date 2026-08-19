@@ -2,13 +2,16 @@
 import './styles/slideout.scss';
 
 /* Packages */
-import { createRef, RefObject, useEffect, useRef } from 'react';
+import { createRef, RefObject, useEffect, useRef, useState } from 'react';
 
 /* Scripts */
 import { useFormattedId } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { SlideoutOverlayProps, SlideoutProps, SlideoutTouchType, SlideoutTouchRefType, SlideoutOverlayRefType } from './scripts/slideout-types';
 import { slideout } from './scripts/slideout';
+
+/* Components */
+import { Button } from '../forms/Forms';
 
 export const Slideout = (props: SlideoutProps) => {
 	const { children, options } = props;
@@ -18,6 +21,7 @@ export const Slideout = (props: SlideoutProps) => {
 	const id = `slideout-${options?.id ?? fallbackId}`;
 	const title = `${id}-title`;
 	const ref: RefObject<HTMLDivElement | null> = createRef();
+	const [isActive, setIsActive] = useState(false);
 
 	// Get default attributes for slideout
 	const width = options?.width ?? config.values.width;
@@ -28,9 +32,14 @@ export const Slideout = (props: SlideoutProps) => {
 	// Create shared slideout button
 	const slideoutButton = (
 		<div className="slideout-button-fixed gradient-section">
-			<button className="slideout-button unstyled pointer a" type="button" onClick={(e) => toggle(e, id)}>
-				{options.label} &gt;
-			</button>
+			<Button
+				className="slideout-button"
+				label={`${options.label} >`}
+				onClick={(e) => toggle(e, id)}
+				variant="link"
+				aria-expanded={isActive}
+				aria-label={`Open ${options.label}`}
+			/>
 		</div>
 	);
 
@@ -70,6 +79,43 @@ export const Slideout = (props: SlideoutProps) => {
 		if (isClosingSwipe) toggle(e, false);
 	};
 
+	// Track active state for aria-expanded
+	// Note: looked up by id (not ref) since toggle() mutates classList directly, and the button can render
+	// separately from the slideout element when options.button.outside is true (a different Slideout instance
+	// renders the element with this id) — watch the document for it to mount rather than assuming it's already there
+	useEffect(() => {
+		let classObserver: MutationObserver | null = null;
+
+		// Start tracking the slideout element's active class once it's found
+		const trackElement = (element: HTMLElement) => {
+			const updateActiveState = () => setIsActive(element.classList.contains(config.classes.active));
+			updateActiveState();
+
+			classObserver = new MutationObserver(updateActiveState);
+			classObserver.observe(element, { attributes: true, attributeFilter: ['class'] });
+		};
+
+		const existingElement = document.getElementById(id);
+		if (existingElement) {
+			trackElement(existingElement);
+			return () => classObserver?.disconnect();
+		}
+
+		// Element isn't mounted yet — watch the document for it to appear
+		const bodyObserver = new MutationObserver(() => {
+			const element = document.getElementById(id);
+			if (!element) return;
+			bodyObserver.disconnect();
+			trackElement(element);
+		});
+		bodyObserver.observe(document.body, { childList: true, subtree: true });
+
+		return () => {
+			bodyObserver.disconnect();
+			classObserver?.disconnect();
+		};
+	}, [id, config.classes.active]);
+
 	// Set sticky class on slideout
 	useEffect(() => {
 		utils.isSticky(ref?.current, 'is-sticky');
@@ -103,14 +149,15 @@ export const Slideout = (props: SlideoutProps) => {
 						{options.label}
 					</h2>
 
-					<button
-						className="slideout-close pointer unstyled"
-						type="button"
-						aria-label="Slideout Close Button"
+					<Button
+						className="slideout-close"
+						hideLabel={true}
+						label="Slideout Close Button"
 						onClick={(e) => toggle(e, false)}
+						variant="unstyled"
 					>
 						x
-					</button>
+					</Button>
 				</header>
 
 				<div className="slideout-scrollbar scrollbar">

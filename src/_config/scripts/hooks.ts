@@ -56,7 +56,7 @@ export const useReactQuery = (key: string, content: ContentType, current: Campai
 			supportingData && supportingData.length !== 0 ? utils.sort(data as SortType[], 'integer', 'total_amount_raised', 'desc') : [];
 
 		// Set fetched data after sorting
-		fetchedData = sortedData as SupportingType[];
+		fetchedData = sortedData;
 	}
 
 	return [fetchedData, { fetched: isFetched, pending: isPending, success: isSuccess }];
@@ -97,7 +97,7 @@ export const useReactQueries = (key: string, content: ContentType) => {
 	const checkFetched = checkStatus(isFetched);
 
 	// Re-sort merged data
-	const sortedData = data && data.length !== 0 ? utils.sort(data as SortType[], 'integer', 'milliseconds', 'asc') : [];
+	const sortedData = data && data.length !== 0 ? utils.sort(data, 'integer', 'milliseconds', 'asc') : [];
 	return [sortedData, { fetched: checkFetched && isFetched[0], pending: checkPending && isPending[0], success: checkSuccess && isSuccess[0] }];
 };
 

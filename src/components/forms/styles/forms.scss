@@ -1,0 +1,290 @@
+// Use utils and theme variables
+@use '../../../_config/styles/utils/_functions';
+@use '../../../_config/styles/utils/_mixins';
+@use '../../../_config/styles/theme/_theme';
+
+//// FORMS
+//// --------------------------------------------------------------------------
+
+	// Colors
+
+	$forms-color-01: theme.$color-08; // focus visible border color
+
+	// Style block
+	
+	:focus-visible {
+		outline: 1px solid $forms-color-01;
+		outline-offset: 2px;
+	}
+	fieldset, label, .label, legend {
+		margin: 0;
+	}
+	fieldset { 
+		padding: 0;
+		border: 0;
+	}
+	legend {
+		display: inline;
+	}
+
+//// FORMS - BUTTON
+//// --------------------------------------------------------------------------
+
+	// Colors
+
+	$forms-button-color-01: theme.$color-04; // primary button background
+	$forms-button-color-02: theme.$color-04; // primary button border
+	$forms-button-color-03: theme.$color-03; // primary button color	
+	$forms-button-color-04: theme.$color-05; // secondary button background
+	$forms-button-color-05: theme.$color-05; // secondary button border
+	$forms-button-color-06: theme.$color-03; // secondary button color	
+	$forms-button-color-07: theme.$color-03; // tertiary button background
+	$forms-button-color-08: theme.$color-04; // tertiary button border
+	$forms-button-color-09: theme.$color-04; // tertiary button color
+
+	// Configuration
+	
+	$forms-button-spacing: 0 theme.$spacing-x4; // button spacing
+	$forms-button-height: 35px; // button height
+	$forms-button-border-width: 1px; // button border width
+
+	// Style block
+
+	button, .button {
+		@include mixins.flex-layout((display: inline-flex, flex-flow: row nowrap, align-items: center, justify-content: center));
+		@include mixins.gap(theme.$spacing-x1);
+	}
+	.button {
+		max-width: 100%;
+		@include mixins.if-exists((
+			padding: $forms-button-spacing,
+		));
+		@if $forms-button-border-width != false {
+			border: $forms-button-border-width solid transparent;
+		}
+		height: $forms-button-height;
+		line-height: $forms-button-height;
+		.button-label {
+			@include mixins.ellipsis;
+		}
+	}
+	.button-primary {
+		@if $forms-button-border-width != false and $forms-button-color-02 != false {
+			border-color: $forms-button-color-02;
+		}
+		background-color: $forms-button-color-01;
+		color: $forms-button-color-03;
+		&:hover {
+			@include mixins.if-exists((
+				background-color: $forms-button-color-03,
+				color: $forms-button-color-01,
+			));
+		}
+	}
+	.button-secondary {
+		@if $forms-button-border-width != false and $forms-button-color-05 != false {
+			border-color: $forms-button-color-05;
+		}
+		@include mixins.if-exists((
+			background-color: $forms-button-color-04,
+			color: $forms-button-color-06,
+		));
+		&:hover {
+			@include mixins.if-exists((
+				background-color: $forms-button-color-06,
+				color: $forms-button-color-04,
+			));
+		}
+	}
+	.button-tertiary {
+		@if $forms-button-border-width != false and $forms-button-color-08 != false {
+			border-color: $forms-button-color-08;
+		}
+		@include mixins.if-exists((
+			background-color: $forms-button-color-07,
+			color: $forms-button-color-09,
+		));
+		&:hover {
+			@include mixins.if-exists((
+				background-color: $forms-button-color-09,
+				color: $forms-button-color-07,
+			));
+		}
+	}
+	.button-unstyled {
+		padding: 0;
+		border: 0;
+		background-color: transparent;
+	}
+
+//// FORMS - DESCRIPTION
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.form-description {}
+
+//// FORMS - ERROR
+//// --------------------------------------------------------------------------
+
+	// Colors
+
+	$forms-error-color-01: theme.$color-12; // error background
+
+	// Configuration
+	
+	$forms-error-spacing: theme.$spacing-x2; // error spacing
+	$forms-error-border-width: 1px; // error border width
+
+	// Style block
+
+	.form-error {
+		@if $forms-error-border-width != false {
+			border: $forms-error-border-width solid $forms-error-color-01;
+		}
+		@include mixins.if-exists((
+			background-color: rgba($forms-error-color-01, 50%),
+			padding: $forms-error-spacing,
+		));
+	}
+
+//// FORMS - FORM
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.form {
+		&.margin-trim > fieldset {
+			margin: 0 0 theme.$spacing-x4 0;
+		}
+	}
+
+//// FORMS - FORM ACTIONS
+//// --------------------------------------------------------------------------
+
+	// Configuration
+
+	$forms-form-actions-spacing: theme.$spacing-x2; // spacing for actions wrapper
+
+	// Style block
+
+	.form-actions {
+		@include mixins.flex-layout((flex-flow: row wrap));
+		@include mixins.gap($forms-form-actions-spacing);
+	}
+
+//// FORMS - FORM FIELD
+//// --------------------------------------------------------------------------
+
+	// Configuration
+	
+	$forms-form-field-bp: theme.$bp-01; // breakpoint
+	$forms-form-field-spacing: theme.$spacing-x4; // spacing for field wrapper
+	$forms-form-field-label-width: 100px; // width for field label
+	$forms-form-field-label-vertical: 5px; // position for label inside field wrapper
+
+	// Variables
+
+	$forms-form-field-spacing-half: calc($forms-form-field-spacing / 2);
+
+	// Style block
+
+	.form-field {
+		@include mixins.flex-layout((flex-flow: row wrap));
+		@include mixins.gap($forms-form-field-spacing-half $forms-form-field-spacing);
+		&:has(.input-color) {
+			.form-field-label {
+				@include mixins.flex;
+			}
+			.form-field-control {
+				@include mixins.flex(0 1 auto);
+			}
+		}
+		.form-field-label, .form-field-control {
+			@include mixins.flex(1 1 100%);
+			min-width: 1px;
+		}
+		.form-field-label {
+			@include mixins.position($type: relative, $top: $forms-form-field-label-vertical);
+		}
+		.form-field-control {
+			& > * {
+				margin: 0 0 $forms-form-field-spacing-half 0;
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+	@include mixins.respond-min($forms-form-field-bp) {
+		.form-field {
+			.form-field-label {
+				@include mixins.flex(0 1 auto);
+				@include mixins.if-exists((
+					width: $forms-form-field-label-width,
+				));
+			}
+			.form-field-control {
+				@include mixins.flex;
+			}
+		}
+	}
+
+//// FORMS - INPUT
+//// --------------------------------------------------------------------------
+
+	// Colors
+
+	$forms-input-color-01: theme.$color-04; // input background
+	$forms-input-color-02: theme.$color-03; // input border
+	$forms-input-color-03: theme.$color-03; // input color
+
+	// Configuration
+	
+	$forms-input-spacing: 0 theme.$spacing-x2; // input spacing
+	$forms-input-height: 35px; // input height
+	$forms-input-border-width: 1px; // input border width
+
+	// Style block
+
+	.input-freeform {
+		@include mixins.sizing(100%, $forms-input-height);
+		@include mixins.if-exists((
+			padding: $forms-input-spacing,
+			background-color: $forms-input-color-01,
+			color: $forms-input-color-03,
+		));
+		@if $forms-input-border-width != false and $forms-input-color-02 != false {
+			border: $forms-input-border-width solid $forms-input-color-02;
+		}
+		@if $forms-input-color-03 != false {
+			@include mixins.placeholder {
+				color: rgba($forms-input-color-03, 50%);
+			}
+		}
+	}
+	.input-color {
+		@include mixins.sizing(30px, 30px);
+		border: 0;
+		background-color: $forms-input-color-01;
+	}
+
+//// FORMS - REQUIRED
+//// --------------------------------------------------------------------------
+
+	// Colors
+
+	$forms-required-color-01: red; // required color
+
+	// Configuration
+	
+	$forms-required-spacing: 0 0 0 calc(theme.$spacing-x1 / 2); // required spacing
+
+	// Style block
+
+	.form-required {
+		@include mixins.if-exists((
+			color: $forms-required-color-01,
+			padding: $forms-required-spacing,
+		));
+	}
