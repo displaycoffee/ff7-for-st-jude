@@ -6,8 +6,11 @@ import { useEffect, useState } from 'react';
 
 /* Scripts */
 import { useAppContext } from '../../context/scripts/context-hooks';
-import { ColorsProps, ColorsFieldProps } from './scripts/color-types';
+import { ColorsProps } from './scripts/color-types';
 import { colors as colorsUtils } from './scripts/colors';
+
+/* Components */
+import { Button, Form, FormActions, Input } from '../forms/Forms';
 
 export const Colors = (props: ColorsProps) => {
 	const { showButton } = props;
@@ -76,9 +79,13 @@ export const Colors = (props: ColorsProps) => {
 	};
 
 	return showButton ? (
-		<button className="colors-buttons unstyled a" type="button" aria-label="Window Color Button" onClick={(e) => colorsUtils.toggle(e)}>
-			Window Color
-		</button>
+		<Button
+			className="colors-buttons"
+			label="Window Color"
+			variant="link"
+			aria-label="Window Color Button"
+			onClick={(e) => colorsUtils.toggle(e)}
+		/>
 	) : (
 		<>
 			<style className="colors-styles">{styles}</style>
@@ -93,7 +100,7 @@ export const Colors = (props: ColorsProps) => {
 				<div className="colors-container container">
 					<h2 id="colors-title">Window Color</h2>
 
-					<form
+					<Form
 						className="colors-form gradient-section"
 						onSubmit={(e) => {
 							e.preventDefault();
@@ -110,65 +117,44 @@ export const Colors = (props: ColorsProps) => {
 						}}
 						onReset={() => changeColors('reset')}
 					>
-						<ColorsField colors={colors} id={1} label={'Upper left corner'} setColors={setColors} />
+						{Object.entries(colors).map(([color, colorValue]) => {
+							// Crate label for input
+							const vertical = color == 'color01' || color == 'color02' ? 'Upper' : 'Bottom';
+							const horizontal = color == 'color01' || color == 'color03' ? 'left' : 'right';
 
-						<ColorsField colors={colors} id={2} label={'Upper right corner'} setColors={setColors} />
+							return (
+								<Input
+									id={color}
+									className={'pointer'}
+									label={`${vertical} ${horizontal} corner`}
+									type={'color'}
+									value={colorValue as string}
+									onChange={(e) => {
+										setColors({ ...colors, [color]: e.target.value });
+									}}
+									key={color}
+								/>
+							);
+						})}
 
-						<ColorsField colors={colors} id={3} label={'Bottom left corner'} setColors={setColors} />
+						<FormActions className="colors-actions">
+							<Button className="colors-buttons" label="Change" variant="link" type="submit" aria-label="Change Colors Button" />
 
-						<ColorsField colors={colors} id={4} label={'Bottom right corner'} setColors={setColors} />
+							<Button className="colors-buttons" label="Reset" variant="link" type="reset" aria-label="Reset Colors Button" />
 
-						<div className="colors-actions row row-nowrap row-align-items-center row-fit row-spacing-10">
-							<div className="column column-button">
-								<button className="colors-buttons unstyled a" type="submit" aria-label="Change Colors Button">
-									Change
-								</button>
-							</div>
-							<div className="column column-button">
-								<button className="colors-buttons unstyled a" type="reset" aria-label="Reset Colors Button">
-									Reset
-								</button>
-							</div>
-							<div className="column column-button">
-								<button
-									className="colors-buttons unstyled a"
-									onClick={(e) => colorsUtils.toggle(e, 'close')}
-									aria-label="Close Colors Button"
-								>
-									x Close
-								</button>
-							</div>
-						</div>
-					</form>
+							<Button
+								className="colors-buttons"
+								label="x Close"
+								variant="link"
+								aria-label="Close Colors Button"
+								onClick={(e) => colorsUtils.toggle(e, 'close')}
+							/>
+						</FormActions>
+					</Form>
 				</div>
 
 				<div className="colors-overlay pointer" role="presentation" onClick={(e) => colorsUtils.toggle(e, 'close')}></div>
 			</div>
 		</>
-	);
-};
-
-export const ColorsField = (props: ColorsFieldProps) => {
-	const { colors, id, label, setColors } = props;
-	const colorId = `color0${id}`;
-
-	return (
-		<div className="colors-picker row row-nowrap row-align-items-center row-fit row-spacing-10">
-			<div className="column column-label">
-				<label htmlFor={colorId}>{label}</label>
-			</div>
-			<div className="column column-input">
-				<input
-					type="color"
-					id={colorId}
-					className="pointer"
-					name={colorId}
-					value={colors[colorId] as string}
-					onChange={(e) => {
-						setColors({ ...colors, [`${colorId}`]: e.target.value });
-					}}
-				/>
-			</div>
-		</div>
 	);
 };

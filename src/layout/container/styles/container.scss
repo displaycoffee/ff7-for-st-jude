@@ -12,7 +12,6 @@
 	@use './_normalize';
 	@use './_typography';
 	@use './_base';
-	@use './_forms';
 	@use './_images';
 	@use './_layout';
 
@@ -35,8 +34,10 @@
 			margin: 0;
 			padding: theme.$spacing-x2 theme.$spacing-x4;
 			overflow: visible;
-			background-color: theme.$color-03;
+			clip: unset;
+			white-space: unset;
 			border: 1px solid theme.$color-08;
+			background-color: theme.$color-03;
 		}
 	}
 	.container {

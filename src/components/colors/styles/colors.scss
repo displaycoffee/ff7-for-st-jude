@@ -26,6 +26,9 @@
 			max-width: 500px;
 			@include mixins.position($type: relative, $z: 99992);
 			margin: 0 theme.$spacing-x4;
+			h2 {
+				margin: 0 0 theme.$spacing-x4 0;
+			}
 		}
 		.colors-form {
 			& > * {
@@ -34,22 +37,8 @@
 					margin-bottom: 0;
 				}
 			}
-			.row {
-				.column-input {
-					@include mixins.flex(0 1 auto);
-				}
-				.column-button {
-					text-align: center;
-				}
-			}
-			.colors-picker {
-				input[type='color'] {
-					@include mixins.sizing(30px, 30px);
-					border: 0;
-					background-color: theme.$color-04;
-				}
-			}
 			.colors-actions {
+				@include mixins.flex-parent(justify-content, space-between);
 				margin-top: theme.$spacing-x4;
 			}
 		}

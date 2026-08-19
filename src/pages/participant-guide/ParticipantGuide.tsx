@@ -2,41 +2,32 @@
 import { Link } from 'react-router-dom';
 
 /* Components */
-import { Details } from '../../components/details/Details';
+import { LinkExternal, List, Section } from '../../components/blocks/Blocks';
 
 export const ParticipantGuide = () => {
 	return (
 		<>
-			<Details header={'Top 5 Important Things'} scrollLink={true}>
-				<ul>
+			<Section title={'Top 5 Important Things'}>
+				<List>
 					<li>Create a Tiltify campaign that supports the team campaign and create donation incentives.</li>
 					<li>Promote the event to viewers, family, friends, and coworkers.</li>
 					<li>Create bot commands such as !donate, !stjude, and !commentary.</li>
 					<li>Start stream at least 20 minutes before the race and ensure you have 360p as a quality option.</li>
 					<li>
-						Set up an account with{' '}
-						<a href="//racetime.gg" target="_blank" rel="noreferrer">
-							racetime.gg
-						</a>{' '}
-						and join the race through{' '}
-						<a href="//livesplit.org" target="_blank" rel="noreferrer">
-							LiveSplit
-						</a>{' '}
-						(or browser) before it starts.
+						Set up an account with <LinkExternal href="//racetime.gg">racetime.gg</LinkExternal> and join the race through{' '}
+						<LinkExternal href="//livesplit.org">LiveSplit</LinkExternal> (or browser) before it starts.
 					</li>
-				</ul>
-			</Details>
+				</List>
+			</Section>
 
-			<Details header={'Checklist'} scrollLink={true}>
+			<Section title={'Checklist'}>
 				<h3>Before the day of the event</h3>
 
-				<ol>
+				<List variant={'ol'}>
 					<li>Create your Tiltify campaign, create incentives, publish your campaign, and activate incentives.</li>
 					<li>
 						Create bot commands and timers with links to your campaign page and the commentary stream (
-						<a href="//twitch.tv/monetarydragon" target="_blank" rel="noreferrer">
-							twitch.tv/monetarydragon
-						</a>
+						<LinkExternal href="//twitch.tv/monetarydragon">twitch.tv/monetarydragon</LinkExternal>
 						).
 					</li>
 					<li>Set up donation alerts and overlays.</li>
@@ -45,94 +36,70 @@ export const ParticipantGuide = () => {
 						Advertise the event to family and friends! Encourage people to redeem early incentives like naming Cloud and Barret before the
 						event.
 					</li>
-				</ol>
+				</List>
 
 				<h3>Day of the event</h3>
 
-				<ol>
+				<List variant={'ol'}>
 					<li>
 						Keep an eye on the <strong>#upcoming-events</strong> channel in the{' '}
-						<a href="//discord.gg/U7PjxqbRBj2" target="_blank" rel="noreferrer">
-							Official FF7 Discord
-						</a>
-						.
+						<LinkExternal href="//discord.gg/U7PjxqbRBj2">Official FF7 Discord</LinkExternal>.
 					</li>
 					<li>Start your stream at least 20 minutes before the event starts.</li>
 					<li>Join the racetime.gg race in LiveSplit and click "I'm ready" when you're ready.</li>
 					<li>Wait on the "New Game" screen and move cursor until the race starts.</li>
-				</ol>
-			</Details>
+				</List>
+			</Section>
 
-			<Details header={'Important Links'} scrollLink={true}>
-				<ul>
+			<Section title={'Important Links'}>
+				<List>
 					<li>
 						<strong>Tiltify Team:</strong>{' '}
-						<a href="//tiltify.com/+ff7-for-st-jude/profile" target="_blank" rel="noreferrer">
-							tiltify.com/+ff7-for-st-jude/profile
-						</a>
+						<LinkExternal href="//tiltify.com/+ff7-for-st-jude/profile">tiltify.com/+ff7-for-st-jude/profile</LinkExternal>
 					</li>
 					<li>
-						<strong>Official FF7 Discord:</strong>{' '}
-						<a href="//discord.gg/U7PjxqbRBj2" target="_blank" rel="noreferrer">
-							discord.gg/U7PjxqbRBj2
-						</a>
+						<strong>Official FF7 Discord:</strong> <LinkExternal href="//discord.gg/U7PjxqbRBj2">discord.gg/U7PjxqbRBj2</LinkExternal>
 					</li>
 					<li>
 						<strong>MonetaryDragon's twitch channel (commentary stream):</strong>{' '}
-						<a href="//twitch.tv/MonetaryDragon" target="_blank" rel="noreferrer">
-							twitch.tv/MonetaryDragon
-						</a>
+						<LinkExternal href="//twitch.tv/MonetaryDragon">twitch.tv/MonetaryDragon</LinkExternal>
 					</li>
 					<li>
-						<strong>Racetime:</strong>{' '}
-						<a href="//racetime.gg" target="_blank" rel="noreferrer">
-							racetime.gg
-						</a>
+						<strong>Racetime:</strong> <LinkExternal href="//racetime.gg">racetime.gg</LinkExternal>
 					</li>
 					<li>
-						<strong>St. Jude Children's Research Hospital:</strong>{' '}
-						<a href="//www.stjude.org" target="_blank" rel="noreferrer">
-							stjude.org
-						</a>
+						<strong>St. Jude Children's Research Hospital:</strong> <LinkExternal href="//www.stjude.org">stjude.org</LinkExternal>
 					</li>
 					<li>
 						<strong>St. Jude PLAY LIVE:</strong>{' '}
-						<a href="//www.stjude.org/get-involved/other-ways/video-game-charity-event.html" target="_blank" rel="noreferrer">
+						<LinkExternal href="//www.stjude.org/get-involved/other-ways/video-game-charity-event.html">
 							stjude.org/get-involved/other-ways/video-game-charity-event.html
-						</a>
+						</LinkExternal>
 					</li>
 					<li>
 						<strong>St. Jude PLAY LIVE Discord:</strong>{' '}
-						<a href="//discord.gg/stjudeplaylive" target="_blank" rel="noreferrer">
-							discord.gg/stjudeplaylive
-						</a>
+						<LinkExternal href="//discord.gg/stjudeplaylive">discord.gg/stjudeplaylive</LinkExternal>
 					</li>
-				</ul>
-			</Details>
+				</List>
+			</Section>
 
-			<Details header={'Creating Your Tiltify Campaign'} scrollLink={true}>
+			<Section title={'Creating Your Tiltify Campaign'}>
 				<p>
 					This event uses Tiltify to manage donations through a team campaign. The team can be seen at{' '}
-					<a href="//tiltify.com/+ff7-for-st-jude/profile" target="_blank" rel="noreferrer">
-						tiltify.com/+ff7-for-st-jude/profile
-					</a>{' '}
-					which shows the active campaign near the top of the page. You do not need to be a member of the team to support the campaign.
-					Participants will create individual campaigns that support the team campaign.
+					<LinkExternal href="//tiltify.com/+ff7-for-st-jude/profile">tiltify.com/+ff7-for-st-jude/profile</LinkExternal> which shows the
+					active campaign near the top of the page. You do not need to be a member of the team to support the campaign. Participants will
+					create individual campaigns that support the team campaign.
 				</p>
 
-				<ol>
+				<List variant={'ol'}>
 					<li>
-						Browse to{' '}
-						<a href="//app.tiltify.com" target="_blank" rel="noreferrer">
-							app.tiltify.com
-						</a>{' '}
-						and log in using your twitch account.
+						Browse to <LinkExternal href="//app.tiltify.com">app.tiltify.com</LinkExternal> and log in using your twitch account.
 					</li>
 					<li>
 						Then in the same or new browser tab, go to{' '}
-						<a href="//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9" target="_blank" rel="noreferrer">
+						<LinkExternal href="//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9">
 							tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9
-						</a>{' '}
+						</LinkExternal>{' '}
 						and click the "Support this campaign" button.
 					</li>
 					<li>"Charity details" are already selected, so click "Continue".</li>
@@ -149,12 +116,12 @@ export const ParticipantGuide = () => {
 					<li>
 						In step three ("Event registration"), you will be asked to register with St. Jude PLAY LIVE. Click "Add address" and after
 						using the address, enter your phone number, birthday, and t-shirt fit and size.
-						<ul>
+						<List>
 							<li>
 								St. Jude PLAY LIVE sends prize packages out after the event. You might get a t-shirt and/or hoodie. Also, a bunch of
 								other random stuff.
 							</li>
-						</ul>
+						</List>
 					</li>
 					<li>
 						On step four ("Summary"), click "Create", but do not publish yet. Your campaign dashboard will open. From here you can manage
@@ -166,13 +133,13 @@ export const ParticipantGuide = () => {
 						you cannot change certain details such as name and description. You can unpublish your campaign, but only if no donations have
 						been made.
 					</li>
-				</ol>
-			</Details>
+				</List>
+			</Section>
 
-			<Details header={'Incentives'} scrollLink={true}>
+			<Section title={'Incentives'}>
 				<p>To manage donation incentives, log into your campaign dashboard and click the "Incentives" tab.</p>
 
-				<ul>
+				<List>
 					<li>
 						<strong>Rewards</strong> are for a single donation (e.g. $20 to name a character).
 					</li>
@@ -183,7 +150,7 @@ export const ParticipantGuide = () => {
 					<li>
 						<strong>Polls</strong> have multiple options people can donate to (e.g. Omnislash vs. Counter Attack).
 					</li>
-				</ul>
+				</List>
 
 				<p>
 					Any given donation can be applied toward a reward, target,{' '}
@@ -198,40 +165,40 @@ export const ParticipantGuide = () => {
 
 				<h3>Rewards</h3>
 
-				<ul>
+				<List>
 					<li>Name a character</li>
 					<li>Get an optional character (Vincent and/or Yuffie) and name it</li>
 					<li>Spin your chair</li>
 					<li>Flush the Shinra toilet</li>
 					<li>Eat a Bamboozled jelly bean</li>
-				</ul>
+				</List>
 
 				<h3>Targets</h3>
 
-				<ul>
+				<List>
 					<li>Get a special Gold Saucer date</li>
 					<li>Do a special boss strat</li>
 					<li>Don't do a skip</li>
 					<li>Do part of the game blindfolded</li>
-				</ul>
+				</List>
 
 				<h3>Polls</h3>
 
-				<ul>
+				<List>
 					<li>Omnislash vs. Counter Attack on Sephiroth</li>
 					<li>Best girl</li>
-				</ul>
+				</List>
 
 				<h3>Tips for how to price rewards and targets</h3>
 
-				<ul>
+				<List>
 					<li>You can charge more than you think you can.</li>
 					<li>People often have a donation amount in mind before seeing incentives.</li>
 					<li>Don't expect all of your incentives to be redeemed.</li>
-				</ul>
-			</Details>
+				</List>
+			</Section>
 
-			<Details header={'Stream Setup'} scrollLink={true}>
+			<Section title={'Stream Setup'}>
 				<p>
 					There are a few things you can add to your stream to help the event. Custom bot commands provide important information to viewers
 					such as donation links. Stream overlays and alerts keep your viewers up-to-date on your total amount raised, recent donations, and
@@ -246,7 +213,7 @@ export const ParticipantGuide = () => {
 
 				<h3>Common Commands</h3>
 
-				<ul>
+				<List>
 					<li>
 						<strong>!donate</strong> - Link to your campaign
 					</li>
@@ -260,12 +227,12 @@ export const ParticipantGuide = () => {
 						<strong>!stjude</strong> - Info about St. Jude. I recommend using their official mission statement found{' '}
 						<Link to="/">at the top of the home page</Link>
 					</li>
-				</ul>
+				</List>
 
 				<p>It's also a good idea to include these commands in your stream title!</p>
-			</Details>
+			</Section>
 
-			<Details header={'Commentary Stream'} scrollLink={true}>
+			<Section title={'Commentary Stream'}>
 				<p>
 					MonetaryDragon and AceZephyr host commentary for the event on MonetaryDragon's twitch channel. Typically several other people join
 					the commentary for some or all of the event. They restream up to 8 of the participants' streams at a time typically prioritized
@@ -276,13 +243,13 @@ export const ParticipantGuide = () => {
 
 				<p>There are a few things you need to know for the commentary stream:</p>
 
-				<ul>
+				<List>
 					<li>Start your stream at least 20 minutes before the event's start time.</li>
 					<li>Make sure 360p is a quality option for your stream. Restart your stream until it is available.</li>
-				</ul>
-			</Details>
+				</List>
+			</Section>
 
-			<Details header={'Promoting the Event'} scrollLink={true}>
+			<Section title={'Promoting the Event'}>
 				<p>
 					Before the event, be sure to let your family, friends, and stream viewers know you're participating! Tell them about the event and
 					your incentives to get them excited to watch and/or donate.
@@ -298,7 +265,7 @@ export const ParticipantGuide = () => {
 					the campaign raises $100 or more, they will donate $100. It is also common for businesses to do a percentage based match such as
 					20% up to $100 which would mean if $100 is raised, they would donate $20 but if $500 or more is raised, they would donate $100.
 				</p>
-			</Details>
+			</Section>
 		</>
 	);
 };

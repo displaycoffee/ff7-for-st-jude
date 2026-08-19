@@ -9,11 +9,15 @@
 	// Colors
 
 	$slideout-color-01: theme.$color-09; // overlay
-	$slideout-color-02: false; // menu background
+	$slideout-color-02: false; // content background
 
 	// Configuration
 
 	$slideout-spacing: theme.$spacing-x4; // overall spacing value
+	$slideout-easing-in: cubic-bezier(0.65, 0, 0.80, 0); // slow start, fast finish - used when closing so the fade gets a head start before the slide takes off
+	$slideout-easing-out: cubic-bezier(0.25, 1, 0.35, 1); // fast start, slow finish - used when opening
+	$slideout-transition-closed: opacity 0.6s ease-in-out, transform 0.6s $slideout-easing-in; // transition properties for closing
+	$slideout-transition-open: opacity 0.6s ease-in-out, transform 0.6s $slideout-easing-out; // transition properties for opening
 	$slideout-header: 40px; // height of header (determines scrollable area)
 
 	// Style block
@@ -26,13 +30,12 @@
 			visibility: visible;
 		}
 	}
-	.slideout-overlay, .slideout .slideout-menu {
-		@include mixins.position($type: fixed);
+	.slideout-overlay, .slideout .slideout-content {
+		@include mixins.position($type: fixed, $top: 0, $bottom: 0, $left: 0, $right: 0);
 	}
 	.slideout-overlay {
-		@include mixins.transition(opacity 0.5s ease-in-out);
+		@include mixins.transition(opacity 0.6s ease-in-out);
 		background-color: $slideout-color-01;
-		@include mixins.position($top: 0, $bottom: 0, $left: 0, $right: 0);
 		z-index: -1;
 		opacity: 0;
 		visibility: hidden;
@@ -41,8 +44,6 @@
 		display: inline-block;
 	}
 	.slideout-button {
-		@include mixins.flex-layout((align-items: center));
-		@include mixins.gap(theme.$spacing-x2);
 		margin: 0;
 	}
 	.slideout {
@@ -56,8 +57,13 @@
 				z-index: 3;
 			}
 		}
+		&.slideout-active {
+			.slideout-content {
+				@include mixins.transition($slideout-transition-open);
+			}
+		}
 		&.slideout-vertical {
-			.slideout-menu {
+			.slideout-content {
 				height: 80%;
 				height: calc(100% - calc($slideout-spacing * 2));
 				@include mixins.position($left: 0, $right: 0);
@@ -65,11 +71,12 @@
 			}
 		}
 		&.slideout-horizontal {
-			.slideout-menu {
+			.slideout-content {
 				@include mixins.position($top: 0, $bottom: 0);
 			}
 		}
-		.slideout-menu {
+		.slideout-content {
+			@include mixins.transition($slideout-transition-closed);
 			border-width: 0;
 			border-right-width: 3px;
 			max-width: 100%;

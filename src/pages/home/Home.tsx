@@ -10,8 +10,7 @@ import { useReactQuery } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
-import { Details, DetailsParagraph, DetailsLinks } from '../../components/details/Details';
-import { Skeleton } from '../../components/skeleton/Skeleton';
+import { LinkExternal, Section, SectionParagraph, SectionLinks, Skeleton } from '../../components/blocks/Blocks';
 
 export const Home = () => {
 	const { content, setContent, campaigns, utils } = useAppContext();
@@ -66,18 +65,12 @@ export const Home = () => {
 
 	return (
 		<>
-			<Details header={'Information'}>
+			<Section title={'Information'} hasScroll={false}>
 				<p>
 					Welcome to the biannual FF7 for St. Jude speedrun event! Since December 2020, these events have been held twice per year,
 					typically the last weekend of June and the 2nd weekend of December. The event is part of{' '}
-					<a href="//www.stjude.org/get-involved/other-ways/video-game-charity-event.html" target="_blank" rel="noreferrer">
-						St. Jude PLAY LIVE
-					</a>
-					, an organization for gamers to support{' '}
-					<a href="//www.stjude.org" target="_blank" rel="noreferrer">
-						St. Jude Children's Research Hospital
-					</a>
-					.
+					<LinkExternal href="//www.stjude.org/get-involved/other-ways/video-game-charity-event.html">St. Jude PLAY LIVE</LinkExternal>, an
+					organization for gamers to support <LinkExternal href="//www.stjude.org">St. Jude Children's Research Hospital</LinkExternal>.
 				</p>
 
 				<p>
@@ -95,12 +88,11 @@ export const Home = () => {
 					diseases through research and treatment. Consistent with the vision of our founder Danny Thomas, no child is denied treatment
 					based on race, religion or a family's ability to pay.
 				</p>
-			</Details>
+			</Section>
+			<Section title={'Current Campaign'} hasScroll={false}>
+				<SectionParagraph label={'Name'} content={current.name} />
 
-			<Details header={'Current Campaign'}>
-				<DetailsParagraph label={'Name'} content={current.name} />
-
-				<DetailsParagraph label={'Date'} content={current.date} />
+				<SectionParagraph label={'Date'} content={current.date} />
 
 				<div className="level-bar-raised flex-nowrap">
 					<strong>Raised:</strong>
@@ -122,10 +114,9 @@ export const Home = () => {
 					</div>
 				</div>
 
-				<DetailsLinks links={current.links} />
-			</Details>
-
-			<Details header={'Supporting Campaigns'} hasRow={true}>
+				<SectionLinks links={current.links} />
+			</Section>
+			<Section title={'Supporting Campaigns'} hasRow={true} hasScroll={false}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{supporting.fetched && utils.checkArray(supporting.values)
 						? supporting.values.map((support) => {
@@ -134,13 +125,13 @@ export const Home = () => {
 								return (
 									<div className="column column-width-50" key={support.key}>
 										<div className="gradient-section">
-											<DetailsParagraph label={'Participant'} content={support.username} />
+											<SectionParagraph label={'Participant'} content={support.username} />
 
-											<DetailsParagraph label={'Campaign'} content={support.name} />
+											<SectionParagraph label={'Campaign'} content={support.name} />
 
-											<DetailsParagraph label={'Raised'} content={utils.formatCurrency(total_amount_raised)} />
+											<SectionParagraph label={'Raised'} content={utils.formatCurrency(total_amount_raised)} />
 
-											<DetailsLinks links={support.links} />
+											<SectionLinks links={support.links} />
 										</div>
 									</div>
 								);
@@ -149,9 +140,8 @@ export const Home = () => {
 
 					<Skeleton columns={8} perRow={2} paragraphs={4} />
 				</div>
-			</Details>
-
-			<Details header={'Previous Campaigns'} hasRow={true}>
+			</Section>
+			<Section title={'Previous Campaigns'} hasRow={true} hasScroll={false}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{previous.map((campaign) => {
 						const { total_amount_raised } = campaign.amounts;
@@ -159,19 +149,19 @@ export const Home = () => {
 						return (
 							<div className="column column-width-50" key={campaign.key}>
 								<div className="gradient-section">
-									<DetailsParagraph label={'Campaign'} content={campaign.name} />
+									<SectionParagraph label={'Campaign'} content={campaign.name} />
 
-									<DetailsParagraph label={'Ends'} content={campaign.date} />
+									<SectionParagraph label={'Ends'} content={campaign.date} />
 
-									<DetailsParagraph label={'Raised'} content={utils.formatCurrency(total_amount_raised)} />
+									<SectionParagraph label={'Raised'} content={utils.formatCurrency(total_amount_raised)} />
 
-									<DetailsLinks links={campaign.links} />
+									<SectionLinks links={campaign.links} />
 								</div>
 							</div>
 						);
 					})}
 				</div>
-			</Details>
+			</Section>
 		</>
 	);
 };
