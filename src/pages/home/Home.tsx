@@ -10,8 +10,7 @@ import { useReactQuery } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
-import { Section, SectionParagraph, SectionLinks, Skeleton } from '../../components/blocks/Blocks';
-import { LinkExternal } from '../../components/blocks/Blocks';
+import { LinkExternal, Section, SectionParagraph, SectionLinks, Skeleton } from '../../components/blocks/Blocks';
 
 export const Home = () => {
 	const { content, setContent, campaigns, utils } = useAppContext();
@@ -90,7 +89,6 @@ export const Home = () => {
 					based on race, religion or a family's ability to pay.
 				</p>
 			</Section>
-
 			<Section title={'Current Campaign'} hasScroll={false}>
 				<SectionParagraph label={'Name'} content={current.name} />
 
@@ -118,7 +116,6 @@ export const Home = () => {
 
 				<SectionLinks links={current.links} />
 			</Section>
-
 			<Section title={'Supporting Campaigns'} hasRow={true} hasScroll={false}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{supporting.fetched && utils.checkArray(supporting.values)
@@ -144,7 +141,6 @@ export const Home = () => {
 					<Skeleton columns={8} perRow={2} paragraphs={4} />
 				</div>
 			</Section>
-
 			<Section title={'Previous Campaigns'} hasRow={true} hasScroll={false}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{previous.map((campaign) => {

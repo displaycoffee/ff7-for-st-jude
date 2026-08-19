@@ -32,15 +32,15 @@
 
 	// Colors
 
-	$forms-button-color-01: theme.$color-04; // primary button background
-	$forms-button-color-02: theme.$color-04; // primary button border
-	$forms-button-color-03: theme.$color-03; // primary button color	
+	$forms-button-color-01: theme.$color-06; // primary button background
+	$forms-button-color-02: theme.$color-06; // primary button border
+	$forms-button-color-03: theme.$color-04; // primary button color	
 	$forms-button-color-04: theme.$color-05; // secondary button background
 	$forms-button-color-05: theme.$color-05; // secondary button border
 	$forms-button-color-06: theme.$color-03; // secondary button color	
 	$forms-button-color-07: theme.$color-03; // tertiary button background
-	$forms-button-color-08: theme.$color-04; // tertiary button border
-	$forms-button-color-09: theme.$color-04; // tertiary button color
+	$forms-button-color-08: theme.$color-08; // tertiary button border
+	$forms-button-color-09: theme.$color-05; // tertiary button color
 
 	// Configuration
 	
@@ -65,6 +65,8 @@
 		height: $forms-button-height;
 		line-height: $forms-button-height;
 		.button-label {
+			@include mixins.position($type: relative, $top: 2px);
+			line-height: 2;
 			@include mixins.ellipsis;
 		}
 	}
