@@ -164,16 +164,13 @@ export const Slideout = (props: SlideoutProps) => {
 					<div
 						className="slideout-body"
 						onClick={(e) => {
-							const eventElement = e.target as HTMLElement;
+							const eventElement = (e.target as HTMLElement)?.closest('a, button.a');
 
 							// Close slideout content if inner nav button is clicked on
 							if (eventElement) {
-								const elementName = eventElement?.nodeName?.toLowerCase() ?? '';
-								if (elementName === 'a' || (elementName === 'button' && eventElement.classList.contains('a'))) {
-									setTimeout(() => {
-										toggle(e, false);
-									});
-								}
+								setTimeout(() => {
+									toggle(e, false);
+								});
 							}
 						}}
 						role="presentation"
