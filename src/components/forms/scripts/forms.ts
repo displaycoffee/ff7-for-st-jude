@@ -1,8 +1,19 @@
 export const forms = {
 	build: {
-		className: (classes: string, className?: string) => {
+		className: (classes: string, className?: string, disabled?: boolean, pointer?: boolean, srOnly?: boolean) => {
+			// Create class array
+			const classList = [classes];
+
+			// If custom class name, add that first
+			if (className) classList.unshift(className);
+
+			// Add helper classes
+			if (disabled) classList.push('disabled');
+			if (pointer) classList.push('pointer');
+			if (srOnly) classList.push('sr-only');
+
 			// Create className value for form fields
-			return className ? `${className} ${classes}` : classes;
+			return classList.join(' ');
 		},
 		fieldAttributes: (id: string, className: string, descriptionId?: string, error?: string, errorId?: string, required?: boolean) => {
 			// Set common attributes for form fields

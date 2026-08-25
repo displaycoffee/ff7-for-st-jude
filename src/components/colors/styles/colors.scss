@@ -27,7 +27,7 @@
 			@include mixins.position($type: relative, $z: 99992);
 			margin: 0 theme.$spacing-x4;
 			h2 {
-				margin: 0 0 theme.$spacing-x4 0;
+				margin: 0 0 theme.$spacing-x2 0;
 			}
 		}
 		.colors-form {

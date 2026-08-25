@@ -27,8 +27,7 @@ export const Button = (props: ButtonProps) => {
 	const { children, className: propClassName, hideLabel = false, label, type = 'button', variant = 'primary', ...rest } = props;
 	const buttonClass = variant != 'unstyled' && variant != 'link' ? 'button ' : '';
 	const variantClass = variant == 'link' ? `button-${variant} button-unstyled a` : `button-${variant}`;
-	const disabledClass = rest?.disabled ? ' button-disabled' : '';
-	const className = forms.build.className(`${buttonClass}${variantClass}${disabledClass} pointer`, propClassName);
+	const className = forms.build.className(`${buttonClass}${variantClass}`, propClassName, rest?.disabled, true);
 
 	return (
 		<button className={className} type={type} aria-label={hideLabel ? label : undefined} {...rest}>
@@ -105,7 +104,8 @@ export const FormField = (props: FormFieldProps) => {
 export const Input = (props: InputProps) => {
 	const { className: propClassName, description = '', error = '', hideLabel = false, id, label, required = false, type = 'text', ...rest } = props;
 	const freeformFields = ['email', 'number', 'password', 'search', 'tel', 'text', 'url'];
-	const className = forms.build.className(`input input-${type}${freeformFields.includes(type) ? ' input-freeform' : ''}`, propClassName);
+	const inputClass = `input input-${type}${freeformFields.includes(type) ? ' input-freeform' : ''}`;
+	const className = forms.build.className(inputClass, propClassName, rest?.disabled);
 	const { descriptionId, errorId } = forms.get.ids({ description, error, id });
 
 	// Form field attributes
@@ -123,7 +123,6 @@ export const Input = (props: InputProps) => {
 };
 
 /* Components for forms only; not exported */
-
 const Description = (props: DescriptionProps) => {
 	const { description, id } = props;
 
