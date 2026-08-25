@@ -64,6 +64,10 @@
 		}
 		height: $forms-button-height;
 		line-height: $forms-button-height;
+		&.button-disabled {
+			opacity: 0.65;
+			cursor: not-allowed;
+		}
 		.button-label {
 			@include mixins.position($type: relative, $top: 2px);
 			line-height: 2;
