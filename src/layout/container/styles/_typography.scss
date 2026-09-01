@@ -44,6 +44,14 @@
 			-moz-text-decoration-color: theme.$color-01;
 			text-decoration-color: theme.$color-01;
 		}
+		&:has(.button-label) {
+			&:active, &:hover {
+				text-decoration: none;
+				.button-label {
+					@include mixins.text-decoration(1px, 5px, theme.$color-01);
+				}
+			}
+		}
 	}
 	mark {
 		background: theme.$color-12;

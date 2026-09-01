@@ -66,23 +66,21 @@ export const Home = () => {
 	return (
 		<>
 			<Section title={'Information'} hasScroll={false}>
+				{' '}
 				<p>
 					Welcome to the biannual FF7 for St. Jude speedrun event! Since December 2020, these events have been held twice per year,
 					typically the last weekend of June and the 2nd weekend of December. The event is part of{' '}
 					<LinkExternal href="//www.stjude.org/get-involved/other-ways/video-game-charity-event.html">St. Jude PLAY LIVE</LinkExternal>, an
 					organization for gamers to support <LinkExternal href="//www.stjude.org">St. Jude Children's Research Hospital</LinkExternal>.
 				</p>
-
 				<p>
 					We call this a race but it is important to know that the goal is not necessarily to finish first. The primary goals are to raise
 					money for kids in need and have fun doing it. Using donation incentives to make the run more fun to watch may cost time but can
 					help raise more money.
 				</p>
-
 				<p>
 					In total, we have raised <strong>{utils.formatCurrency(totals.totalRaised)}</strong>.
 				</p>
-
 				<p className="mission-statement">
 					The mission of St. Jude Children's Research Hospital is to advance cures, and means of prevention, for pediatric catastrophic
 					diseases through research and treatment. Consistent with the vision of our founder Danny Thomas, no child is denied treatment
