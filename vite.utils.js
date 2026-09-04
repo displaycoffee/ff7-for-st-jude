@@ -7,16 +7,16 @@ export const viteUtils = {
 	plugins: [react(), basicSsl(), sitemap(sitemapConfig)],
 	assetFileNames: (file) => {
 		if (file.name.includes('.css')) {
-			const suffix = file.name == 'index.css' ? `.css` : `.${file.name.toLowerCase()}`;
-			return `assets/[ext]/styles${suffix}`;
+			const stem = file.name == 'index.css' ? `` : `.${file.name.toLowerCase().replace(/\.css$/, '')}`;
+			return `assets/[ext]/styles${stem}.[hash].css`;
 		} else {
-			return `assets/[ext]/[name].[ext]`;
+			return `assets/[ext]/[name].[hash].[ext]`;
 		}
 	},
 	chunkFileNames: (file) => {
-		return `assets/js/bundle.${file.name.toLowerCase()}.js`;
+		return `assets/js/bundle.${file.name.toLowerCase()}.[hash].js`;
 	},
 	entryFileNames: () => {
-		return `assets/js/bundle.js`;
+		return `assets/js/bundle.[hash].js`;
 	},
 };

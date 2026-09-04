@@ -30,9 +30,16 @@ if (fs.existsSync(htmlPath)) {
 	}
 
 	// 3. Re-inject font-face block after bundle
+	// Note: matches by bundle name prefix since the filename is content-hashed
+	// and changes on every build.
 	if (fullStyleBlock) {
-		const linkTag = `<link rel="modulepreload" crossorigin href="/assets/js/${bundle}.js">`;
-		html = html.replace(linkTag, `${linkTag}\n${fullStyleBlock}`);
+		const escapedBundle = bundle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+		const bundleLinkRegex = new RegExp(`<link rel="modulepreload" crossorigin href="/assets/js/${escapedBundle}\\.[^"]+\\.js">`);
+		const bundleLinkMatch = html.match(bundleLinkRegex);
+		if (bundleLinkMatch) {
+			const linkTag = bundleLinkMatch[0];
+			html = html.replace(linkTag, `${linkTag}\n${fullStyleBlock}`);
+		}
 	}
 
 	// 4. Collapse empty lines in <head>
