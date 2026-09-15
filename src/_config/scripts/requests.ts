@@ -1,5 +1,5 @@
 /* Packages */
-import { QueryFunctionContext } from '@tanstack/react-query';
+import type { QueryFunctionContext } from '@tanstack/react-query';
 
 /* Scripts */
 import { variables } from './variables';
@@ -38,7 +38,7 @@ export const requests: RequestsType = {
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}`, parameters.tiltify.options());
-		const json = await response.json();
+		const json = (await response.json()) as ResponseBodyType<AmountsRawType>;
 
 		// Check for API errors
 		throwError(json);
@@ -64,7 +64,7 @@ export const requests: RequestsType = {
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}/donations?limit=100`, parameters.tiltify.options());
-		const json = await response.json();
+		const json = (await response.json()) as ResponseBodyType<DonationsRawType[]>;
 
 		if (json && json.data) {
 			// Add details to donations data
@@ -113,7 +113,7 @@ export const requests: RequestsType = {
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.campaigns}/${current.id}/rewards?limit=100`, parameters.tiltify.options());
-		const json = await response.json();
+		const json = (await response.json()) as ResponseBodyType<RewardsRawType[]>;
 
 		if (json && json.data) {
 			// Add details to rewards data
@@ -158,7 +158,7 @@ export const requests: RequestsType = {
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.teams}/${current.id}/supporting_campaigns?limit=50`, parameters.tiltify.options());
-		const json = await response.json();
+		const json = (await response.json()) as ResponseBodyType<SupportingRawType[]>;
 
 		// Check for API errors
 		throwError(json);
@@ -209,7 +209,7 @@ export const requests: RequestsType = {
 
 		// Fetch base campaign
 		const response = await fetch(`${variables.api.campaigns}/${current.id}/targets?limit=100`, parameters.tiltify.options());
-		const json = await response.json();
+		const json = (await response.json()) as ResponseBodyType<TargetsRawType[]>;
 
 		if (json && json.data) {
 			json.data.forEach((data: TargetsRawType, index: number) => {

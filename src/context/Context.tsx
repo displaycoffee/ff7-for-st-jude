@@ -1,9 +1,10 @@
 /* Packages */
 import { createContext, useState } from 'react';
-import { DefaultOptions, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { DefaultOptions } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Scripts */
-import { ContextProps, ContextValuesType } from './scripts/context-types';
+import type { ContextProps, ContextValuesType } from './scripts/context-types';
 import { campaigns } from '../_config/scripts/campaigns';
 import { theme } from '../_config/scripts/theme';
 import { utils } from '../_config/scripts/utils';

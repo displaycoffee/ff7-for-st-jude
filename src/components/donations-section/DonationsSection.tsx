@@ -1,6 +1,6 @@
 /* Scripts */
 import { useAppContext } from '../../context/scripts/context-hooks';
-import { DonationsSectionProps } from './scripts/donations-section-types';
+import type { DonationsSectionProps } from './scripts/donations-section-types';
 
 /* Components */
 import { Section, SectionParagraph, SectionLinks, SectionNotFound, Skeleton } from '../../components/blocks/Blocks';

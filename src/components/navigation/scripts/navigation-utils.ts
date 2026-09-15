@@ -1,5 +1,5 @@
 /* Scripts */
-import { NavigationRoutesType, NavigationType } from './navigation-types';
+import type { NavigationRoutesType, NavigationType } from './navigation-types';
 import { navigation } from './navigation';
 
 export const navigationUtils = {
@@ -57,9 +57,10 @@ export const navigationUtils = {
 	routes: {
 		build: (nav: NavigationType) => {
 			// Build route config
+			// Note: element is guaranteed here since this is only called for nav items with isRoute set
 			const config: NavigationRoutesType = {
 				id: nav.id,
-				element: nav.element,
+				element: nav.element!,
 				path: nav.url,
 			};
 

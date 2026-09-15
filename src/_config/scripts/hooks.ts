@@ -1,6 +1,7 @@
 /* Packages */
 import { useEffect, useId, useState } from 'react';
-import { QueryFunction, useQuery, useQueries } from '@tanstack/react-query';
+import type { QueryFunction } from '@tanstack/react-query';
+import { useQuery, useQueries } from '@tanstack/react-query';
 
 /* Scripts */
 import { requests } from './requests';
@@ -40,7 +41,8 @@ export const useReactQuery = (key: string, content: ContentType, current: Campai
 		isFetched: isFetched,
 	} = useQuery({
 		queryKey: queryKey,
-		queryFn: requests[key as keyof RequestsType] as QueryFunction,
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- required: requests[key] is a union of differently-typed query functions, and useQuery's overload resolution can't narrow it without this cast
+		queryFn: requests[key as keyof RequestsType] as QueryFunction<unknown, QueryKeyType>,
 		enabled: requestData,
 	});
 
@@ -76,7 +78,8 @@ export const useReactQueries = (key: string, content: ContentType) => {
 	} = useQueries({
 		queries: queryValues.map((value, index) => ({
 			queryKey: [key, value, index],
-			queryFn: requests[key as keyof RequestsType] as QueryFunction,
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- required: requests[key] is a union of differently-typed query functions, and useQueries's overload resolution can't narrow it without this cast
+			queryFn: requests[key as keyof RequestsType] as QueryFunction<unknown>,
 		})),
 		combine: (results) => {
 			return {

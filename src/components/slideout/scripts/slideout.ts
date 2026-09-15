@@ -1,5 +1,5 @@
 /* Packages */
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
 
 /* Scripts */
 import { utils } from '../../../_config/scripts/utils';

@@ -3,10 +3,11 @@ import './styles/error-boundary.scss';
 
 /* Packages */
 /* Note: mostly code from react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary */
-import { Component, ErrorInfo } from 'react';
+import type { ErrorInfo } from 'react';
+import { Component } from 'react';
 
 /* Scripts */
-import { ErrorBoundaryProps, ErrorBoundaryStateProps } from './scripts/error-boundary-types';
+import type { ErrorBoundaryProps, ErrorBoundaryStateProps } from './scripts/error-boundary-types';
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryStateProps> {
 	constructor(props: ErrorBoundaryProps) {

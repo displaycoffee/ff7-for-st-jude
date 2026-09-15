@@ -1,7 +1,10 @@
+import type { ComponentType, ReactNode } from 'react';
+
 /* Type definitions */
 type Navigation = {
 	children?: Navigation[];
-	element?: JSX.Element;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- lazy route components have differing prop shapes
+	element?: ComponentType<any>;
 	id: number;
 	isRoute?: boolean;
 	label: string;
@@ -12,7 +15,7 @@ type Navigation = {
 
 type NavigationComponent = {
 	label: string;
-	location?: ReactNode;
+	location?: string;
 };
 
 type NavigationListItem = {
@@ -24,7 +27,8 @@ type NavigationListItem = {
 
 type NavigationRoutes = {
 	children?: NavigationRoutes[];
-	element: JSX.Element;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- lazy route components have differing prop shapes
+	element: ComponentType<any>;
 	id: number;
 	path: string;
 	props?: ObjectPrimitiveType;

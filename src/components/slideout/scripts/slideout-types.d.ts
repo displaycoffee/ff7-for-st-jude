@@ -1,5 +1,5 @@
 /* Packages */
-import { RefObject } from 'react';
+import type { ReactNode, RefObject } from 'react';
 
 /* Type definitions */
 type SlideoutButton = {

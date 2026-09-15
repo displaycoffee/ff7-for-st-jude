@@ -1,13 +1,14 @@
 /* Packages */
-import { QueryClient } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 /* Type definitions */
 type ContextValues = {
 	content: ContentType;
-	setContent: React.Dispatch;
+	setContent: Dispatch<SetStateAction<ContentType>>;
 	campaigns: {
-		current: Campaign;
-		previous: Campaign[];
+		current: CampaignType;
+		previous: CampaignType[];
 	};
 	queryClient: QueryClient;
 	theme: ThemeType;

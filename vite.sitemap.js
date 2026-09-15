@@ -1,4 +1,4 @@
-import packageJSON from './package.json';
+import packageJSON from './package.json' with { type: 'json' };
 const hostname = packageJSON.homepage || 'https://localhost:3000';
 const location = new URL(hostname);
 

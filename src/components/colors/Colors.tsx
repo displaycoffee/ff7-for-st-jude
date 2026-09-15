@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 /* Scripts */
 import { useAppContext } from '../../context/scripts/context-hooks';
-import { ColorsProps } from './scripts/color-types';
+import type { ColorsProps } from './scripts/color-types';
 import { colors as colorsUtils } from './scripts/colors';
 
 /* Components */

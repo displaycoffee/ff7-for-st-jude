@@ -1,7 +1,8 @@
 /// <reference types="vite/client" />
 
 /* Packages */
-import { QueryFunctionContext } from '@tanstack/react-query';
+import type { QueryFunctionContext } from '@tanstack/react-query';
+import type { SyntheticEvent } from 'react';
 
 /* Generic type definitions */
 type Amounts = {
@@ -285,11 +286,15 @@ type Requests = {
 	donations: (context: QueryFunctionContext) => Promise<Donations[]>;
 	rewards: (context: QueryFunctionContext) => Promise<Rewards[]>;
 	supporting: (context: QueryFunctionContext) => Promise<Supporting[]>;
-	targets: (context: QueryFunctionContex) => Promise<Targets[]>;
+	targets: (context: QueryFunctionContext) => Promise<Targets[]>;
 };
 
-type ResponseError = Response & {
+type ResponseError = {
 	error?: RequestError;
+};
+
+type ResponseBody<T = unknown> = ResponseError & {
+	data?: T;
 };
 
 type Statuses = {
@@ -365,6 +370,8 @@ declare global {
 	type RequestsType = Requests;
 
 	type ResponseErrorType = ResponseError;
+
+	type ResponseBodyType<T = unknown> = ResponseBody<T>;
 }
 
 /* Export global types */

@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 /* Type definitions */
 type ErrorBoundary = {
 	children: ReactNode;

@@ -21,6 +21,7 @@ export const campaigns = {
 		key: `campaign-${ids[9].split('-')[0]}-8`,
 		name: 'FF7 for St. Jude #9',
 		date: 'February 15th, 2025',
+		campaign: variables.urls.campaign,
 		amounts: utils.getAmounts({ total_amount_raised: { value: 0 } }),
 		links: [
 			{
@@ -35,6 +36,7 @@ export const campaigns = {
 			key: `campaign-${ids[8].split('-')[0]}-7`,
 			name: 'FF7 for St. Jude #8',
 			date: 'July 27th, 2024',
+			campaign: `${variables.urls.team}/ff7-for-st-jude-8`,
 			amounts: utils.getAmounts({ total_amount_raised: { value: 7038.69 } }),
 			links: [
 				{
@@ -48,6 +50,7 @@ export const campaigns = {
 			key: `campaign-${ids[7].split('-')[0]}-6`,
 			name: 'FF7 for St. Jude #7',
 			date: 'December 16th, 2023',
+			campaign: `${variables.urls.team}/ff7-for-st-jude-7`,
 			amounts: utils.getAmounts({ total_amount_raised: { value: 7177.77 } }),
 			links: [
 				{
@@ -61,6 +64,7 @@ export const campaigns = {
 			key: `campaign-${ids[6].split('-')[0]}-5`,
 			name: 'FF7 for St. Jude #6',
 			date: 'June 24, 2023',
+			campaign: `${variables.urls.team}/ff7-for-st-jude-6`,
 			amounts: utils.getAmounts({ total_amount_raised: { value: 5397.74 } }),
 			links: [
 				{
@@ -74,6 +78,7 @@ export const campaigns = {
 			key: `campaign-${ids[5].split('-')[0]}-4`,
 			name: 'FF7 for St. Jude #5',
 			date: 'December 10, 2022',
+			campaign: `${variables.urls.team}/ff7-for-st-jude-5`,
 			amounts: utils.getAmounts({ total_amount_raised: { value: 9254.38 } }),
 			links: [
 				{
@@ -87,6 +92,7 @@ export const campaigns = {
 			key: `campaign-${ids[4].split('-')[0]}-3`,
 			name: 'FF7 No-Slots for St. Jude #4',
 			date: 'June 25, 2022',
+			campaign: `${variables.urls.team}/ff7-no-slots-for-st-jude-4`,
 			amounts: utils.getAmounts({ total_amount_raised: { value: 8770.46 } }),
 			links: [
 				{
@@ -100,6 +106,7 @@ export const campaigns = {
 			key: `campaign-${ids[3].split('-')[0]}-2`,
 			name: 'FF7 No-Slots for St. Jude #3',
 			date: 'December 11, 2021',
+			campaign: `${variables.urls.team}/ff7-no-slots-for-st-jude-3`,
 			amounts: utils.getAmounts({ total_amount_raised: { value: 6448.34 } }),
 			links: [
 				{
@@ -113,6 +120,7 @@ export const campaigns = {
 			key: `campaign-${ids[2].split('-')[0]}-1`,
 			name: 'FF7 No-Slots For St. Jude #2',
 			date: 'June 26, 2021',
+			campaign: `${variables.urls.team}/ff7-no-slots-for-st-jude-2`,
 			amounts: utils.getAmounts({ total_amount_raised: { value: 4469.69 } }),
 			links: [
 				{
@@ -126,6 +134,7 @@ export const campaigns = {
 			key: `campaign-${ids[1].split('-')[0]}-0`,
 			name: 'FF7 No-Slots For St. Jude',
 			date: 'December 28, 2020',
+			campaign: `${variables.urls.team}/ff7-no-slots-for-st-jude`,
 			amounts: utils.getAmounts({ total_amount_raised: { value: 2313.06 } }),
 			links: [
 				{

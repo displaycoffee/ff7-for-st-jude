@@ -2,7 +2,7 @@
 import { lazy } from 'react';
 
 /* Scripts */
-import { NavigationType } from './navigation-types';
+import type { NavigationType } from './navigation-types';
 
 /* Components */
 const Home = lazy(() => import('../../../pages/home/Home').then((m) => ({ default: m.Home })));

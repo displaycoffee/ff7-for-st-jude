@@ -3,7 +3,8 @@ import './styles/home.scss';
 
 /* Packages */
 import { useEffect } from 'react';
-import { produce, Draft } from 'immer';
+import type { Draft } from 'immer';
+import { produce } from 'immer';
 
 /* Scripts */
 import { useReactQuery } from '../../_config/scripts/hooks';

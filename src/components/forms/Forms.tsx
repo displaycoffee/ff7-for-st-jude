@@ -5,7 +5,7 @@ import './styles/forms.scss';
 import { createContext } from 'react';
 
 /* Scripts */
-import {
+import type {
 	ButtonProps,
 	ButtonScrollProps,
 	DescriptionProps,

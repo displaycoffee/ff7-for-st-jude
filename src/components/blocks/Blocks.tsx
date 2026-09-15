@@ -7,7 +7,7 @@ import { Fragment, useEffect, useRef } from 'react';
 /* Scripts */
 import { useFormattedId } from '../../_config/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
-import {
+import type {
 	LinkExternalProps,
 	ListProps,
 	SectionProps,

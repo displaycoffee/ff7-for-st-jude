@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { viteUtils } from './vite.utils';
+import { viteUtils } from './vite.utils.js';
 
 export default defineConfig({
 	root: 'src',
@@ -21,9 +21,13 @@ export default defineConfig({
 		},
 		rollupOptions: {
 			output: {
-				manualChunks: {
-					tanstack: ['@tanstack/react-query'],
-					vendor: ['react', 'react-dom', 'react-router-dom'],
+				manualChunks: (id) => {
+					if (id.includes('node_modules/@tanstack/react-query/')) {
+						return 'tanstack';
+					}
+					if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-router-dom/')) {
+						return 'vendor';
+					}
 				},
 				assetFileNames: (file) => {
 					return viteUtils.assetFileNames(file);
