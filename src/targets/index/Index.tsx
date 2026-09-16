@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 /* Scripts */
 import { index } from './scripts';
-import { variables } from '../../_config/scripts/variables';
+import { variables } from '../../_core/scripts/variables';
 
 /* Components */
 import { ContextProvider } from '../../context/Context';

@@ -5,10 +5,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Scripts */
 import type { ContextProps, ContextValuesType } from './scripts/context-types';
-import { campaigns } from '../_config/scripts/campaigns';
-import { theme } from '../_config/scripts/theme';
-import { utils } from '../_config/scripts/utils';
-import { variables } from '../_config/scripts/variables';
+import { campaigns } from '../_core/scripts/campaigns';
+import { theme } from '../_core/scripts/theme';
+import { utils } from '../_core/scripts/utils';
+import { variables } from '../_core/scripts/variables';
 
 /* Query client for api */
 const queryConfig: DefaultOptions = {

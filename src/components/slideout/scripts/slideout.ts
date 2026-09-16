@@ -2,7 +2,7 @@
 import type { CSSProperties } from 'react';
 
 /* Scripts */
-import { utils } from '../../../_config/scripts/utils';
+import { utils } from '../../../_core/scripts/utils';
 
 export const slideout = {
 	config: {

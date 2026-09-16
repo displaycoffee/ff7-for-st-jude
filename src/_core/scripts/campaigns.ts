@@ -1,6 +1,6 @@
 /* Scripts */
-import { utils } from '../../../src/_config/scripts/utils';
-import { variables } from '../../../src/_config/scripts/variables';
+import { utils } from '../../../src/_core/scripts/utils';
+import { variables } from '../../../src/_core/scripts/variables';
 
 /* St. Jude FF7 campaign ids */
 const ids = {

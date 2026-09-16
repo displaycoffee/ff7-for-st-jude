@@ -7,7 +7,7 @@ import type { Draft } from 'immer';
 import { produce } from 'immer';
 
 /* Scripts */
-import { useReactQuery } from '../../_config/scripts/hooks';
+import { useReactQuery } from '../../_core/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */

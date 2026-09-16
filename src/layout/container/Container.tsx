@@ -5,7 +5,7 @@ import './styles/container.scss';
 import { Link } from 'react-router-dom';
 
 /* Scripts */
-import { useRespond } from '../../_config/scripts/hooks';
+import { useRespond } from '../../_core/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { useBodyClass } from './scripts/container-hooks';
 
