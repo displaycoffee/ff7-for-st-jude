@@ -2,6 +2,7 @@
 
 /* Packages */
 import type { QueryFunctionContext } from '@tanstack/react-query';
+/* Packages */
 import type { SyntheticEvent } from 'react';
 
 /* Generic type definitions */
