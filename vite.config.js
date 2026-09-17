@@ -26,8 +26,8 @@ export default defineConfig({
 		rollupOptions: {
 			output: {
 				manualChunks: (id) => {
-					if (tanstackChunks.includes(id)) return 'tanstack';
-					if (reactChunks.includes(id)) return 'vendor';
+					if (tanstackChunks.some((chunk) => id.includes(chunk))) return 'tanstack';
+					if (reactChunks.some((chunk) => id.includes(chunk))) return 'vendor';
 				},
 				assetFileNames: (file) => {
 					return viteUtils.assetFileNames(file);
