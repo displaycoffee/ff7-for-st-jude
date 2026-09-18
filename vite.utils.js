@@ -1,6 +1,9 @@
+/* Packages */
 import react from '@vitejs/plugin-react';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import sitemap from 'vite-plugin-sitemap';
+
+/* Scripts */
 import { sitemapConfig } from './vite.sitemap.js';
 
 export const viteUtils = {
