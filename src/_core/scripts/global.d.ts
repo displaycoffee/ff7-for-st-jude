@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 /* Packages */
 import type { QueryFunctionContext } from '@tanstack/react-query';
 import type { SyntheticEvent } from 'react';
