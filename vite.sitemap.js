@@ -1,4 +1,7 @@
+/* Scripts */
 import packageJSON from './package.json' with { type: 'json' };
+
+/* Variables */
 const hostname = packageJSON.homepage || 'https://localhost:3000';
 const location = new URL(hostname);
 
@@ -8,8 +11,7 @@ let sitemap = {
 	exclude: ['/assets', '/assets/css', '/assets/fonts', '/assets/images', '/assets/images/theme', '/assets/js'],
 	dynamicRoutes: ['/participant-guide', '/dashboard', '/donations'],
 };
-if (location?.pathname && location.pathname != '/') {
-	sitemap.basePath = location.pathname;
-}
+
+if (location?.pathname && location.pathname != '/') sitemap.basePath = location.pathname;
 
 export const sitemapConfig = sitemap;
