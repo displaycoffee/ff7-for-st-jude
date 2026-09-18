@@ -5,7 +5,7 @@ const api = import.meta.env.VITE_API_URL as string;
 const directory = '/ff7-st-jude';
 export const variables: VariablesType = {
 	paths: {
-		basename: window.location.pathname.includes(directory) ? directory : '',
+		basename: typeof window == 'object' && window.location.pathname.includes(directory) ? directory : '',
 	},
 	api: {
 		campaigns: `${api}/api/public/campaigns`,
