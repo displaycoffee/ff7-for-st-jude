@@ -65,9 +65,7 @@ export const navigationUtils = {
 			};
 
 			// Add props if there are any
-			if (nav?.props) {
-				config.props = nav.props;
-			}
+			if (nav?.props) config.props = nav.props;
 
 			return config;
 		},

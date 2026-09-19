@@ -7,8 +7,8 @@ import { createRef, Fragment, Suspense, useEffect } from 'react';
 import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 /* Scripts */
-import { useAppContext } from '../../context/scripts/context-hooks';
 import type { NavigationComponentProps, NavigationListItemProps, NavigationRoutesProps } from './scripts/navigation-types';
+import { useAppContext } from '../../context/scripts/context-hooks';
 import { navigationUtils } from './scripts/navigation-utils';
 import { navigationRoutes } from './scripts/navigation-routes';
 
@@ -94,7 +94,7 @@ export const NavigationRoutes = () => {
 					);
 				})}
 
-				<Route path="*" element={<Navigate to="/" />} />
+				<Route path={'*'} element={<Navigate to={'/'} />} />
 			</Routes>
 		</Suspense>
 	) : null;

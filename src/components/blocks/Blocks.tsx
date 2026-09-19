@@ -5,8 +5,6 @@ import './styles/blocks.scss';
 import { Fragment, useEffect, useRef } from 'react';
 
 /* Scripts */
-import { useFormattedId } from '../../_core/scripts/hooks';
-import { useAppContext } from '../../context/scripts/context-hooks';
 import type {
 	LinkExternalProps,
 	ListProps,
@@ -16,6 +14,8 @@ import type {
 	SectionParagraphProps,
 	SkeletonProps,
 } from './scripts/blocks-types';
+import { useFormattedId } from '../../_core/scripts/hooks';
+import { useAppContext } from '../../context/scripts/context-hooks';
 import { blocks } from './scripts/blocks';
 
 /* Components */

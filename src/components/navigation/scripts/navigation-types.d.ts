@@ -1,3 +1,4 @@
+/* Packages */
 import type { ComponentType, ReactNode } from 'react';
 
 /* Type definitions */
