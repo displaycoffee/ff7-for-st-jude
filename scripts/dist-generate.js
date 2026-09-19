@@ -2,7 +2,6 @@
 import fs from 'fs';
 import path from 'path';
 
-/* Variables */
 const htmlPath = path.resolve('dist/index.html');
 const bundle = 'bundle.tanstack'; // The name of the bundle you want to inject font blocks after.
 

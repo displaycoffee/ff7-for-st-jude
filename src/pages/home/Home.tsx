@@ -2,9 +2,9 @@
 import './styles/home.scss';
 
 /* Packages */
-import { useEffect } from 'react';
 import type { Draft } from 'immer';
 import { produce } from 'immer';
+import { useEffect } from 'react';
 
 /* Scripts */
 import { useReactQuery } from '../../_core/scripts/hooks';
@@ -71,8 +71,9 @@ export const Home = () => {
 				<p>
 					Welcome to the biannual FF7 for St. Jude speedrun event! Since December 2020, these events have been held twice per year,
 					typically the last weekend of June and the 2nd weekend of December. The event is part of{' '}
-					<LinkExternal href="//www.stjude.org/get-involved/other-ways/video-game-charity-event.html">St. Jude PLAY LIVE</LinkExternal>, an
-					organization for gamers to support <LinkExternal href="//www.stjude.org">St. Jude Children's Research Hospital</LinkExternal>.
+					<LinkExternal href={'//www.stjude.org/get-involved/other-ways/video-game-charity-event.html'}>St. Jude PLAY LIVE</LinkExternal>,
+					an organization for gamers to support <LinkExternal href={'//www.stjude.org'}>St. Jude Children's Research Hospital</LinkExternal>
+					.
 				</p>
 				<p>
 					We call this a race but it is important to know that the goal is not necessarily to finish first. The primary goals are to raise
@@ -88,6 +89,7 @@ export const Home = () => {
 					based on race, religion or a family's ability to pay.
 				</p>
 			</Section>
+
 			<Section title={'Current Campaign'} hasScroll={false}>
 				<SectionParagraph label={'Name'} content={current.name} />
 
@@ -115,6 +117,7 @@ export const Home = () => {
 
 				<SectionLinks links={current.links} />
 			</Section>
+
 			<Section title={'Supporting Campaigns'} hasRow={true} hasScroll={false}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{supporting.fetched && utils.checkArray(supporting.values)
@@ -140,6 +143,7 @@ export const Home = () => {
 					<Skeleton columns={8} perRow={2} paragraphs={4} />
 				</div>
 			</Section>
+
 			<Section title={'Previous Campaigns'} hasRow={true} hasScroll={false}>
 				<div className="row row-auto row-spacing-20 row-wrap">
 					{previous.map((campaign) => {

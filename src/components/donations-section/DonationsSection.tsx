@@ -1,6 +1,6 @@
 /* Scripts */
-import { useAppContext } from '../../context/scripts/context-hooks';
 import type { DonationsSectionProps } from './scripts/donations-section-types';
+import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
 import { Section, SectionParagraph, SectionLinks, SectionNotFound, Skeleton } from '../../components/blocks/Blocks';
@@ -11,7 +11,7 @@ export const DonationsSection = (props: DonationsSectionProps) => {
 	const { utils } = useAppContext();
 
 	return (
-		<ErrorBoundary message="Something went wrong loading donations.">
+		<ErrorBoundary message={'Something went wrong loading donations.'}>
 			<Section title={'Donations'} hasRow={true}>
 				<p className="sr-only" role="status">
 					{!donationsComplete ? 'Loading donations...' : utils.checkArray(donations.values) ? 'Donations loaded.' : ''}

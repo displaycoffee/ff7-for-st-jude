@@ -5,7 +5,6 @@ import path from 'path';
 /* Scripts */
 import { config } from './config.js';
 
-/* Variables */
 const { site, theme } = config;
 const { colors, favicons } = theme;
 const jsonPath = path.resolve('./public/manifest.json');

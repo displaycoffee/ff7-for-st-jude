@@ -8,8 +8,8 @@ export const Footer = () => {
 	return (
 		<footer className="footer">
 			<p className="credits">
-				Created by <LinkExternal href="//display.coffee">displaycoffee</LinkExternal>. Built and organized with{' '}
-				<LinkExternal href="//tiltify.com">tiltify</LinkExternal>.
+				Created by <LinkExternal href={'//display.coffee'}>displaycoffee</LinkExternal>. Built and organized with{' '}
+				<LinkExternal href={'//tiltify.com'}>tiltify</LinkExternal>.
 			</p>
 		</footer>
 	);

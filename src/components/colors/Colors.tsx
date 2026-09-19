@@ -5,8 +5,8 @@ import './styles/colors.scss';
 import { useEffect, useState } from 'react';
 
 /* Scripts */
-import { useAppContext } from '../../context/scripts/context-hooks';
 import type { ColorsProps } from './scripts/color-types';
+import { useAppContext } from '../../context/scripts/context-hooks';
 import { colors as colorsUtils } from './scripts/colors';
 
 /* Components */
@@ -80,10 +80,10 @@ export const Colors = (props: ColorsProps) => {
 
 	return showButton ? (
 		<Button
-			className="colors-buttons"
-			label="Window Color"
-			variant="link"
-			aria-label="Window Color Button"
+			className={'colors-buttons'}
+			label={'Window Color'}
+			variant={'link'}
+			aria-label={'Window Color Button'}
 			onClick={(e) => colorsUtils.toggle(e)}
 		/>
 	) : (
@@ -101,7 +101,7 @@ export const Colors = (props: ColorsProps) => {
 					<h2 id="colors-title">Window Color</h2>
 
 					<Form
-						className="colors-form gradient-section"
+						className={'colors-form gradient-section'}
 						onSubmit={(e) => {
 							e.preventDefault();
 							const formData = new FormData(e.target);
@@ -137,16 +137,22 @@ export const Colors = (props: ColorsProps) => {
 							);
 						})}
 
-						<FormActions className="colors-actions">
-							<Button className="colors-buttons" label="Change" variant="link" type="submit" aria-label="Change Colors Button" />
+						<FormActions className={'colors-actions'}>
+							<Button
+								className={'colors-buttons'}
+								label={'Change'}
+								variant={'link'}
+								type={'submit'}
+								aria-label={'Change Colors Button'}
+							/>
 
-							<Button className="colors-buttons" label="Reset" variant="link" type="reset" aria-label="Reset Colors Button" />
+							<Button className={'colors-buttons'} label={'Reset'} variant={'link'} type={'reset'} aria-label={'Reset Colors Button'} />
 
 							<Button
-								className="colors-buttons"
-								label="x Close"
-								variant="link"
-								aria-label="Close Colors Button"
+								className={'colors-buttons'}
+								label={'x Close'}
+								variant={'link'}
+								aria-label={'Close Colors Button'}
 								onClick={(e) => colorsUtils.toggle(e, 'close')}
 							/>
 						</FormActions>

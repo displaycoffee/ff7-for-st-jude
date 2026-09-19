@@ -33,15 +33,13 @@ export const Navigation = (props: NavigationComponentProps) => {
 
 	// Make header sticky
 	useEffect(() => {
-		if (location == 'header') {
-			utils.isSticky(navigationRef?.current, 'is-sticky');
-		}
+		if (location == 'header') utils.isSticky(navigationRef?.current, 'is-sticky');
 	}, [location, navigationRef, utils]);
 
 	return navigationList.length != 0 ? (
 		<nav className={`navigation navigation-${location}`} aria-label={label} ref={navigationRef}>
 			<div className="navigation-fixed">
-				<List className="navigation-list" variant={'ul-unstyled'}>
+				<List className={'navigation-list'} variant={'ul-unstyled'}>
 					{navigationList.map((nav, index) => {
 						return (
 							<Fragment key={nav.id}>

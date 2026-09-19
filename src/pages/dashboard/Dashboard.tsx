@@ -2,9 +2,9 @@
 import './styles/dashboard.scss';
 
 /* Packages */
-import { useEffect } from 'react';
 import type { Draft } from 'immer';
 import { produce } from 'immer';
+import { useEffect } from 'react';
 
 /* Scripts */
 import { useReactQuery, useReactQueries } from '../../_core/scripts/hooks';
@@ -126,8 +126,8 @@ export const Dashboard = () => {
 
 						<li className="floating-list-item">
 							<Button
-								label="Refresh"
-								variant="link"
+								label={'Refresh'}
+								variant={'link'}
 								onClick={(e) => {
 									// Refresh content
 									e.preventDefault();
@@ -154,7 +154,7 @@ export const Dashboard = () => {
 
 			<DonationsSection donations={donations} donationsComplete={donationsComplete} />
 
-			<ErrorBoundary message="Something went wrong loading rewards.">
+			<ErrorBoundary message={'Something went wrong loading rewards.'}>
 				<Section title={'Rewards'} hasRow={true}>
 					<p className="sr-only" role="status">
 						{!rewardsComplete ? 'Loading rewards...' : utils.checkArray(rewards.values) ? 'Rewards loaded.' : ''}
@@ -201,7 +201,7 @@ export const Dashboard = () => {
 				</Section>
 			</ErrorBoundary>
 
-			<ErrorBoundary message="Something went wrong loading targets.">
+			<ErrorBoundary message={'Something went wrong loading targets.'}>
 				<Section title={'Targets'} hasRow={true}>
 					<p className="sr-only" role="status">
 						{!targetsComplete ? 'Loading targets...' : utils.checkArray(targets.values) ? 'Targets loaded.' : ''}

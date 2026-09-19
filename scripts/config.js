@@ -14,7 +14,6 @@ const viteServer = await createServer({
 const { theme } = await viteServer.ssrLoadModule('/_core/scripts/theme.ts');
 await viteServer.close();
 
-/* Variables */
 const fontsPath = '/assets/fonts/';
 
 /* Set favicons from public folder */

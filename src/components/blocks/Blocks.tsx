@@ -70,7 +70,7 @@ export const Section = (props: SectionProps) => {
 
 			{hasScroll ? (
 				<div className="section-button">
-					<ButtonScroll target="#index" label="^ Back to top" aria-label="Back to Top Button" />
+					<ButtonScroll target={'#index'} label={'^ Back to top'} aria-label={'Back to Top Button'} />
 				</div>
 			) : null}
 		</section>

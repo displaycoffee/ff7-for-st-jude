@@ -5,7 +5,6 @@ import path from 'path';
 /* Scripts */
 import { config } from './config.js';
 
-/* Variables */
 const { site, targets, theme } = config;
 const { bps, colors, favicons, fonts } = theme;
 const templatePath = path.resolve('./scripts/src-template.html');

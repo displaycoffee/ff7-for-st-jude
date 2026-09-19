@@ -4,7 +4,6 @@ import { defineConfig } from 'vite';
 /* Scripts */
 import { viteUtils } from './vite.utils.js';
 
-/* Variables */
 const modules = 'node_modules/';
 const reactChunks = [`${modules}react/`, `${modules}react-dom/`, `${modules}react-router-dom/`];
 const tanstackChunks = [`${modules}@tanstack/react-query/`];

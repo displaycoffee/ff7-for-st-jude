@@ -14,8 +14,8 @@ export const ParticipantGuide = () => {
 					<li>Create bot commands such as !donate, !stjude, and !commentary.</li>
 					<li>Start stream at least 20 minutes before the race and ensure you have 360p as a quality option.</li>
 					<li>
-						Set up an account with <LinkExternal href="//racetime.gg">racetime.gg</LinkExternal> and join the race through{' '}
-						<LinkExternal href="//livesplit.org">LiveSplit</LinkExternal> (or browser) before it starts.
+						Set up an account with <LinkExternal href={'//racetime.gg'}>racetime.gg</LinkExternal> and join the race through{' '}
+						<LinkExternal href={'//livesplit.org'}>LiveSplit</LinkExternal> (or browser) before it starts.
 					</li>
 				</List>
 			</Section>
@@ -27,7 +27,7 @@ export const ParticipantGuide = () => {
 					<li>Create your Tiltify campaign, create incentives, publish your campaign, and activate incentives.</li>
 					<li>
 						Create bot commands and timers with links to your campaign page and the commentary stream (
-						<LinkExternal href="//twitch.tv/monetarydragon">twitch.tv/monetarydragon</LinkExternal>
+						<LinkExternal href={'//twitch.tv/monetarydragon'}>twitch.tv/monetarydragon</LinkExternal>
 						).
 					</li>
 					<li>Set up donation alerts and overlays.</li>
@@ -43,7 +43,7 @@ export const ParticipantGuide = () => {
 				<List variant={'ol'}>
 					<li>
 						Keep an eye on the <strong>#upcoming-events</strong> channel in the{' '}
-						<LinkExternal href="//discord.gg/U7PjxqbRBj2">Official FF7 Discord</LinkExternal>.
+						<LinkExternal href={'//discord.gg/U7PjxqbRBj2'}>Official FF7 Discord</LinkExternal>.
 					</li>
 					<li>Start your stream at least 20 minutes before the event starts.</li>
 					<li>Join the racetime.gg race in LiveSplit and click "I'm ready" when you're ready.</li>
@@ -55,30 +55,30 @@ export const ParticipantGuide = () => {
 				<List>
 					<li>
 						<strong>Tiltify Team:</strong>{' '}
-						<LinkExternal href="//tiltify.com/+ff7-for-st-jude/profile">tiltify.com/+ff7-for-st-jude/profile</LinkExternal>
+						<LinkExternal href={'//tiltify.com/+ff7-for-st-jude/profile'}>tiltify.com/+ff7-for-st-jude/profile</LinkExternal>
 					</li>
 					<li>
-						<strong>Official FF7 Discord:</strong> <LinkExternal href="//discord.gg/U7PjxqbRBj2">discord.gg/U7PjxqbRBj2</LinkExternal>
+						<strong>Official FF7 Discord:</strong> <LinkExternal href={'//discord.gg/U7PjxqbRBj2'}>discord.gg/U7PjxqbRBj2</LinkExternal>
 					</li>
 					<li>
 						<strong>MonetaryDragon's twitch channel (commentary stream):</strong>{' '}
-						<LinkExternal href="//twitch.tv/MonetaryDragon">twitch.tv/MonetaryDragon</LinkExternal>
+						<LinkExternal href={'//twitch.tv/MonetaryDragon'}>twitch.tv/MonetaryDragon</LinkExternal>
 					</li>
 					<li>
-						<strong>Racetime:</strong> <LinkExternal href="//racetime.gg">racetime.gg</LinkExternal>
+						<strong>Racetime:</strong> <LinkExternal href={'//racetime.gg'}>racetime.gg</LinkExternal>
 					</li>
 					<li>
-						<strong>St. Jude Children's Research Hospital:</strong> <LinkExternal href="//www.stjude.org">stjude.org</LinkExternal>
+						<strong>St. Jude Children's Research Hospital:</strong> <LinkExternal href={'//www.stjude.org'}>stjude.org</LinkExternal>
 					</li>
 					<li>
 						<strong>St. Jude PLAY LIVE:</strong>{' '}
-						<LinkExternal href="//www.stjude.org/get-involved/other-ways/video-game-charity-event.html">
+						<LinkExternal href={'//www.stjude.org/get-involved/other-ways/video-game-charity-event.html'}>
 							stjude.org/get-involved/other-ways/video-game-charity-event.html
 						</LinkExternal>
 					</li>
 					<li>
 						<strong>St. Jude PLAY LIVE Discord:</strong>{' '}
-						<LinkExternal href="//discord.gg/stjudeplaylive">discord.gg/stjudeplaylive</LinkExternal>
+						<LinkExternal href={'//discord.gg/stjudeplaylive'}>discord.gg/stjudeplaylive</LinkExternal>
 					</li>
 				</List>
 			</Section>
@@ -86,18 +86,18 @@ export const ParticipantGuide = () => {
 			<Section title={'Creating Your Tiltify Campaign'}>
 				<p>
 					This event uses Tiltify to manage donations through a team campaign. The team can be seen at{' '}
-					<LinkExternal href="//tiltify.com/+ff7-for-st-jude/profile">tiltify.com/+ff7-for-st-jude/profile</LinkExternal> which shows the
+					<LinkExternal href={'//tiltify.com/+ff7-for-st-jude/profile'}>tiltify.com/+ff7-for-st-jude/profile</LinkExternal> which shows the
 					active campaign near the top of the page. You do not need to be a member of the team to support the campaign. Participants will
 					create individual campaigns that support the team campaign.
 				</p>
 
 				<List variant={'ol'}>
 					<li>
-						Browse to <LinkExternal href="//app.tiltify.com">app.tiltify.com</LinkExternal> and log in using your twitch account.
+						Browse to <LinkExternal href={'//app.tiltify.com'}>app.tiltify.com</LinkExternal> and log in using your twitch account.
 					</li>
 					<li>
 						Then in the same or new browser tab, go to{' '}
-						<LinkExternal href="//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9">
+						<LinkExternal href={'//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9'}>
 							tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9
 						</LinkExternal>{' '}
 						and click the "Support this campaign" button.
@@ -225,7 +225,7 @@ export const ParticipantGuide = () => {
 					</li>
 					<li>
 						<strong>!stjude</strong> - Info about St. Jude. I recommend using their official mission statement found{' '}
-						<Link to="/">at the top of the home page</Link>
+						<Link to={'/'}>at the top of the home page</Link>
 					</li>
 				</List>
 

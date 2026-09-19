@@ -1,7 +1,7 @@
 /* Packages */
-import { useEffect } from 'react';
 import type { Draft } from 'immer';
 import { produce } from 'immer';
+import { useEffect } from 'react';
 
 /* Scripts */
 import { useReactQuery } from '../../_core/scripts/hooks';
