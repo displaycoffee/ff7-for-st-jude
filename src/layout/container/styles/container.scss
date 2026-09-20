@@ -52,7 +52,8 @@
 		}
 	}
 	.main {
-		min-height: 80vh;
+		// min-height is set directly on this element via useAvailableMinHeight (see Container.tsx),
+		// which measures real remaining viewport space instead of guessing a value here
 		.main-layout {
 			@include mixins.gap($container-main-spacing);
 			.content, .sidebar {

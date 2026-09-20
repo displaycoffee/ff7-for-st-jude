@@ -2,12 +2,13 @@
 import './styles/container.scss';
 
 /* Packages */
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 /* Scripts */
 import { useRespond } from '../../_core/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
-import { useBodyClass } from './scripts/container-hooks';
+import { useAvailableMinHeight, useBodyClass } from './scripts/container-hooks';
 
 /* Components */
 import { Colors } from '../../components/colors/Colors';
@@ -21,6 +22,8 @@ import { Footer } from '../footer/Footer';
 export const Container = () => {
 	const { theme } = useAppContext();
 	const isDesktop = useRespond(theme.bps.bp02 as number);
+	const mainRef = useRef<HTMLElement>(null);
+	useAvailableMinHeight(mainRef);
 
 	// Set body class using custom hook
 	useBodyClass('home');
@@ -57,7 +60,7 @@ export const Container = () => {
 
 				<Header />
 
-				<main id="main-content" className="main">
+				<main id="main-content" className="main" ref={mainRef}>
 					<div className="main-layout flex-wrap">
 						<Content />
 					</div>

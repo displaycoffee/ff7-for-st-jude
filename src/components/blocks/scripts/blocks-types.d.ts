@@ -20,6 +20,7 @@ type Section = {
 	hasRow?: boolean;
 	hasScroll?: boolean;
 	id?: string;
+	target?: string;
 	title?: string;
 };
 
