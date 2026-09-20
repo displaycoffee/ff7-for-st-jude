@@ -18,7 +18,7 @@ if (fs.existsSync(templatePath)) {
 	const fontFaces = [];
 
 	fonts.forEach((font) => {
-		fontLinks.push(`<link rel="preload" href="/assets/fonts/${font.file}" as="font" type="font/woff2" crossorigin="anonymous" />`);
+		fontLinks.push(`<link rel="preload" href="${font.file}" as="font" type="font/woff2" crossorigin="anonymous" />`);
 		fontFaces.push(`@font-face {
 			font-family: '${font.family}';
 			src: url('${font.file}') format('woff2');
