@@ -79,14 +79,6 @@ if (fs.existsSync(templatePath)) {
 				size-adjust: 98%;
 			}
 			${fontFaces.join('')}
-			.svg-hidden {
-				position: absolute;
-				width: 1px;
-				height: 1px;
-				padding: 0;
-				margin: -1px;
-				overflow: hidden;
-			}
 			.hide-mobile {
 				display: none;
 			}
