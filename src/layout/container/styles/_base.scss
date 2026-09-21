@@ -3,30 +3,6 @@
 @use '../../../_core/styles/utils/_mixins';
 @use '../../../_core/styles/theme/_theme';
 
-//// RESETS
-//// --------------------------------------------------------------------------
-
-	// Style block
-
-	*, *:after,	*:before {
-		box-sizing: border-box;
-	}
-	:focus-visible {
-		outline: 1px solid theme.$color-08;
-		outline-offset: 2px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		*, *:before, *:after {
-			animation-duration: 0.01ms !important;
-			animation-iteration-count: 1 !important;
-			transition-duration: 0.01ms !important;
-			scroll-behavior: auto !important;
-		}
-		::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) {
-			animation-duration: 0.01ms !important;
-		}
-	}
-
 //// ELEMENTS
 //// --------------------------------------------------------------------------
 

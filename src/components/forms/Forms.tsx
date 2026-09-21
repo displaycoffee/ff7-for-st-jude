@@ -17,6 +17,9 @@ import type {
 import { forms } from './scripts/forms';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
+/* Components */
+import { Alert } from '../alert/Alert';
+
 export const Button = (props: ButtonProps) => {
 	const { children, className: propClassName, hideLabel = false, label, type = 'button', variant = 'primary', ...rest } = props;
 	const buttonClass = variant != 'unstyled' && variant != 'link' ? 'button ' : '';
@@ -130,9 +133,9 @@ const ErrorField = (props: ErrorFieldProps) => {
 	const { error, id } = props;
 
 	return error ? (
-		<div id={id} className="form-error" role="alert">
+		<Alert id={id} type={'warning'}>
 			{error}
-		</div>
+		</Alert>
 	) : null;
 };
 

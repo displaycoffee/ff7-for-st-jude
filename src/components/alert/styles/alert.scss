@@ -1,0 +1,75 @@
+// Local Sass modules
+@use '../../../_core/styles/utils/_functions';
+@use '../../../_core/styles/utils/_mixins';
+@use '../../../_core/styles/theme/_theme';
+
+//// ALERT
+//// --------------------------------------------------------------------------
+
+	// Colors
+
+	$alert-color-01: false; // alert font color
+
+	// Configuration
+	
+	$alert-spacing: theme.$spacing-x4; // spacing for alert
+	$alert-border-left-width: 5px; // make left border larger
+	$alert-border-radius: 5px; // alert border radius
+	$alert-icon-size: 20px; // size of icon
+	$alert-icon-vertical: 1px; // top vertical alignment of icon
+
+	// Style block
+
+	.alert {
+		padding: $alert-spacing;
+		@include mixins.gap(calc($alert-spacing / 2));
+		background-color: theme.$color-30;
+		border: 1px solid theme.$color-31;
+		@include mixins.if-exists((
+			border-left-width: $alert-border-left-width,
+		));
+		@if $alert-border-radius != false {
+			@include mixins.border-radius($alert-border-radius)
+		}
+		.alert-icon, .alert-message {
+			min-width: 1px;
+		}
+		.alert-icon {
+			@include mixins.flex(0 1 auto);
+			@include mixins.sizing($alert-icon-size, $alert-icon-size);
+			@if $alert-icon-vertical != false {
+				@include mixins.position($type: relative, $top: $alert-icon-vertical);
+			}
+			color: theme.$color-31;
+			svg {
+				@include mixins.sizing(100%, 100%);
+			}
+		}
+		.alert-message {
+			@include mixins.flex;
+			@include mixins.if-exists((
+				color: $alert-color-01,
+			));
+		}
+	}
+	.alert-warning {
+		background-color: theme.$color-32;
+		border-color: theme.$color-33;
+		.alert-icon {
+			color: theme.$color-33;
+		}
+	}
+	.alert-info {
+		background-color: theme.$color-34;
+		border-color: theme.$color-35;
+		.alert-icon {
+			color: theme.$color-35;
+		}
+	}
+	.alert-success {
+		background-color: theme.$color-36;
+		border-color: theme.$color-37;
+		.alert-icon {
+			color: theme.$color-37;
+		}
+	}

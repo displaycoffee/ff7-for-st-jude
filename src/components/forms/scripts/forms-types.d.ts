@@ -5,7 +5,7 @@ import type { ButtonHTMLAttributes, FormHTMLAttributes, InputHTMLAttributes, Rea
 type Field = {
 	className?: string;
 	description?: string;
-	error?: string;
+	error?: ReactNode;
 	hideLabel?: boolean;
 	id: string;
 	label: string;
@@ -33,7 +33,7 @@ type Description = {
 };
 
 type ErrorField = {
-	error?: string;
+	error?: ReactNode;
 	id?: string;
 };
 
@@ -60,7 +60,7 @@ type FormField = {
 type FormFieldDetails = {
 	description?: string;
 	descriptionId?: string;
-	error?: string;
+	error?: ReactNode;
 	errorId?: string;
 };
 

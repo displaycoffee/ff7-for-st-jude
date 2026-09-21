@@ -11,7 +11,7 @@ export const DonationsSection = (props: DonationsSectionProps) => {
 	const { utils } = useAppContext();
 
 	return (
-		<ErrorBoundary message={'Something went wrong loading donations.'}>
+		<ErrorBoundary message={<p>Something went wrong loading donations.</p>}>
 			<Section title={'Donations'} hasRow={true}>
 				<p className="sr-only" role="status">
 					{!donationsComplete ? 'Loading donations...' : utils.checkArray(donations.values) ? 'Donations loaded.' : ''}

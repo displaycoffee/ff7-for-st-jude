@@ -1,8 +1,8 @@
 /* Packages */
-import { useContext } from 'react';
+import { use } from 'react';
 
 /* Components */
 import { Context } from '../Context';
 
 /* Custom hook for consuming context */
-export const useAppContext = () => useContext(Context);
+export const useAppContext = () => use(Context);

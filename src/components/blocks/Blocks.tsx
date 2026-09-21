@@ -42,7 +42,7 @@ export const List = (props: ListProps) => {
 	const olAttributes = isOrdered ? { reversed, start, type: listType } : {};
 
 	return (
-		<Tag className={className} {...rest} {...olAttributes}>
+		<Tag className={className} role={'list'} {...rest} {...olAttributes}>
 			{children}
 		</Tag>
 	);

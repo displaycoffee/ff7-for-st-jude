@@ -37,7 +37,7 @@ const queryClient = new QueryClient({
 /* Create context */
 export const Context = createContext({} as ContextValuesType);
 
-/* Create Context.Provider wrapper */
+/* Create Context wrapper */
 export const ContextProvider = ({ children }: ContextProps) => {
 	// Create state for app
 	const contentConfig: ContentType = {
@@ -83,7 +83,7 @@ export const ContextProvider = ({ children }: ContextProps) => {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<Context.Provider value={values}>{children}</Context.Provider>
+			<Context value={values}>{children}</Context>
 		</QueryClientProvider>
 	);
 };

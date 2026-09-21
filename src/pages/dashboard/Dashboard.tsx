@@ -154,7 +154,7 @@ export const Dashboard = () => {
 
 			<DonationsSection donations={donations} donationsComplete={donationsComplete} />
 
-			<ErrorBoundary message={'Something went wrong loading rewards.'}>
+			<ErrorBoundary message={<p>Something went wrong loading rewards.</p>}>
 				<Section title={'Rewards'} hasRow={true}>
 					<p className="sr-only" role="status">
 						{!rewardsComplete ? 'Loading rewards...' : utils.checkArray(rewards.values) ? 'Rewards loaded.' : ''}
@@ -201,7 +201,7 @@ export const Dashboard = () => {
 				</Section>
 			</ErrorBoundary>
 
-			<ErrorBoundary message={'Something went wrong loading targets.'}>
+			<ErrorBoundary message={<p>Something went wrong loading targets.</p>}>
 				<Section title={'Targets'} hasRow={true}>
 					<p className="sr-only" role="status">
 						{!targetsComplete ? 'Loading targets...' : utils.checkArray(targets.values) ? 'Targets loaded.' : ''}

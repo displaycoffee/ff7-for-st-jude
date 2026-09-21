@@ -138,30 +138,6 @@
 
 	.form-description {}
 
-//// FORMS - ERROR
-//// --------------------------------------------------------------------------
-
-	// Colors
-
-	$forms-error-color-01: theme.$color-12; // error background
-
-	// Configuration
-	
-	$forms-error-spacing: theme.$spacing-x2; // error spacing
-	$forms-error-border-width: 1px; // error border width
-
-	// Style block
-
-	.form-error {
-		@if $forms-error-border-width != false {
-			border: $forms-error-border-width solid $forms-error-color-01;
-		}
-		@include mixins.if-exists((
-			background-color: rgba($forms-error-color-01, 50%),
-			padding: $forms-error-spacing,
-		));
-	}
-
 //// FORMS - FORM
 //// --------------------------------------------------------------------------
 

@@ -9,10 +9,9 @@
 
 	// Imports
 
-	@use './_normalize';
+	@use './_reset';
 	@use './_typography';
 	@use './_base';
-	@use './_images';
 	@use './_layout';
 
 //// CONTAINER
@@ -52,8 +51,6 @@
 		}
 	}
 	.main {
-		// min-height is set directly on this element via useAvailableMinHeight (see Container.tsx),
-		// which measures real remaining viewport space instead of guessing a value here
 		.main-layout {
 			@include mixins.gap($container-main-spacing);
 			.content, .sidebar {
