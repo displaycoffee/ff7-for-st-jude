@@ -1,4 +1,5 @@
 /* Packages */
+import tanstackRouter from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import sitemap from 'vite-plugin-sitemap';
@@ -9,6 +10,10 @@ import { sitemapConfig } from './vite.sitemap.js';
 
 export const viteUtils = {
 	plugins: [
+		tanstackRouter({
+			routesDirectory: './routes',
+			generatedRouteTree: './routeTree.gen.ts',
+		}),
 		react(),
 		basicSsl(),
 		sitemap(sitemapConfig),
