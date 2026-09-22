@@ -13,6 +13,7 @@ export const viteUtils = {
 		tanstackRouter({
 			routesDirectory: './routes',
 			generatedRouteTree: './routeTree.gen.ts',
+			routeFileIgnorePattern: '^(scripts|styles)$',
 		}),
 		react(),
 		basicSsl(),
@@ -22,16 +23,30 @@ export const viteUtils = {
 			jsx: 'react',
 		}),
 	],
+	getRouteName: (filePath) => {
+		if (!filePath) return null;
+		const segments = filePath.replace(/\\/g, '/').split('/');
+		const routesIndex = segments.lastIndexOf('routes');
+
+		if (routesIndex == -1) return null;
+		const routeSegments = segments.slice(routesIndex + 1, -1).filter((segment) => !segment.startsWith('('));
+
+		return routeSegments.length != 0 ? routeSegments[routeSegments.length - 1] : 'index';
+	},
 	assetFileNames: (file) => {
 		if (file.name.includes('.css')) {
-			const stem = file.name == 'index.css' ? `` : `.${file.name.toLowerCase().replace(/\.css$/, '')}`;
+			const routeName = file.name == 'index.css' ? viteUtils.getRouteName(file.originalFileNames?.[0]) : file.name.replace(/\.css$/, '');
+			const stem = routeName ? `.${routeName.toLowerCase()}` : '';
 			return `assets/[ext]/styles${stem}.[hash].css`;
 		} else {
 			return `assets/[ext]/[name].[hash].[ext]`;
 		}
 	},
 	chunkFileNames: (file) => {
-		return `assets/js/bundle.${file.name.toLowerCase()}.[hash].js`;
+		const isGenericName = file.name == 'index' || file.name == 'index.lazy';
+		const routeName = isGenericName ? viteUtils.getRouteName(file.facadeModuleId) : null;
+		const suffix = file.name.endsWith('.lazy') ? '.lazy' : '';
+		return `assets/js/bundle.${(routeName ?? file.name).toLowerCase()}${routeName ? suffix : ''}.[hash].js`;
 	},
 	entryFileNames: () => {
 		return `assets/js/bundle.[hash].js`;

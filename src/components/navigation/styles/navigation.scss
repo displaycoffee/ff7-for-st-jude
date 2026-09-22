@@ -6,36 +6,44 @@
 //// NAVIGATION
 //// --------------------------------------------------------------------------
 
-	// Configuration
-
-	$navigation-is-inline: true; // determine if navigation is inline
-
 	// Style block
 
 	.navigation {
-		@include mixins.position($type: sticky, $top: -1px, $z: 5);
-		min-height: 10px;
-		&.is-sticky {
-			.navigation-fixed {
-				@include mixins.position($type: fixed, $top: 0, $left: 0, $right: 0);
-				padding: theme.$spacing-x4;
-				background-color: theme.$color-03;
-				border-bottom: 3px solid theme.$color-04;
-			}
-			.navigation-list {			
-				max-width: 1600px;
-				padding: 0 theme.$spacing-x3;
-				margin: 0 auto;
-			}
-		}
-		.navigation-list {	
+		.navigation-list {
 			@include mixins.flex-layout((align-items: center));
-			@include mixins.gap(theme.$spacing-x2);
-		}
-	}
-	@include mixins.respond-min(theme.$bp-02) {
-		.navigation.is-sticky .navigation-fixed {
-			padding-left: theme.$spacing-x8;
-			padding-right: theme.$spacing-x8;
+			@include mixins.gap(theme.$spacing-x4);
+			.navigation-list-item {
+				&:has(.dropdown) {
+					position: relative;
+					@include mixins.flex-layout((flex-flow: row nowrap, align-items: center));
+					@include mixins.gap(theme.$spacing-x1);
+					.dropdown {
+						position: static;
+						.dropdown-button {
+							padding: 0;
+							line-height: 1.5;
+							height: auto;
+							border: 0;
+							background-color: transparent;
+						}
+						.dropdown-content {
+							right: auto;
+							min-width: 200px;
+							margin-top: theme.$spacing-x2;
+						}
+					}
+				}
+				.navigation-link-active {
+					font-weight: theme.$font-weight-01;
+				}
+			}
+			.navigation-list-submenu {
+				.navigation-list-item {
+					margin: 0 0 theme.$spacing-x1 0;
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+			}
 		}
 	}

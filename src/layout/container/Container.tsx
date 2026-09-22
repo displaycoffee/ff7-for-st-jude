@@ -3,12 +3,13 @@ import './styles/container.scss';
 
 /* Packages */
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from '@tanstack/react-router';
 
 /* Scripts */
 import { useRespond } from '../../_core/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { useAvailableMinHeight, useBodyClass } from './scripts/container-hooks';
+import { navigationHeader } from '../../components/navigation/scripts/navigation';
 
 /* Components */
 import { Colors } from '../../components/colors/Colors';
@@ -51,10 +52,10 @@ export const Container = () => {
 				</a>
 
 				{isDesktop ? (
-					<Navigation label={'Header Navigation'} location={'header'} />
+					<Navigation data={navigationHeader} label={'Header Navigation'} location={'header'} />
 				) : (
 					<Slideout options={slideoutOptions}>
-						<Navigation label={'Mobile Navigation'} />
+						<Navigation data={navigationHeader} label={'Mobile Navigation'} />
 					</Slideout>
 				)}
 

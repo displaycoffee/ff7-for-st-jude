@@ -1,9 +1,13 @@
 /* Packages */
 import type { RefObject } from 'react';
 import { useEffect, useLayoutEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@tanstack/react-router';
 
 export const useAvailableMinHeight = (ref: RefObject<HTMLElement | null>) => {
+	// main persists across routes, so a stale min-height can hold it at the old size and mask
+	// the resize from ResizeObserver. Re-run on pathname change to force a fresh measurement.
+	const location = useLocation();
+
 	// Reserves exactly the viewport space around this element — regardless of what surrounds it,
 	// or how many pieces (header, nav, footer, none of the above) — so content mounting in later
 	// doesn't shift whatever comes after it. Sets min-height directly, no CSS-side setup needed.
@@ -39,7 +43,7 @@ export const useAvailableMinHeight = (ref: RefObject<HTMLElement | null>) => {
 			observer.disconnect();
 			window.removeEventListener('resize', updateMinHeight);
 		};
-	}, [ref]);
+	}, [ref, location.pathname]);
 };
 
 /* Variables for useBodyClass */

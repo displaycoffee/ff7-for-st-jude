@@ -1,61 +1,21 @@
-/* Packages */
-import { lazy } from 'react';
-
 /* Scripts */
-import type { NavigationType } from './navigation-types';
+import type { NavigationMapType } from './navigation-types';
+import { navigationUtils } from './navigation-utils';
 
-/* Components */
-const Home = lazy(() => import('../../../pages/home/Home').then((m) => ({ default: m.Home })));
-const Dashboard = lazy(() => import('../../../pages/dashboard/Dashboard').then((m) => ({ default: m.Dashboard })));
-const Donations = lazy(() => import('../../../pages/donations/Donations').then((m) => ({ default: m.Donations })));
-const ParticipantGuide = lazy(() => import('../../../pages/participant-guide/ParticipantGuide').then((m) => ({ default: m.ParticipantGuide })));
+const { create } = navigationUtils;
 
-export const navigation: NavigationType[] = [
-	{
-		id: 5,
-		element: Home,
-		isRoute: false,
-		label: 'Commentary Stream',
-		showInNav: false,
-		url: '//twitch.tv/MonetaryDragon',
-	},
-	{
-		id: 4,
-		element: Donations,
-		isRoute: true,
-		label: 'Donations',
-		showInNav: true,
-		url: '/donations',
-	},
-	{
-		id: 3,
-		element: Dashboard,
-		isRoute: true,
-		label: 'Dashboard',
-		showInNav: true,
-		url: '/dashboard',
-	},
-	{
-		id: 2,
-		isRoute: false,
-		label: 'Signup Sheet',
-		showInNav: false,
-		url: '//docs.google.com/spreadsheets/d/1pxX1Pf7qK3eO2nKksbLGp3VbWV7ZByPC6dxVNmo8pds/edit',
-	},
-	{
-		id: 1,
-		element: ParticipantGuide,
-		isRoute: true,
-		label: 'Participant Guide',
-		url: '/participant-guide',
-		showInNav: true,
-	},
-	{
-		id: 0,
-		element: Home,
-		isRoute: true,
-		label: 'Home',
-		url: '/',
-		showInNav: true,
-	},
-];
+export const navigationHeader: NavigationMapType = {
+	...create({ key: 'index', label: 'Home', url: '/' }),
+	...create({ key: 'page-one', label: 'Page One' }),
+	...create({
+		key: 'page-two',
+		label: 'Page Two',
+		includeInSiteMap: false,
+		children: {
+			...create({ key: 'child-page-one', label: 'Child Page One' }),
+			...create({ key: 'child-page-two', label: 'Child Page Two' }),
+		},
+	}),
+	...create({ key: 'page-three', label: 'Page Three' }),
+	...create({ key: 'page-four', label: 'Page Four' }),
+};

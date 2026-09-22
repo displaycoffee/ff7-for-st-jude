@@ -7,6 +7,11 @@ import packageJSON from '../package.json' with { type: 'json' };
 /* Note: theme.ts pulls in a .scss CSS-module export, which only plain `node` can't
    process on its own — load it through Vite's SSR pipeline instead so the
    same transforms (Sass, CSS modules) apply as in the app itself. */
+
+/* createServer resolves vite.config.js itself, independent of the vite CLI, so the
+   cross-env wrapping on the npm scripts doesn't reach this; set it directly here too. */
+process.env.VITE_CONFIG_NATIVE_IGNORE_WARNING = 'true';
+
 const viteServer = await createServer({
 	server: { middlewareMode: true },
 	appType: 'custom',
