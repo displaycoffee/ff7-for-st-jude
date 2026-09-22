@@ -12,7 +12,7 @@
 
 	// Style block
 	
-	:focus-visible {
+	:focus-visible, .choice:has(input:focus-visible), .toggle:has(input:focus-visible) .toggle-slider {
 		outline: 1px solid $forms-color-01;
 		outline-offset: 2px;
 	}
@@ -28,7 +28,9 @@
 	}
 	.disabled {
 		opacity: 0.65;
-		cursor: not-allowed;
+		&, &.pointer, .pointer {
+			cursor: not-allowed;
+		}
 	}
 
 //// FORMS - BUTTON
