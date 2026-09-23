@@ -106,7 +106,7 @@ type Utils = {
 	getDate: (time: string) => string;
 	getLast: (value: string | string[], delimeter?: string) => string | number;
 	handleize: (value: string) => string;
-	isSticky: (element: HTMLElement | null, stickyClass: string) => void;
+	isSticky: (element: HTMLElement | null, stickyClass: string) => (() => void) | undefined;
 	scrollTo: (e?: Events, selector?: string, offset?: number) => void;
 	setActive: (type: string, data: Rewards | Targets) => boolean;
 	setAttributes: (element: HTMLElement, attributes: ObjectString) => void;

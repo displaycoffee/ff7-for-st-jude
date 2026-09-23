@@ -38,18 +38,23 @@ export const navigationUtils = {
 		return { [key]: navigationItem };
 	},
 	get: {
-		list: (data: NavigationMapType): NavigationFlatItemType[] => {
-			return Object.keys(data).map((dataKey) => {
-				const { children, ...rest } = data[dataKey];
+		// includeHidden is only meant for scripts/config.js, which needs every route (including
+		// showInNav: false ones) to build the sitemap; leave it off everywhere else so the nav UI
+		// keeps filtering those out.
+		list: (data: NavigationMapType, includeHidden = false): NavigationFlatItemType[] => {
+			return Object.keys(data)
+				.filter((dataKey) => includeHidden || data[dataKey].showInNav)
+				.map((dataKey) => {
+					const { children, ...rest } = data[dataKey];
 
-				// Create modified object
-				const modified: NavigationFlatItemType = { ...rest };
+					// Create modified object
+					const modified: NavigationFlatItemType = { ...rest };
 
-				// If children, add array of children
-				if (children && Object.keys(children).length !== 0) modified.children = navigationUtils.get.list(children);
+					// If children, add array of children
+					if (children && Object.keys(children).length !== 0) modified.children = navigationUtils.get.list(children, includeHidden);
 
-				return modified;
-			});
+					return modified;
+				});
 		},
 		listItem: (data: NavigationMapType, key: string): NavigationFlatItemType | undefined => {
 			return navigationUtils.get.list(data).find((item) => item.id === key);

@@ -43,9 +43,9 @@
 	}
 	.list-unordered {
 		& > li:before {
-			top: 4px;
+			top: 6px;
 			content: '\0025AA';
-			font-size: functions.em(16px, rem);
+			font-size: 18px;
 			line-height: 1;
 		}
 	}

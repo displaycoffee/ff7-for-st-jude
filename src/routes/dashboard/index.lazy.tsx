@@ -3,6 +3,7 @@ import './styles/dashboard.scss';
 
 /* Packages */
 import type { Draft } from 'immer';
+import { createLazyFileRoute } from '@tanstack/react-router';
 import { produce } from 'immer';
 import { useEffect } from 'react';
 
@@ -21,13 +22,17 @@ const truncateLimit = 75;
 const scrollToOffset = 100;
 const refreshableTypes = ['donations', 'rewards', 'targets'] as const;
 
-export const Dashboard = () => {
+export const Route = createLazyFileRoute('/dashboard/')({
+	component: RouteComponent,
+});
+
+function RouteComponent() {
 	const { campaigns, utils, variables, queryClient, content, setContent } = useAppContext();
 	const { supporting, campaign, donations, rewards, targets } = content;
 	const { current } = campaigns;
 
 	// Use custom hook to get supporting campaigns
-	const [supportingData] = useReactQuery('supporting', content, current) as SupportingRequestType;
+	const [supportingData, supportingStatus] = useReactQuery('supporting', content, current) as SupportingRequestType;
 
 	// Use custom hook to get campaign
 	const [campaignData] = useReactQuery('campaign', content, current) as CampaignRequestType;
@@ -45,11 +50,14 @@ export const Dashboard = () => {
 	const targetsComplete = (!targetsStatus.pending && targetsStatus.success) || targetsStatus.fetched;
 
 	useEffect(() => {
-		const supportingUpdated = !supporting.fetched && supportingData && utils.checkArray(supportingData);
+		// checkArray(data) would require a non-empty result, but a fresh campaign with no supporting
+		// campaigns joined yet legitimately returns empty arrays for all of these - use each query's
+		// own success status instead so that valid empty state still gets committed.
+		const supportingUpdated = !supporting.fetched && supportingStatus.success && Array.isArray(supportingData);
 		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
-		const donationsUpdated = !donations.fetched && donationsData && utils.checkArray(donationsData);
-		const rewardsUpdated = !rewards.fetched && rewardsStatus.fetched && utils.checkArray(rewardsData);
-		const targetsUpdated = !targets.fetched && targetsStatus.fetched && utils.checkArray(targetsData);
+		const donationsUpdated = !donations.fetched && donationsStatus.success && Array.isArray(donationsData);
+		const rewardsUpdated = !rewards.fetched && rewardsStatus.success && Array.isArray(rewardsData);
+		const targetsUpdated = !targets.fetched && targetsStatus.success && Array.isArray(targetsData);
 
 		if (supportingUpdated || campaignUpdated || donationsUpdated || rewardsUpdated || targetsUpdated) {
 			setContent(
@@ -94,17 +102,19 @@ export const Dashboard = () => {
 		utils,
 		setContent,
 		supportingData,
+		supportingStatus.success,
 		supporting.fetched,
 		campaignData,
 		campaign.fetched,
 		donationsData,
+		donationsStatus.success,
 		donations.fetched,
 		rewardsData,
 		rewards.fetched,
-		rewardsStatus.fetched,
+		rewardsStatus.success,
 		targetsData,
 		targets.fetched,
-		targetsStatus.fetched,
+		targetsStatus.success,
 	]);
 
 	return (
@@ -252,4 +262,4 @@ export const Dashboard = () => {
 			</ErrorBoundary>
 		</>
 	);
-};
+}

@@ -6,6 +6,7 @@ type NavigationComponent = {
 	data: NavigationMap;
 	disableTransition?: boolean;
 	label: string;
+	location: string;
 };
 
 type NavigationItemComponent = {

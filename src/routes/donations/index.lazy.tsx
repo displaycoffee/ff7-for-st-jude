@@ -1,5 +1,6 @@
 /* Packages */
 import type { Draft } from 'immer';
+import { createLazyFileRoute } from '@tanstack/react-router';
 import { produce } from 'immer';
 import { useEffect } from 'react';
 
@@ -13,13 +14,17 @@ import { DonationsSection } from '../../components/donations-section/DonationsSe
 /* Static variables */
 const timeout = false; // 60000 == one minute
 
-export const Donations = () => {
+export const Route = createLazyFileRoute('/donations/')({
+	component: RouteComponent,
+});
+
+function RouteComponent() {
 	const { campaigns, utils, queryClient, content, setContent } = useAppContext();
 	const { supporting, campaign, donations } = content;
 	const { current } = campaigns;
 
 	// Use custom hook to get supporting campaigns
-	const [supportingData] = useReactQuery('supporting', content, current) as SupportingRequestType;
+	const [supportingData, supportingStatus] = useReactQuery('supporting', content, current) as SupportingRequestType;
 
 	// Use custom hook to get campaign
 	const [campaignData] = useReactQuery('campaign', content, current) as CampaignRequestType;
@@ -29,9 +34,12 @@ export const Donations = () => {
 	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched;
 
 	useEffect(() => {
-		const supportingUpdated = !supporting.fetched && supportingData && utils.checkArray(supportingData);
+		// checkArray(data) would require a non-empty result, but a fresh campaign with no supporting
+		// campaigns/donations yet legitimately returns an empty array - use each query's own success
+		// status instead so that valid empty state still gets committed.
+		const supportingUpdated = !supporting.fetched && supportingStatus.success && Array.isArray(supportingData);
 		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
-		const donationsUpdated = !donations.fetched && donationsData && utils.checkArray(donationsData);
+		const donationsUpdated = !donations.fetched && donationsStatus.success && Array.isArray(donationsData);
 
 		if (supportingUpdated || campaignUpdated || donationsUpdated) {
 			setContent(
@@ -60,7 +68,18 @@ export const Donations = () => {
 				}),
 			);
 		}
-	}, [utils, setContent, supportingData, supporting.fetched, campaignData, campaign.fetched, donationsData, donations.fetched]);
+	}, [
+		utils,
+		setContent,
+		supportingData,
+		supportingStatus.success,
+		supporting.fetched,
+		campaignData,
+		campaign.fetched,
+		donationsData,
+		donationsStatus.success,
+		donations.fetched,
+	]);
 
 	useEffect(() => {
 		if (timeout) {
@@ -84,4 +103,4 @@ export const Donations = () => {
 	}, [queryClient, setContent]);
 
 	return <DonationsSection donations={donations} donationsComplete={donationsComplete} />;
-};
+}

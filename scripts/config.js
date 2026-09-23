@@ -79,7 +79,7 @@ const flattenUrls = (items) => {
 };
 
 export const config = {
-	navigation: flattenUrls(navigationUtils.get.list(navigationHeader)),
+	navigation: flattenUrls(navigationUtils.get.list(navigationHeader, true)),
 	site: {
 		name: packageJSON.displayName || '',
 		description: packageJSON.description || '',

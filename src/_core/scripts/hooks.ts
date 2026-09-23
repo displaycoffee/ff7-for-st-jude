@@ -29,12 +29,15 @@ export const useReactQuery = (key: string, content: ContentType, current: Campai
 	if (key == 'campaign') {
 		requestData = !campaign.fetched;
 	} else if (key == 'donations') {
-		hasData = supporting.fetched && supporting.values.length !== 0;
+		hasData = supporting.fetched;
 		requestData = hasData && !donations.fetched;
 		queryKey = [key, current, supporting] as QueryKeyType;
 	} else if (key == 'supporting') {
 		requestData = !supporting.fetched;
 	}
+
+	// Set query function
+	const queryFn: QueryFunction<unknown, QueryKeyType> = requests[key as keyof RequestsType];
 
 	// Create query request
 	const {
@@ -44,8 +47,7 @@ export const useReactQuery = (key: string, content: ContentType, current: Campai
 		isFetched: isFetched,
 	} = useQuery({
 		queryKey: queryKey,
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- required: requests[key] is a union of differently-typed query functions, and useQuery's overload resolution can't narrow it without this cast
-		queryFn: requests[key as keyof RequestsType] as QueryFunction<unknown, QueryKeyType>,
+		queryFn: queryFn,
 		enabled: requestData,
 	});
 
@@ -73,6 +75,9 @@ export const useReactQueries = (key: string, content: ContentType) => {
 	const hasSupporting = supporting.fetched && supporting.values.length !== 0;
 	const queryValues = hasSupporting ? supporting.values : [];
 
+	// Set query function
+	const queryFn: QueryFunction<unknown> = requests[key as keyof RequestsType];
+
 	const {
 		data: data,
 		isPending: isPending,
@@ -81,8 +86,7 @@ export const useReactQueries = (key: string, content: ContentType) => {
 	} = useQueries({
 		queries: queryValues.map((value, index) => ({
 			queryKey: [key, value, index],
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- required: requests[key] is a union of differently-typed query functions, and useQueries's overload resolution can't narrow it without this cast
-			queryFn: requests[key as keyof RequestsType] as QueryFunction<unknown>,
+			queryFn: queryFn,
 		})),
 		combine: (results) => {
 			return {
@@ -102,9 +106,20 @@ export const useReactQueries = (key: string, content: ContentType) => {
 	const checkSuccess = checkStatus(isSuccess);
 	const checkFetched = checkStatus(isFetched);
 
+	// Nothing to query yet if supporting hasn't loaded, and nothing to query at all if it loaded empty
+	const waiting = !supporting.fetched;
+	const noQueries = queryValues.length === 0;
+
 	// Re-sort merged data
 	const sortedData = data && data.length !== 0 ? utils.sort(data, 'integer', 'milliseconds', 'asc') : [];
-	return [sortedData, { fetched: checkFetched && isFetched[0], pending: checkPending && isPending[0], success: checkSuccess && isSuccess[0] }];
+	return [
+		sortedData,
+		{
+			fetched: !waiting && (noQueries || (checkFetched && isFetched[0])),
+			pending: waiting || (!noQueries && checkPending && isPending[0]),
+			success: !waiting && (noQueries || (checkSuccess && isSuccess[0])),
+		},
+	];
 };
 
 export const useRespond = (bp: number) => {

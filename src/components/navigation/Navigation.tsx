@@ -2,7 +2,7 @@
 import './styles/navigation.scss';
 
 /* Packages */
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { Link, useLocation } from '@tanstack/react-router';
 
 /* Scripts */
@@ -12,59 +12,56 @@ import { useViewTransition } from '../../_core/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
+import { Colors } from '../colors/Colors';
 import { LinkExternal, List } from '../blocks/Blocks';
-import { Dropdown } from '../dropdown/Dropdown';
 
 export const Navigation = (props: NavigationComponentProps) => {
-	const { data, disableTransition, label } = props;
+	const { data, disableTransition, label, location } = props;
 	const { pathname } = useLocation();
 	const { utils } = useAppContext();
 	const navigationList = navigationUtils.get.list(data);
 	const navigationLinkClass = 'navigation-link';
+	const navigationRef = useRef<HTMLDivElement | null>(null);
 
 	// Scroll to top when navigation link is clicked on
 	useEffect(() => {
 		utils.scrollTo();
 	}, [pathname, utils]);
 
+	// Make header sticky
+	useEffect(() => {
+		if (location == 'header') return utils.isSticky(navigationRef.current, 'is-sticky');
+	}, [location, utils]);
+
 	return navigationList.length != 0 ? (
-		<nav className="navigation" aria-label={label}>
-			<List className={'navigation-list'} variant={'ul-unstyled'}>
-				{navigationList.map((nav) => {
-					return (
-						<Fragment key={nav.id}>
-							{nav?.children && nav.children.length !== 0 ? (
-								<NavigationListItem
-									disableTransition={disableTransition ?? false}
-									navigationLinkClass={navigationLinkClass}
-									nav={nav}
-								>
-									<Dropdown buttonLabel={`${nav.label} Menu`} closeOnClick={true} hideLabel={true}>
-										<List className={'navigation-list-submenu'} variant={'ul-unstyled'}>
-											{nav.children.map((child) => {
-												return (
-													<NavigationListItem
-														disableTransition={disableTransition ?? false}
-														nav={child}
-														navigationLinkClass={navigationLinkClass}
-														key={child.id}
-													/>
-												);
-											})}
-										</List>
-									</Dropdown>
-								</NavigationListItem>
-							) : (
+		<nav className={`navigation navigation-${location}`} aria-label={label} ref={navigationRef}>
+			<div className="navigation-fixed">
+				<List className={'navigation-list'} variant={'ul-unstyled'}>
+					{navigationList.map((nav, index) => {
+						return (
+							<Fragment key={nav.id}>
 								<NavigationListItem
 									disableTransition={disableTransition ?? false}
 									navigationLinkClass={navigationLinkClass}
 									nav={nav}
 								/>
-							)}
-						</Fragment>
-					);
-				})}
-			</List>
+
+								{index != navigationList.length - 1 && (
+									<li className="navigation-list-item navigation-list-item-separator" aria-hidden="true">
+										-
+									</li>
+								)}
+							</Fragment>
+						);
+					})}
+
+					<li className="navigation-list-item navigation-list-item-separator">-</li>
+
+					<li className="navigation-list-item">
+						<Colors showButton={true} />
+					</li>
+				</List>
+			</div>
 		</nav>
 	) : null;
 };

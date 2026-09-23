@@ -13,33 +13,72 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 
 const IndexLazyRouteImport = createFileRoute('/')()
+const DashboardIndexLazyRouteImport = createFileRoute('/dashboard/')()
+const DonationsIndexLazyRouteImport = createFileRoute('/donations/')()
+const ParticipantGuideIndexLazyRouteImport = createFileRoute(
+  '/participant-guide/',
+)()
 
 const IndexLazyRoute = IndexLazyRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+const DashboardIndexLazyRoute = DashboardIndexLazyRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/dashboard/index.lazy').then((d) => d.Route),
+)
+const DonationsIndexLazyRoute = DonationsIndexLazyRouteImport.update({
+  id: '/donations/',
+  path: '/donations/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/donations/index.lazy').then((d) => d.Route),
+)
+const ParticipantGuideIndexLazyRoute =
+  ParticipantGuideIndexLazyRouteImport.update({
+    id: '/participant-guide/',
+    path: '/participant-guide/',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/participant-guide/index.lazy').then((d) => d.Route),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/dashboard/': typeof DashboardIndexLazyRoute
+  '/donations/': typeof DonationsIndexLazyRoute
+  '/participant-guide/': typeof ParticipantGuideIndexLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/dashboard': typeof DashboardIndexLazyRoute
+  '/donations': typeof DonationsIndexLazyRoute
+  '/participant-guide': typeof ParticipantGuideIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
+  '/dashboard/': typeof DashboardIndexLazyRoute
+  '/donations/': typeof DonationsIndexLazyRoute
+  '/participant-guide/': typeof ParticipantGuideIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/dashboard/' | '/donations/' | '/participant-guide/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/dashboard' | '/donations' | '/participant-guide'
+  id: '__root__' | '/' | '/dashboard/' | '/donations/' | '/participant-guide/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  DashboardIndexLazyRoute: typeof DashboardIndexLazyRoute
+  DonationsIndexLazyRoute: typeof DonationsIndexLazyRoute
+  ParticipantGuideIndexLazyRoute: typeof ParticipantGuideIndexLazyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -51,11 +90,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donations/': {
+      id: '/donations/'
+      path: '/donations'
+      fullPath: '/donations/'
+      preLoaderRoute: typeof DonationsIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/participant-guide/': {
+      id: '/participant-guide/'
+      path: '/participant-guide'
+      fullPath: '/participant-guide/'
+      preLoaderRoute: typeof ParticipantGuideIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  DashboardIndexLazyRoute: DashboardIndexLazyRoute,
+  DonationsIndexLazyRoute: DonationsIndexLazyRoute,
+  ParticipantGuideIndexLazyRoute: ParticipantGuideIndexLazyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,10 +1,14 @@
 /* Packages */
-import { Link } from 'react-router-dom';
+import { createLazyFileRoute, Link } from '@tanstack/react-router';
 
 /* Components */
 import { LinkExternal, List, Section } from '../../components/blocks/Blocks';
 
-export const ParticipantGuide = () => {
+export const Route = createLazyFileRoute('/participant-guide/')({
+	component: RouteComponent,
+});
+
+function RouteComponent() {
 	return (
 		<>
 			<Section title={'Top 5 Important Things'}>
@@ -268,4 +272,4 @@ export const ParticipantGuide = () => {
 			</Section>
 		</>
 	);
-};
+}

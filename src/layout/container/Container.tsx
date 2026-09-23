@@ -3,7 +3,7 @@ import './styles/container.scss';
 
 /* Packages */
 import { useRef } from 'react';
-import { Link, useLocation } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 
 /* Scripts */
 import { useRespond } from '../../_core/scripts/hooks';
@@ -52,10 +52,10 @@ export const Container = () => {
 				</a>
 
 				{isDesktop ? (
-					<Navigation data={navigationHeader} label={'Header Navigation'} location={'header'} />
+					<Navigation data={navigationHeader} disableTransition={true} label={'Header Navigation'} location={'header'} />
 				) : (
 					<Slideout options={slideoutOptions}>
-						<Navigation data={navigationHeader} label={'Mobile Navigation'} />
+						<Navigation data={navigationHeader} disableTransition={true} label={'Mobile Navigation'} location={'slideout'} />
 					</Slideout>
 				)}
 

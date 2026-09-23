@@ -3,7 +3,7 @@ import { utils } from '../../../src/_core/scripts/utils';
 import { variables } from '../../../src/_core/scripts/variables';
 
 /* St. Jude FF7 campaign ids */
-const ids = {
+const ids: Record<number, string> = {
 	1: 'e96852f5-6234-4c36-ab09-82de953ae6fa',
 	2: 'f7e6a172-16be-40c0-9f99-3afe2eda3a3c',
 	3: '3f4c8d77-43a3-4414-9ecb-25ef430f77c7',
@@ -13,135 +13,57 @@ const ids = {
 	7: 'a2308711-88cd-470c-80f5-e59286063517',
 	8: '34efb69f-b259-424b-84a9-a5b7cc99dde2',
 	9: '0230fcce-6d9f-4e2b-8fc1-abd7660463cd',
+	10: '6437f161-1031-498c-a673-3ad5419dec34',
+};
+
+/* Get current campaign id */
+const campaignIds = Object.keys(ids);
+const currentId = ids[campaignIds.length];
+
+/* Helper function to build campaign data */
+const buildCampaign = (number: number, name: string, date: string, amount: number) => {
+	const campaignId: string = ids[number];
+	const isCurrent = campaignId == currentId;
+
+	// Build url string
+	let newUrl = `${variables.urls.team}/ff7-for-st-jude-${number}`;
+	if (isCurrent) {
+		newUrl = variables.urls.campaign;
+	} else if (number == 4 || number == 3 || number == 2) {
+		newUrl = `${variables.urls.team}/ff7-no-slots-for-st-jude-${number}`;
+	} else if (number == 1) {
+		newUrl = `${variables.urls.team}/ff7-no-slots-for-st-jude`;
+	}
+
+	return {
+		id: campaignId,
+		key: `campaign-${campaignId.split('-')[0]}-${number}`,
+		name: name,
+		date: date,
+		campaign: newUrl,
+		amounts: utils.getAmounts({ total_amount_raised: { value: amount } }),
+		links: [
+			{
+				label: isCurrent ? newUrl.replace('https://', '').replace('//', '') : 'See campaign',
+				url: newUrl,
+			},
+		],
+	};
 };
 
 export const campaigns = {
 	current: {
-		id: ids[9],
-		key: `campaign-${ids[9].split('-')[0]}-8`,
-		name: 'FF7 for St. Jude #9',
-		date: 'February 15th, 2025',
-		campaign: variables.urls.campaign,
-		amounts: utils.getAmounts({ total_amount_raised: { value: 0 } }),
-		links: [
-			{
-				label: variables.urls.campaign.replace('https://', '').replace('//', ''),
-				url: variables.urls.campaign,
-			},
-		],
+		...buildCampaign(10, 'FF7 for St. Jude #10', 'October 24th - 25th, 2026', 0),
 	},
 	previous: [
-		{
-			id: ids[8],
-			key: `campaign-${ids[8].split('-')[0]}-7`,
-			name: 'FF7 for St. Jude #8',
-			date: 'July 27th, 2024',
-			campaign: `${variables.urls.team}/ff7-for-st-jude-8`,
-			amounts: utils.getAmounts({ total_amount_raised: { value: 7038.69 } }),
-			links: [
-				{
-					label: 'See campaign',
-					url: `${variables.urls.team}/ff7-for-st-jude-8`,
-				},
-			],
-		},
-		{
-			id: ids[7],
-			key: `campaign-${ids[7].split('-')[0]}-6`,
-			name: 'FF7 for St. Jude #7',
-			date: 'December 16th, 2023',
-			campaign: `${variables.urls.team}/ff7-for-st-jude-7`,
-			amounts: utils.getAmounts({ total_amount_raised: { value: 7177.77 } }),
-			links: [
-				{
-					label: 'See campaign',
-					url: `${variables.urls.team}/ff7-for-st-jude-7`,
-				},
-			],
-		},
-		{
-			id: ids[6],
-			key: `campaign-${ids[6].split('-')[0]}-5`,
-			name: 'FF7 for St. Jude #6',
-			date: 'June 24, 2023',
-			campaign: `${variables.urls.team}/ff7-for-st-jude-6`,
-			amounts: utils.getAmounts({ total_amount_raised: { value: 5397.74 } }),
-			links: [
-				{
-					label: 'See campaign',
-					url: `${variables.urls.team}/ff7-for-st-jude-6`,
-				},
-			],
-		},
-		{
-			id: ids[5],
-			key: `campaign-${ids[5].split('-')[0]}-4`,
-			name: 'FF7 for St. Jude #5',
-			date: 'December 10, 2022',
-			campaign: `${variables.urls.team}/ff7-for-st-jude-5`,
-			amounts: utils.getAmounts({ total_amount_raised: { value: 9254.38 } }),
-			links: [
-				{
-					label: 'See campaign',
-					url: `${variables.urls.team}/ff7-for-st-jude-5`,
-				},
-			],
-		},
-		{
-			id: ids[4],
-			key: `campaign-${ids[4].split('-')[0]}-3`,
-			name: 'FF7 No-Slots for St. Jude #4',
-			date: 'June 25, 2022',
-			campaign: `${variables.urls.team}/ff7-no-slots-for-st-jude-4`,
-			amounts: utils.getAmounts({ total_amount_raised: { value: 8770.46 } }),
-			links: [
-				{
-					label: 'See campaign',
-					url: `${variables.urls.team}/ff7-no-slots-for-st-jude-4`,
-				},
-			],
-		},
-		{
-			id: ids[3],
-			key: `campaign-${ids[3].split('-')[0]}-2`,
-			name: 'FF7 No-Slots for St. Jude #3',
-			date: 'December 11, 2021',
-			campaign: `${variables.urls.team}/ff7-no-slots-for-st-jude-3`,
-			amounts: utils.getAmounts({ total_amount_raised: { value: 6448.34 } }),
-			links: [
-				{
-					label: 'See campaign',
-					url: `${variables.urls.team}/ff7-no-slots-for-st-jude-3`,
-				},
-			],
-		},
-		{
-			id: ids[2],
-			key: `campaign-${ids[2].split('-')[0]}-1`,
-			name: 'FF7 No-Slots For St. Jude #2',
-			date: 'June 26, 2021',
-			campaign: `${variables.urls.team}/ff7-no-slots-for-st-jude-2`,
-			amounts: utils.getAmounts({ total_amount_raised: { value: 4469.69 } }),
-			links: [
-				{
-					label: 'See campaign',
-					url: `${variables.urls.team}/ff7-no-slots-for-st-jude-2`,
-				},
-			],
-		},
-		{
-			id: ids[1],
-			key: `campaign-${ids[1].split('-')[0]}-0`,
-			name: 'FF7 No-Slots For St. Jude',
-			date: 'December 28, 2020',
-			campaign: `${variables.urls.team}/ff7-no-slots-for-st-jude`,
-			amounts: utils.getAmounts({ total_amount_raised: { value: 2313.06 } }),
-			links: [
-				{
-					label: 'See campaign',
-					url: `${variables.urls.team}/ff7-no-slots-for-st-jude`,
-				},
-			],
-		},
+		buildCampaign(9, 'FF7 for St. Jude #9', 'February 15th, 2025', 3011.68),
+		buildCampaign(8, 'FF7 for St. Jude #8', 'July 27th, 2024', 7038.69),
+		buildCampaign(7, 'FF7 for St. Jude #7', 'December 16th, 2023', 7177.77),
+		buildCampaign(6, 'FF7 for St. Jude #6', 'June 24, 2023', 5432.74),
+		buildCampaign(5, 'FF7 for St. Jude #5', 'December 10, 2022', 9254.38),
+		buildCampaign(4, 'FF7 No-Slots for St. Jude #4', 'June 25, 2022', 8770.46),
+		buildCampaign(3, 'FF7 No-Slots for St. Jude #3', 'December 11, 2021', 6448.34),
+		buildCampaign(2, 'FF7 No-Slots For St. Jude #2', 'June 26, 2021', 4469.69),
+		buildCampaign(1, 'FF7 No-Slots For St. Jude', 'December 28, 2020', 2313.06),
 	],
 };
