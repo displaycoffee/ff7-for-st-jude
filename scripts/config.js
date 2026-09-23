@@ -4,18 +4,13 @@ import { createServer } from 'vite';
 /* Scripts */
 import packageJSON from '../package.json' with { type: 'json' };
 
-/* Note: theme.ts pulls in a .scss CSS-module export, which only plain `node` can't
-   process on its own — load it through Vite's SSR pipeline instead so the
-   same transforms (Sass, CSS modules) apply as in the app itself. */
-
-/* createServer resolves vite.config.js itself, independent of the vite CLI, so the
-   cross-env wrapping on the npm scripts doesn't reach this; set it directly here too. */
-process.env.VITE_CONFIG_NATIVE_IGNORE_WARNING = 'true';
-
+/* Start a vite server to get information from navigation and theme.ts */
 const viteServer = await createServer({
 	server: { middlewareMode: true },
 	appType: 'custom',
 });
+const { navigationHeader } = await viteServer.ssrLoadModule('/components/navigation/scripts/navigation.ts');
+const { navigationUtils } = await viteServer.ssrLoadModule('/components/navigation/scripts/navigation-utils.ts');
 const { theme } = await viteServer.ssrLoadModule('/_core/scripts/theme.ts');
 await viteServer.close();
 
@@ -71,7 +66,20 @@ faviconKeys.forEach((icon) => {
 	favicons[icon]['type'] = type;
 });
 
+/* Flatten nav items (and nested children) into a plain list of internal urls. Home ('/') is
+   excluded since vite-plugin-sitemap already finds it by scanning the built dist/index.html.
+   External urls (e.g. a nav item pointing off-site) and items with includeInSiteMap set to
+   false are also excluded. */
+const flattenUrls = (items) => {
+	return items.flatMap((item) => {
+		const isInternal = item.url.startsWith('/') && !item.url.startsWith('//');
+		const urls = item.includeInSiteMap && isInternal && item.url != '/' ? [item.url] : [];
+		return item.children ? [...urls, ...flattenUrls(item.children)] : urls;
+	});
+};
+
 export const config = {
+	navigation: flattenUrls(navigationUtils.get.list(navigationHeader)),
 	site: {
 		name: packageJSON.displayName || '',
 		description: packageJSON.description || '',

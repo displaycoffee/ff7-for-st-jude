@@ -6,16 +6,15 @@ const { create } = navigationUtils;
 
 export const navigationHeader: NavigationMapType = {
 	...create({ key: 'index', label: 'Home', url: '/' }),
-	...create({ key: 'page-one', label: 'Page One' }),
+	...create({ key: 'participant-guide', label: 'Participant Guide' }),
 	...create({
-		key: 'page-two',
-		label: 'Page Two',
-		includeInSiteMap: false,
-		children: {
-			...create({ key: 'child-page-one', label: 'Child Page One' }),
-			...create({ key: 'child-page-two', label: 'Child Page Two' }),
-		},
+		key: 'sign-up-sheet',
+		label: 'Signup Sheet',
+		isRoute: false,
+		url: '//docs.google.com/spreadsheets/d/1pxX1Pf7qK3eO2nKksbLGp3VbWV7ZByPC6dxVNmo8pds/edit',
+		showInNav: false,
 	}),
-	...create({ key: 'page-three', label: 'Page Three' }),
-	...create({ key: 'page-four', label: 'Page Four' }),
+	...create({ key: 'dashboard', label: 'Dashboard' }),
+	...create({ key: 'donations', label: 'Donations' }),
+	...create({ key: 'commentary-stream', label: 'Commentary Stream', isRoute: false, url: '//twitch.tv/MonetaryDragon', showInNav: false }),
 };
