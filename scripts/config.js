@@ -68,12 +68,12 @@ faviconKeys.forEach((icon) => {
 
 /* Flatten nav items (and nested children) into a plain list of internal urls. Home ('/') is
    excluded since vite-plugin-sitemap already finds it by scanning the built dist/index.html.
-   External urls (e.g. a nav item pointing off-site) and items with includeInSiteMap set to
+   External urls (e.g. a nav item pointing off-site) and items with includeInSitemap set to
    false are also excluded. */
 const flattenUrls = (items) => {
 	return items.flatMap((item) => {
 		const isInternal = item.url.startsWith('/') && !item.url.startsWith('//');
-		const urls = item.includeInSiteMap && isInternal && item.url != '/' ? [item.url] : [];
+		const urls = item.includeInSitemap && isInternal && item.url != '/' ? [item.url] : [];
 		return item.children ? [...urls, ...flattenUrls(item.children)] : urls;
 	});
 };

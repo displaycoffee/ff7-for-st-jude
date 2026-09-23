@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 import { viteUtils } from './vite.utils.js';
 
 const modules = 'node_modules/';
-const reactChunks = [`${modules}react/`, `${modules}react-dom/`, `${modules}react-router-dom/`];
+const reactChunks = [`${modules}react/`, `${modules}react-dom/`];
 const tanstackChunks = [`${modules}@tanstack/react-router/`, `${modules}@tanstack/react-query/`];
 
 export default defineConfig({
