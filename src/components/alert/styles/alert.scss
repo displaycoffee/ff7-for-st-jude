@@ -47,9 +47,21 @@
 		}
 		.alert-message {
 			@include mixins.flex;
-			@include mixins.if-exists((
-				color: $alert-color-01,
-			));
+			@if $alert-color-01 != false {
+				&, a, .a {
+					color: $alert-color-01;
+				}
+				a, .a {
+					&:active, &:hover {
+						color: $alert-color-01;
+					}
+					&, &:active, &:hover {
+						-webkit-text-decoration-color: $alert-color-01;
+						-moz-text-decoration-color: $alert-color-01;
+						text-decoration-color: $alert-color-01;
+					}
+				}
+			}
 		}
 	}
 	.alert-warning {
