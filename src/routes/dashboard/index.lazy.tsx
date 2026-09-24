@@ -2,9 +2,7 @@
 import './styles/dashboard.scss';
 
 /* Packages */
-import type { Draft } from 'immer';
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { produce } from 'immer';
 import { useEffect } from 'react';
 
 /* Scripts */
@@ -27,7 +25,7 @@ export const Route = createLazyFileRoute('/dashboard/')({
 });
 
 function RouteComponent() {
-	const { campaigns, utils, variables, queryClient, content, setContent } = useAppContext();
+	const { campaigns, utils, variables, queryClient, content, dispatch } = useAppContext();
 	const { supporting, campaign, donations, rewards, targets } = content;
 	const { current } = campaigns;
 
@@ -59,48 +57,15 @@ function RouteComponent() {
 		const rewardsUpdated = !rewards.fetched && rewardsStatus.success && Array.isArray(rewardsData);
 		const targetsUpdated = !targets.fetched && targetsStatus.success && Array.isArray(targetsData);
 
-		if (supportingUpdated || campaignUpdated || donationsUpdated || rewardsUpdated || targetsUpdated) {
-			setContent(
-				produce((draft: Draft<ContentType>) => {
-					// Update supporting
-					if (supportingUpdated) {
-						draft.supporting.fetched = true;
-						draft.supporting.values = supportingData;
-					}
-
-					// Update campaign
-					if (campaignUpdated) {
-						draft.campaign = {
-							...campaignData,
-							fetched: true,
-						};
-					}
-
-					if (draft.supporting.fetched && draft.campaign.fetched) {
-						// Update donations
-						if (donationsUpdated) {
-							draft.donations.fetched = true;
-							draft.donations.values = donationsData;
-						}
-
-						// Update rewards
-						if (rewardsUpdated) {
-							draft.rewards.fetched = true;
-							draft.rewards.values = rewardsData;
-						}
-
-						// Update targets
-						if (targetsUpdated) {
-							draft.targets.fetched = true;
-							draft.targets.values = targetsData;
-						}
-					}
-				}),
-			);
-		}
+		// Donations, rewards and targets are only saved by the reducer once supporting campaigns and the campaign are available
+		if (supportingUpdated) dispatch({ type: 'supporting_loaded', values: supportingData });
+		if (campaignUpdated) dispatch({ type: 'campaign_loaded', campaign: campaignData });
+		if (donationsUpdated) dispatch({ type: 'donations_loaded', values: donationsData });
+		if (rewardsUpdated) dispatch({ type: 'rewards_loaded', values: rewardsData });
+		if (targetsUpdated) dispatch({ type: 'targets_loaded', values: targetsData });
 	}, [
 		utils,
-		setContent,
+		dispatch,
 		supportingData,
 		supportingStatus.success,
 		supporting.fetched,
@@ -148,13 +113,7 @@ function RouteComponent() {
 									});
 
 									// Reset content state for each refreshable data type
-									setContent(
-										produce((draft: Draft<ContentType>) => {
-											refreshableTypes.forEach((type) => {
-												draft[type] = { fetched: false, values: [] };
-											});
-										}),
-									);
+									dispatch({ type: 'content_reset', keys: [...refreshableTypes] });
 								}}
 							/>
 						</li>

@@ -2,9 +2,7 @@
 import './index/styles/index.scss';
 
 /* Packages */
-import type { Draft } from 'immer';
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { produce } from 'immer';
 import { useEffect } from 'react';
 
 /* Scripts */
@@ -19,15 +17,9 @@ export const Route = createLazyFileRoute('/')({
 });
 
 function RouteComponent() {
-	const { content, setContent, campaigns, utils } = useAppContext();
+	const { content, dispatch, campaigns, utils } = useAppContext();
 	const { supporting, campaign, totals } = content;
 	const { current, previous } = campaigns;
-
-	// Get total of all previous campaigns
-	let previousTotals = 0;
-	previous.forEach((campaign) => {
-		previousTotals += campaign.amounts.total_amount_raised;
-	});
 
 	// Use custom hook to get supporting campaigns
 	const [supportingData, supportingStatus] = useReactQuery('supporting', content, current) as SupportingRequestType;
@@ -40,55 +32,10 @@ function RouteComponent() {
 		const supportingUpdated = !supporting.fetched && supportingStatus.success && Array.isArray(supportingData);
 		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
 
-		// Totals are seeded with hardcoded values, so compare against the fetched campaign instead of checking for empty
-		const fetchedAmounts = campaign.fetched ? (campaign as CampaignType).amounts : null;
-		const totalsUpdated =
-			supporting.fetched &&
-			fetchedAmounts !== null &&
-			(totals.amountRaised !== fetchedAmounts.total_amount_raised ||
-				totals.goal !== fetchedAmounts.goal ||
-				totals.totalRaised !== fetchedAmounts.total_amount_raised + previousTotals);
-
-		if (supportingUpdated || campaignUpdated || totalsUpdated) {
-			setContent(
-				produce((draft: Draft<ContentType>) => {
-					// Update supporting
-					if (supportingUpdated) {
-						draft.supporting.fetched = true;
-						draft.supporting.values = supportingData;
-					}
-
-					// Update campaign
-					if (campaignUpdated) {
-						draft.campaign = {
-							...campaignData,
-							fetched: true,
-						};
-					}
-
-					// Update totals
-					if (draft.supporting.fetched && draft.campaign.fetched) {
-						const campaignDraft = draft.campaign as CampaignType;
-						draft.totals.amountRaised = campaignDraft.amounts.total_amount_raised;
-						draft.totals.goal = campaignDraft.amounts.goal;
-						draft.totals.totalRaised = campaignDraft.amounts.total_amount_raised + previousTotals;
-					}
-				}),
-			);
-		}
-	}, [
-		utils,
-		setContent,
-		previousTotals,
-		supportingData,
-		supportingStatus.success,
-		supporting.fetched,
-		campaignData,
-		campaign,
-		totals.amountRaised,
-		totals.goal,
-		totals.totalRaised,
-	]);
+		// Totals are worked out by the reducer whenever supporting campaigns and the campaign are loaded
+		if (supportingUpdated) dispatch({ type: 'supporting_loaded', values: supportingData });
+		if (campaignUpdated) dispatch({ type: 'campaign_loaded', campaign: campaignData });
+	}, [utils, dispatch, supportingData, supportingStatus.success, supporting.fetched, campaignData, campaign.fetched]);
 
 	return (
 		<>

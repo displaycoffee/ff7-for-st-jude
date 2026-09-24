@@ -1,7 +1,5 @@
 /* Packages */
-import type { Draft } from 'immer';
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { produce } from 'immer';
 import { useEffect } from 'react';
 
 /* Scripts */
@@ -19,7 +17,7 @@ export const Route = createLazyFileRoute('/donations/')({
 });
 
 function RouteComponent() {
-	const { campaigns, utils, queryClient, content, setContent } = useAppContext();
+	const { campaigns, utils, queryClient, content, dispatch } = useAppContext();
 	const { supporting, campaign, donations } = content;
 	const { current } = campaigns;
 
@@ -41,36 +39,13 @@ function RouteComponent() {
 		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
 		const donationsUpdated = !donations.fetched && donationsStatus.success && Array.isArray(donationsData);
 
-		if (supportingUpdated || campaignUpdated || donationsUpdated) {
-			setContent(
-				produce((draft: Draft<ContentType>) => {
-					// Update supporting
-					if (supportingUpdated) {
-						draft.supporting.fetched = true;
-						draft.supporting.values = supportingData;
-					}
-
-					// Update campaign
-					if (campaignUpdated) {
-						draft.campaign = {
-							...campaignData,
-							fetched: true,
-						};
-					}
-
-					if (draft.supporting.fetched && draft.campaign.fetched) {
-						// Update donations
-						if (donationsUpdated) {
-							draft.donations.fetched = true;
-							draft.donations.values = donationsData;
-						}
-					}
-				}),
-			);
-		}
+		// Donations are only saved by the reducer once supporting campaigns and the campaign are available
+		if (supportingUpdated) dispatch({ type: 'supporting_loaded', values: supportingData });
+		if (campaignUpdated) dispatch({ type: 'campaign_loaded', campaign: campaignData });
+		if (donationsUpdated) dispatch({ type: 'donations_loaded', values: donationsData });
 	}, [
 		utils,
-		setContent,
+		dispatch,
 		supportingData,
 		supportingStatus.success,
 		supporting.fetched,
@@ -88,11 +63,7 @@ function RouteComponent() {
 				void queryClient.resetQueries({ queryKey: ['donations'] });
 
 				// Reset and set content state
-				setContent(
-					produce((draft: Draft<ContentType>) => {
-						draft.donations = { fetched: false, values: [] };
-					}),
-				);
+				dispatch({ type: 'content_reset', keys: ['donations'] });
 			}, timeout);
 
 			return () => {
@@ -100,7 +71,7 @@ function RouteComponent() {
 				clearInterval(interval);
 			};
 		}
-	}, [queryClient, setContent]);
+	}, [queryClient, dispatch]);
 
 	return <DonationsSection donations={donations} donationsComplete={donationsComplete} />;
 }

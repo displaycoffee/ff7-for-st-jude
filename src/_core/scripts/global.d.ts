@@ -148,6 +148,14 @@ type CampaignContent = Fetched | (Fetched & Campaign);
 
 type CampaignRequest = [Campaign, Statuses];
 
+type ContentAction =
+	| { type: 'supporting_loaded'; values: Supporting[] }
+	| { type: 'campaign_loaded'; campaign: Campaign }
+	| { type: 'donations_loaded'; values: Donations[] }
+	| { type: 'rewards_loaded'; values: Rewards[] }
+	| { type: 'targets_loaded'; values: Targets[] }
+	| { type: 'content_reset'; keys: ('donations' | 'rewards' | 'targets')[] };
+
 type Content = {
 	totals: {
 		amountRaised: number;
@@ -331,6 +339,8 @@ declare global {
 	type CampaignRequestType = CampaignRequest;
 
 	type ContentType = Content;
+
+	type ContentActionType = ContentAction;
 
 	type DonationsType = Donations;
 
