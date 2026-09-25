@@ -8,7 +8,8 @@
 
 	// Colors
 
-	$alert-color-01: theme.$color-02; // alert font color
+	$alert-color-01: theme.$color-03; // alert font color
+	$alert-color-02: theme.$color-02; // alert link
 
 	// Configuration
 	
@@ -47,18 +48,16 @@
 		}
 		.alert-message {
 			@include mixins.flex;
-			@if $alert-color-01 != false {
-				&, a, .a {
-					color: $alert-color-01;
-				}
+			@include mixins.if-exists((
+				color: $alert-color-01,
+			));
+			@if $alert-color-02 != false {
 				a, .a {
-					&:active, &:hover {
-						color: $alert-color-01;
-					}
 					&, &:active, &:hover {
+						color: $alert-color-02;
 						-webkit-text-decoration-color: $alert-color-01;
 						-moz-text-decoration-color: $alert-color-01;
-						text-decoration-color: $alert-color-01;
+						text-decoration-color: $alert-color-01;						
 					}
 				}
 			}
