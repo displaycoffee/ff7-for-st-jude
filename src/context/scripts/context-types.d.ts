@@ -1,11 +1,13 @@
 /* Packages */
 import type { QueryClient } from '@tanstack/react-query';
-import type { Dispatch, ReactNode } from 'react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 /* Type definitions */
 type ContextValues = {
 	content: ContentType;
 	dispatch: Dispatch<ContentActionType>;
+	isColorsOpen: boolean;
+	setIsColorsOpen: Dispatch<SetStateAction<boolean>>;
 	campaigns: {
 		current: CampaignType;
 		previous: CampaignType[];

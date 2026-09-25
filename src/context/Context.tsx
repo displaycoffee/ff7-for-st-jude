@@ -1,7 +1,7 @@
 /* Packages */
 import type { DefaultOptions } from '@tanstack/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createContext, useReducer } from 'react';
+import { createContext, useReducer, useState } from 'react';
 
 /* Scripts */
 import type { ContextProps, ContextValuesType } from './scripts/context-types';
@@ -43,10 +43,15 @@ export const ContextProvider = ({ children }: ContextProps) => {
 	// Set content state
 	const [content, dispatch] = useReducer(contentUtils.reducer, contentUtils.initialState);
 
+	// Set colors panel state (shared by the button in navigation and the panel in the container)
+	const [isColorsOpen, setIsColorsOpen] = useState(false);
+
 	// Set contact values
 	const values: ContextValuesType = {
 		content,
 		dispatch,
+		isColorsOpen,
+		setIsColorsOpen,
 		campaigns,
 		theme,
 		utils,

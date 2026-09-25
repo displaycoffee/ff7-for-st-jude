@@ -2,50 +2,32 @@
 import './styles/slideout.scss';
 
 /* Packages */
-import type { RefObject } from 'react';
-import { createRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /* Scripts */
-import type { SlideoutOverlayProps, SlideoutProps, SlideoutTouchType, SlideoutTouchRefType, SlideoutOverlayRefType } from './scripts/slideout-types';
+import type { SlideoutProps, SlideoutTouchType, SlideoutTouchRefType } from './scripts/slideout-types';
 import { useFormattedId } from '../../_core/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { slideout } from './scripts/slideout';
 
 /* Components */
 import { Button } from '../forms/Forms';
+import { Overlay } from '../overlay/Overlay';
 
 export const Slideout = (props: SlideoutProps) => {
 	const { children, options } = props;
 	const { utils } = useAppContext();
-	const { config, get, toggle } = slideout;
+	const { config, get } = slideout;
 	const fallbackId = useFormattedId();
 	const id = `slideout-${options?.id ?? fallbackId}`;
 	const title = `${id}-title`;
-	const ref: RefObject<HTMLDivElement | null> = createRef();
-	const [isActive, setIsActive] = useState(false);
+	const buttonRef = useRef<HTMLDivElement>(null);
+	const [isOpen, setIsOpen] = useState(false);
 
 	// Get default attributes for slideout
 	const width = options?.width ?? config.values.width;
 	const direction = options?.direction ?? config.values.direction;
-	const orientation = slideout.get.orientation(direction);
-	const styles = get.styles(direction, width);
-
-	// Create shared slideout button
-	const slideoutButton = (
-		<div className="slideout-button-fixed gradient-section">
-			<Button
-				className={'slideout-button'}
-				label={`${options.label} >`}
-				onClick={(e) => toggle(e, id)}
-				variant={'link'}
-				aria-expanded={isActive}
-				aria-label={`Open ${options.label}`}
-			/>
-		</div>
-	);
-
-	// Set button properties
-	const button = typeof options?.button === 'object' ? options.button : { outside: false, show: true };
+	const orientation = get.orientation(direction);
 
 	// Track touch start position to detect a swipe that closes the slideout
 	const touchStart = useRef<SlideoutTouchRefType>(null);
@@ -77,72 +59,36 @@ export const Slideout = (props: SlideoutProps) => {
 
 		// Only close when swiping toward the edge the slideout exits through
 		const isClosingSwipe = isNegativeDirection ? delta < 0 : delta > 0;
-		if (isClosingSwipe) toggle(e, false);
+		if (isClosingSwipe) setIsOpen(false);
 	};
 
-	// Track active state for aria-expanded
-	// Note: looked up by id (not ref) since toggle() mutates classList directly, and the button can render
-	// separately from the slideout element when options.button.outside is true (a different Slideout instance
-	// renders the element with this id) — watch the document for it to mount rather than assuming it's already there
-	useEffect(() => {
-		let classObserver: MutationObserver | null = null;
+	// Set sticky class on slideout button
+	useEffect(() => utils.isSticky(buttonRef.current, 'is-sticky'), [utils]);
 
-		// Start tracking the slideout element's active class once it's found
-		const trackElement = (element: HTMLElement) => {
-			const updateActiveState = () => setIsActive(element.classList.contains(config.classes.active));
-			updateActiveState();
+	return (
+		<>
+			<div className="slideout-button-container" ref={buttonRef}>
+				<div className="slideout-button-fixed gradient-section">
+					<Button
+						className={'slideout-button'}
+						label={`${options.label} >`}
+						onClick={() => setIsOpen(true)}
+						variant={'link'}
+						aria-controls={id}
+						aria-expanded={isOpen}
+						aria-haspopup={'dialog'}
+						aria-label={`Open ${options.label}`}
+					/>
+				</div>
+			</div>
 
-			classObserver = new MutationObserver(updateActiveState);
-			classObserver.observe(element, { attributes: true, attributeFilter: ['class'] });
-		};
-
-		// Track existing element
-		const existingElement = document.getElementById(id);
-		if (existingElement) {
-			trackElement(existingElement);
-			return () => classObserver?.disconnect();
-		}
-
-		// Element isn't mounted yet — watch the document for it to appear
-		const bodyObserver = new MutationObserver(() => {
-			const element = document.getElementById(id);
-			if (!element) return;
-			bodyObserver.disconnect();
-			trackElement(element);
-		});
-		bodyObserver.observe(document.body, { childList: true, subtree: true });
-
-		return () => {
-			bodyObserver.disconnect();
-			classObserver?.disconnect();
-		};
-	}, [id, config.classes.active]);
-
-	// Set sticky class on slideout
-	useEffect(() => {
-		utils.isSticky(ref?.current, 'is-sticky');
-	}, [utils, ref]);
-
-	return button.outside && button.show ? (
-		slideoutButton
-	) : (
-		<div
-			id={id}
-			className={`${config.classes.slideout} slideout-${orientation} slideout-${direction}`}
-			data-width={width}
-			data-direction={direction}
-			data-orientation={orientation}
-			ref={ref}
-		>
-			{!button.outside && button.show ? slideoutButton : null}
-
-			<div
-				className={`${config.classes.content} gradient-background`}
-				style={styles}
-				inert
-				role="dialog"
-				aria-modal="true"
+			<Overlay
+				id={id}
+				className={`slideout gradient-background slideout-${orientation} slideout-${direction}`}
+				isOpen={isOpen}
+				onClose={() => setIsOpen(false)}
 				aria-labelledby={title}
+				style={{ width }}
 				onTouchStart={handleTouchStart}
 				onTouchEnd={handleTouchEnd}
 			>
@@ -155,8 +101,9 @@ export const Slideout = (props: SlideoutProps) => {
 						className={'slideout-close'}
 						hideLabel={true}
 						label={'Slideout Close Button'}
-						onClick={(e) => toggle(e, false)}
+						onClick={() => setIsOpen(false)}
 						variant={'unstyled'}
+						data-autofocus
 					>
 						x
 					</Button>
@@ -166,91 +113,15 @@ export const Slideout = (props: SlideoutProps) => {
 					<div
 						className="slideout-body"
 						onClick={(e) => {
-							const eventElement = (e.target as HTMLElement)?.closest('a, button.a');
-
-							// Close slideout content if inner nav button is clicked on
-							if (eventElement) {
-								setTimeout(() => {
-									toggle(e, false);
-								});
-							}
+							// Close slideout if an inner link or link-style button is clicked on
+							if ((e.target as HTMLElement)?.closest('a, button.a')) setIsOpen(false);
 						}}
 						role="presentation"
 					>
 						{children}
 					</div>
 				</div>
-			</div>
-		</div>
+			</Overlay>
+		</>
 	);
-};
-
-export const SlideoutOverlay = (props: SlideoutOverlayProps) => {
-	const { options } = props;
-	const { utils } = useAppContext();
-	const { config, set, toggle } = slideout;
-	const elementRef: SlideoutOverlayRefType = useRef(null);
-
-	// Create overlay element and append to body on mount, remove on unmount
-	useEffect(() => {
-		const slideoutTarget = document.querySelector('#index');
-		if (!slideoutTarget) return;
-
-		// Create overlay
-		const overlay = document.createElement('div');
-
-		// Set attributes
-		utils.setAttributes(overlay, {
-			class: 'slideout-overlay pointer',
-			role: 'presentation',
-		});
-
-		// Add onclick
-		overlay.onclick = (e) => toggle(e, false);
-
-		// Set children and ref
-		slideoutTarget.appendChild(overlay);
-		elementRef.current = overlay;
-
-		return () => {
-			overlay.remove();
-			elementRef.current = null;
-		};
-	}, [utils, toggle]);
-
-	// If we are on desktop and a slideout is active, fully close it (content state, focus trap, focus restore, overlay)
-	useEffect(() => {
-		if (!options.isDesktop) return;
-
-		// Get active selector and elements
-		const activeSelector = `.${config.classes.slideout}.${config.classes.active}`;
-		const activeElements = document.querySelectorAll<HTMLElement>(activeSelector);
-
-		// Close any active elements
-		activeElements.forEach((element) => {
-			set.slideout(element, 'remove');
-		});
-
-		// Remove active slideout class from body
-		set.body('remove');
-	}, [config, options.isDesktop, set]);
-
-	// Close active slideout(s) when escape is pressed
-	// Note: set.slideout already restores focus to whatever opened the content
-	useEffect(() => {
-		const activeSelector = `.${config.classes.slideout}.${config.classes.active}`;
-
-		// Function for keydown events
-		const handleKeyDown = (e: KeyboardEvent) => {
-			if (e.key !== 'Escape') return;
-			if (document.querySelectorAll(activeSelector).length === 0) return;
-			toggle(e, false);
-		};
-
-		// Add and remove event listeners
-		document.addEventListener('keydown', handleKeyDown);
-		return () => document.removeEventListener('keydown', handleKeyDown);
-	}, [config, toggle]);
-
-	return null;
 };
