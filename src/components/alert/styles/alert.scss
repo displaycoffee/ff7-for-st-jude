@@ -55,9 +55,7 @@
 				a, .a {
 					&, &:active, &:hover {
 						color: $alert-color-02;
-						-webkit-text-decoration-color: $alert-color-01;
-						-moz-text-decoration-color: $alert-color-01;
-						text-decoration-color: $alert-color-01;						
+						@include mixins.text-decoration-color($alert-color-02);
 					}
 				}
 			}

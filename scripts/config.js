@@ -109,6 +109,7 @@ export const config = {
 				weight: `normal`,
 				style: `normal`,
 				display: `swap`,
+				preload: true,
 			},
 			{
 				family: `Open Sans`,
@@ -151,6 +152,7 @@ export const config = {
 				weight: `700`,
 				style: `normal`,
 				display: `swap`,
+				preload: true,
 			},
 			{
 				family: `Montserrat`,

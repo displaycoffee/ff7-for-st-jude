@@ -40,9 +40,7 @@
 		&:active, &:hover {
 			outline: 0;
 			color: theme.$color-04;
-			-webkit-text-decoration-color: theme.$color-01;
-			-moz-text-decoration-color: theme.$color-01;
-			text-decoration-color: theme.$color-01;
+			@include mixins.text-decoration-color(theme.$color-01);
 		}
 		&:has(.button-label) {
 			&:active, &:hover {

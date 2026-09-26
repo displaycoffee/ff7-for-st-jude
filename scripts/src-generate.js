@@ -18,7 +18,8 @@ if (fs.existsSync(templatePath)) {
 	const fontFaces = [];
 
 	fonts.forEach((font) => {
-		fontLinks.push(`<link rel="preload" href="${font.file}" as="font" type="font/woff2" crossorigin="anonymous" />`);
+		// Only preload fonts needed for the first render; the rest load on demand through their @font-face rule
+		if (font?.preload) fontLinks.push(`<link rel="preload" href="${font.file}" as="font" type="font/woff2" crossorigin="anonymous" />`);
 		fontFaces.push(`@font-face {
 			font-family: '${font.family}';
 			src: url('${font.file}') format('woff2');
