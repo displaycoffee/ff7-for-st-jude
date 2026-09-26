@@ -77,7 +77,7 @@
 			}
 		}
 	}
-	@include mixins.respond-min(theme.$bp-02) {
+	@include mixins.respond(theme.$bp-02) {
 		.level-bar {
 			@include mixins.flex-layout((flex-flow: row nowrap, align-items: center));
 			.level-bar-outof {

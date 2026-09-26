@@ -208,7 +208,7 @@
 			}
 		}
 	}
-	@include mixins.respond-min($forms-form-field-bp) {
+	@include mixins.respond($forms-form-field-bp) {
 		.form-field {
 			.form-field-label {
 				@include mixins.flex(0 1 auto);

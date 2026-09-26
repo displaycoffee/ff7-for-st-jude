@@ -59,7 +59,7 @@
 			}
 		}
 	}
-	@include mixins.respond-min($container-main-bp) {
+	@include mixins.respond($container-main-bp) {
 		.main {
 			.main-layout {
 				.content {

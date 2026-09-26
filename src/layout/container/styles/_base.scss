@@ -36,7 +36,7 @@
 	a, button, .pointer {		
 		cursor: url('/assets/images/theme/hand-cursor-up.svg') 8 8, pointer;
 	}
-	@include mixins.respond-min(theme.$bp-02) {
+	@include mixins.respond(theme.$bp-02) {
 		body {
 			padding-left: theme.$spacing-x8;
 			padding-right: theme.$spacing-x8;

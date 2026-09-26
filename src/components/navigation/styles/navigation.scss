@@ -33,7 +33,7 @@
 			@include mixins.gap(theme.$spacing-x2);
 		}
 	}
-	@include mixins.respond-min(theme.$bp-02) {
+	@include mixins.respond(theme.$bp-02) {
 		.navigation.is-sticky .navigation-fixed {
 			padding-left: theme.$spacing-x8;
 			padding-right: theme.$spacing-x8;
