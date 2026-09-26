@@ -7,8 +7,6 @@
 // Animate
 // Example for $value: spin 2s infinite linear
 @mixin animate($value) {
-	-webkit-animation: $value;
-	-moz-animation: $value;
 	animation: $value;
 }
 
@@ -52,7 +50,6 @@
 
 // Border radius with browser prefixes
 @mixin border-radius($size) {
-	-moz-border-radius: $size;
 	border-radius: $size;
 }
 
@@ -85,29 +82,20 @@
 // default : 0 1 auto
 @mixin flex($value: '') {
 	$var-value: if(sass($value != ''): $value; else: 1 1 0%);
-	-webkit-flex: $var-value;
-	-ms-flex: $var-value;
-	-moz-flex: $var-value;
 	flex: $var-value;
 }
 
 // Styles for flex child
 @mixin flex-child($property, $value) {
 	@if $property == 'order' {
-		-webkit-order: $value;
-		-ms-order: $value;
 		order: $value;
 	} @else if $property == 'align-self' {
-		-webkit-align-self: $value;
 		align-self: $value;
 	}
 }
 
 // Flex flow (for overrides)
 @mixin flex-direction($direction) {
-	-webkit-flex-direction: $direction;
-	-ms-flex-direction: $direction;
-	-moz-flex-direction: $direction;
 	flex-direction: $direction;	
 }
 
@@ -115,9 +103,6 @@
 // $type: inline or leave blank
 @mixin flex-display($type: '') {
 	$var-type: if(sass($type != ''): $type; else: flex);
-	display: -webkit-#{$var-type};
-	display: -ms-#{$var-type};
-	display: -moz-#{$var-type};
 	display: #{$var-type};
 }
 
@@ -125,7 +110,6 @@
 // $flow: row/column wrap/nowrap
 @mixin flex-flow($flow: '') {
 	$var-flow: if(sass($flow != ''): $flow; else: row wrap);
-	-webkit-flex-flow: $var-flow;
 	flex-flow: $var-flow;
 }
 
@@ -165,13 +149,10 @@
 // Styles for flex parent
 @mixin flex-parent($property, $value) {
 	@if $property == 'justify-content' {
-		-webkit-justify-content: $value;
 		justify-content: $value;
 	} @else if $property == 'align-items' {
-		-webkit-align-items: $value;
 		align-items: $value;
 	} @else if $property == 'align-content' {
-		-webkit-align-content: $value;
 		align-content: $value;
 	}
 }
@@ -188,7 +169,6 @@
 
 // Flex wrap (for overrides)
 @mixin flex-wrap($wrap) {
-	-webkit-flex-wrap: $wrap;
 	flex-wrap: $wrap;	
 }
 
@@ -203,7 +183,6 @@
 
 // Add spacing for grid or flex layouts
 @mixin gap($gap) {
-	-ms-gap: $gap;
 	gap: $gap;
 }
 
@@ -216,9 +195,6 @@
 // Basic linear gradient
 @mixin gradient($color-03, $color-04, $direction-01, $direction-02) {
 	background-color: $color-03;
-	background-image: -webkit-linear-gradient($direction-02, $color-03, $color-04);
-	background-image: -o-linear-gradient($direction-02, $color-03, $color-04);
-	background-image: -moz-linear-gradient($direction-02, $color-03, $color-04);
 	background-image: linear-gradient($direction-01, $color-03, $color-04);
 }
 
@@ -249,21 +225,16 @@
 
 	// CSS rules
 	background-color: $gradients-fallback;
-	background-image: -webkit-linear-gradient(#{$gradients});
-	background-image: -o-linear-gradient(#{$gradients});
-	background-image: -moz-linear-gradient(#{$gradients});
 	background-image: linear-gradient(#{$gradients});
 }
 
 // Inline block with vertical alignment
 @mixin grid-columns($width) {
-	-ms-grid-columns: repeat(auto-fill, minmax($width, 1fr));
 	grid-template-columns: repeat(auto-fill, minmax($width, 1fr));
 }
 
 // Inline block with vertical alignment
 @mixin grid-layout($gap: 5px, $width) {
-	display: -ms-grid;
 	display: grid;
 	@include grid-columns($width);
 	@include gap($gap);
@@ -311,17 +282,13 @@
 
 // Image / object fit properties
 @mixin object-fit($position, $fit) {
-	-o-object-position: $position;
 	object-position: $position;
-	-o-object-fit: $fit;
 	object-fit: $fit;
 }
 
 // Placeholder
 // Examples: @include mixins.placeholder {}, :focus{ @include mixins.placeholder {} }, or input { @include mixins.placeholder {} }
 @mixin placeholder {
-	&::-webkit-input-placeholder {@content}
-	&::-ms-input-placeholder {@content}
 	&::placeholder {@content}
 }
 
@@ -367,6 +334,7 @@
 		@content;
 	}
 }
+
 // Scrollbar
 @mixin scrollbar($selector, $width, $height, $s-color-01: '', $s-color-02: '') {
 	#{$selector}::-webkit-scrollbar {
@@ -410,19 +378,13 @@
 // Text-decoration styles - all
 @mixin text-decoration($thickness: 2px, $offset: 2px, $color: inherit) {
 	text-decoration: underline;
-	-webkit-text-decoration-color: $color;
-	-moz-text-decoration-color: $color;
 	text-decoration-color: $color;
-	-webkit-text-decoration-thickness: $thickness;
-	-moz-text-decoration-thickness: $thickness;
 	text-decoration-thickness: $thickness;
 	text-underline-offset: $offset;
 }
 
 // Text-decoration styles - color only
 @mixin text-decoration-color($color: inherit) {
-	-webkit-text-decoration-color: $color;
-	-moz-text-decoration-color: $color;
 	text-decoration-color: $color;
 }
 
@@ -447,18 +409,10 @@
 
 // Transform
 @mixin transform($value) {
-	-webkit-transform: $value;
-	-o-transform: $value;
-	-ms-transform: $value;
-	-moz-transform: $value;
 	transform: $value;
 }
 
 // Transition
 @mixin transition($value) {
-	-webkit-transition: $value;
-	-o-transition: $value;
-	-ms-transition: $value;
-	-moz-transition: $value;
 	transition: $value;
 }

@@ -15,7 +15,7 @@
 	
 	$alert-spacing: theme.$spacing-x4; // spacing for alert
 	$alert-border-left-width: 5px; // make left border larger
-	$alert-border-radius: 5px; // alert border radius
+	$alert-border-radius: false; // alert border radius
 	$alert-icon-size: 20px; // size of icon
 	$alert-icon-vertical: 1px; // top vertical alignment of icon
 
