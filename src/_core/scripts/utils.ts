@@ -76,9 +76,6 @@ export const utils: UtilsType = {
 			// Observe to toggle sticky class
 			const stickyObserver = new IntersectionObserver(([e]) => stickyCallback(e), stickyOptions);
 			stickyObserver.observe(element);
-
-			// Return cleanup so callers can disconnect the observer
-			return () => stickyObserver.disconnect();
 		}
 	},
 	scrollTo: (e?: EventsType, selector?: string, offset?: number) => {

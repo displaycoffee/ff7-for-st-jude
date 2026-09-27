@@ -14,10 +14,11 @@
 		"generate:dist": "node scripts/dist-generate.js && npx prettier --write dist/index.html --ignore-path /dev/null",
 		"generate:public": "node scripts/public-generate.js && npx prettier --write public/manifest.json",
 		"generate:sitemap": "node scripts/sitemap-generate.js && npx prettier --write vite.sitemap.js",
-		"build": "npm run generate:sitemap && npm run generate:dev && vite build && npm run generate:dist && npm run generate:public",
-		"dev": "npm run generate:sitemap && npm run generate:public && npm run generate:dev && vite --host",
+		"generate:tokens": "node scripts/tokens-generate.js",
+		"build": "npm run generate:tokens && npm run generate:sitemap && npm run generate:dev && vite build && npm run generate:dist && npm run generate:public",
+		"dev": "npm run generate:tokens && npm run generate:sitemap && npm run generate:public && npm run generate:dev && vite --host",
 		"format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-		"lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
+		"lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" \"scripts/**/*.js\" --quiet",
 		"preview": "vite preview"
 	},
 	"devDependencies": {
@@ -43,6 +44,7 @@
 		"globals": "17.12.0",
 		"prettier": "^3.9.6",
 		"sass": "^1.104.1",
+		"style-dictionary": "^5.5.5",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.70.0",
 		"unplugin-icons": "^24.0.0",

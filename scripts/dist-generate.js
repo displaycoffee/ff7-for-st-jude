@@ -3,7 +3,6 @@ import fs from 'fs';
 import path from 'path';
 
 const htmlPath = path.resolve('dist/index.html');
-const bundle = 'bundle.tanstack'; // The name of the bundle you want to inject font blocks after.
 
 if (fs.existsSync(htmlPath)) {
 	let html = fs.readFileSync(htmlPath, 'utf8');
@@ -24,15 +23,15 @@ if (fs.existsSync(htmlPath)) {
 		html = html.replace(preloadedStylesRegex, '');
 	}
 
-	// Re-inject font-face block after bundle
+	// Re-inject font-face block after the scripts: after the last module preload, or the entry script if there are none, or at the end of <head>
+	// Note: this doesn't depend on chunk names, so it works the same in every project
 	if (fullStyleBlock) {
-		const escapedBundle = bundle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-		const bundleLinkRegex = new RegExp(`<link rel="modulepreload" crossorigin href="/assets/js/${escapedBundle}\\.[^"]+\\.js">`);
-		const bundleLinkMatch = html.match(bundleLinkRegex);
-		if (bundleLinkMatch) {
-			const linkTag = bundleLinkMatch[0];
-			html = html.replace(linkTag, `${linkTag}\n${fullStyleBlock}`);
-		}
+		const preloadTags = html.match(/<link rel="modulepreload"[^>]*>/g) ?? [];
+		const entryTag = html.match(/<script type="module"[^>]*><\/script>/)?.[0];
+		const anchorTag = preloadTags.at(-1) ?? entryTag;
+		html = anchorTag
+			? html.replace(anchorTag, () => `${anchorTag}\n${fullStyleBlock}`)
+			: html.replace('</head>', () => `${fullStyleBlock}\n</head>`);
 	}
 
 	// Collapse empty lines in <head>

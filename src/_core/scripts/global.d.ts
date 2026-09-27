@@ -1,6 +1,7 @@
 /* Packages */
 import type { QueryFunctionContext } from '@tanstack/react-query';
 import type { SyntheticEvent } from 'react';
+import type themeJson from '../tokens/theme.json';
 
 /* Generic type definitions */
 type Amounts = {
@@ -27,6 +28,39 @@ type AmountsRaw = {
 
 type Events = SyntheticEvent | Event;
 
+type Fallback = {
+	family: string;
+	size: string;
+	src: string;
+};
+
+type FallbacksJson = typeof themeJson.fallback;
+
+type Favicon = {
+	isHead: boolean;
+	isManifest: boolean;
+	purpose: string;
+	rel: string;
+	src: string;
+	size: string;
+	sizes: string;
+	type: string;
+};
+
+type FaviconsJson = typeof themeJson.favicon;
+
+type Font = {
+	display: string;
+	ext: string;
+	family: string;
+	isPreload: boolean;
+	src: string;
+	style: string;
+	weight: string | number;
+};
+
+type FontsJson = typeof themeJson.font;
+
 type Links = {
 	label: string;
 	url: string;
@@ -42,35 +76,24 @@ type ObjectPrimitive = {
 
 type Primitive = string | number | boolean;
 
+type Site = {
+	name: string;
+	description: string;
+	url: string;
+};
+
 type Sort = ObjectPrimitive | { amounts: Amounts };
 
+type Target = {
+	name: string;
+	src: string;
+	hasTabindex: boolean;
+	isScript: boolean;
+};
+
 type Theme = {
-	bps: {
-		bp01: Primitive;
-		bp02: Primitive;
-		bp03: Primitive;
-		bp04: Primitive;
-	};
-	colors: {
-		color01: Primitive;
-		color02: Primitive;
-		color03: Primitive;
-		color04: Primitive;
-		color05: Primitive;
-		color06: Primitive;
-		color07: Primitive;
-		color08: Primitive;
-		color09: Primitive;
-		color10: Primitive;
-		color11: Primitive;
-		color12: Primitive;
-		color13: Primitive;
-		color14: Primitive;
-		color15: Primitive;
-		color16: Primitive;
-		color17: Primitive;
-		color18: Primitive;
-	};
+	breakpoints: (typeof themeJson)['breakpoint'];
+	colors: (typeof themeJson)['color'];
 	details: {
 		[key: string]: {
 			id: string;
@@ -102,7 +125,7 @@ type Utils = {
 	getDate: (time: string) => string;
 	getLast: (value: string | string[], delimeter?: string) => string | number;
 	handleize: (value: string) => string;
-	isSticky: (element: HTMLElement | null, stickyClass: string) => (() => void) | undefined;
+	isSticky: (element: HTMLElement | null, stickyClass: string) => void;
 	scrollTo: (e?: Events, selector?: string, offset?: number) => void;
 	setActive: (type: string, data: Rewards | Targets) => boolean;
 	setAttributes: (element: HTMLElement, attributes: ObjectString) => void;
@@ -111,21 +134,22 @@ type Utils = {
 };
 
 type Variables = {
-	paths: {
-		basename: string;
-	};
 	api: {
 		campaigns: string;
 		teams: string;
 	};
-	urls: {
-		tiltify: string;
-		team: string;
-		campaign: string;
+	paths: {
+		basename: string;
 	};
 	placeholders: {
 		endDate: string;
 		endDateReadable: string;
+	};
+	site: Site;
+	urls: {
+		tiltify: string;
+		team: string;
+		campaign: string;
 	};
 };
 
@@ -313,6 +337,18 @@ declare global {
 
 	type EventsType = Events;
 
+	type FallbackType = Fallback;
+
+	type FallbacksJsonType = FallbacksJson;
+
+	type FaviconType = Favicon;
+
+	type FaviconsJsonType = FaviconsJson;
+
+	type FontType = Font;
+
+	type FontsJsonType = FontsJson;
+
 	type LinksType = Links;
 
 	type ObjectStringType = ObjectString;
@@ -321,7 +357,11 @@ declare global {
 
 	type PrimitiveType = Primitive;
 
+	type SiteType = Site;
+
 	type SortType = Sort;
+
+	type TargetType = Target;
 
 	type ThemeType = Theme;
 

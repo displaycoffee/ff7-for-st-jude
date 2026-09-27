@@ -1,75 +1,77 @@
-//// BREAKPOINTS
-//// --------------------------------------------------------------------------
-//// Note: set without unit
-
-	$bp-01: 541;
-	$bp-02: 768;
-	$bp-03: 1100;
-	$bp-04: 1200;
-
-//// CONTAINERS
-//// --------------------------------------------------------------------------
-
-	$container-base: 1600px;
-
-//// SPACING
-//// --------------------------------------------------------------------------
-
-	$spacing-x1: 5px;
-	$spacing-x2: $spacing-x1 * 2;
-	$spacing-x3: $spacing-x1 * 3;
-	$spacing-x4: $spacing-x1 * 4;
-	$spacing-x5: $spacing-x1 * 5;
-	$spacing-x6: $spacing-x1 * 6;
-	$spacing-x7: $spacing-x1 * 7;
-	$spacing-x8: $spacing-x1 * 8;
-	$spacing-x10: $spacing-x1 * 10;  
-	$spacing-x12: $spacing-x1 * 12;
-
-//// COLORS
-//// --------------------------------------------------------------------------
-
-	$color-01: #ffffff; // white
-	$color-02: #000000; // black
-	$color-03: #111111; // main background
-	$color-04: #e6e6e6; // light text
-	$color-05: #00e6e6; // links
-	$color-06: #003a90; // light blue
-	$color-07: #000051; // dark blue
-	$color-08: #11e57a;
-	$color-09: rgba(#000000, 0.75); // overlay
-	$color-10: false;
-	$color-11: false;
-	$color-12: #f7f79e; // highlights
-	$color-13: #8d8f8c; // first level bar outer
-	$color-14: #6b6b6b; // mid level bar outer
-	$color-15: #3b3b3b; // last level bar outer
-	$color-16: #da9d9a; // first level bar inner
-	$color-17: #e8b0b1; // mid level bar inner
-	$color-18: #935556; // last level bar inner// highlights
-	$color-30: #fee3e1; // error alert
-	$color-31: #cf0902; // error alert border
-	$color-32: #ffe6c8; // warning alert
-	$color-33: #b57900; // warning alert border
-	$color-34: #c2edfe; // info alert
-	$color-35: #0062d6; // info alert border
-	$color-36: #b6ebcb; // success alert
-	$color-37: #007037; // success alert border
-
-//// FONTS
-//// --------------------------------------------------------------------------
-
-	$font-path: '/assets/fonts/';
-	$font-family-01: 'Dogica Pixel', 'Fallback', monospace; // main font family: used for most text elements
-	$font-family-02: 'Dogica Pixel Bold', 'Fallback Bold', monospace; // header font family: used in header elements
-	$font-weight-01: 400; // main font weight: used for things like bold text and active selections
-	$font-weight-02: 400; // header font weight: used in header elements
-	$font-style: false;
-	$font-transform: false;
-	$font-size-global: 14px;
-	$font-size-base: 16px;	
-
-//// ICONS
-//// --------------------------------------------------------------------------
-
-	$icon-size: 16px;
+// Do not edit directly, this file was auto-generated.
+$breakpoint-sm: 541px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-2xl: false;
+$color-active: var(--color-active);
+$color-alert-body: var(--color-alert-body);
+$color-alert-link: var(--color-alert-link);
+$color-bg: var(--color-bg);
+$color-black: var(--color-black);
+$color-body: var(--color-body);
+$color-border: var(--color-border);
+$color-button-primary-bg: var(--color-button-primary-bg);
+$color-button-primary-border: var(--color-button-primary-border);
+$color-button-primary-body: var(--color-button-primary-body);
+$color-button-primary-bg-hover: var(--color-button-primary-bg-hover);
+$color-button-primary-border-hover: false;
+$color-button-primary-body-hover: var(--color-button-primary-body-hover);
+$color-button-secondary-bg: var(--color-button-secondary-bg);
+$color-button-secondary-border: var(--color-button-secondary-border);
+$color-button-secondary-body: var(--color-button-secondary-body);
+$color-button-secondary-bg-hover: var(--color-button-secondary-bg-hover);
+$color-button-secondary-border-hover: false;
+$color-button-secondary-body-hover: var(--color-button-secondary-body-hover);
+$color-button-tertiary-bg: var(--color-button-tertiary-bg);
+$color-button-tertiary-border: var(--color-button-tertiary-border);
+$color-button-tertiary-body: var(--color-button-tertiary-body);
+$color-button-tertiary-bg-hover: var(--color-button-tertiary-bg-hover);
+$color-button-tertiary-border-hover: false;
+$color-button-tertiary-body-hover: var(--color-button-tertiary-body-hover);
+$color-error-bg: var(--color-error-bg);
+$color-error-border: var(--color-error-border);
+$color-header: var(--color-header);
+$color-highlight: var(--color-highlight);
+$color-highlight-body: var(--color-highlight-body);
+$color-inactive: var(--color-inactive);
+$color-info-bg: var(--color-info-bg);
+$color-info-border: var(--color-info-border);
+$color-link: var(--color-link);
+$color-link-hover: var(--color-link-hover);
+$color-link-underline: var(--color-link-underline);
+$color-link-underline-hover: var(--color-link-underline-hover);
+$color-overlay: var(--color-overlay);
+$color-scrollbar-bg: var(--color-scrollbar-bg);
+$color-scrollbar-foreground: var(--color-scrollbar-foreground);
+$color-success-bg: var(--color-success-bg);
+$color-success-border: var(--color-success-border);
+$color-warning-bg: var(--color-warning-bg);
+$color-warning-border: var(--color-warning-border);
+$color-white: var(--color-white);
+$icon-sm: var(--icon-sm);
+$icon-md: var(--icon-md);
+$icon-lg: var(--icon-lg);
+$icon-xl: var(--icon-xl);
+$icon-2xl: var(--icon-2xl);
+$container-width: var(--container-width);
+$spacing-x1: 5px;
+$spacing-x2: 10px;
+$spacing-x3: 15px;
+$spacing-x4: 20px;
+$spacing-x5: 25px;
+$spacing-x6: 30px;
+$spacing-x7: 35px;
+$spacing-x8: 40px;
+$spacing-x10: 50px;
+$spacing-x12: 60px;
+$font-family-body: 'Open Sans', 'Fallback', sans-serif;
+$font-family-header: 'Montserrat', 'Fallback Bold', sans-serif;
+$font-size-base: 16px;
+$font-size-global: 14px;
+$font-style-body: italic;
+$font-style-header: false;
+$font-transform-body: false;
+$font-transform-header: uppercase;
+$font-weight-body: 700;
+$font-weight-header: 700;
