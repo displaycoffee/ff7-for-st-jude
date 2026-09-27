@@ -22,7 +22,7 @@ import { Footer } from '../footer/Footer';
 
 export const Container = () => {
 	const { theme } = useAppContext();
-	const isDesktop = useRespond(theme.bps.bp02 as number);
+	const isDesktop = useRespond(theme.breakpoints.md);
 	const mainRef = useRef<HTMLElement>(null);
 	useAvailableMinHeight(mainRef);
 
