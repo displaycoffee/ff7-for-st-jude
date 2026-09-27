@@ -49,6 +49,7 @@
 		"level-bar-outer-x2": { "$value": "#6b6b6b" },
 		"level-bar-outer-x3": { "$value": "#3b3b3b" },
 		"overlay": { "$value": "color-mix(in srgb, {color.black} 75%, transparent)" },
+		"required": { "$value": "#f85149" },
 		"scrollbar-bg": { "$value": "#111111" },
 		"scrollbar-foreground": { "$value": "#e6e6e6" },
 		"skeleton": { "$value": "#e6e6e6" },

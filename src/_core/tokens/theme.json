@@ -55,6 +55,7 @@
 		"level-bar-outer-x2": "#6b6b6b",
 		"level-bar-outer-x3": "#3b3b3b",
 		"overlay": "color-mix(in srgb, #000000 75%, transparent)",
+		"required": "#f85149",
 		"scrollbar-bg": "#111111",
 		"scrollbar-foreground": "#e6e6e6",
 		"skeleton": "#e6e6e6",
