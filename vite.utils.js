@@ -7,6 +7,7 @@ import Icons from 'unplugin-icons/vite';
 
 /* Scripts */
 import { sitemapConfig } from './vite.sitemap.js';
+import { tokensWatch } from './scripts/tokens-watch.js';
 
 export const viteUtils = {
 	plugins: [
@@ -18,6 +19,7 @@ export const viteUtils = {
 		react(),
 		basicSsl(),
 		sitemap(sitemapConfig),
+		tokensWatch(),
 		Icons({
 			compiler: 'jsx',
 			jsx: 'react',

@@ -19,8 +19,8 @@
 			.navigation-fixed {
 				@include mixins.position($type: fixed, $top: 0, $left: 0, $right: 0);
 				padding: theme.$spacing-x4;
-				background-color: theme.$color-03;
-				border-bottom: 3px solid theme.$color-04;
+				background-color: theme.$color-bg;
+				border-bottom: 3px solid theme.$color-border;
 			}
 			.navigation-list {			
 				max-width: 1600px;

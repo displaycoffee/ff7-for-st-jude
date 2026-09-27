@@ -8,7 +8,7 @@
 
 	// Colors
 
-	$base-elements-color-01: theme.$color-03; // body background
+	$base-elements-color-01: theme.$color-bg; // body background
 
 	// Configuration
 
@@ -48,8 +48,8 @@
 
 	// Colors
 
-	$base-helpers-color-01: theme.$color-03; // scrollbar background
-	$base-helpers-color-02: theme.$color-04; // scrollbar foreground
+	$base-helpers-color-01: theme.$color-scrollbar-bg; // scrollbar background
+	$base-helpers-color-02: theme.$color-scrollbar-foreground; // scrollbar foreground
 
 	// Configuration
 
@@ -71,7 +71,7 @@
 		@include mixins.scrollbar('&', $base-helpers-scrollbar-width, $base-helpers-scrollbar-height, $base-helpers-color-01, $base-helpers-color-02);
 	}
 	.gradient-background {
-		border: 3px solid theme.$color-04;
+		border: 3px solid theme.$color-border;
 	}
 	.gradient-section {
 		padding: theme.$spacing-x4;
@@ -82,7 +82,7 @@
 			&:after {
 				content: '';
 				display: block;
-				background-color: rgba(0, 0, 0, 0.40);
+				background-color: theme.$color-gradient-section-bg;
 				@include mixins.border-radius(10px);
 				@include mixins.position-fill(-3px);
 			}

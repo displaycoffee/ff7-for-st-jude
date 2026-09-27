@@ -36,12 +36,12 @@
 			overflow: visible;
 			clip: unset;
 			white-space: unset;
-			border: 1px solid theme.$color-08;
-			background-color: theme.$color-03;
+			border: 1px solid theme.$color-focus-border;
+			background-color: theme.$color-bg;
 		}
 	}
 	.container {
-		max-width: theme.$container-base;
+		max-width: theme.$container-width;
 		margin: 0 auto;
 		padding: 0 theme.$spacing-x4;
 		& > * {

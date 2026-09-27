@@ -20,10 +20,10 @@ export const Colors = (props: ColorsProps) => {
 
 	// Default colors
 	const defaultColors = {
-		color01: theme.colors.color06,
-		color02: theme.colors.color06,
-		color03: theme.colors.color07,
-		color04: theme.colors.color07,
+		color01: theme.colors['blue-x1'],
+		color02: theme.colors['blue-x1'],
+		color03: theme.colors['blue-x2'],
+		color04: theme.colors['blue-x2'],
 	};
 
 	// Draft colors (controlled inputs) and applied colors (null means defaults are applied)
@@ -91,7 +91,7 @@ export const Colors = (props: ColorsProps) => {
 									className={'pointer'}
 									label={`${vertical} ${horizontal} corner`}
 									type={'color'}
-									value={colorValue as string}
+									value={colorValue}
 									onChange={(e) => {
 										setColors({ ...colors, [color]: e.target.value });
 									}}

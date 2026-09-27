@@ -15,8 +15,16 @@ function NotFound() {
 	);
 }
 
+/* Smooth scroll to the top after navigating (instant with reduced motion); opt a link out with resetScroll={false} */
+const scrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
 /* Create router */
-const router = createRouter({ routeTree, basepath: variables.paths.basename, defaultNotFoundComponent: NotFound });
+const router = createRouter({
+	routeTree,
+	basepath: variables.paths.basename,
+	defaultNotFoundComponent: NotFound,
+	scrollRestorationBehavior: scrollBehavior,
+});
 
 /* Register router type for full type safety across the app */
 declare module '@tanstack/react-router' {

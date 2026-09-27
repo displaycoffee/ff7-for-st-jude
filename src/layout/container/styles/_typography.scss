@@ -9,7 +9,7 @@
 	// Style block
 
 	html, body {
-		font-family: theme.$font-family-01;
+		font-family: theme.$font-family-body;
 	}
 	html {
 		text-size-adjust: 100%;
@@ -19,40 +19,22 @@
 	body {
 		font-size: functions.em(theme.$font-size-global, rem);
 		font-weight: normal;
-		color: theme.$color-04;
+		color: theme.$color-body;
 		line-height: 2;
 		letter-spacing: 1.5px;
 	}
 	b, strong {
-		font-family: theme.$font-family-02;
+		font-family: theme.$font-family-header;
 	}
 	dfn, em, i {
-		font-style: italic;
+		font-style: theme.$font-style-body;
 	}
 	a, abbr[title] {
 		text-decoration: none;
 	}
-	a, .a {
-		color: theme.$color-05;
-		background-color: transparent;
-		@include mixins.transition(color 0.3s ease-in-out);
-		@include mixins.text-decoration(1px, 5px, theme.$color-08);
-		&:active, &:hover {
-			outline: 0;
-			color: theme.$color-04;
-			@include mixins.text-decoration-color(theme.$color-01);
-		}
-		&:has(.button-label) {
-			&:active, &:hover {
-				text-decoration: none;
-				.button-label {
-					@include mixins.text-decoration(1px, 5px, theme.$color-01);
-				}
-			}
-		}
-	}
 	mark {
-		background: theme.$color-12;
+		background: theme.$color-highlight;
+		color: theme.$color-highlight-body;
 	}
 	small {
 		font-size: 80%;
@@ -70,24 +52,91 @@
 		bottom: -0.25em;
 	}
 
+//// LINKS
+//// --------------------------------------------------------------------------	
+
+	// Configuration 
+
+	$link-has-underline: true; // add underline on link
+	$link-has-underline-hover: true; // add underline on link hover
+	$link-has-underline-offset: true; // decorate link underline
+	$link-transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out; // value for link transition
+
+	// Link mixin
+
+	@mixin link-default {
+		@if $link-has-underline-offset == true {
+			@if $link-has-underline == true and theme.$color-link-underline != false {
+				@include mixins.text-decoration(1px, 5px, theme.$color-link-underline);
+			} @else {
+				text-decoration: none;
+			}
+		} @else {
+			$decoration: if(sass($link-has-underline == true): underline; else: none);
+			text-decoration: $decoration;
+		}
+	}
+	@mixin link-hover {
+		@if $link-has-underline-offset == true {
+			@if $link-has-underline-hover == true and theme.$color-link-underline-hover != false {
+				@include mixins.text-decoration(1px, 5px, theme.$color-link-underline-hover);
+			} @else {
+				text-decoration: none;
+			}
+		} @else {
+			$decoration: if(sass($link-has-underline-hover == true): underline; else: none);
+			text-decoration: $decoration;
+		}
+	}
+
+	// Style block
+
+	a, .a {
+		& {
+			color: theme.$color-link;
+			@include mixins.transition($link-transition);
+			&:active, &:hover {
+				color: theme.$color-link-hover;
+			}
+		}
+		&:not(.no-decoration) {
+			&:not(:has(.button-label)) {
+				@include link-default;
+				&:active, &:hover {
+					@include link-hover;
+				}
+			}
+			&:has(.button-label) {
+				.button-label {
+					@include link-default;
+				}
+				&:active, &:hover {
+					.button-label {
+						@include link-hover;
+					}
+				}
+			}
+		}
+	}	
+
 //// HEADERS
 //// --------------------------------------------------------------------------
 
 	// Style block
 
 	h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-		font-family: theme.$font-family-02;
-		font-weight: theme.$font-weight-02;
+		font-family: theme.$font-family-header;
+		font-weight: theme.$font-weight-header;
 		@include mixins.if-exists((
-			font-style: theme.$font-style,
-			text-transform: theme.$font-transform
+			font-style: theme.$font-style-header,
+			text-transform: theme.$font-transform-header
 		));
+		color: theme.$color-header;
 		line-height: 2.2;
-		color: theme.$color-04;
-		a {
+		a, .a {
 			color: inherit;
-			&:hover {
-				color: theme.$color-05;
+			&:active, &:hover {
+				color: theme.$color-link;
 			}
 		}
 	}
@@ -110,11 +159,11 @@
 	// Style block
 	
 	code, kbd, pre, samp {
-		background: theme.$color-04;
+		background: theme.$color-body;
 		padding: theme.$spacing-x4;
 		font-family: 'Courier New', monospace;
 		font-size: functions.em(16px, rem);
-		color: theme.$color-03;
+		color: theme.$color-bg;
 		white-space: pre-wrap;
 		word-break: break-word;
 	}

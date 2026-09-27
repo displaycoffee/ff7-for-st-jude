@@ -17,7 +17,7 @@ export const Route = createLazyFileRoute('/')({
 });
 
 function RouteComponent() {
-	const { content, dispatch, campaigns, utils } = useAppContext();
+	const { content, dispatch, campaigns, utils, variables } = useAppContext();
 	const { supporting, campaign, totals } = content;
 	const { current, previous } = campaigns;
 
@@ -42,8 +42,8 @@ function RouteComponent() {
 			<Section title={'Information'} hasScroll={false}>
 				{' '}
 				<p>
-					Welcome to the biannual FF7 for St. Jude speedrun event! Since December 2020, these events have been held twice per year,
-					typically the last weekend of June and the 2nd weekend of December. The event is part of{' '}
+					Welcome to the {variables.site.name} speedrun event! Since December 2020, these events have been held twice per year, typically
+					the last weekend of June and the 2nd weekend of December. The event is part of{' '}
 					<LinkExternal href={'//www.stjude.org/get-involved/other-ways/video-game-charity-event.html'}>St. Jude PLAY LIVE</LinkExternal>,
 					an organization for gamers to support <LinkExternal href={'//www.stjude.org'}>St. Jude Children's Research Hospital</LinkExternal>
 					.

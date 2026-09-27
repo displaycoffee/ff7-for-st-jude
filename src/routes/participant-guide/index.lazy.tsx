@@ -1,6 +1,9 @@
 /* Packages */
 import { createLazyFileRoute, Link } from '@tanstack/react-router';
 
+/* Scripts */
+import { useAppContext } from '../../context/scripts/context-hooks';
+
 /* Components */
 import { LinkExternal, List, Section } from '../../components/blocks/Blocks';
 
@@ -9,6 +12,8 @@ export const Route = createLazyFileRoute('/participant-guide/')({
 });
 
 function RouteComponent() {
+	const { variables } = useAppContext();
+
 	return (
 		<>
 			<Section title={'Top 5 Important Things'}>
@@ -109,7 +114,7 @@ function RouteComponent() {
 					<li>"Charity details" are already selected, so click "Continue".</li>
 					<li>
 						On step two of setup ("Your campaign") enter a campaign name and change the description if desired.{' '}
-						<strong>For example:</strong> "cornfed's FF7 for St. Jude #9".
+						<strong>For example:</strong> "cornfed's {variables.site.name} #9".
 					</li>
 					<li>Select "Continue" again and choose "Livestream" &gt; "Twitch" and enter your twitch channel's username.</li>
 					<li>

@@ -8,15 +8,15 @@
 
 	// Colors
 
-	$alert-color-01: theme.$color-03; // alert font color
-	$alert-color-02: theme.$color-02; // alert link
+	$alert-color-01: theme.$color-alert-body; // alert font
+	$alert-color-02: theme.$color-alert-link; // alert link
 
 	// Configuration
 	
 	$alert-spacing: theme.$spacing-x4; // spacing for alert
 	$alert-border-left-width: 5px; // make left border larger
 	$alert-border-radius: false; // alert border radius
-	$alert-icon-size: 20px; // size of icon
+	$alert-icon-size: theme.$icon-xl; // size of icon
 	$alert-icon-vertical: 1px; // top vertical alignment of icon
 
 	// Style block
@@ -24,8 +24,8 @@
 	.alert {
 		padding: $alert-spacing;
 		@include mixins.gap(calc($alert-spacing / 2));
-		background-color: theme.$color-30;
-		border: 1px solid theme.$color-31;
+		background-color: theme.$color-error-bg;
+		border: 1px solid theme.$color-error-border;
 		@include mixins.if-exists((
 			border-left-width: $alert-border-left-width,
 		));
@@ -41,7 +41,7 @@
 			@if $alert-icon-vertical != false {
 				@include mixins.position($type: relative, $top: $alert-icon-vertical);
 			}
-			color: theme.$color-31;
+			color: theme.$color-error-border;
 			svg {
 				@include mixins.sizing(100%, 100%);
 			}
@@ -58,27 +58,27 @@
 						@include mixins.text-decoration-color($alert-color-02);
 					}
 				}
-			}
+			}			
 		}
 	}
 	.alert-warning {
-		background-color: theme.$color-32;
-		border-color: theme.$color-33;
+		background-color: theme.$color-warning-bg;
+		border-color: theme.$color-warning-border;
 		.alert-icon {
-			color: theme.$color-33;
+			color: theme.$color-warning-border;
 		}
 	}
 	.alert-info {
-		background-color: theme.$color-34;
-		border-color: theme.$color-35;
+		background-color: theme.$color-info-bg;
+		border-color: theme.$color-info-border;
 		.alert-icon {
-			color: theme.$color-35;
+			color: theme.$color-info-border;
 		}
 	}
 	.alert-success {
-		background-color: theme.$color-36;
-		border-color: theme.$color-37;
+		background-color: theme.$color-success-bg;
+		border-color: theme.$color-success-border;
 		.alert-icon {
-			color: theme.$color-37;
+			color: theme.$color-success-border;
 		}
 	}

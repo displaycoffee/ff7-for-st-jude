@@ -3,7 +3,7 @@ import './styles/navigation.scss';
 
 /* Packages */
 import { Fragment, useEffect, useRef } from 'react';
-import { Link, useLocation } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 
 /* Scripts */
 import type { NavigationComponentProps, NavigationItemComponentProps } from './scripts/navigation-types';
@@ -17,16 +17,10 @@ import { LinkExternal, List } from '../blocks/Blocks';
 
 export const Navigation = (props: NavigationComponentProps) => {
 	const { data, disableTransition, label, location } = props;
-	const { pathname } = useLocation();
 	const { utils } = useAppContext();
 	const navigationList = navigationUtils.get.list(data);
 	const navigationLinkClass = 'navigation-link';
 	const navigationRef = useRef<HTMLDivElement | null>(null);
-
-	// Scroll to top when navigation link is clicked on
-	useEffect(() => {
-		utils.scrollTo();
-	}, [pathname, utils]);
 
 	// Make header sticky
 	useEffect(() => {
@@ -78,6 +72,7 @@ export const NavigationListItem = (props: NavigationItemComponentProps) => {
 					onClick={disableTransition ? undefined : (e) => handleTransition(e, nav.url)}
 					className={navigationLinkClass}
 					activeProps={{ className: `${navigationLinkClass}-active` }}
+					resetScroll={false}
 				>
 					{nav.label}
 				</Link>

@@ -5,10 +5,4 @@ export const targets: TargetType[] = [
 		hasTabindex: true,
 		isScript: true,
 	},
-	{
-		name: 'portal',
-		src: './targets/portal/Portal.tsx',
-		hasTabindex: false,
-		isScript: false,
-	},
 ];

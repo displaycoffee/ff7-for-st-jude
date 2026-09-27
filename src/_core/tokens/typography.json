@@ -5,27 +5,27 @@
 			"header": { "$value": "Fallback Bold", "$extensions": { "sass": false } }
 		},
 		"size": {
-			"body": { "$value": "105%", "$extensions": { "sass": false } },
-			"header": { "$value": "98%", "$extensions": { "sass": false } }
+			"body": { "$value": "135%", "$extensions": { "sass": false } },
+			"header": { "$value": "135%", "$extensions": { "sass": false } }
 		},
 		"src": {
-			"body": { "$value": "local('Arial')", "$extensions": { "sass": false } },
-			"header": { "$value": "local('Arial Black')", "$extensions": { "sass": false } }
+			"body": { "$value": "local('Courier New')", "$extensions": { "sass": false } },
+			"header": { "$value": "local('Courier New Bold'), local('Courier New')", "$extensions": { "sass": false } }
 		}
 	},
 	"font": {
 		"family": {
 			"$type": "fontFamily",
-			"body": { "$value": "'{font.name.body}', '{fallback.name.body}', sans-serif" },
-			"header": { "$value": "'{font.name.header}', '{fallback.name.header}', sans-serif" }
+			"body": { "$value": "'{font.name.body}', '{fallback.name.body}', monospace" },
+			"header": { "$value": "'{font.name.header}', '{fallback.name.header}', monospace" }
 		},
 		"name": {
-			"body": { "$value": "Open Sans", "$extensions": { "sass": false } },
-			"header": { "$value": "Montserrat", "$extensions": { "sass": false } }
+			"body": { "$value": "Dogica Pixel", "$extensions": { "sass": false } },
+			"header": { "$value": "Dogica Pixel Bold", "$extensions": { "sass": false } }
 		},
 		"path": {
-			"body": { "$value": "/assets/fonts/open-sans", "$extensions": { "sass": false } },
-			"header": { "$value": "/assets/fonts/montserrat", "$extensions": { "sass": false } }
+			"body": { "$value": "/assets/fonts/dogica-pixel", "$extensions": { "sass": false } },
+			"header": { "$value": "/assets/fonts/dogica-pixel", "$extensions": { "sass": false } }
 		},
 		"size": {
 			"$type": "dimension",
@@ -33,14 +33,8 @@
 			"global": { "$value": "14px" }
 		},
 		"src": {
-			"body": { "$value": "{font.path.body}-regular.woff2", "$extensions": { "sass": false } },
-			"body-bold": { "$value": "{font.path.body}-bold.woff2", "$extensions": { "sass": false } },
-			"body-bold-italic": { "$value": "{font.path.body}-bold-italic.woff2", "$extensions": { "sass": false } },
-			"body-italic": { "$value": "{font.path.body}-italic.woff2", "$extensions": { "sass": false } },
-			"header": { "$value": "{font.path.header}-regular.woff2", "$extensions": { "sass": false } },
-			"header-bold": { "$value": "{font.path.header}-bold.woff2", "$extensions": { "sass": false } },
-			"header-bold-italic": { "$value": "{font.path.header}-bold-italic.woff2", "$extensions": { "sass": false } },
-			"header-italic": { "$value": "{font.path.header}-italic.woff2", "$extensions": { "sass": false } }
+			"body": { "$value": "{font.path.body}.woff2", "$extensions": { "sass": false } },
+			"header": { "$value": "{font.path.header}-bold.woff2", "$extensions": { "sass": false } }
 		},
 		"style": {
 			"body": { "$value": "italic" },
@@ -48,12 +42,12 @@
 		},
 		"transform": {
 			"body": { "$value": false },
-			"header": { "$value": "uppercase" }
+			"header": { "$value": false }
 		},
 		"weight": {
 			"$type": "fontWeight",
 			"body": { "$value": 700 },
-			"header": { "$value": 700 }
+			"header": { "$value": 400 }
 		}
 	}
 }

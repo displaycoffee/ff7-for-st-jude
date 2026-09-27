@@ -26,22 +26,22 @@
 		.level-bar-outof {		
 			@include mixins.sizing(100%, 20px);
 			max-width: 600px;
-			border: 2px solid theme.$color-04;
-			background-color: theme.$color-13;
-			background-image: linear-gradient(theme.$color-15 0%, theme.$color-14 50%, theme.$color-13 75%);
+			border: 2px solid theme.$color-border;
+			background-color: theme.$color-level-bar-outer-x1;
+			background-image: linear-gradient(theme.$color-level-bar-outer-x3 0%, theme.$color-level-bar-outer-x2 50%, theme.$color-level-bar-outer-x1 75%);
 			position: relative;
 			overflow: hidden;
 			.level-bar-progress, .level-bar-shadow {
 				@include mixins.sizing(100%, 100%);
 			}
 			.level-bar-progress {
-				background-color: theme.$color-16;
-				background-image: linear-gradient(theme.$color-18 0%, theme.$color-17 50%, theme.$color-16 75%);
+				background-color: theme.$color-level-bar-inner-x1;
+				background-image: linear-gradient(theme.$color-level-bar-inner-x3 0%, theme.$color-level-bar-inner-x2 50%, theme.$color-level-bar-inner-x1 75%);
 			}
 			.level-bar-shadow {
-				border: 2px solid rgba(0, 0, 0, 0.30);
+				border: 2px solid theme.$color-level-bar-border;
 				border-top-width: 3px;
-				border-bottom-color: rgba(0, 0, 0, 0.10);
+				border-bottom-color: theme.$color-level-bar-border-bottom;
 				@include mixins.position($type: absolute, $left: 0, $top: 0);
 			}
 		}

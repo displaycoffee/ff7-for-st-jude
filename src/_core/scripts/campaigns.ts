@@ -51,19 +51,23 @@ const buildCampaign = (number: number, name: string, date: string, amount: numbe
 	};
 };
 
+/* Event names */
+const name = variables.site.name;
+const nameNoSlots = 'FF7 No-Slots for St. Jude';
+
 export const campaigns = {
 	current: {
-		...buildCampaign(10, 'FF7 for St. Jude #10', 'October 24th - 25th, 2026', 0),
+		...buildCampaign(10, `${name} #10`, 'October 24th - 25th, 2026', 0),
 	},
 	previous: [
-		buildCampaign(9, 'FF7 for St. Jude #9', 'February 15th, 2025', 3011.68),
-		buildCampaign(8, 'FF7 for St. Jude #8', 'July 27th, 2024', 7038.69),
-		buildCampaign(7, 'FF7 for St. Jude #7', 'December 16th, 2023', 7177.77),
-		buildCampaign(6, 'FF7 for St. Jude #6', 'June 24, 2023', 5432.74),
-		buildCampaign(5, 'FF7 for St. Jude #5', 'December 10, 2022', 9254.38),
-		buildCampaign(4, 'FF7 No-Slots for St. Jude #4', 'June 25, 2022', 8770.46),
-		buildCampaign(3, 'FF7 No-Slots for St. Jude #3', 'December 11, 2021', 6448.34),
-		buildCampaign(2, 'FF7 No-Slots For St. Jude #2', 'June 26, 2021', 4469.69),
-		buildCampaign(1, 'FF7 No-Slots For St. Jude', 'December 28, 2020', 2313.06),
+		buildCampaign(9, `${name} #9`, 'February 15th, 2025', 3011.68),
+		buildCampaign(8, `${name} #8`, 'July 27th, 2024', 7038.69),
+		buildCampaign(7, `${name} #7`, 'December 16th, 2023', 7177.77),
+		buildCampaign(6, `${name} #6`, 'June 24, 2023', 5432.74),
+		buildCampaign(5, `${name} #5`, 'December 10, 2022', 9254.38),
+		buildCampaign(4, `${nameNoSlots} #4`, 'June 25, 2022', 8770.46),
+		buildCampaign(3, `${nameNoSlots} #3`, 'December 11, 2021', 6448.34),
+		buildCampaign(2, `${nameNoSlots} #2`, 'June 26, 2021', 4469.69),
+		buildCampaign(1, nameNoSlots, 'December 28, 2020', 2313.06),
 	],
 };

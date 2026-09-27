@@ -39,7 +39,7 @@
 		--overlay-easing-closed: #{$slideout-easing-in};
 		--overlay-easing-open: #{$slideout-easing-out};
 		--overlay-opacity-closed: 1; // only the backdrop fades; the panel slides in fully opaque
-		border: 3px solid theme.$color-04; // restores the .gradient-background border that overlay.scss resets
+		border: 3px solid theme.$color-border; // restores the .gradient-background border that overlay.scss resets
 		border-width: 0 3px 0 0;
 		&.slideout-horizontal {
 			height: 100%;
@@ -79,8 +79,8 @@
 			.slideout-close {
 				margin-left: auto;
 				font-size: functions.em(20px, rem);
-				font-family: theme.$font-family-02;
-				color: theme.$color-04;
+				font-family: theme.$font-family-header;
+				color: theme.$color-body;
 			}
 		}
 		.slideout-scrollbar {
