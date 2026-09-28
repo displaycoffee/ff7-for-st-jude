@@ -8,6 +8,7 @@ import { colors } from '../src/_core/data/colors.ts';
 import { fallbacks } from '../src/_core/data/fallbacks.ts';
 import { favicons } from '../src/_core/data/favicons.ts';
 import { fonts } from '../src/_core/data/fonts.ts';
+import { settings } from '../src/_core/data/settings.ts';
 import { site } from '../src/_core/data/site.ts';
 import { targets } from '../src/_core/data/targets.ts';
 
@@ -50,6 +51,21 @@ if (fs.existsSync(templatePath)) {
 		}`);
 	});
 
+	// Create theme color meta for the browser UI
+	// Note: when the OS setting can switch themes, each theme gets its own color, otherwise the default theme's color is always used
+	const themeColorMeta = [];
+	if (settings.theme.system) {
+		const themeColors = {
+			[settings.theme.default]: colors.bg,
+			[settings.theme.alternate]: colors[`bg-${settings.theme.alternate}`] ?? colors.bg,
+		};
+		['light', 'dark'].forEach((theme) => {
+			themeColorMeta.push(`<meta name="theme-color" content="${themeColors[theme]}" media="(prefers-color-scheme: ${theme})" />`);
+		});
+	} else {
+		themeColorMeta.push(`<meta name="theme-color" content="${colors.bg}" />`);
+	}
+
 	// Create target details
 	const targetScripts = [];
 	const targetElements = [];
@@ -74,8 +90,7 @@ if (fs.existsSync(templatePath)) {
 		<meta property="og:locale" content="en_US" />
 		<meta property="og:description" content="${site.description}" />
 		<meta property="og:type" content="website" />
-		<meta name="theme-color" content="${colors.bg}" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="${colors['bg-dark'] ?? colors.bg}" media="(prefers-color-scheme: dark)" />
+		${themeColorMeta.join('')}
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 		${faviconLinks.join('')}
 		<link rel="manifest" href="/manifest.json" />

@@ -10,10 +10,14 @@ import { useReactQuery, useReactQueries } from '../../_core/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
+import { PageTitle } from '../../components/page-title/PageTitle';
 import { List, Section, SectionParagraph, SectionLinks, SectionNotFound, Skeleton } from '../../components/blocks/Blocks';
 import { Button, ButtonScroll } from '../../components/forms/Forms';
 import { DonationsSection } from '../../components/donations-section/DonationsSection';
 import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
+
+/* Page title */
+const title = 'Dashboard';
 
 /* Static variables */
 const truncateLimit = 75;
@@ -84,6 +88,8 @@ function RouteComponent() {
 
 	return (
 		<>
+			<PageTitle title={title} />
+
 			<nav className="floating" aria-label="Dashboard Section Navigation">
 				<div className="gradient-section">
 					<List className={'floating-list'} variant={'ul-unstyled'}>

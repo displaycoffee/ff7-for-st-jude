@@ -7,7 +7,11 @@ import { useReactQuery } from '../../_core/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
+import { PageTitle } from '../../components/page-title/PageTitle';
 import { DonationsSection } from '../../components/donations-section/DonationsSection';
+
+/* Page title */
+const title = 'Donations';
 
 /* Static variables */
 const timeout = false; // 60000 == one minute
@@ -73,5 +77,11 @@ function RouteComponent() {
 		}
 	}, [queryClient, dispatch]);
 
-	return <DonationsSection donations={donations} donationsComplete={donationsComplete} />;
+	return (
+		<>
+			<PageTitle title={title} />
+
+			<DonationsSection donations={donations} donationsComplete={donationsComplete} />
+		</>
+	);
 }

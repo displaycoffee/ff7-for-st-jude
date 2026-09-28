@@ -5,7 +5,11 @@ import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
+import { PageTitle } from '../../components/page-title/PageTitle';
 import { LinkExternal, List, Section } from '../../components/blocks/Blocks';
+
+/* Page title */
+const title = 'Participant Guide';
 
 export const Route = createLazyFileRoute('/participant-guide/')({
 	component: RouteComponent,
@@ -16,6 +20,8 @@ function RouteComponent() {
 
 	return (
 		<>
+			<PageTitle title={title} />
+
 			<Section title={'Top 5 Important Things'}>
 				<List>
 					<li>Create a Tiltify campaign that supports the team campaign and create donation incentives.</li>
@@ -106,25 +112,55 @@ function RouteComponent() {
 					</li>
 					<li>
 						Then in the same or new browser tab, go to{' '}
-						<LinkExternal href={'//tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9'}>
-							tiltify.com/+ff7-for-st-jude/ff7-for-st-jude-9
+						<LinkExternal href={variables.urls.campaign}>
+							{variables.urls.campaign.replace('https://', '').replace('//', '')}
 						</LinkExternal>{' '}
-						and click the "Support this campaign" button.
+						and click the "Start fundraising" button.
 					</li>
-					<li>"Charity details" are already selected, so click "Continue".</li>
+					<li>"Charity details" are already selected, so click "Build your own campaign".</li>
 					<li>
-						On step two of setup ("Your campaign") enter a campaign name and change the description if desired.{' '}
-						<strong>For example:</strong> "cornfed's {variables.site.name} #9".
-					</li>
-					<li>Select "Continue" again and choose "Livestream" &gt; "Twitch" and enter your twitch channel's username.</li>
-					<li>
-						Click "Continue" and set a campaign goal. This goal does not affect anything including prizes. It is just to encourage
-						donations to reach goals. You can raise your goal at any time but cannot lower it! It is best to set it to achievable amounts
-						and raise the goal each time it is reached during the event.
+						Enter your campaign goal. This goal does not affect anything including prizes. It is just to encourage donations to reach
+						goals. You can raise your goal at any time but cannot lower it! It is best to set it to achievable amounts and raise the goal
+						each time it is reached during the event.
 					</li>
 					<li>
-						In step three ("Event registration"), you will be asked to register with St. Jude PLAY LIVE. Click "Add address" and after
-						using the address, enter your phone number, birthday, and t-shirt fit and size.
+						Enter a campaign name. <strong>For example:</strong> "cornfed's {variables.site.name} #10". There will be a series of
+						questions to go through next.
+						<List>
+							<li>
+								<strong>Question:</strong> Where are most of your donors located?
+								<br />
+								<strong>Answer:</strong> Online
+							</li>
+							<li>
+								<strong>Question:</strong> Let's talk support: who's most likely to donate to your campaign?
+								<br />
+								<strong>Answer:</strong> Both
+							</li>
+							<li>
+								<strong>Question:</strong> How will you connect with donors?
+								<br />
+								<strong>Answer:</strong> Live Streaming
+							</li>
+							<li>
+								<strong>Question:</strong> What streaming platforms do you use?
+								<br />
+								<strong>Answer:</strong> Choose "Twitch" and enter your twitch channel's username.
+							</li>
+						</List>
+					</li>
+					<li>At this point, default "Rewards" can be added.</li>
+					<li>Choose the incentives you want to add. Most campaigns will setup "Rewards" and "Polls".</li>
+					<li>Select "No" for "Allow other fundraisers to support you".</li>
+					<li>
+						A mini-preview of your campaign will be shown. You can "Save draft" or "View your page". If you don't need to preview the
+						page, go ahead and click "Save draft". On the next page, there will be a red colored box at the top that says "Finish setup".
+						Click this button.
+					</li>
+					<li>
+						You will be asked to register with St. Jude PLAY LIVE. Click "Add address" and after using the address, enter your phone
+						number, birthday, t-shirt fit, and t-shirt size. Take note of the toggle at the bottom that asks if you want to receive emails
+						and mail from "St. Jude Children's Research Hospital".
 						<List>
 							<li>
 								St. Jude PLAY LIVE sends prize packages out after the event. You might get a t-shirt and/or hoodie. Also, a bunch of
@@ -133,15 +169,11 @@ function RouteComponent() {
 						</List>
 					</li>
 					<li>
-						On step four ("Summary"), click "Create", but do not publish yet. Your campaign dashboard will open. From here you can manage
-						all aspects of your campaign including "Incentives" which are a big part of the campaign.
+						Once registered, you can take your campaign live by clicking "Publish campaign". This will allow people to donate. When a
+						campaign is live, you cannot change certain details such as name and description. You can unpublish your campaign, but only if
+						no donations have been made.
 					</li>
-					<li>
-						Once you have completed your campaign, you can publish it by selecting "Overview" from the main navigation. (Note: The
-						"Incentives" page has an "Overview" tab, but this is not the same thing.) This will allow people to donate. Once published,
-						you cannot change certain details such as name and description. You can unpublish your campaign, but only if no donations have
-						been made.
-					</li>
+					<li>"Rewards" and "Polls" can be managed under "Incentives". After setting them up, don't forget to toggle the item "Active".</li>
 				</List>
 			</Section>
 

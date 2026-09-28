@@ -6,12 +6,19 @@ import { index } from './scripts';
 import { variables } from '../../_core/scripts/variables';
 import { routeTree } from '../../routeTree.gen';
 
+/* Components */
+import { PageTitle } from '../../components/page-title/PageTitle';
+
 /* Not found component */
 function NotFound() {
 	return (
-		<p className="not-found">
-			Page not found. <Link to={'/'}>Go back</Link>.
-		</p>
+		<div className="not-found">
+			<PageTitle title={'Page Not Found'} />
+
+			<p>
+				Page not found. <Link to={'/'}>Go back</Link>.
+			</p>
+		</div>
 	);
 }
 

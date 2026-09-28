@@ -71,6 +71,14 @@ type ObjectPrimitive = {
 
 type Primitive = string | number | boolean;
 
+type Settings = {
+	theme: {
+		default: ThemeMode;
+		alternate: ThemeMode;
+		system: boolean;
+	};
+};
+
 type Site = {
 	name: string;
 	description: string;
@@ -111,6 +119,8 @@ type Theme = {
 		};
 	};
 };
+
+type ThemeMode = 'light' | 'dark';
 
 type Utils = {
 	checkAmount: (number?: number) => number;
@@ -346,6 +356,8 @@ declare global {
 
 	type PrimitiveType = Primitive;
 
+	type SettingsType = Settings;
+
 	type SiteType = Site;
 
 	type SortType = Sort;
@@ -353,6 +365,8 @@ declare global {
 	type TargetType = Target;
 
 	type ThemeType = Theme;
+
+	type ThemeModeType = ThemeMode;
 
 	type UtilsType = Utils;
 
