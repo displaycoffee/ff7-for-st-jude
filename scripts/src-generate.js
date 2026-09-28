@@ -43,7 +43,7 @@ if (fs.existsSync(templatePath)) {
 		if (font?.isPreload) fontLinks.push(`<link rel="preload" href="${font.src}" as="font" type="font/${font.ext}" crossorigin="anonymous" />`);
 		fontFaces.push(`@font-face {
 			font-family: '${font.family}';
-			src: url('${font.src}') format('${font.ext}');
+			src: ${font.isLocal ? font.src : `url('${font.src}') format('${font.ext}')`};
 			font-weight: ${font.weight};
 			font-style: ${font.style};
 			font-display: ${font.display};
@@ -100,9 +100,14 @@ if (fs.existsSync(templatePath)) {
 			}
 		</style>
 	`;
+
 	const headRegex = /<!-- HEAD -->/g;
 	html = html.replace(headRegex, () => {
-		return head;
+		const cleanedContent = head
+			.replace(/^\s*[\r\n]/gm, '')
+			.replace(/[ \t]+$/gm, '')
+			.trimEnd();
+		return cleanedContent;
 	});
 
 	// Update targets

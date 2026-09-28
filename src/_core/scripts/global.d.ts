@@ -34,8 +34,6 @@ type Fallback = {
 	src: string;
 };
 
-type FallbacksJson = typeof themeJson.fallback;
-
 type Favicon = {
 	isHead: boolean;
 	isManifest: boolean;
@@ -47,19 +45,16 @@ type Favicon = {
 	type: string;
 };
 
-type FaviconsJson = typeof themeJson.favicon;
-
 type Font = {
 	display: string;
 	ext: string;
 	family: string;
+	isLocal: boolean;
 	isPreload: boolean;
 	src: string;
 	style: string;
 	weight: string | number;
 };
-
-type FontsJson = typeof themeJson.font;
 
 type Links = {
 	label: string;
@@ -339,15 +334,9 @@ declare global {
 
 	type FallbackType = Fallback;
 
-	type FallbacksJsonType = FallbacksJson;
-
 	type FaviconType = Favicon;
 
-	type FaviconsJsonType = FaviconsJson;
-
 	type FontType = Font;
-
-	type FontsJsonType = FontsJson;
 
 	type LinksType = Links;
 

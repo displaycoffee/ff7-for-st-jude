@@ -40,7 +40,7 @@ export const Container = () => {
 			<ErrorBoundary message={<ContainerError />}>
 				<Colors showButton={false} />
 
-				<a href="#main-content" className="skip-link sr-only">
+				<a href="#main-content" className="skip-link sr-only no-decoration">
 					Skip to main content
 				</a>
 

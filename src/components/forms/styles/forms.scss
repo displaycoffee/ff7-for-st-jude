@@ -8,7 +8,7 @@
 
 	// Colors
 
-	$forms-color-01: theme.$color-focus-border; // focus visible border color
+	$forms-color-01: theme.$color-focus; // focus visible border color
 
 	// Style block
 	
@@ -227,11 +227,9 @@
 
 	// Colors
 
-	// Note: inputs are light on the dark page, so the page's text / background colors are swapped here
-	$forms-input-color-01: theme.$color-body; // input background
-	$forms-input-color-02: theme.$color-bg; // input border
-	$forms-input-color-03: theme.$color-bg; // input color
-	$forms-input-color-04: theme.$color-border; // input color type background
+	$forms-input-color-01: theme.$color-form-field-bg; // input background
+	$forms-input-color-02: theme.$color-form-field-border; // input border
+	$forms-input-color-03: theme.$color-form-field-body; // input color
 
 	// Configuration
 	
@@ -262,8 +260,10 @@
 		@if $forms-input-color-type-size != false {
 			@include mixins.sizing($forms-input-color-type-size, $forms-input-color-type-size);
 		}
+		@include mixins.if-exists((
+			background-color: $forms-input-color-01,
+		));
 		border: 0;
-		@include mixins.if-exists((background-color: $forms-input-color-04));
 	}
 
 //// FORMS - REQUIRED
