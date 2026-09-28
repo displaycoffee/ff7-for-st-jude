@@ -160,6 +160,7 @@
 	
 	code, kbd, pre, samp {
 		background: theme.$color-body;
+		margin: 0;
 		padding: theme.$spacing-x4;
 		font-family: 'Courier New', monospace;
 		font-size: functions.em(16px, rem);

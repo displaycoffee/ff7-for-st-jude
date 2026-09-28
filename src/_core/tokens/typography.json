@@ -2,7 +2,7 @@
 	"fallback": {
 		"name": {
 			"body": { "$value": "Fallback", "$extensions": { "sass": false } },
-			"header": { "$value": "Fallback Bold", "$extensions": { "sass": false } }
+			"header": { "$value": "Fallback Header", "$extensions": { "sass": false } }
 		},
 		"size": {
 			"body": { "$value": "135%", "$extensions": { "sass": false } },
