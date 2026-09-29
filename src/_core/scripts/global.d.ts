@@ -28,34 +28,6 @@ type AmountsRaw = {
 
 type Events = SyntheticEvent | Event;
 
-type Fallback = {
-	family: string;
-	size: string;
-	src: string;
-};
-
-type Favicon = {
-	isHead: boolean;
-	isManifest: boolean;
-	purpose: string;
-	rel: string;
-	src: string;
-	size: string;
-	sizes: string;
-	type: string;
-};
-
-type Font = {
-	display: string;
-	ext: string;
-	family: string;
-	isLocal: boolean;
-	isPreload: boolean;
-	src: string;
-	style: string;
-	weight: string | number;
-};
-
 type Links = {
 	label: string;
 	url: string;
@@ -70,14 +42,6 @@ type ObjectPrimitive = {
 };
 
 type Primitive = string | number | boolean;
-
-type Settings = {
-	theme: {
-		default: ThemeMode;
-		alternate: ThemeMode;
-		system: boolean;
-	};
-};
 
 type Site = {
 	name: string;
@@ -119,8 +83,6 @@ type Theme = {
 		};
 	};
 };
-
-type ThemeMode = 'light' | 'dark';
 
 type Utils = {
 	checkAmount: (number?: number) => number;
@@ -342,12 +304,6 @@ declare global {
 
 	type EventsType = Events;
 
-	type FallbackType = Fallback;
-
-	type FaviconType = Favicon;
-
-	type FontType = Font;
-
 	type LinksType = Links;
 
 	type ObjectStringType = ObjectString;
@@ -356,8 +312,6 @@ declare global {
 
 	type PrimitiveType = Primitive;
 
-	type SettingsType = Settings;
-
 	type SiteType = Site;
 
 	type SortType = Sort;
@@ -365,8 +319,6 @@ declare global {
 	type TargetType = Target;
 
 	type ThemeType = Theme;
-
-	type ThemeModeType = ThemeMode;
 
 	type UtilsType = Utils;
 

@@ -38,7 +38,7 @@ export const navigationUtils = {
 		return { [key]: navigationItem };
 	},
 	get: {
-		// includeHidden is only meant for scripts/sitemap-routes.js, which needs every route (including
+		// includeHidden is only meant for the sitemap routes script in @displaycoffee/burmecia, which needs every route (including
 		// showInNav: false ones) to build the sitemap; leave it off everywhere else so the nav UI
 		// keeps filtering those out.
 		list: (data: NavigationMapType, includeHidden = false): NavigationFlatItemType[] => {
