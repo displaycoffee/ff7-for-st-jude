@@ -103,6 +103,92 @@ export const requests: RequestsType = {
 
 		return donations;
 	},
+	milestones: async ({ queryKey }: QueryFunctionContext) => {
+		// queryKey: ['milestones', campaign, number]
+		const current = queryKey[1] as CampaignType;
+		const queryIndex = queryKey[2] as number;
+
+		// Storage for milestones data
+		const milestones = [] as MilestonesType[];
+
+		// Fetch base campaign
+		const response = await fetch(`${variables.api.campaigns}/${current.id}/milestones?limit=100`, parameters.tiltify.options());
+		const json = (await response.json()) as ResponseBodyType<MilestonesRawType[]>;
+
+		if (json && json.data) {
+			// Add details to milestones data
+			json.data.forEach((data: MilestonesRawType, index: number) => {
+				const date = variables.placeholders.endDate;
+
+				// Format milestones data
+				const milestonesData = {
+					id: data.id,
+					active: data.active,
+					amounts: utils.getAmounts(data),
+					date: utils.getDate(date),
+					key: `milestone-${data.id.split('-')[0]}-${queryIndex}-${index}`,
+					milliseconds: new Date(date).getTime(),
+					name: data.name,
+					username: current.name,
+					links: [
+						{
+							label: `Contribute to ${current.name}`,
+							url: current.campaign,
+						},
+					],
+				};
+
+				milestones.push(milestonesData);
+			});
+		}
+
+		return milestones;
+	},
+	polls: async ({ queryKey }: QueryFunctionContext) => {
+		// queryKey: ['polls', campaign, number]
+		const current = queryKey[1] as CampaignType;
+		const queryIndex = queryKey[2] as number;
+
+		// Storage for polls data
+		const polls = [] as PollsType[];
+
+		// Fetch base campaign
+		const response = await fetch(`${variables.api.campaigns}/${current.id}/polls?limit=100`, parameters.tiltify.options());
+		const json = (await response.json()) as ResponseBodyType<PollsRawType[]>;
+
+		if (json && json.data) {
+			// Add details to polls data
+			json.data.forEach((data: PollsRawType, index: number) => {
+				const date = data.ends_at ? data.ends_at : variables.placeholders.endDate;
+
+				// Format polls data
+				const pollsData = {
+					id: data.id,
+					active: data.active,
+					amounts: utils.getAmounts(data),
+					date: utils.getDate(date),
+					ends: data?.ends_at ? data.ends_at : undefined,
+					key: `poll-${data.id.split('-')[0]}-${queryIndex}-${index}`,
+					milliseconds: new Date(date).getTime(),
+					name: data.name,
+					username: current.name,
+					links: [
+						{
+							label: `Vote at ${current.name}`,
+							url: current.campaign,
+						},
+					],
+				};
+
+				// Re-check active state
+				pollsData.active = utils.setActive('polls', pollsData);
+
+				polls.push(pollsData);
+			});
+		}
+
+		return polls;
+	},
 	rewards: async ({ queryKey }: QueryFunctionContext) => {
 		// queryKey: ['rewards', campaign, number]
 		const current = queryKey[1] as CampaignType;
@@ -127,10 +213,13 @@ export const requests: RequestsType = {
 					amounts: utils.getAmounts(data),
 					date: utils.getDate(date),
 					description: data?.description ?? '',
+					ends: data?.ends_at ? data.ends_at : undefined,
 					key: `reward-${data.id.split('-')[0]}-${queryIndex}-${index}`,
 					milliseconds: new Date(date).getTime(),
 					name: data.name,
-					remaining: data?.quantity_remaining && typeof data.quantity_remaining == 'number' ? data.quantity_remaining : 0,
+					remaining: typeof data?.quantity_remaining == 'number' ? data.quantity_remaining : null, // null means unlimited
+					starts: data?.starts_at ? data.starts_at : undefined,
+					upcoming: data?.starts_at ? new Date(data.starts_at).getTime() > Date.now() : false,
 					username: current.name,
 					links: [
 						{
@@ -198,49 +287,5 @@ export const requests: RequestsType = {
 		}
 
 		return supporting;
-	},
-	targets: async ({ queryKey }: QueryFunctionContext) => {
-		// queryKey: ['targets', campaign, number]
-		const current = queryKey[1] as CampaignType;
-		const queryIndex = queryKey[2] as number;
-
-		// Storage for targets data
-		const targets = [] as TargetsType[];
-
-		// Fetch base campaign
-		const response = await fetch(`${variables.api.campaigns}/${current.id}/targets?limit=100`, parameters.tiltify.options());
-		const json = (await response.json()) as ResponseBodyType<TargetsRawType[]>;
-
-		if (json && json.data) {
-			json.data.forEach((data: TargetsRawType, index: number) => {
-				const date = data.ends_at ? data.ends_at : variables.placeholders.endDate;
-
-				// Format targets data
-				const targetsData = {
-					id: data.id,
-					active: data.active,
-					amounts: utils.getAmounts(data),
-					date: utils.getDate(date),
-					description: data?.description ?? '',
-					key: `target-${data.id.split('-')[0]}-${queryIndex}-${index}`,
-					milliseconds: new Date(date).getTime(),
-					name: data.name,
-					username: current.name,
-					links: [
-						{
-							label: `Participate at ${current.name}`,
-							url: current.campaign,
-						},
-					],
-				};
-
-				// Re-check active state
-				targetsData.active = utils.setActive('targets', targetsData);
-
-				targets.push(targetsData);
-			});
-		}
-
-		return targets;
 	},
 };

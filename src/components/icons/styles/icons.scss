@@ -1,0 +1,67 @@
+// Local Sass modules
+@use '@displaycoffee/styles/functions';
+@use '@displaycoffee/styles/mixins';
+@use '../../../_core/styles/_theme';
+
+//// ICONS
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.icon {
+		@include mixins.flex-layout((display: inline-flex, flex-flow: column nowrap, justify-content: center, align-items: center));
+		@include mixins.flex(0 0 auto);
+		font-family: theme.$font-family-body;
+		font-size: theme.$icon-md;
+		line-height: theme.$icon-md;
+		&, &:before {
+			@include mixins.sizing(auto, auto);
+		}
+		&:before {
+			position: relative;
+			display: block;
+			margin: auto;
+			padding: 0;
+			max-width: 100%;
+			max-height: 100%;
+			font-family: inherit;
+			font-size: inherit;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			text-rendering: auto;
+			text-shadow: none;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+	}
+	.icon-sm {
+		font-size: theme.$icon-sm;
+		line-height: theme.$icon-sm;
+	}
+	.icon-lg {
+		font-size: theme.$icon-lg;
+		line-height: theme.$icon-lg;
+	}
+	.icon-xl {
+		font-size: theme.$icon-xl;
+		line-height: theme.$icon-xl;
+	}
+	.icon-2xl {
+		font-size: theme.$icon-2xl;
+		line-height: theme.$icon-2xl;
+	}
+	.icon-angle-up, .icon-angle-down {
+		&:before {
+			content: '\00003e';
+		}
+	}
+	.icon-angle-up:before {
+		left: 1px;
+		@include mixins.transform(rotate(-90deg));
+	}
+	.icon-angle-down:before {
+		left: -1px;
+		@include mixins.transform(rotate(90deg));
+	}

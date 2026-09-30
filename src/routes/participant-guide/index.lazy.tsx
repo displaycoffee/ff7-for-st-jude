@@ -1,3 +1,6 @@
+/* Styles */
+import './styles/participant-guide.scss';
+
 /* Packages */
 import { createLazyFileRoute, Link } from '@tanstack/react-router';
 
@@ -7,6 +10,7 @@ import { useAppContext } from '../../context/scripts/context-hooks';
 /* Components */
 import { PageTitle } from '../../components/page-title/PageTitle';
 import { LinkExternal, List, Section } from '../../components/blocks/Blocks';
+import { ButtonScroll } from '../../components/forms/Forms';
 
 /* Page title */
 const title = 'Participant Guide';
@@ -26,7 +30,8 @@ function RouteComponent() {
 				<List>
 					<li>Create a Tiltify campaign that supports the team campaign and create donation incentives.</li>
 					<li>Promote the event to viewers, family, friends, and coworkers.</li>
-					<li>Create bot commands such as !donate, !stjude, and !commentary.</li>
+					{/* <li>Create bot commands such as !donate, !stjude, and !commentary.</li> */}
+					<li>Create bot commands such as !donate and !stjude.</li>
 					<li>Start stream at least 20 minutes before the race and ensure you have 360p as a quality option.</li>
 					<li>
 						Set up an account with <LinkExternal href={'//racetime.gg'}>racetime.gg</LinkExternal> and join the race through{' '}
@@ -40,11 +45,12 @@ function RouteComponent() {
 
 				<List variant={'ol'}>
 					<li>Create your Tiltify campaign, create incentives, publish your campaign, and activate incentives.</li>
-					<li>
+					<li>Create bot commands and timers with links to your campaign page.</li>
+					{/* <li>
 						Create bot commands and timers with links to your campaign page and the commentary stream (
 						<LinkExternal href={'//twitch.tv/monetarydragon'}>twitch.tv/monetarydragon</LinkExternal>
 						).
-					</li>
+					</li> */}
 					<li>Set up donation alerts and overlays.</li>
 					<li>Sign up for racetime.gg.</li>
 					<li>
@@ -58,7 +64,7 @@ function RouteComponent() {
 				<List variant={'ol'}>
 					<li>
 						Keep an eye on the <strong>#upcoming-events</strong> channel in the{' '}
-						<LinkExternal href={'//discord.gg/U7PjxqbRBj2'}>Official FF7 Discord</LinkExternal>.
+						<LinkExternal href={'//discord.ff7speedruns.com'}>Official FF7 Discord</LinkExternal>.
 					</li>
 					<li>Start your stream at least 20 minutes before the event starts.</li>
 					<li>Join the racetime.gg race in LiveSplit and click "I'm ready" when you're ready.</li>
@@ -73,12 +79,13 @@ function RouteComponent() {
 						<LinkExternal href={'//tiltify.com/+ff7-for-st-jude/profile'}>tiltify.com/+ff7-for-st-jude/profile</LinkExternal>
 					</li>
 					<li>
-						<strong>Official FF7 Discord:</strong> <LinkExternal href={'//discord.gg/U7PjxqbRBj2'}>discord.gg/U7PjxqbRBj2</LinkExternal>
+						<strong>Official FF7 Discord:</strong>{' '}
+						<LinkExternal href={'//discord.ff7speedruns.com'}>discord.ff7speedruns.com</LinkExternal>
 					</li>
-					<li>
+					{/* <li>
 						<strong>MonetaryDragon's twitch channel (commentary stream):</strong>{' '}
 						<LinkExternal href={'//twitch.tv/MonetaryDragon'}>twitch.tv/MonetaryDragon</LinkExternal>
-					</li>
+					</li> */}
 					<li>
 						<strong>Racetime:</strong> <LinkExternal href={'//racetime.gg'}>racetime.gg</LinkExternal>
 					</li>
@@ -119,9 +126,8 @@ function RouteComponent() {
 					</li>
 					<li>"Charity details" are already selected, so click "Build your own campaign".</li>
 					<li>
-						Enter your campaign goal. This goal does not affect anything including prizes. It is just to encourage donations to reach
-						goals. You can raise your goal at any time but cannot lower it! It is best to set it to achievable amounts and raise the goal
-						each time it is reached during the event.
+						Enter your campaign goal. See below section on "
+						<ButtonScroll target={'#section-goals--milestones'} label={'Goals & Milestones'} />" for more information.
 					</li>
 					<li>
 						Enter a campaign name. <strong>For example:</strong> "cornfed's {variables.site.name} #10". There will be a series of
@@ -149,7 +155,10 @@ function RouteComponent() {
 							</li>
 						</List>
 					</li>
-					<li>At this point, default "Rewards" can be added.</li>
+					<li>
+						Tiltify will provide default "Rewards". These are optional and it's encouraged to make your own rewards that fit the theme of
+						the game. You can find <ButtonScroll target={'#section-incentives'} label={'examples below'} />.
+					</li>
 					<li>Choose the incentives you want to add. Most campaigns will setup "Rewards" and "Polls".</li>
 					<li>Select "No" for "Allow other fundraisers to support you".</li>
 					<li>
@@ -182,60 +191,69 @@ function RouteComponent() {
 
 				<List>
 					<li>
-						<strong>Rewards</strong> are for a single donation (e.g. $20 to name a character).
+						<strong>Rewards</strong> - Claimable items that can go towards a single donation (e.g. $20 to name a character).
 					</li>
 					<li>
-						<strong>Targets</strong> are group incentives met if one or more people donate enough (e.g. $50 to cast Bahamut on Diamond
-						Weapon).
-					</li>
-					<li>
-						<strong>Polls</strong> have multiple options people can donate to (e.g. Omnislash vs. Counter Attack).
+						<strong>Polls</strong> - Allows your viewers to donate towards an option they believe should win (e.g. Omnislash vs. Counter
+						Attack).
 					</li>
 				</List>
 
 				<p>
-					Any given donation can be applied toward a reward, target,{' '}
+					Any given donation can be applied toward a reward{' '}
 					<strong>
 						<em>AND</em>
 					</strong>{' '}
-					poll. For example if someone donates $20 they may choose a $20 reward to name Cloud, put $20 toward using Omnislash, and the same
-					$20 toward a poll to date Tifa instead of Aerith.
+					poll. For example, if someone donates $20, they may choose a $10 reward to name Cloud and put the remaining $10 toward a poll to
+					date Tifa instead of Aerith.
 				</p>
 
-				<p>Below are examples of incentives.</p>
-
-				<h3>Rewards</h3>
+				<h3>Reward examples</h3>
 
 				<List>
-					<li>Name a character</li>
-					<li>Get an optional character (Vincent and/or Yuffie) and name it</li>
-					<li>Spin your chair</li>
-					<li>Flush the Shinra toilet</li>
-					<li>Eat a Bamboozled jelly bean</li>
+					<li>Name a character.</li>
+					<li>Get an optional character (Vincent and/or Yuffie) and name it.</li>
+					<li>Spin your chair.</li>
+					<li>Flush the Shinra toilet.</li>
+					<li>Eat a Bamboozled jelly bean.</li>
 				</List>
 
-				<h3>Targets</h3>
+				<h3>Poll examples</h3>
 
 				<List>
-					<li>Get a special Gold Saucer date</li>
-					<li>Do a special boss strat</li>
-					<li>Don't do a skip</li>
-					<li>Do part of the game blindfolded</li>
+					<li>Omnislash vs. Counter Attack on Sephiroth.</li>
+					<li>Best girl.</li>
 				</List>
 
-				<h3>Polls</h3>
-
-				<List>
-					<li>Omnislash vs. Counter Attack on Sephiroth</li>
-					<li>Best girl</li>
-				</List>
-
-				<h3>Tips for how to price rewards and targets</h3>
+				<h3>Tips for how to price rewards and polls</h3>
 
 				<List>
 					<li>You can charge more than you think you can.</li>
 					<li>People often have a donation amount in mind before seeing incentives.</li>
 					<li>Don't expect all of your incentives to be redeemed.</li>
+				</List>
+			</Section>
+
+			<Section title={'Goals & Milestones'}>
+				<p>To manage your campaign goal and milestones, log into your campaign dashboard and click the "Setup" tab.</p>
+
+				<List>
+					<li>
+						<strong>Goal</strong> - Your overall campaign goal. This goal does not affect anything including prizes. It is just to
+						encourage donations to reach goals. You can raise your goal at any time, but cannot lower it! It is best to set it to
+						achievable amounts and raise the goal each time it is reached during the event.
+					</li>
+					<li>
+						<strong>Milestones</strong> - Allows you to break down your larger campaign goal into achievable sub-goals. Milestones help
+						you gain momentum as you climb to the top of your fundraising goal.
+					</li>
+				</List>
+
+				<h3>Milestone examples</h3>
+
+				<List>
+					<li>Sing "Melodies of Life" from Final Fantasy IX at $420.69.</li>
+					<li>Shave your head to look like Palmer at $2000.</li>
 				</List>
 			</Section>
 
@@ -259,11 +277,14 @@ function RouteComponent() {
 						<strong>!donate</strong> - Link to your campaign
 					</li>
 					<li>
+						<strong>!race, !event</strong> - Info about St. Jude and the race category
+					</li>
+					{/* <li>
 						<strong>!race, !event</strong> - Info about St. Jude, the race category, and the commentary stream
-					</li>
-					<li>
+					</li> */}
+					{/* <li>
 						<strong>!commentary</strong> - Link to commentary stream
-					</li>
+					</li> */}
 					<li>
 						<strong>!stjude</strong> - Info about St. Jude. I recommend using their official mission statement found{' '}
 						<Link to={'/'}>at the top of the home page</Link>
@@ -275,6 +296,9 @@ function RouteComponent() {
 
 			<Section title={'Commentary Stream'}>
 				<p>
+					<strong>TBD.</strong>
+				</p>
+				{/* <p>
 					MonetaryDragon and AceZephyr host commentary for the event on MonetaryDragon's twitch channel. Typically several other people join
 					the commentary for some or all of the event. They restream up to 8 of the participants' streams at a time typically prioritized
 					either by expected completion time or by platform (prioritizing PSX Disc). The runs being restreamed are at the discretion of the
@@ -287,7 +311,7 @@ function RouteComponent() {
 				<List>
 					<li>Start your stream at least 20 minutes before the event's start time.</li>
 					<li>Make sure 360p is a quality option for your stream. Restart your stream until it is available.</li>
-				</List>
+				</List> */}
 			</Section>
 
 			<Section title={'Promoting the Event'}>

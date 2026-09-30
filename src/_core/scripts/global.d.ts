@@ -49,8 +49,6 @@ type Site = {
 	url: string;
 };
 
-type Sort = ObjectPrimitive | { amounts: Amounts };
-
 type Target = {
 	name: string;
 	src: string;
@@ -94,9 +92,9 @@ type Utils = {
 	handleize: (value: string) => string;
 	isSticky: (element: HTMLElement | null, stickyClass: string) => void;
 	scrollTo: (e?: Events, selector?: string, offset?: number) => void;
-	setActive: (type: string, data: Rewards | Targets) => boolean;
+	setActive: (type: string, data: Polls | Rewards) => boolean;
 	setAttributes: (element: HTMLElement, attributes: ObjectString) => void;
-	sort: (list: Sort[], type: Primitive, field: string, direction: string) => Sort[];
+	sort: <T>(list: T[], getValue: (item: T) => Primitive, direction: 'asc' | 'desc') => T[];
 	truncate: (string: string, limit: number) => string;
 };
 
@@ -129,6 +127,7 @@ type Campaign = {
 	key: string;
 	links: Links[];
 	name: string;
+	number: number;
 };
 
 type CampaignContent = Fetched | (Fetched & Campaign);
@@ -139,9 +138,10 @@ type ContentAction =
 	| { type: 'supporting_loaded'; values: Supporting[] }
 	| { type: 'campaign_loaded'; campaign: Campaign }
 	| { type: 'donations_loaded'; values: Donations[] }
+	| { type: 'milestones_loaded'; values: Milestones[] }
+	| { type: 'polls_loaded'; values: Polls[] }
 	| { type: 'rewards_loaded'; values: Rewards[] }
-	| { type: 'targets_loaded'; values: Targets[] }
-	| { type: 'content_reset'; keys: ('donations' | 'rewards' | 'targets')[] };
+	| { type: 'content_reset'; keys: ('donations' | 'milestones' | 'polls' | 'rewards')[] };
 
 type Content = {
 	totals: {
@@ -151,9 +151,10 @@ type Content = {
 	};
 	campaign: CampaignContent;
 	donations: DonationsContent;
+	milestones: MilestonesContent;
+	polls: PollsContent;
 	rewards: RewardsContent;
 	supporting: SupportingContent;
-	targets: TargetsContent;
 };
 
 type Donations = {
@@ -183,17 +184,78 @@ type DonationsRaw = {
 
 type DonationsRequest = [Donations[], Statuses];
 
-type Rewards = {
+type Milestones = {
 	active: boolean;
 	amounts: Amounts;
 	date: string;
-	description: string;
 	id: string;
 	key: string;
 	links: Links[];
 	milliseconds: number;
 	name: string;
-	remaining: number;
+	username: string;
+};
+
+type MilestonesContent = Fetched & { values: [] | Milestones[] };
+
+type MilestonesRaw = {
+	active: boolean;
+	amount: {
+		currency: string;
+		value: string;
+	};
+	id: string;
+	name: string;
+} & AmountsRaw;
+
+type MilestonesRequest = [Milestones[], Statuses];
+
+type Polls = {
+	active: boolean;
+	amounts: Amounts;
+	date: string;
+	ends: string | undefined;
+	id: string;
+	key: string;
+	links: Links[];
+	milliseconds: number;
+	name: string;
+	username: string;
+};
+
+type PollsContent = Fetched & { values: [] | Polls[] };
+
+type PollsRaw = {
+	active: boolean;
+	amount_raised: {
+		currency: string;
+		value: string;
+	};
+	id: string;
+	ends_at?: string;
+	goal: {
+		currency: string;
+		value: string;
+	};
+	name: string;
+} & AmountsRaw;
+
+type PollsRequest = [Polls[], Statuses];
+
+type Rewards = {
+	active: boolean;
+	amounts: Amounts;
+	date: string;
+	description: string;
+	ends: string | undefined;
+	id: string;
+	key: string;
+	links: Links[];
+	milliseconds: number;
+	name: string;
+	remaining: number | null;
+	starts: string | undefined;
+	upcoming: boolean;
 	username: string;
 };
 
@@ -205,7 +267,8 @@ type RewardsRaw = {
 	description?: string;
 	ends_at?: string;
 	name: string;
-	quantity_remaining?: number;
+	quantity_remaining?: number | null;
+	starts_at?: string;
 } & AmountsRaw;
 
 type RewardsRequest = [Rewards[], Statuses];
@@ -238,31 +301,6 @@ type SupportingRaw = {
 
 type SupportingRequest = [Supporting[], Statuses];
 
-type Targets = {
-	active: boolean;
-	amounts: Amounts;
-	date: string;
-	description: string;
-	id: string;
-	key: string;
-	links: Links[];
-	milliseconds: number;
-	name: string;
-	username: string;
-};
-
-type TargetsContent = Fetched & { values: [] | Targets[] };
-
-type TargetsRaw = {
-	active: boolean;
-	id: string;
-	description?: string;
-	ends_at?: string;
-	name: string;
-} & AmountsRaw;
-
-type TargetsRequest = [Targets[], Statuses];
-
 /* Request type definitions */
 type Fetched = {
 	fetched: boolean;
@@ -277,9 +315,10 @@ type RequestError = Error & {
 type Requests = {
 	campaign: (context: QueryFunctionContext) => Promise<Campaign>;
 	donations: (context: QueryFunctionContext) => Promise<Donations[]>;
+	milestones: (context: QueryFunctionContext) => Promise<Milestones[]>;
+	polls: (context: QueryFunctionContext) => Promise<Polls[]>;
 	rewards: (context: QueryFunctionContext) => Promise<Rewards[]>;
 	supporting: (context: QueryFunctionContext) => Promise<Supporting[]>;
-	targets: (context: QueryFunctionContext) => Promise<Targets[]>;
 };
 
 type ResponseError = {
@@ -314,8 +353,6 @@ declare global {
 
 	type SiteType = Site;
 
-	type SortType = Sort;
-
 	type TargetType = Target;
 
 	type ThemeType = Theme;
@@ -341,6 +378,18 @@ declare global {
 
 	type DonationsRawType = DonationsRaw;
 
+	type MilestonesType = Milestones;
+
+	type MilestonesRequestType = MilestonesRequest;
+
+	type MilestonesRawType = MilestonesRaw;
+
+	type PollsType = Polls;
+
+	type PollsRequestType = PollsRequest;
+
+	type PollsRawType = PollsRaw;
+
 	type RewardsType = Rewards;
 
 	type RewardsRequestType = RewardsRequest;
@@ -354,12 +403,6 @@ declare global {
 	type SupportingRequestType = SupportingRequest;
 
 	type SupportingRawType = SupportingRaw;
-
-	type TargetsType = Targets;
-
-	type TargetsRequestType = TargetsRequest;
-
-	type TargetsRawType = TargetsRaw;
 
 	// Declare global request types
 	type QueryKeyType = QueryKey;

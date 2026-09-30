@@ -60,7 +60,7 @@ export const useReactQuery = (key: string, content: ContentType, current: Campai
 
 		// Re-sort supporting data
 		const sortedData =
-			supportingData && supportingData.length !== 0 ? utils.sort(data as SortType[], 'integer', 'total_amount_raised', 'desc') : [];
+			supportingData && supportingData.length !== 0 ? utils.sort(supportingData, (item) => item.amounts.total_amount_raised, 'desc') : [];
 
 		// Set fetched data after sorting
 		fetchedData = sortedData;
@@ -90,7 +90,7 @@ export const useReactQueries = (key: string, content: ContentType) => {
 		})),
 		combine: (results) => {
 			return {
-				data: results.flatMap((result) => (result.data ? (result.data as []) : [])),
+				data: results.flatMap((result) => (result.data ? (result.data as (MilestonesType | PollsType | RewardsType)[]) : [])),
 				isPending: results.map((result) => result.isPending),
 				isSuccess: results.map((result) => result.isSuccess),
 				isFetched: results.map((result) => result.isFetched),
@@ -110,8 +110,9 @@ export const useReactQueries = (key: string, content: ContentType) => {
 	const waiting = !supporting.fetched;
 	const noQueries = queryValues.length === 0;
 
-	// Re-sort merged data
-	const sortedData = data && data.length !== 0 ? utils.sort(data, 'integer', 'milliseconds', 'asc') : [];
+	// Re-sort merged data by end date (milestones by amount instead, since they don't have an end date)
+	const sortedData =
+		data && data.length !== 0 ? utils.sort(data, (item) => (key == 'milestones' ? item.amounts.amount : item.milliseconds), 'asc') : [];
 	return [
 		sortedData,
 		{

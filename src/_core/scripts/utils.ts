@@ -99,22 +99,26 @@ export const utils: UtilsType = {
 			anchorElement?.focus({ preventScroll: true });
 		}
 	},
-	setActive: (type: string, data: RewardsType | TargetsType) => {
-		// Get time for checking if content has expired
-		const currentDate = new Date(Date.now());
-		const currentMilliseconds = currentDate.getTime();
+	setActive: (type: string, data: PollsType | RewardsType) => {
+		// Get time for checking if content has started or ended
+		const currentMilliseconds = Date.now();
 
-		// Variables for checking if content should be returned
-		const isExpired = data.milliseconds < currentMilliseconds;
+		// Content without an end date doesn't expire, it stays active until it's turned off
+		const hasEnded = data.ends ? new Date(data.ends).getTime() < currentMilliseconds : false;
 
 		// Determine if content is active
 		let contentActive = true;
-		if (type == 'rewards') {
+		if (type == 'polls') {
+			// Polls close when they end, are turned off, or reach their goal (polls without a goal have a goal of 0)
+			const { amount_raised, goal } = data.amounts;
+			contentActive = data.active && !hasEnded && (goal == 0 || amount_raised < goal);
+		} else if (type == 'rewards') {
+			// Rewards are active once they start, until they're turned off, sell out, or end
+			// Note: rewards without a start date are available right away, and rewards without a quantity (remaining is null) are unlimited
 			const rewardsData = data as RewardsType;
-			contentActive = !isExpired && rewardsData.remaining > 0 && rewardsData.active;
-		} else if (type == 'targets') {
-			const targetsData = data;
-			contentActive = !isExpired && targetsData.active && targetsData.amounts.amount_raised < targetsData.amounts.amount;
+			const hasStarted = rewardsData.starts ? new Date(rewardsData.starts).getTime() <= currentMilliseconds : true;
+			const hasQuantity = rewardsData.remaining === null || rewardsData.remaining > 0;
+			contentActive = rewardsData.active && hasStarted && !hasEnded && hasQuantity;
 		}
 
 		return contentActive;
@@ -125,42 +129,16 @@ export const utils: UtilsType = {
 			element.setAttribute(attribute, attributes[attribute]);
 		}
 	},
-	sort: (list: SortType[], type: PrimitiveType, field: string, direction: string) => {
-		// Sort values in a list based on type, field, and direction
+	sort: <T>(list: T[], getValue: (item: T) => PrimitiveType, direction: 'asc' | 'desc') => {
+		// Sort a list by the value getValue returns for each item, e.g. (campaign) => campaign.number
+		// Note: numbers sort numerically, strings and booleans sort alphabetically
 		return [...list].sort((a, b) => {
-			let sortedValue = 0;
+			const valueA = getValue(a);
+			const valueB = getValue(b);
+			const sortedValue =
+				typeof valueA == 'number' && typeof valueB == 'number' ? valueA - valueB : String(valueA).localeCompare(String(valueB));
 
-			if (type == 'string' || type == 'boolean') {
-				const objectA = a as ObjectPrimitiveType;
-				const objectB = b as ObjectPrimitiveType;
-
-				// Make sure booleans are strings
-				const sortValueA = String(objectA[field]);
-				const sortValueB = String(objectB[field]);
-
-				// Sorting method for strings
-				if (direction == 'asc') {
-					sortedValue = sortValueA.localeCompare(sortValueB);
-				} else if (direction == 'desc') {
-					sortedValue = sortValueB.localeCompare(sortValueA);
-				}
-			} else if (type == 'integer') {
-				const amountsA = a.amounts as AmountsType;
-				const amountsB = b.amounts as AmountsType;
-
-				// Make sure values are numbers
-				const sortValueA = Number(amountsA[field as keyof AmountsType]);
-				const sortValueB = Number(amountsB[field as keyof AmountsType]);
-
-				// Sorting method for numbers
-				if (direction == 'asc') {
-					sortedValue = sortValueA - sortValueB;
-				} else if (direction == 'desc') {
-					sortedValue = sortValueB - sortValueA;
-				}
-			}
-
-			return sortedValue;
+			return direction == 'asc' ? sortedValue : -sortedValue;
 		});
 	},
 	truncate: (string: string, limit: number) => {

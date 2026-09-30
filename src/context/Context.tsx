@@ -31,6 +31,7 @@ const queryConfig: DefaultOptions = {
 		},
 	},
 };
+
 const queryClient = new QueryClient({
 	defaultOptions: queryConfig,
 });

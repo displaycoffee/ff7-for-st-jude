@@ -93,24 +93,5 @@ export const theme: ThemeType = {
 				paragraphs: 5,
 			},
 		},
-		targets: {
-			id: 'targets',
-			content: {
-				header: 'Targets ending soon',
-				name: 'Target',
-			},
-			sort: {
-				field: 'milliseconds',
-				direction: 'asc',
-			},
-			layout: {
-				columns: 'third',
-				top: true,
-			},
-			skeleton: {
-				columns: 12,
-				paragraphs: 4,
-			},
-		},
 	},
 };

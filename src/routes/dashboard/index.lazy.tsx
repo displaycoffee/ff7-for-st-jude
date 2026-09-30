@@ -22,7 +22,7 @@ const title = 'Dashboard';
 /* Static variables */
 const truncateLimit = 75;
 const scrollToOffset = 100;
-const refreshableTypes = ['donations', 'rewards', 'targets'] as const;
+const refreshableTypes = ['donations', 'milestones', 'polls', 'rewards'] as const;
 
 export const Route = createLazyFileRoute('/dashboard/')({
 	component: RouteComponent,
@@ -30,7 +30,7 @@ export const Route = createLazyFileRoute('/dashboard/')({
 
 function RouteComponent() {
 	const { campaigns, utils, variables, queryClient, content, dispatch } = useAppContext();
-	const { supporting, campaign, donations, rewards, targets } = content;
+	const { supporting, campaign, donations, milestones, polls, rewards } = content;
 	const { current } = campaigns;
 
 	// Use custom hook to get supporting campaigns
@@ -43,13 +43,17 @@ function RouteComponent() {
 	const [donationsData, donationsStatus] = useReactQuery('donations', content, current) as DonationsRequestType;
 	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched;
 
+	// Use custom hook to get milestones
+	const [milestonesData, milestonesStatus] = useReactQueries('milestones', content) as MilestonesRequestType;
+	const milestonesComplete = (!milestonesStatus.pending && milestonesStatus.success) || milestonesStatus.fetched;
+
+	// Use custom hook to get polls
+	const [pollsData, pollsStatus] = useReactQueries('polls', content) as PollsRequestType;
+	const pollsComplete = (!pollsStatus.pending && pollsStatus.success) || pollsStatus.fetched;
+
 	// Use custom hook to get rewards
 	const [rewardsData, rewardsStatus] = useReactQueries('rewards', content) as RewardsRequestType;
 	const rewardsComplete = (!rewardsStatus.pending && rewardsStatus.success) || rewardsStatus.fetched;
-
-	// Use custom hook to get targets
-	const [targetsData, targetsStatus] = useReactQueries('targets', content) as TargetsRequestType;
-	const targetsComplete = (!targetsStatus.pending && targetsStatus.success) || targetsStatus.fetched;
 
 	useEffect(() => {
 		// checkArray(data) would require a non-empty result, but a fresh campaign with no supporting
@@ -58,15 +62,17 @@ function RouteComponent() {
 		const supportingUpdated = !supporting.fetched && supportingStatus.success && Array.isArray(supportingData);
 		const campaignUpdated = !campaign.fetched && campaignData && utils.checkArray(Object.keys(campaignData));
 		const donationsUpdated = !donations.fetched && donationsStatus.success && Array.isArray(donationsData);
+		const milestonesUpdated = !milestones.fetched && milestonesStatus.success && Array.isArray(milestonesData);
+		const pollsUpdated = !polls.fetched && pollsStatus.success && Array.isArray(pollsData);
 		const rewardsUpdated = !rewards.fetched && rewardsStatus.success && Array.isArray(rewardsData);
-		const targetsUpdated = !targets.fetched && targetsStatus.success && Array.isArray(targetsData);
 
-		// Donations, rewards and targets are only saved by the reducer once supporting campaigns and the campaign are available
+		// Donations, milestones, polls and rewards are only saved by the reducer once supporting campaigns and the campaign are available
 		if (supportingUpdated) dispatch({ type: 'supporting_loaded', values: supportingData });
 		if (campaignUpdated) dispatch({ type: 'campaign_loaded', campaign: campaignData });
 		if (donationsUpdated) dispatch({ type: 'donations_loaded', values: donationsData });
+		if (milestonesUpdated) dispatch({ type: 'milestones_loaded', values: milestonesData });
+		if (pollsUpdated) dispatch({ type: 'polls_loaded', values: pollsData });
 		if (rewardsUpdated) dispatch({ type: 'rewards_loaded', values: rewardsData });
-		if (targetsUpdated) dispatch({ type: 'targets_loaded', values: targetsData });
 	}, [
 		utils,
 		dispatch,
@@ -78,12 +84,15 @@ function RouteComponent() {
 		donationsData,
 		donationsStatus.success,
 		donations.fetched,
+		milestonesData,
+		milestones.fetched,
+		milestonesStatus.success,
+		pollsData,
+		polls.fetched,
+		pollsStatus.success,
 		rewardsData,
 		rewards.fetched,
 		rewardsStatus.success,
-		targetsData,
-		targets.fetched,
-		targetsStatus.success,
 	]);
 
 	return (
@@ -98,11 +107,15 @@ function RouteComponent() {
 						</li>
 
 						<li className="floating-list-item">
-							<ButtonScroll offset={scrollToOffset} target={'#section-rewards'} label="Rewards" />
+							<ButtonScroll offset={scrollToOffset} target={'#section-milestones'} label="Milestones" />
 						</li>
 
 						<li className="floating-list-item">
-							<ButtonScroll offset={scrollToOffset} target={'#section-targets'} label="Targets" />
+							<ButtonScroll offset={scrollToOffset} target={'#section-polls'} label="Polls" />
+						</li>
+
+						<li className="floating-list-item">
+							<ButtonScroll offset={scrollToOffset} target={'#section-rewards'} label="Rewards" />
 						</li>
 
 						<li className="floating-list-item">
@@ -128,6 +141,98 @@ function RouteComponent() {
 			</nav>
 
 			<DonationsSection donations={donations} donationsComplete={donationsComplete} />
+
+			<ErrorBoundary message={<p>Something went wrong loading milestones.</p>}>
+				<Section title={'Milestones'} hasRow={true}>
+					<p className="sr-only" role="status">
+						{!milestonesComplete ? 'Loading milestones...' : utils.checkArray(milestones.values) ? 'Milestones loaded.' : ''}
+					</p>
+
+					<div className="row row-auto row-spacing-20 row-wrap">
+						{milestones.fetched && utils.checkArray(milestones.values)
+							? milestones.values.map((milestone) => {
+									const { amount } = milestone.amounts;
+
+									return (
+										<div className="column column-width-33" key={milestone.key}>
+											<div className={`gradient-section${milestone.active ? '' : ' inactive'}`}>
+												<SectionParagraph label={'Milestone'} content={milestone.name} />
+
+												{milestone.active ? (
+													<>
+														<SectionParagraph label={'Goal'} content={utils.formatCurrency(amount)} />
+
+														<SectionParagraph label={'Ends'} content={milestone.date} />
+
+														<SectionLinks links={milestone.links} />
+													</>
+												) : (
+													<p className="no-longer-active">
+														<em>This milestone is no longer active.</em>
+													</p>
+												)}
+											</div>
+										</div>
+									);
+								})
+							: null}
+
+						{!milestonesComplete ? (
+							<Skeleton columns={6} perRow={3} paragraphs={6} />
+						) : milestones.values.length === 0 ? (
+							<SectionNotFound type={'milestones'} />
+						) : null}
+					</div>
+				</Section>
+			</ErrorBoundary>
+
+			<ErrorBoundary message={<p>Something went wrong loading polls.</p>}>
+				<Section title={'Polls'} hasRow={true}>
+					<p className="sr-only" role="status">
+						{!pollsComplete ? 'Loading polls...' : utils.checkArray(polls.values) ? 'Polls loaded.' : ''}
+					</p>
+
+					<div className="row row-auto row-spacing-20 row-wrap">
+						{polls.fetched && utils.checkArray(polls.values)
+							? polls.values.map((poll) => {
+									const { amount_raised, goal } = poll.amounts;
+									const ended = !poll.date.includes(variables.placeholders.endDateReadable);
+
+									return (
+										<div className="column column-width-33" key={poll.key}>
+											<div className={`gradient-section${poll.active ? '' : ' inactive'}`}>
+												<SectionParagraph label={'Poll'} content={poll.name} />
+
+												<SectionParagraph
+													label={'Raised'}
+													content={`${utils.formatCurrency(amount_raised)}${goal > 0 ? ` out of ${utils.formatCurrency(goal)}` : ''}`}
+												/>
+
+												{poll.active ? (
+													<>
+														{!ended ? null : <SectionParagraph label={'Ends'} content={poll.date} />}
+
+														<SectionLinks links={poll.links} />
+													</>
+												) : (
+													<p className="no-longer-active">
+														<em>This poll is no longer active.</em>
+													</p>
+												)}
+											</div>
+										</div>
+									);
+								})
+							: null}
+
+						{!pollsComplete ? (
+							<Skeleton columns={6} perRow={3} paragraphs={5} />
+						) : polls.values.length === 0 ? (
+							<SectionNotFound type={'polls'} />
+						) : null}
+					</div>
+				</Section>
+			</ErrorBoundary>
 
 			<ErrorBoundary message={<p>Something went wrong loading rewards.</p>}>
 				<Section title={'Rewards'} hasRow={true}>
@@ -158,7 +263,11 @@ function RouteComponent() {
 													</>
 												) : (
 													<p className="no-longer-active">
-														<em>This reward from "{reward.username}" is no longer active.</em>
+														<em>
+															{reward.upcoming && reward.starts
+																? `This reward starts ${utils.getDate(reward.starts)}.`
+																: `This reward is no longer active.`}
+														</em>
 													</p>
 												)}
 											</div>
@@ -171,56 +280,6 @@ function RouteComponent() {
 							<Skeleton columns={6} perRow={3} paragraphs={6} />
 						) : rewards.values.length === 0 ? (
 							<SectionNotFound type={'rewards'} />
-						) : null}
-					</div>
-				</Section>
-			</ErrorBoundary>
-
-			<ErrorBoundary message={<p>Something went wrong loading targets.</p>}>
-				<Section title={'Targets'} hasRow={true}>
-					<p className="sr-only" role="status">
-						{!targetsComplete ? 'Loading targets...' : utils.checkArray(targets.values) ? 'Targets loaded.' : ''}
-					</p>
-
-					<div className="row row-auto row-spacing-20 row-wrap">
-						{targets.fetched && utils.checkArray(targets.values)
-							? targets.values.map((target) => {
-									const { amount_raised, amount } = target.amounts;
-									const ended = !target.date.includes(variables.placeholders.endDateReadable);
-
-									return (
-										<div className="column column-width-33" key={target.key}>
-											<div className={`gradient-section${target.active ? '' : ' inactive'}`}>
-												<SectionParagraph label={'Target'} content={target.name} />
-
-												<SectionParagraph label={'Description'} content={utils.truncate(target.description, truncateLimit)} />
-
-												<SectionParagraph
-													label={'Raised'}
-													content={`${utils.formatCurrency(amount_raised)} out of ${utils.formatCurrency(amount)}`}
-												/>
-
-												{target.active ? (
-													<>
-														{!ended ? null : <SectionParagraph label={'Ends'} content={target.date} />}
-
-														<SectionLinks links={target.links} />
-													</>
-												) : (
-													<p className="no-longer-active">
-														<em>This target from "{target.username}" is no longer active.</em>
-													</p>
-												)}
-											</div>
-										</div>
-									);
-								})
-							: null}
-
-						{!targetsComplete ? (
-							<Skeleton columns={6} perRow={3} paragraphs={5} />
-						) : targets.values.length === 0 ? (
-							<SectionNotFound type={'targets'} />
 						) : null}
 					</div>
 				</Section>

@@ -39,6 +39,7 @@ const buildCampaign = (number: number, name: string, date: string, amount: numbe
 		id: campaignId,
 		key: `campaign-${campaignId.split('-')[0]}-${number}`,
 		name: name,
+		number: number,
 		date: date,
 		campaign: newUrl,
 		amounts: utils.getAmounts({ total_amount_raised: { value: amount } }),

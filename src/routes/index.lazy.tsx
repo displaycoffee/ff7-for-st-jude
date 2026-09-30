@@ -3,14 +3,24 @@ import './index/styles/index.scss';
 
 /* Packages */
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 /* Scripts */
+import type { PreviousSortType, PreviousSortOptionsType } from './index/scripts/index-types';
 import { useReactQuery } from '../_core/scripts/hooks';
 import { useAppContext } from '../context/scripts/context-hooks';
 
 /* Components */
 import { LinkExternal, Section, SectionNotFound, SectionParagraph, SectionLinks, Skeleton } from '../components/blocks/Blocks';
+import { Button } from '../components/forms/Forms';
+import { Icon } from '../components/icons/Icons';
+
+/* Ways to sort previous campaigns */
+/* Note: campaigns sort by number since the id is a random uuid */
+const previousSortOptions: PreviousSortOptionsType = [
+	{ by: 'number', label: 'Campaign' },
+	{ by: 'amount', label: 'Amount' },
+];
 
 export const Route = createLazyFileRoute('/')({
 	component: RouteComponent,
@@ -20,6 +30,22 @@ function RouteComponent() {
 	const { content, dispatch, campaigns, utils, variables } = useAppContext();
 	const { supporting, campaign, totals } = content;
 	const { current, previous } = campaigns;
+
+	// Sort previous campaigns, newest first by default (the order they're listed in)
+	const [previousSort, setPreviousSort] = useState<PreviousSortType>({ by: 'number', direction: 'desc' });
+	const sortedPrevious = utils.sort(
+		previous,
+		(item) => (previousSort.by == 'number' ? item.number : item.amounts.total_amount_raised),
+		previousSort.direction,
+	);
+
+	// Clicking the active sort flips its direction, clicking another sort switches to it (highest first)
+	const handlePreviousSort = (by: PreviousSortType['by']) => {
+		setPreviousSort((currentSort) => ({
+			by: by,
+			direction: currentSort.by == by && currentSort.direction == 'desc' ? 'asc' : 'desc',
+		}));
+	};
 
 	// Use custom hook to get supporting campaigns
 	const [supportingData, supportingStatus] = useReactQuery('supporting', content, current) as SupportingRequestType;
@@ -40,7 +66,6 @@ function RouteComponent() {
 	return (
 		<>
 			<Section title={'Information'} hasScroll={false}>
-				{' '}
 				<p>
 					Welcome to the {variables.site.name} speedrun event! Since December 2020, these events have been held twice per year, typically
 					the last weekend of June and the 2nd weekend of December. The event is part of{' '}
@@ -122,8 +147,35 @@ function RouteComponent() {
 			</Section>
 
 			<Section title={'Previous Campaigns'} hasRow={true} hasScroll={false}>
+				<div className="previous-sort">
+					<span className="previous-sort-label" id="previous-sort-label">
+						Sort by:
+					</span>
+
+					{previousSortOptions.map((option) => {
+						const isActive = previousSort.by == option.by;
+						const direction = previousSort.direction == 'asc' ? 'ascending' : 'descending';
+
+						return (
+							<Button
+								key={option.by}
+								className={`button-${direction}${isActive ? ' button-active' : ''}`}
+								label={isActive ? `${option.label}, ${direction}` : option.label}
+								hideLabel={true}
+								variant={'link'}
+								aria-describedby="previous-sort-label"
+								aria-pressed={isActive}
+								onClick={() => handlePreviousSort(option.by)}
+							>
+								<span className="button-label">{option.label}</span>
+								<Icon id={'angle-down'} />
+							</Button>
+						);
+					})}
+				</div>
+
 				<div className="row row-auto row-spacing-20 row-wrap">
-					{previous.map((campaign) => {
+					{sortedPrevious.map((campaign) => {
 						const { total_amount_raised } = campaign.amounts;
 
 						return (

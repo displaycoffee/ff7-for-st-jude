@@ -28,11 +28,15 @@ const initialState: ContentType = {
 		fetched: false,
 		values: [],
 	},
-	rewards: {
+	milestones: {
 		fetched: false,
 		values: [],
 	},
-	targets: {
+	polls: {
+		fetched: false,
+		values: [],
+	},
+	rewards: {
 		fetched: false,
 		values: [],
 	},
@@ -43,7 +47,7 @@ export const content = {
 	reducer: (state: ContentType, action: ContentActionType): ContentType => {
 		// Every change to the fetched content goes through here, so all routes share the same rules
 		return produce(state, (draft) => {
-			// Donations, rewards and targets are only saved once supporting campaigns and the campaign are available
+			// Donations, milestones, polls, and rewards are only saved once supporting campaigns and the campaign are available
 			const isReady = () => draft.supporting.fetched && draft.campaign.fetched;
 
 			switch (action.type) {
@@ -66,17 +70,24 @@ export const content = {
 					}
 					break;
 				}
+				case 'milestones_loaded': {
+					if (isReady()) {
+						draft.milestones.fetched = true;
+						draft.milestones.values = action.values;
+					}
+					break;
+				}
+				case 'polls_loaded': {
+					if (isReady()) {
+						draft.polls.fetched = true;
+						draft.polls.values = action.values;
+					}
+					break;
+				}
 				case 'rewards_loaded': {
 					if (isReady()) {
 						draft.rewards.fetched = true;
 						draft.rewards.values = action.values;
-					}
-					break;
-				}
-				case 'targets_loaded': {
-					if (isReady()) {
-						draft.targets.fetched = true;
-						draft.targets.values = action.values;
 					}
 					break;
 				}
