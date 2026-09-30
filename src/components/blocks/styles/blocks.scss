@@ -1,26 +1,25 @@
-// Use utils and theme variables
-@use '../../../_config/styles/utils/_functions';
-@use '../../../_config/styles/utils/_mixins';
-@use '../../../_config/styles/theme/_theme';
+// Local Sass modules
+@use '@displaycoffee/styles/functions';
+@use '@displaycoffee/styles/mixins';
+@use '../../../_core/styles/_theme';
 
 //// BLOCKS - LIST
 //// --------------------------------------------------------------------------
 
 	// Configuration
 	
-	$blocks-list-spacing: theme.$spacing-x4; // spacing for list elements
+	$blocks-list-spacing: theme.$spacing-x6; // spacing for list elements
 
 	// Style block
 
 	.list-ordered, .list-unordered, .list-unstyled {
-		list-style: none;
 		padding: 0;
 	}
 	.list-ordered, .list-unordered {
 		margin: 0 0 theme.$spacing-x4 0;
 		& > li {
 			position: relative;
-			margin: 0 0 calc($blocks-list-spacing / 4) 0;
+			margin: 0 0 calc($blocks-list-spacing / 6) 0;
 			padding: 0 0 0 $blocks-list-spacing;
 			&:before {
 				display: block;
@@ -34,7 +33,7 @@
 	.list-ordered {
 		counter-reset: section;
 		& > li {
-			padding-left: theme.$spacing-x10;
+			padding-left: calc($blocks-list-spacing + 20px);
 			&:before {
 				top: 0;
 				counter-increment: section;
@@ -44,9 +43,9 @@
 	}
 	.list-unordered {
 		& > li:before {
-			top: 4px;
+			top: 5px;
 			content: '\0025AA';
-			font-size: functions.em(16px, rem);
+			font-size: 20px;
 			line-height: 1;
 		}
 	}
@@ -101,7 +100,7 @@
 			opacity: 1;
 			@include mixins.transition(opacity 0.3s ease);
 			p, .p {
-				background-color: theme.$color-04;
+				background-color: theme.$color-skeleton;
 				width: 80%;
 				opacity: 0.8;
 				&:nth-child(2) {

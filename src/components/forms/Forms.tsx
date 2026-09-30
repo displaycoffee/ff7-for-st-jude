@@ -1,11 +1,8 @@
 /* Styles */
 import './styles/forms.scss';
 
-/* Packages */
-import { createContext } from 'react';
-
 /* Scripts */
-import {
+import type {
 	ButtonProps,
 	ButtonScrollProps,
 	DescriptionProps,
@@ -20,8 +17,8 @@ import {
 import { forms } from './scripts/forms';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
-/* Shares the enclosing FormField's id so grouped radios share a name without a Choice prop */
-const ChoiceGroupContext = createContext<string | undefined>(undefined);
+/* Components */
+import { Alert } from '../alert/Alert';
 
 export const Button = (props: ButtonProps) => {
 	const { children, className: propClassName, hideLabel = false, label, type = 'button', variant = 'primary', ...rest } = props;
@@ -41,7 +38,7 @@ export const ButtonScroll = (props: ButtonScrollProps) => {
 	const { offset = 0, target, ...rest } = props;
 	const { utils } = useAppContext();
 
-	return <Button variant="link" onClick={(e) => utils.scrollTo(e, target, offset)} {...rest} />;
+	return <Button variant={'link'} onClick={(e) => utils.scrollTo(e, target, offset)} {...rest} />;
 };
 
 export const Form = (props: FormProps) => {
@@ -63,9 +60,8 @@ export const FormActions = (props: FormActionsProps) => {
 };
 
 export const FormField = (props: FormFieldProps) => {
-	const { children, hideLabel, id, label, required } = props;
+	const { children, hideLabel, id, isChoice = false, label, required } = props;
 	const className = forms.build.className(`form-field`, props?.className);
-	const isChoice = false;
 
 	// Create elements for form field
 	const Tag = isChoice ? 'fieldset' : 'div';
@@ -94,8 +90,8 @@ export const FormField = (props: FormFieldProps) => {
 				</div>
 			)}
 
-			<div className="form-field-control">
-				{isChoice ? <ChoiceGroupContext.Provider value={id}>{children}</ChoiceGroupContext.Provider> : children}
+			<div className="form-field-control" data-group-id={isChoice ? id : null}>
+				{children}
 			</div>
 		</Tag>
 	);
@@ -137,9 +133,9 @@ const ErrorField = (props: ErrorFieldProps) => {
 	const { error, id } = props;
 
 	return error ? (
-		<div id={id} className="form-error" role="alert">
+		<Alert id={id} type={'warning'}>
 			{error}
-		</div>
+		</Alert>
 	) : null;
 };
 

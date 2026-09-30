@@ -1,0 +1,126 @@
+// Local Sass modules
+@use '@displaycoffee/styles/functions';
+@use '@displaycoffee/styles/mixins';
+@use '../../../_core/styles/_theme';
+
+//// HOME
+//// --------------------------------------------------------------------------
+
+	// Style block
+	
+	.mission-statement {
+		text-align: center;
+		font-style: italic;
+	}
+	.level-bar-raised strong, .level-bar-raised .level-bar, .level-bar .level-bar-label, .level-bar .level-bar-outof {
+		min-width: 1px;
+	}
+	.level-bar-raised strong, .level-bar .level-bar-label {
+		@include mixins.flex(0 1 auto);
+		padding: 0 theme.$spacing-x2 0 0;
+	}
+	.level-bar-raised .level-bar, .level-bar .level-bar-outof {
+		@include mixins.flex(1 1 0%);
+	}
+	.level-bar {
+		.level-bar-outof {		
+			@include mixins.sizing(100%, 20px);
+			max-width: 600px;
+			border: 2px solid theme.$color-border;
+			background-color: theme.$color-level-bar-outer-x1;
+			background-image: linear-gradient(theme.$color-level-bar-outer-x3 0%, theme.$color-level-bar-outer-x2 50%, theme.$color-level-bar-outer-x1 75%);
+			position: relative;
+			overflow: hidden;
+			.level-bar-progress, .level-bar-shadow {
+				@include mixins.sizing(100%, 100%);
+			}
+			.level-bar-progress {
+				background-color: theme.$color-level-bar-inner-x1;
+				background-image: linear-gradient(theme.$color-level-bar-inner-x3 0%, theme.$color-level-bar-inner-x2 50%, theme.$color-level-bar-inner-x1 75%);
+			}
+			.level-bar-shadow {
+				border: 2px solid theme.$color-level-bar-border;
+				border-top-width: 3px;
+				border-bottom-color: theme.$color-level-bar-border-bottom;
+				@include mixins.position($type: absolute, $left: 0, $top: 0);
+			}
+		}
+	}
+	.section-supporting-campaigns {
+		.row {
+			.column {
+				&:nth-child(-n+3) {
+					.section-links {
+						position: relative;
+						padding: 0 0 0 70px;
+						min-height: 50px;
+						&:before {
+							content: '';
+							display: block;
+							@include mixins.sizing(50px, 50px);
+							@include mixins.position($type: absolute, $top: 5px, $left: 0);
+							background-repeat: no-repeat;
+							background-position: center center;
+							background-size: contain;
+						}
+					}
+				}
+				&:nth-child(1) .section-links:before {
+					background-image: url('/assets/images/theme/chocobo-01.svg');
+				}
+				&:nth-child(2) .section-links:before {
+					background-image: url('/assets/images/theme/chocobo-02.svg');
+				}
+				&:nth-child(3) .section-links:before {
+					background-image: url('/assets/images/theme/chocobo-03.svg');
+				}			
+			}
+		}
+	}
+	.section-previous-campaigns {
+		position: relative;
+		.previous-sort {
+			@include mixins.flex-layout((flex-flow: row wrap, align-items: center));
+			@include mixins.gap(theme.$spacing-x4);
+			margin: 0 0 theme.$spacing-x6 0;
+			.button-unstyled {
+				@include mixins.gap(theme.$spacing-x2);
+				&.button-ascending {
+					.icon {
+						@include mixins.transform(rotate(180deg));
+					}
+				}
+				&:not(.button-active) {
+					.button-label {
+						text-decoration: none;
+					}
+					.icon {
+						opacity: 0;
+						visibility: hidden;
+					}
+				}
+				.icon {
+					@include mixins.position($type: relative, $top: -1px);
+					@include mixins.transition(transform 0.3s ease);
+				}
+			}
+		}
+	}
+	@include mixins.respond(theme.$breakpoint-md) {
+		.level-bar {
+			@include mixins.flex-layout((flex-flow: row nowrap, align-items: center));
+			.level-bar-outof {
+				@include mixins.position($type: relative, $top: -3px);
+				width: auto;
+			}
+		}
+	}
+	@include mixins.respond(theme.$breakpoint-lg - 108) {
+		.section-previous-campaigns {
+			.previous-sort {
+				@include mixins.position($type: absolute, $top: 6px, $right: 0);
+			}
+		}
+	}
+
+	

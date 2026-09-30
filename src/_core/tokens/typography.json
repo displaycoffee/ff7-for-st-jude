@@ -1,0 +1,53 @@
+{
+	"fallback": {
+		"name": {
+			"body": { "$value": "Fallback", "$extensions": { "sass": false } },
+			"header": { "$value": "Fallback Header", "$extensions": { "sass": false } }
+		},
+		"size": {
+			"body": { "$value": "135%", "$extensions": { "sass": false } },
+			"header": { "$value": "135%", "$extensions": { "sass": false } }
+		},
+		"src": {
+			"body": { "$value": "local('Courier New')", "$extensions": { "sass": false } },
+			"header": { "$value": "local('Courier New Bold'), local('Courier New')", "$extensions": { "sass": false } }
+		}
+	},
+	"font": {
+		"family": {
+			"$type": "fontFamily",
+			"body": { "$value": "'{font.name.body}', '{fallback.name.body}', monospace" },
+			"header": { "$value": "'{font.name.header}', '{fallback.name.header}', monospace" }
+		},
+		"name": {
+			"body": { "$value": "Dogica Pixel", "$extensions": { "sass": false } },
+			"header": { "$value": "Dogica Pixel Bold", "$extensions": { "sass": false } }
+		},
+		"path": {
+			"body": { "$value": "/assets/fonts/dogica-pixel", "$extensions": { "sass": false } },
+			"header": { "$value": "/assets/fonts/dogica-pixel", "$extensions": { "sass": false } }
+		},
+		"size": {
+			"$type": "dimension",
+			"base": { "$value": "16px" },
+			"global": { "$value": "14px" }
+		},
+		"src": {
+			"body": { "$value": "{font.path.body}.woff2", "$extensions": { "sass": false } },
+			"header": { "$value": "{font.path.header}-bold.woff2", "$extensions": { "sass": false } }
+		},
+		"style": {
+			"body": { "$value": "italic" },
+			"header": { "$value": false }
+		},
+		"transform": {
+			"body": { "$value": false },
+			"header": { "$value": false }
+		},
+		"weight": {
+			"$type": "fontWeight",
+			"body": { "$value": 700 },
+			"header": { "$value": 400 }
+		}
+	}
+}

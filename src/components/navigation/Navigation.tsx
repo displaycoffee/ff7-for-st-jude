@@ -2,51 +2,49 @@
 import './styles/navigation.scss';
 
 /* Packages */
-import { createRef, Fragment, RefObject, Suspense, useEffect } from 'react';
-import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Fragment, useEffect, useRef } from 'react';
+import { Link } from '@tanstack/react-router';
 
 /* Scripts */
-import { useAppContext } from '../../context/scripts/context-hooks';
-import { NavigationComponentProps, NavigationListItemProps, NavigationRoutesProps } from './scripts/navigation-types';
+import type { NavigationComponentProps, NavigationItemComponentProps } from './scripts/navigation-types';
 import { navigationUtils } from './scripts/navigation-utils';
-import { navigationRoutes } from './scripts/navigation-routes';
+import { useViewTransition } from '../../_core/scripts/hooks';
+import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
 import { Colors } from '../colors/Colors';
 import { LinkExternal, List } from '../blocks/Blocks';
 
-/* Get navigation menu */
-const navigationList = navigationUtils.get.list();
-
 export const Navigation = (props: NavigationComponentProps) => {
-	const { label, location } = props;
-	const { pathname } = useLocation();
+	const { data, disableTransition, label, location } = props;
 	const { utils } = useAppContext();
+	const navigationList = navigationUtils.get.list(data);
 	const navigationLinkClass = 'navigation-link';
-	const navigationRef: RefObject<HTMLDivElement | null> = createRef();
-
-	// Scroll to top when navigation link is clicked on
-	useEffect(() => {
-		utils.scrollTo();
-	}, [pathname, utils]);
+	const navigationRef = useRef<HTMLDivElement | null>(null);
 
 	// Make header sticky
 	useEffect(() => {
-		if (location == 'header') {
-			utils.isSticky(navigationRef?.current, 'is-sticky');
-		}
-	}, [location, navigationRef, utils]);
+		if (location == 'header') return utils.isSticky(navigationRef.current, 'is-sticky');
+	}, [location, utils]);
 
 	return navigationList.length != 0 ? (
 		<nav className={`navigation navigation-${location}`} aria-label={label} ref={navigationRef}>
 			<div className="navigation-fixed">
-				<List className="navigation-list" variant={'ul-unstyled'}>
+				<List className={'navigation-list'} variant={'ul-unstyled'}>
 					{navigationList.map((nav, index) => {
 						return (
 							<Fragment key={nav.id}>
-								<NavigationListItem navigationLinkClass={navigationLinkClass} nav={nav} />
+								<NavigationListItem
+									disableTransition={disableTransition ?? false}
+									navigationLinkClass={navigationLinkClass}
+									nav={nav}
+								/>
 
-								{index != navigationList.length - 1 && <li className="navigation-list-item navigation-list-item-separator">-</li>}
+								{index != navigationList.length - 1 && (
+									<li className="navigation-list-item navigation-list-item-separator" aria-hidden="true">
+										-
+									</li>
+								)}
 							</Fragment>
 						);
 					})}
@@ -62,39 +60,26 @@ export const Navigation = (props: NavigationComponentProps) => {
 	) : null;
 };
 
-export const NavigationListItem = (props: NavigationListItemProps) => {
-	const { nav, navigationLinkClass } = props;
-	const navigationActiveClass = `${navigationLinkClass} ${navigationLinkClass}-active`;
+export const NavigationListItem = (props: NavigationItemComponentProps) => {
+	const { children, disableTransition, nav, navigationLinkClass } = props;
+	const handleTransition = useViewTransition();
 
 	return (
 		<li className="navigation-list-item">
 			{nav.isRoute ? (
-				<NavLink to={nav.url} className={({ isActive }) => (isActive ? navigationActiveClass : navigationLinkClass)}>
+				<Link
+					to={nav.url}
+					onClick={disableTransition ? undefined : (e) => handleTransition(e, nav.url)}
+					className={navigationLinkClass}
+					activeProps={{ className: `${navigationLinkClass}-active` }}
+					resetScroll={false}
+				>
 					{nav.label}
-				</NavLink>
+				</Link>
 			) : (
 				<LinkExternal href={nav.url}>{nav.label}</LinkExternal>
 			)}
+			{children}
 		</li>
 	);
-};
-
-export const NavigationRoutes = () => {
-	return navigationRoutes.length != 0 ? (
-		<Suspense fallback={null}>
-			<Routes>
-				{navigationRoutes.map((nav: NavigationRoutesProps) => {
-					const navProps = nav?.props ?? {};
-
-					return (
-						<Fragment key={nav.id}>
-							<Route path={nav.path} element={<nav.element {...navProps} />} />
-						</Fragment>
-					);
-				})}
-
-				<Route path="*" element={<Navigate to="/" />} />
-			</Routes>
-		</Suspense>
-	) : null;
 };

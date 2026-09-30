@@ -1,61 +1,19 @@
-/* Packages */
-import { lazy } from 'react';
-
 /* Scripts */
-import { NavigationType } from './navigation-types';
+import type { NavigationMapType } from './navigation-types';
+import { navigationUtils } from './navigation-utils';
 
-/* Components */
-const Home = lazy(() => import('../../../pages/home/Home').then((m) => ({ default: m.Home })));
-const Dashboard = lazy(() => import('../../../pages/dashboard/Dashboard').then((m) => ({ default: m.Dashboard })));
-const Donations = lazy(() => import('../../../pages/donations/Donations').then((m) => ({ default: m.Donations })));
-const ParticipantGuide = lazy(() => import('../../../pages/participant-guide/ParticipantGuide').then((m) => ({ default: m.ParticipantGuide })));
+const { create } = navigationUtils;
 
-export const navigation: NavigationType[] = [
-	{
-		id: 5,
-		element: Home,
-		isRoute: false,
-		label: 'Commentary Stream',
-		showInNav: false,
-		url: '//twitch.tv/MonetaryDragon',
-	},
-	{
-		id: 4,
-		element: Donations,
-		isRoute: true,
-		label: 'Donations',
-		showInNav: true,
-		url: '/donations',
-	},
-	{
-		id: 3,
-		element: Dashboard,
-		isRoute: true,
-		label: 'Dashboard',
-		showInNav: true,
-		url: '/dashboard',
-	},
-	{
-		id: 2,
-		isRoute: false,
+export const navigationHeader: NavigationMapType = {
+	...create({ key: 'index', label: 'Home', url: '/' }),
+	...create({ key: 'participant-guide', label: 'Participant Guide' }),
+	...create({
+		key: 'sign-up-sheet',
 		label: 'Signup Sheet',
-		showInNav: false,
-		url: '//docs.google.com/spreadsheets/d/1pxX1Pf7qK3eO2nKksbLGp3VbWV7ZByPC6dxVNmo8pds/edit',
-	},
-	{
-		id: 1,
-		element: ParticipantGuide,
-		isRoute: true,
-		label: 'Participant Guide',
-		url: '/participant-guide',
-		showInNav: true,
-	},
-	{
-		id: 0,
-		element: Home,
-		isRoute: true,
-		label: 'Home',
-		url: '/',
-		showInNav: true,
-	},
-];
+		isRoute: false,
+		url: '//docs.google.com/spreadsheets/d/1akF7X7c78D3lgtaUNT1Hontkgiqge4FzcpySVmVX4Mk/edit?gid=0#gid=0',
+	}),
+	...create({ key: 'dashboard', label: 'Dashboard' }),
+	...create({ key: 'donations', label: 'Donations' }),
+	...create({ key: 'commentary-stream', label: 'Commentary Stream', isRoute: false, url: '//twitch.tv/MonetaryDragon', showInNav: false }),
+};

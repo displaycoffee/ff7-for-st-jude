@@ -1,43 +1,65 @@
+/* Packages */
+import type { ReactNode } from 'react';
+
 /* Type definitions */
-type Navigation = {
-	children?: Navigation[];
-	element?: JSX.Element;
-	id: number;
-	isRoute?: boolean;
+type NavigationComponent = {
+	data: NavigationMap;
+	disableTransition?: boolean;
 	label: string;
-	props?: ObjectPrimitiveType;
-	showInNav?: boolean;
+	location: string;
+};
+
+type NavigationItemComponent = {
+	children?: ReactNode;
+	disableTransition: boolean;
+	nav: NavigationFlatItem;
+	navigationLinkClass: string;
+};
+
+type NavigationFlatItem = {
+	children?: NavigationFlatItem[];
+	id: string;
+	includeInSitemap: boolean;
+	isRoute: boolean;
+	label: string;
+	showInNav: boolean;
 	url: string;
 };
 
-type NavigationComponent = {
+type NavigationMapItem = {
+	children?: NavigationMap;
+	id: string;
+	includeInSitemap: boolean;
+	isRoute: boolean;
 	label: string;
-	location?: ReactNode;
+	showInNav: boolean;
+	url: string;
 };
 
-type NavigationListItem = {
-	children?: ReactNode;
-	nav: Navigation;
-	navigationLinkClass: string;
-	parent?: string;
+type NavigationMap = {
+	[key: string]: NavigationMapItem;
 };
 
-type NavigationRoutes = {
-	children?: NavigationRoutes[];
-	element: JSX.Element;
-	id: number;
-	path: string;
-	props?: ObjectPrimitiveType;
+type NavigationMapItemOptions = {
+	children?: NavigationMap;
+	includeInSitemap?: boolean;
+	isRoute?: boolean;
+	key: string;
+	label: string;
+	showInNav?: boolean;
+	url?: string;
 };
 
 /* Export types */
-export type NavigationRoutesType = NavigationRoutes;
+export type NavigationFlatItemType = NavigationFlatItem;
 
-export type NavigationType = Navigation;
+export type NavigationMapItemType = NavigationMapItem;
+
+export type NavigationMapType = NavigationMap;
+
+export type NavigationMapItemOptionsType = NavigationMapItemOptions;
 
 /* Export prop types */
 export type NavigationComponentProps = NavigationComponent;
 
-export type NavigationListItemProps = NavigationListItem;
-
-export type NavigationRoutesProps = NavigationRoutes;
+export type NavigationItemComponentProps = NavigationItemComponent;

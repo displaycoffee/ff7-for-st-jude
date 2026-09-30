@@ -1,0 +1,22 @@
+// Local Sass modules
+@use '@displaycoffee/styles/functions';
+@use '@displaycoffee/styles/mixins';
+@use '../../../_core/styles/_theme';
+
+//// PARTICIPANT GUIDE
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.page-participant-guide {
+		.section {
+			.gradient-section {
+				& > * {
+					margin: 0 0 theme.$spacing-x4 0;
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+			}
+		}
+	}

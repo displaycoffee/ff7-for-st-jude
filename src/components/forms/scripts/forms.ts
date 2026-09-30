@@ -1,3 +1,6 @@
+/* Packages */
+import type { ReactNode } from 'react';
+
 export const forms = {
 	build: {
 		className: (classes: string, className?: string, disabled?: boolean, pointer?: boolean, srOnly?: boolean) => {
@@ -15,7 +18,7 @@ export const forms = {
 			// Create className value for form fields
 			return classList.join(' ');
 		},
-		fieldAttributes: (id: string, className: string, descriptionId?: string, error?: string, errorId?: string, required?: boolean) => {
+		fieldAttributes: (id: string, className: string, descriptionId?: string, error?: ReactNode, errorId?: string, required?: boolean) => {
 			// Set common attributes for form fields
 			const describedBy = [descriptionId, errorId].filter(Boolean).join(' ') || undefined;
 			return {
@@ -40,7 +43,7 @@ export const forms = {
 		},
 	},
 	get: {
-		ids: (props: { description: string; error: string; id: string }) => {
+		ids: (props: { description: string; error: ReactNode; id: string }) => {
 			// Get ids for form field
 			const { description, error, id } = props;
 			const descriptionId = description ? `${id}-description` : undefined;

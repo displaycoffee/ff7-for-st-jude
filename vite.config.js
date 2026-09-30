@@ -1,5 +1,12 @@
+/* Packages */
 import { defineConfig } from 'vite';
-import { viteUtils } from './vite.utils';
+
+/* Scripts */
+import { viteUtils } from './vite.utils.js';
+
+const modules = 'node_modules/';
+const reactChunks = [`${modules}react/`, `${modules}react-dom/`];
+const tanstackChunks = [`${modules}@tanstack/react-router/`, `${modules}@tanstack/react-query/`];
 
 export default defineConfig({
 	root: 'src',
@@ -15,15 +22,15 @@ export default defineConfig({
 	},
 	build: {
 		outDir: '../dist',
-		emptyOutDir: false,
+		emptyOutDir: true,
 		modulePreload: {
 			polyfill: false,
 		},
 		rollupOptions: {
 			output: {
-				manualChunks: {
-					tanstack: ['@tanstack/react-query'],
-					vendor: ['react', 'react-dom', 'react-router-dom'],
+				manualChunks: (id) => {
+					if (tanstackChunks.some((chunk) => id.includes(chunk))) return 'tanstack';
+					if (reactChunks.some((chunk) => id.includes(chunk))) return 'vendor';
 				},
 				assetFileNames: (file) => {
 					return viteUtils.assetFileNames(file);

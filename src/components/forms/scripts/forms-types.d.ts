@@ -1,11 +1,11 @@
 /* Packages */
-import { ButtonHTMLAttributes, FormHTMLAttributes, InputHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, FormHTMLAttributes, InputHTMLAttributes, ReactNode } from 'react';
 
 /* Shared field concerns for form controls with a label / error / required state */
 type Field = {
 	className?: string;
 	description?: string;
-	error?: string;
+	error?: ReactNode;
 	hideLabel?: boolean;
 	id: string;
 	label: string;
@@ -33,7 +33,7 @@ type Description = {
 };
 
 type ErrorField = {
-	error?: string;
+	error?: ReactNode;
 	id?: string;
 };
 
@@ -52,6 +52,7 @@ type FormField = {
 	className?: string;
 	hideLabel?: boolean;
 	id: string;
+	isChoice?: boolean;
 	label: string;
 	required?: boolean;
 };
@@ -59,7 +60,7 @@ type FormField = {
 type FormFieldDetails = {
 	description?: string;
 	descriptionId?: string;
-	error?: string;
+	error?: ReactNode;
 	errorId?: string;
 };
 

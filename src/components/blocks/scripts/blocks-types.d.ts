@@ -1,5 +1,5 @@
 /* Packages */
-import { AnchorHTMLAttributes, OlHTMLAttributes, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, OlHTMLAttributes, ReactNode } from 'react';
 
 /* Type definitions */
 type LinkExternal = {
@@ -20,6 +20,7 @@ type Section = {
 	hasRow?: boolean;
 	hasScroll?: boolean;
 	id?: string;
+	target?: string;
 	title?: string;
 };
 
