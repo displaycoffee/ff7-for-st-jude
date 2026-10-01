@@ -14,7 +14,7 @@
 	// Configuration
 
 	$overlay-spacing: theme.$spacing-x4; // overall spacing value
-	$overlay-duration: 0.6s; // duration of open / close transitions
+	$overlay-duration: theme.$duration-slow; // duration of open / close transitions
 	$overlay-duration-discrete: max($overlay-duration, var(--overlay-duration-transform)); // lasts as long as the longest transition
 	$overlay-transition-discrete: display $overlay-duration-discrete ease-in-out, overlay $overlay-duration-discrete ease-in-out; // keeps the dialog in the top layer until the close transition finishes
 	$overlay-transition-backdrop: opacity $overlay-duration ease-in-out, display $overlay-duration ease-in-out, overlay $overlay-duration ease-in-out; // transition properties for backdrop

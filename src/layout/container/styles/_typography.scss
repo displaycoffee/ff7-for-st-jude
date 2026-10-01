@@ -60,7 +60,7 @@
 	$link-has-underline: true; // add underline on link
 	$link-has-underline-hover: true; // add underline on link hover
 	$link-has-underline-offset: true; // decorate link underline
-	$link-transition: color 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out; // value for link transition
+	$link-transition: color theme.$duration-base ease-in-out, text-decoration-color theme.$duration-base ease-in-out; // value for link transition
 
 	// Link mixin
 
