@@ -1,5 +1,5 @@
 /* Packages */
-import type { HTMLAttributes, ReactElement, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 
 /* Type definitions */
 type Alert = {
@@ -8,7 +8,7 @@ type Alert = {
 	type?: 'error' | 'info' | 'success' | 'warning';
 } & Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'className' | 'role'>;
 
-type AlertIcon = Record<NonNullable<AlertProps['type']>, ReactElement>;
+type AlertIcon = Record<NonNullable<AlertProps['type']>, IconNameType>;
 
 /* Export types */
 export type AlertIconType = AlertIcon;

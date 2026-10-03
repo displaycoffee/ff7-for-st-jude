@@ -3,6 +3,7 @@ import type { QueryFunctionContext } from '@tanstack/react-query';
 import type { SyntheticEvent } from 'react';
 import type { UtilsType as UtilsSharedType, UtilsBrowserType as UtilsSharedBrowserType } from '@displaycoffee/scripts/utils-types';
 import type themeJson from '../tokens/theme.json';
+import type { icons } from '../data/icons';
 
 /* Generic type definitions */
 type Amounts = {
@@ -28,6 +29,8 @@ type AmountsRaw = {
 };
 
 type Events = SyntheticEvent | Event;
+
+type IconName = keyof typeof icons;
 
 type Links = {
 	label: string;
@@ -339,6 +342,8 @@ declare global {
 	type AmountsRawType = AmountsRaw;
 
 	type EventsType = Events;
+
+	type IconNameType = IconName;
 
 	type LinksType = Links;
 
