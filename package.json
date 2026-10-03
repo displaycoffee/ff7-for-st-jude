@@ -22,7 +22,7 @@
 		"preview": "vite preview"
 	},
 	"devDependencies": {
-		"@displaycoffee/burmecia": "^1.0.0",
+		"@displaycoffee/burmecia": "^1.1.0",
 		"@displaycoffee/styles": "^1.0.0",
 		"@displaycoffee/tokens": "^2.0.0",
 		"@iconify-json/lucide": "^1.2.135",
@@ -54,7 +54,7 @@
 		"vite-plugin-sitemap": "^0.8.2"
 	},
 	"dependencies": {
-		"@displaycoffee/scripts": "^1.0.0",
+		"@displaycoffee/scripts": "^1.1.0",
 		"@tanstack/react-query": "^5.102.8",
 		"@tanstack/react-router": "^1.170.38",
 		"immer": "^11.1.18",
