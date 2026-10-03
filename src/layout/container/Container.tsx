@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { Link } from '@tanstack/react-router';
 
 /* Scripts */
-import { useRespond } from '../../_core/scripts/hooks';
+import { useRespond } from '@displaycoffee/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { useAvailableMinHeight, useBodyClass } from './scripts/container-hooks';
 import { navigationHeader } from '../../components/navigation/scripts/navigation';

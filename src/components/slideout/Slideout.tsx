@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 
 /* Scripts */
 import type { SlideoutProps, SlideoutTouchType, SlideoutTouchRefType } from './scripts/slideout-types';
-import { useFormattedId } from '../../_core/scripts/hooks';
+import { useFormattedId } from '@displaycoffee/scripts/hooks';
 import { useAppContext } from '../../context/scripts/context-hooks';
 import { slideout } from './scripts/slideout';
 
@@ -16,7 +16,7 @@ import { Overlay } from '../overlay/Overlay';
 
 export const Slideout = (props: SlideoutProps) => {
 	const { children, options } = props;
-	const { utils } = useAppContext();
+	const { utilsBrowser } = useAppContext();
 	const { config, get } = slideout;
 	const fallbackId = useFormattedId();
 	const id = `slideout-${options?.id ?? fallbackId}`;
@@ -63,7 +63,7 @@ export const Slideout = (props: SlideoutProps) => {
 	};
 
 	// Set sticky class on slideout button
-	useEffect(() => utils.isSticky(buttonRef.current, 'is-sticky'), [utils]);
+	useEffect(() => utilsBrowser.isSticky(buttonRef.current, 'is-sticky'), [utilsBrowser]);
 
 	return (
 		<>

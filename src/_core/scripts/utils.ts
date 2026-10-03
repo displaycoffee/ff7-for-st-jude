@@ -1,3 +1,6 @@
+/* Packages */
+import { utils as utilsShared, utilsBrowser as utilsBrowserShared } from '@displaycoffee/scripts/utils';
+
 /* Create Intl.NumberFormat instance for utils.formatCurrency function */
 const formatter = new Intl.NumberFormat('en-US', {
 	minimumFractionDigits: 2,
@@ -6,7 +9,9 @@ const formatter = new Intl.NumberFormat('en-US', {
 	currency: 'USD',
 });
 
+/* Utils from @displaycoffee/scripts, plus any custom scripts for this project */
 export const utils: UtilsType = {
+	...utilsShared,
 	checkAmount: (number?: number) => {
 		// Check number to always return a value
 		number = number ?? 0;
@@ -47,58 +52,6 @@ export const utils: UtilsType = {
 			timeStyle: 'long',
 		}).format(date);
 	},
-	getLast: (value: string | string[], delimeter?: string) => {
-		// Get last item in array
-		let valueArray: string[] | number[] = [];
-		if (Array.isArray(value)) {
-			valueArray = value;
-		} else if (delimeter) {
-			valueArray = value.split(delimeter);
-		}
-		return valueArray[valueArray.length - 1] ?? '';
-	},
-	handleize: (value: string) => {
-		// Format value for html classes
-		return value
-			.toLowerCase()
-			.trim()
-			.replace(/[^\w\s]/g, '')
-			.replace(/\s/g, '-');
-	},
-	isSticky: (element: HTMLElement | null, stickyClass: string) => {
-		if (element) {
-			// Create options and callback for observer
-			const stickyOptions = { threshold: [1] };
-			const stickyCallback = (e: IntersectionObserverEntry) => {
-				e.target.classList.toggle(stickyClass, e.intersectionRatio < 1);
-			};
-
-			// Observe to toggle sticky class
-			const stickyObserver = new IntersectionObserver(([e]) => stickyCallback(e), stickyOptions);
-			stickyObserver.observe(element);
-		}
-	},
-	scrollTo: (e?: EventsType, selector?: string, offset?: number) => {
-		// Scroll to element on page
-		if (e) {
-			e.preventDefault();
-		}
-		const anchor = {
-			selector: selector ?? '',
-			offset: offset ?? 0,
-			position: () => {
-				const anchorElement = anchor.selector ? document.querySelector(anchor.selector) : false;
-				return anchorElement ? anchorElement.getBoundingClientRect().top + window.scrollY - anchor.offset : -anchor.offset;
-			},
-		};
-		window.scroll({ top: anchor.position(), left: 0, behavior: 'smooth' });
-
-		// Move focus to the target so keyboard/screen-reader users know where they landed
-		if (anchor.selector) {
-			const anchorElement = document.querySelector<HTMLElement>(anchor.selector);
-			anchorElement?.focus({ preventScroll: true });
-		}
-	},
 	setActive: (type: string, data: PollsType | RewardsType) => {
 		// Get time for checking if content has started or ended
 		const currentMilliseconds = Date.now();
@@ -123,12 +76,6 @@ export const utils: UtilsType = {
 
 		return contentActive;
 	},
-	setAttributes: (element: HTMLElement, attributes: ObjectStringType) => {
-		// Set multiple attributes on an element
-		for (const attribute in attributes) {
-			element.setAttribute(attribute, attributes[attribute]);
-		}
-	},
 	sort: <T>(list: T[], getValue: (item: T) => PrimitiveType, direction: 'asc' | 'desc') => {
 		// Sort a list by the value getValue returns for each item, e.g. (campaign) => campaign.number
 		// Note: numbers sort numerically, strings and booleans sort alphabetically
@@ -141,12 +88,8 @@ export const utils: UtilsType = {
 			return direction == 'asc' ? sortedValue : -sortedValue;
 		});
 	},
-	truncate: (string: string, limit: number) => {
-		// Limit characters in string
-		if (string.length > limit) {
-			return `${string.slice(0, limit - 3)}...`;
-		} else {
-			return string;
-		}
-	},
+};
+
+export const utilsBrowser: UtilsBrowserType = {
+	...utilsBrowserShared,
 };

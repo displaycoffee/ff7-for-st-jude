@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import sitemap from 'vite-plugin-sitemap';
 import Icons from 'unplugin-icons/vite';
-import { assetFileNames, chunkFileNames, entryFileNames, tokensWatch } from '@displaycoffee/burmecia/vite';
+import { assetFileNames, chunkFileNames, cssTarget, entryFileNames, tokensWatch } from '@displaycoffee/burmecia/vite';
 
 /* Scripts */
 import { sitemapConfig } from './vite.sitemap.js';
@@ -27,5 +27,6 @@ export const viteUtils = {
 	],
 	assetFileNames,
 	chunkFileNames,
+	cssTarget,
 	entryFileNames,
 };

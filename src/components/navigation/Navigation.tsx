@@ -8,7 +8,7 @@ import { Link } from '@tanstack/react-router';
 /* Scripts */
 import type { NavigationComponentProps, NavigationItemComponentProps } from './scripts/navigation-types';
 import { navigationUtils } from './scripts/navigation-utils';
-import { useViewTransition } from '../../_core/scripts/hooks';
+import { useViewTransition } from '@displaycoffee/scripts/hooks-tanstack';
 import { useAppContext } from '../../context/scripts/context-hooks';
 
 /* Components */
@@ -17,15 +17,15 @@ import { LinkExternal, List } from '../blocks/Blocks';
 
 export const Navigation = (props: NavigationComponentProps) => {
 	const { data, disableTransition, label, location } = props;
-	const { utils } = useAppContext();
+	const { utilsBrowser } = useAppContext();
 	const navigationList = navigationUtils.get.list(data);
 	const navigationLinkClass = 'navigation-link';
 	const navigationRef = useRef<HTMLDivElement | null>(null);
 
 	// Make header sticky
 	useEffect(() => {
-		if (location == 'header') return utils.isSticky(navigationRef.current, 'is-sticky');
-	}, [location, utils]);
+		if (location == 'header') return utilsBrowser.isSticky(navigationRef.current, 'is-sticky');
+	}, [location, utilsBrowser]);
 
 	return navigationList.length != 0 ? (
 		<nav className={`navigation navigation-${location}`} aria-label={label} ref={navigationRef}>

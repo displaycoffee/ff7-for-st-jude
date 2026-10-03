@@ -20,7 +20,7 @@ export const Route = createLazyFileRoute('/participant-guide/')({
 });
 
 function RouteComponent() {
-	const { variables } = useAppContext();
+	const { utils, variables } = useAppContext();
 
 	return (
 		<>
@@ -127,7 +127,8 @@ function RouteComponent() {
 					<li>"Charity details" are already selected, so click "Build your own campaign".</li>
 					<li>
 						Enter your campaign goal. See below section on "
-						<ButtonScroll target={'#section-goals--milestones'} label={'Goals & Milestones'} />" for more information.
+						<ButtonScroll target={`#section-${utils.handleize('Goals & Milestones')}`} label={'Goals & Milestones'} />" for more
+						information.
 					</li>
 					<li>
 						Enter a campaign name. <strong>For example:</strong> "cornfed's {variables.site.name} #10". There will be a series of
@@ -157,7 +158,7 @@ function RouteComponent() {
 					</li>
 					<li>
 						Tiltify will provide default "Rewards". These are optional and it's encouraged to make your own rewards that fit the theme of
-						the game. You can find <ButtonScroll target={'#section-incentives'} label={'examples below'} />.
+						the game. You can find <ButtonScroll target={`#section-${utils.handleize('Incentives')}`} label={'examples below'} />.
 					</li>
 					<li>Choose the incentives you want to add. Most campaigns will setup "Rewards" and "Polls".</li>
 					<li>Select "No" for "Allow other fundraisers to support you".</li>

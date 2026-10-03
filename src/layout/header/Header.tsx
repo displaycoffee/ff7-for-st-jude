@@ -13,7 +13,9 @@ export const Header = () => {
 	return (
 		<header className="header flex-wrap flex-align-center">
 			<h1 className="header-title">
-				<Link to={'/'}>{variables.site.name}</Link>
+				<Link to={'/'} className={'no-decoration'}>
+					{variables.site.name}
+				</Link>
 			</h1>
 		</header>
 	);

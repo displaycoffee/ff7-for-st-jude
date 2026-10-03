@@ -1,6 +1,7 @@
 /* Packages */
 import type { QueryFunctionContext } from '@tanstack/react-query';
 import type { SyntheticEvent } from 'react';
+import type { UtilsType as UtilsSharedType, UtilsBrowserType as UtilsSharedBrowserType } from '@displaycoffee/scripts/utils-types';
 import type themeJson from '../tokens/theme.json';
 
 /* Generic type definitions */
@@ -82,21 +83,17 @@ type Theme = {
 	};
 };
 
-type Utils = {
+type Utils = UtilsSharedType & {
 	checkAmount: (number?: number) => number;
 	checkArray: (array: unknown[]) => boolean;
 	formatCurrency: (number: number) => string;
 	getAmounts: (detail?: AmountsRaw) => Amounts;
 	getDate: (time: string) => string;
-	getLast: (value: string | string[], delimeter?: string) => string | number;
-	handleize: (value: string) => string;
-	isSticky: (element: HTMLElement | null, stickyClass: string) => void;
-	scrollTo: (e?: Events, selector?: string, offset?: number) => void;
 	setActive: (type: string, data: Polls | Rewards) => boolean;
-	setAttributes: (element: HTMLElement, attributes: ObjectString) => void;
 	sort: <T>(list: T[], getValue: (item: T) => Primitive, direction: 'asc' | 'desc') => T[];
-	truncate: (string: string, limit: number) => string;
 };
+
+type UtilsBrowser = UtilsSharedBrowserType;
 
 type Variables = {
 	api: {
@@ -358,6 +355,8 @@ declare global {
 	type ThemeType = Theme;
 
 	type UtilsType = Utils;
+
+	type UtilsBrowserType = UtilsBrowser;
 
 	type VariablesType = Variables;
 
