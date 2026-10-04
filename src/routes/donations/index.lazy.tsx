@@ -28,12 +28,15 @@ function RouteComponent() {
 	// Use custom hook to get supporting campaigns
 	const [supportingData, supportingStatus] = useReactQuery('supporting', content, current) as SupportingRequestType;
 
+	// Donations depend on supporting campaigns, so if that request failed they'll never be requested
+	const supportingFailed = supportingStatus.fetched && !supportingStatus.success;
+
 	// Use custom hook to get campaign
 	const [campaignData] = useReactQuery('campaign', content, current) as CampaignRequestType;
 
 	// Use custom hook to get donations
 	const [donationsData, donationsStatus] = useReactQuery('donations', content, current) as DonationsRequestType;
-	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched;
+	const donationsComplete = (!donationsStatus.pending && donationsStatus.success) || donationsStatus.fetched || supportingFailed;
 
 	useEffect(() => {
 		// checkArray(data) would require a non-empty result, but a fresh campaign with no supporting
