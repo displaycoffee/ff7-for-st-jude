@@ -7,12 +7,12 @@ import { useEffect, useRef, useState } from 'react';
 /* Scripts */
 import type { SlideoutProps, SlideoutTouchType, SlideoutTouchRefType } from './scripts/slideout-types';
 import { useFormattedId } from '@displaycoffee/scripts/hooks';
-import { useAppContext } from '../../context/scripts/context-hooks';
+import { useAppContext } from '@/context/scripts/context-hooks';
 import { slideout } from './scripts/slideout';
 
 /* Components */
-import { Button } from '../forms/Forms';
-import { Overlay } from '../overlay/Overlay';
+import { Button } from '@/components/forms/Forms';
+import { Overlay } from '@/components/overlay/Overlay';
 
 export const Slideout = (props: SlideoutProps) => {
 	const { children, options } = props;

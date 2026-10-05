@@ -2,7 +2,7 @@
 import { produce } from 'immer';
 
 /* Scripts */
-import { campaigns } from '../../_core/scripts/campaigns';
+import { campaigns } from '@/_core/scripts/campaigns';
 
 /* Get total of all previous campaigns */
 let previousTotals = 0;

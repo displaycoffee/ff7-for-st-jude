@@ -5,12 +5,12 @@ import './styles/participant-guide.scss';
 import { createLazyFileRoute, Link } from '@tanstack/react-router';
 
 /* Scripts */
-import { useAppContext } from '../../context/scripts/context-hooks';
+import { useAppContext } from '@/context/scripts/context-hooks';
 
 /* Components */
-import { PageTitle } from '../../components/page-title/PageTitle';
-import { LinkExternal, List, Section } from '../../components/blocks/Blocks';
-import { ButtonScroll } from '../../components/forms/Forms';
+import { PageTitle } from '@/components/page-title/PageTitle';
+import { LinkExternal, List, Section } from '@/components/blocks/Blocks';
+import { ButtonScroll } from '@/components/forms/Forms';
 
 /* Page title */
 const title = 'Participant Guide';

@@ -9,11 +9,11 @@ import { Link } from '@tanstack/react-router';
 import type { NavigationComponentProps, NavigationItemComponentProps } from './scripts/navigation-types';
 import { navigationUtils } from './scripts/navigation-utils';
 import { useViewTransition } from '@displaycoffee/scripts/hooks-tanstack';
-import { useAppContext } from '../../context/scripts/context-hooks';
+import { useAppContext } from '@/context/scripts/context-hooks';
 
 /* Components */
-import { Colors } from '../colors/Colors';
-import { LinkExternal, List } from '../blocks/Blocks';
+import { Colors } from '@/components/colors/Colors';
+import { LinkExternal, List } from '@/components/blocks/Blocks';
 
 export const Navigation = (props: NavigationComponentProps) => {
 	const { data, disableTransition, label, location } = props;

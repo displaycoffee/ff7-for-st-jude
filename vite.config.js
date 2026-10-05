@@ -1,4 +1,5 @@
 /* Packages */
+import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
 
 /* Scripts */
@@ -19,6 +20,14 @@ export default defineConfig({
 	},
 	resolve: {
 		dedupe: ['react', 'react-dom'],
+		tsconfigPaths: true, // Resolve the @/ alias (maps to src) from tsconfig.json paths
+	},
+	css: {
+		preprocessorOptions: {
+			scss: {
+				loadPaths: [fileURLToPath(new URL('./src', import.meta.url))], // Lets Sass @use files from src without relative paths, e.g. @use '_core/styles/_theme'
+			},
+		},
 	},
 	build: {
 		outDir: '../dist',

@@ -5,7 +5,7 @@ import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
 import type { ErrorBoundaryProps } from './scripts/error-boundary-types';
 
 /* Components */
-import { Alert } from '../alert/Alert';
+import { Alert } from '@/components/alert/Alert';
 
 export const ErrorBoundary = (props: ErrorBoundaryProps) => {
 	const { children, message } = props;

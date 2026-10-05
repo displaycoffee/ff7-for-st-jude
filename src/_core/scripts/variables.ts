@@ -1,5 +1,5 @@
 /* Scripts */
-import { site } from '../data/site';
+import { site } from '@/_core/data/site';
 
 /* Tiltify API proxy */
 const api = import.meta.env.VITE_API_URL as string;

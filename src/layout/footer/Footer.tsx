@@ -2,7 +2,7 @@
 import './styles/footer.scss';
 
 /* Components */
-import { LinkExternal } from '../../components/blocks/Blocks';
+import { LinkExternal } from '@/components/blocks/Blocks';
 
 export const Footer = () => {
 	return (

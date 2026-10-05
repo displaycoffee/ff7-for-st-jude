@@ -3,12 +3,12 @@ import { createLazyFileRoute } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 /* Scripts */
-import { useReactQuery } from '../../_core/scripts/hooks';
-import { useAppContext } from '../../context/scripts/context-hooks';
+import { useReactQuery } from '@/_core/scripts/hooks';
+import { useAppContext } from '@/context/scripts/context-hooks';
 
 /* Components */
-import { PageTitle } from '../../components/page-title/PageTitle';
-import { DonationsSection } from '../../components/donations-section/DonationsSection';
+import { PageTitle } from '@/components/page-title/PageTitle';
+import { DonationsSection } from '@/components/donations-section/DonationsSection';
 
 /* Page title */
 const title = 'Donations';

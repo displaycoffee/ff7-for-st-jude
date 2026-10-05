@@ -2,8 +2,8 @@
 import type { QueryFunctionContext } from '@tanstack/react-query';
 import type { SyntheticEvent } from 'react';
 import type { UtilsType as UtilsSharedType, UtilsBrowserType as UtilsSharedBrowserType } from '@displaycoffee/scripts/utils-types';
-import type themeJson from '../tokens/theme.json';
-import type { icons } from '../data/icons';
+import type themeJson from '@/_core/tokens/theme.json';
+import type { icons } from '@/_core/data/icons';
 
 /* Generic type definitions */
 type Amounts = {

@@ -3,7 +3,7 @@ import './styles/alert.scss';
 
 /* Scripts */
 import type { AlertIconType, AlertProps } from './scripts/alert-types';
-import { icons } from '../../_core/data/icons';
+import { icons } from '@/_core/data/icons';
 
 /* Icon name for each alert type */
 const alertIcons: AlertIconType = {

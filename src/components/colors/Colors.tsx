@@ -6,12 +6,12 @@ import { useState } from 'react';
 
 /* Scripts */
 import type { ColorsProps } from './scripts/color-types';
-import { useAppContext } from '../../context/scripts/context-hooks';
+import { useAppContext } from '@/context/scripts/context-hooks';
 import { colors as colorsUtils } from './scripts/colors';
 
 /* Components */
-import { Button, Form, FormActions, Input } from '../forms/Forms';
-import { Overlay } from '../overlay/Overlay';
+import { Button, Form, FormActions, Input } from '@/components/forms/Forms';
+import { Overlay } from '@/components/overlay/Overlay';
 
 export const Colors = (props: ColorsProps) => {
 	const { showButton } = props;

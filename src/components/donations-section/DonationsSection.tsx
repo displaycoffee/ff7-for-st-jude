@@ -1,10 +1,10 @@
 /* Scripts */
 import type { DonationsSectionProps } from './scripts/donations-section-types';
-import { useAppContext } from '../../context/scripts/context-hooks';
+import { useAppContext } from '@/context/scripts/context-hooks';
 
 /* Components */
-import { Section, SectionParagraph, SectionLinks, SectionNotFound, Skeleton } from '../../components/blocks/Blocks';
-import { ErrorBoundary } from '../../components/error-boundary/ErrorBoundary';
+import { Section, SectionParagraph, SectionLinks, SectionNotFound, Skeleton } from '@/components/blocks/Blocks';
+import { ErrorBoundary } from '@/components/error-boundary/ErrorBoundary';
 
 export const DonationsSection = (props: DonationsSectionProps) => {
 	const { donations, donationsComplete } = props;

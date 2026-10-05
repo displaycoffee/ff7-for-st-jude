@@ -1,6 +1,6 @@
 /* Scripts */
-import { breakpoints } from '../data/breakpoints';
-import { colors } from '../data/colors';
+import { breakpoints } from '@/_core/data/breakpoints';
+import { colors } from '@/_core/data/colors';
 
 export const theme: ThemeType = {
 	breakpoints: breakpoints,

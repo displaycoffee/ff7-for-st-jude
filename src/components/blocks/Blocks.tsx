@@ -15,11 +15,11 @@ import type {
 	SkeletonProps,
 } from './scripts/blocks-types';
 import { useFormattedId } from '@displaycoffee/scripts/hooks';
-import { useAppContext } from '../../context/scripts/context-hooks';
+import { useAppContext } from '@/context/scripts/context-hooks';
 import { blocks } from './scripts/blocks';
 
 /* Components */
-import { ButtonScroll } from '../forms/Forms';
+import { ButtonScroll } from '@/components/forms/Forms';
 
 export const LinkExternal = (props: LinkExternalProps) => {
 	const { children, className, href, ...rest } = props;

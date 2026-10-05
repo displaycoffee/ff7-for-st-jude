@@ -7,13 +7,13 @@ import { useEffect, useState } from 'react';
 
 /* Scripts */
 import type { PreviousSortType, PreviousSortOptionsType } from './index/scripts/index-types';
-import { useReactQuery } from '../_core/scripts/hooks';
-import { useAppContext } from '../context/scripts/context-hooks';
+import { useReactQuery } from '@/_core/scripts/hooks';
+import { useAppContext } from '@/context/scripts/context-hooks';
 
 /* Components */
-import { LinkExternal, Section, SectionNotFound, SectionParagraph, SectionLinks, Skeleton } from '../components/blocks/Blocks';
-import { Button } from '../components/forms/Forms';
-import { Icon } from '../components/icons/Icons';
+import { LinkExternal, Section, SectionNotFound, SectionParagraph, SectionLinks, Skeleton } from '@/components/blocks/Blocks';
+import { Button } from '@/components/forms/Forms';
+import { Icon } from '@/components/icons/Icons';
 
 /* Ways to sort previous campaigns */
 /* Note: campaigns sort by number since the id is a random uuid */

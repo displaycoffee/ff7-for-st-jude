@@ -6,10 +6,10 @@ import { createContext, useReducer, useState } from 'react';
 /* Scripts */
 import type { ContextProps, ContextValuesType } from './scripts/context-types';
 import { content as contentUtils } from './scripts/content';
-import { campaigns } from '../_core/scripts/campaigns';
-import { theme } from '../_core/scripts/theme';
-import { utils, utilsBrowser } from '../_core/scripts/utils';
-import { variables } from '../_core/scripts/variables';
+import { campaigns } from '@/_core/scripts/campaigns';
+import { theme } from '@/_core/scripts/theme';
+import { utils, utilsBrowser } from '@/_core/scripts/utils';
+import { variables } from '@/_core/scripts/variables';
 
 /* Query client for api */
 const queryConfig: DefaultOptions = {

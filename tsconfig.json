@@ -9,6 +9,9 @@
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"noFallthroughCasesInSwitch": true,
+		"paths": {
+			"@/*": ["./src/*"]
+		},
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,
