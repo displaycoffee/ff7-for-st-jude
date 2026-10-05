@@ -47,17 +47,13 @@
 				font-style: normal;
 				font-display: swap;
 			}
-			.hide-mobile {
-				display: none;
-			}
-			.hide-desktop {
-				display: block;
+			@media only screen and (max-width: 767px) {
+				html body .hide-mobile {
+					display: none;
+				}
 			}
 			@media only screen and (min-width: 768px) {
-				.hide-mobile {
-					display: block;
-				}
-				.hide-desktop {
+				html body .hide-desktop {
 					display: none;
 				}
 			}

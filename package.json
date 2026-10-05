@@ -22,7 +22,7 @@
 		"preview": "vite preview"
 	},
 	"devDependencies": {
-		"@displaycoffee/burmecia": "^1.1.0",
+		"@displaycoffee/burmecia": "^1.1.1",
 		"@displaycoffee/styles": "^1.0.0",
 		"@displaycoffee/tokens": "^2.0.0",
 		"@iconify-json/lucide": "^1.2.135",
