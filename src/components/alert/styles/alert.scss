@@ -55,10 +55,15 @@
 				a, .a {
 					&, &:active, &:hover {
 						color: $alert-color-02;
-						@include mixins.text-decoration-color($alert-color-02);
+						&:not(:has(.button-label)) {
+							@include mixins.text-decoration-color($alert-color-02);
+						}
+						&:has(.button-label) .button-label {
+							@include mixins.text-decoration-color($alert-color-02);
+						}
 					}
 				}
-			}			
+			}
 		}
 	}
 	.alert-warning {
