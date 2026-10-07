@@ -42,6 +42,20 @@ export const forms = {
 			};
 		},
 	},
+	clearable: {
+		hasValue: (value?: string | number | readonly string[]) => {
+			// Check whether a field value isn't empty (0 counts as a value)
+			return value !== undefined && String(value) !== '';
+		},
+		clear: (field: HTMLInputElement | HTMLTextAreaElement) => {
+			// Set the value with the native setter, since React ignores direct value changes on controlled fields
+			const prototype = field instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+			Object.getOwnPropertyDescriptor(prototype, 'value')?.set?.call(field, '');
+
+			// Fire input so onChange / onInput handlers (and the clear button state) update
+			field.dispatchEvent(new Event('input', { bubbles: true }));
+		},
+	},
 	get: {
 		ids: (props: { description: string; error: ReactNode; id: string }) => {
 			// Get ids for form field

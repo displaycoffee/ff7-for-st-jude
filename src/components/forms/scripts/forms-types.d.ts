@@ -40,6 +40,7 @@ type ErrorField = {
 type Form = {
 	children: ReactNode;
 	className?: string;
+	hasMarginTrim?: boolean;
 } & Omit<FormHTMLAttributes<HTMLFormElement>, 'children' | 'className'>;
 
 type FormActions = {
@@ -64,7 +65,15 @@ type FormFieldDetails = {
 	errorId?: string;
 };
 
+type FieldClose = {
+	children: ReactNode;
+	defaultValue?: InputHTMLAttributes<HTMLInputElement>['defaultValue'];
+	hasClose: boolean;
+	value?: InputHTMLAttributes<HTMLInputElement>['value'];
+};
+
 type Input = Field & {
+	hasClose?: boolean;
 	type?:
 		| 'color'
 		| 'date'
@@ -101,6 +110,8 @@ export type FormProps = Form;
 export type FormActionsProps = FormActions;
 
 export type FormFieldProps = FormField;
+
+export type FieldCloseProps = FieldClose;
 
 export type FormFieldDetailsProps = FormFieldDetails;
 

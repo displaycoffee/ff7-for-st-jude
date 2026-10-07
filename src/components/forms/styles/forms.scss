@@ -222,6 +222,37 @@
 		}
 	}
 
+//// FORMS - FORM FIELD CLOSE
+//// --------------------------------------------------------------------------
+
+	// Configuration
+
+	$forms-close-spacing: theme.$spacing-x2; // space between button and field edge
+
+	// Style block
+	// Note: the button is hidden (and out of the tab order) until FieldClose adds button-active while the field has a value
+
+	.form-field-close {
+		position: relative;
+		.input, .textarea {
+			padding-right: calc(theme.$spacing-x4 + theme.$icon-sm);
+		}
+		.button-close {
+			@include mixins.position($type: absolute, $top: 0, $bottom: 0, $right: $forms-close-spacing);
+			margin: auto 0;
+			visibility: hidden;
+			&.button-active {
+				visibility: visible;
+			}
+		}
+		.textarea ~ .button-close {
+			// Textareas can be several lines tall, so keep the button by the first line instead of centering it
+			bottom: auto;
+			margin: 0;
+			top: $forms-close-spacing;
+		}
+	}
+
 //// FORMS - INPUT
 //// --------------------------------------------------------------------------
 

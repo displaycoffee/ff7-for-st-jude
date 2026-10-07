@@ -65,3 +65,6 @@
 		left: -1px;
 		@include mixins.transform(rotate(90deg));
 	}
+	.icon-x:before {
+		content: '\0000d7';
+	}

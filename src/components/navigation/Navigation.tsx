@@ -18,7 +18,7 @@ import { LinkExternal, List } from '@/components/blocks/Blocks';
 export const Navigation = (props: NavigationComponentProps) => {
 	const { data, disableTransition, label, location } = props;
 	const { utilsBrowser } = useAppContext();
-	const navigationList = navigationUtils.get.list(data);
+	const navigationList = Array.isArray(data) ? data : navigationUtils.get.list(data);
 	const navigationLinkClass = 'navigation-link';
 	const navigationRef = useRef<HTMLDivElement | null>(null);
 
