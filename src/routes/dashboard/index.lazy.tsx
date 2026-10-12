@@ -10,7 +10,7 @@ import { useReactQuery, useReactQueries } from '@/_core/scripts/hooks';
 import { useAppContext } from '@/context/scripts/context-hooks';
 
 /* Components */
-import { PageTitle } from '@/components/page-title/PageTitle';
+import { Title } from '@/components/title/Title';
 import { List, Section, SectionParagraph, SectionLinks, SectionNotFound, Skeleton } from '@/components/blocks/Blocks';
 import { Button, ButtonScroll } from '@/components/forms/Forms';
 import { DonationsSection } from '@/components/donations-section/DonationsSection';
@@ -100,7 +100,7 @@ function RouteComponent() {
 
 	return (
 		<>
-			<PageTitle title={title} />
+			<Title title={title} />
 
 			<nav className="floating" aria-label="Dashboard Section Navigation">
 				<div className="gradient-section">

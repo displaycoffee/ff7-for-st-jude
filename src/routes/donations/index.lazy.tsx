@@ -7,7 +7,7 @@ import { useReactQuery } from '@/_core/scripts/hooks';
 import { useAppContext } from '@/context/scripts/context-hooks';
 
 /* Components */
-import { PageTitle } from '@/components/page-title/PageTitle';
+import { Title } from '@/components/title/Title';
 import { DonationsSection } from '@/components/donations-section/DonationsSection';
 
 /* Page title */
@@ -82,7 +82,7 @@ function RouteComponent() {
 
 	return (
 		<>
-			<PageTitle title={title} />
+			<Title title={title} />
 
 			<DonationsSection donations={donations} donationsComplete={donationsComplete} />
 		</>

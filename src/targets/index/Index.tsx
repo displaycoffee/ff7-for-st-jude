@@ -7,13 +7,13 @@ import { variables } from '@/_core/scripts/variables';
 import { routeTree } from '@/routeTree.gen';
 
 /* Components */
-import { PageTitle } from '@/components/page-title/PageTitle';
+import { Title } from '@/components/title/Title';
 
 /* Not found component */
 function NotFound() {
 	return (
 		<div className="not-found">
-			<PageTitle title={'Page Not Found'} />
+			<Title title={'Page Not Found'} />
 
 			<p>
 				Page not found. <Link to={'/'}>Go back</Link>.

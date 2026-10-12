@@ -1,7 +1,7 @@
 /* Type definitions */
-type PageTitle = {
+type Title = {
 	title: string;
 };
 
 /* Export prop types */
-export type PageTitleProps = PageTitle;
+export type TitleProps = Title;

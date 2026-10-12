@@ -1,8 +1,8 @@
 /* Scripts */
-import type { PageTitleProps } from './scripts/page-title-types';
+import type { TitleProps } from './scripts/title-types';
 import { useAppContext } from '@/context/scripts/context-hooks';
 
-export const PageTitle = (props: PageTitleProps) => {
+export const Title = (props: TitleProps) => {
 	const { title } = props;
 	const { variables } = useAppContext();
 	const updatedTitle = `${variables.site.name} - ${title}`;

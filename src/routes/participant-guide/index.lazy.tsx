@@ -8,7 +8,7 @@ import { createLazyFileRoute, Link } from '@tanstack/react-router';
 import { useAppContext } from '@/context/scripts/context-hooks';
 
 /* Components */
-import { PageTitle } from '@/components/page-title/PageTitle';
+import { Title } from '@/components/title/Title';
 import { LinkExternal, List, Section } from '@/components/blocks/Blocks';
 import { ButtonScroll } from '@/components/forms/Forms';
 
@@ -24,7 +24,7 @@ function RouteComponent() {
 
 	return (
 		<>
-			<PageTitle title={title} />
+			<Title title={title} />
 
 			<Section title={'Top 5 Important Things'}>
 				<List>
