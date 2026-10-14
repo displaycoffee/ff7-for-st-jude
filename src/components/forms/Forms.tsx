@@ -196,7 +196,7 @@ const FieldClose = (props: FieldCloseProps) => {
 				type={'button'}
 				variant={'unstyled'}
 			>
-				<Icon id={'x'} />
+				<Icon name={'x'} />
 			</Button>
 		</div>
 	) : (

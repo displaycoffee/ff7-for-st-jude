@@ -168,7 +168,7 @@ function RouteComponent() {
 								onClick={() => handlePreviousSort(option.by)}
 							>
 								<span className="button-label">{option.label}</span>
-								<Icon id={'angle-down'} />
+								<Icon name={'angle-down'} />
 							</Button>
 						);
 					})}

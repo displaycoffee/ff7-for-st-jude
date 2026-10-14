@@ -1,6 +1,6 @@
 /* Type definitions */
 type Icons = {
-	id: string;
+	name: string;
 	size?: string;
 };
 

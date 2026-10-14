@@ -5,11 +5,11 @@ import './styles/icons.scss';
 import type { IconsProps } from './scripts/icons-types';
 
 export const Icon = (props: IconsProps) => {
-	const { id, size } = props;
+	const { name, size } = props;
 	const iconClass = 'icon';
 
 	// Create icon classes
-	const iconClasses = [`icon`, `icon-${id}`];
+	const iconClasses = [`icon`, `icon-${name}`];
 	if (size) iconClasses.push(`${iconClass}-${size}`);
 
 	return <span className={iconClasses.join(' ')} aria-hidden="true"></span>;
