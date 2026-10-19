@@ -1,0 +1,49 @@
+// Local Sass modules
+@use '@displaycoffee/styles/functions';
+@use '@displaycoffee/styles/mixins';
+@use '_core/styles/_theme';
+
+//// OVERLAY
+//// --------------------------------------------------------------------------
+//// Note: sized for a 1920x1080 OBS browser source.
+
+	// Configuration
+
+	$overlay-width: 1920px; // canvas width
+	$overlay-height: 1080px; // canvas height
+	$overlay-spacing: theme.$spacing-x8; // spacing around and between streams
+	$overlay-label-font-size: 20px; // stream name labels
+
+	// Style block
+
+	.overlay-stage {
+		@include mixins.flex-layout((flex-flow: column nowrap, justify-content: space-between));
+		@include mixins.sizing($overlay-width, $overlay-height);
+		padding: $overlay-spacing;
+		overflow: hidden;
+	}
+	.overlay-streams {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		@include mixins.gap($overlay-spacing);
+		.overlay-stream {
+			margin: 0;
+			min-width: 1px;
+		}
+		.overlay-stream-frame {
+			aspect-ratio: 16 / 9;
+			overflow: hidden;
+			iframe {
+				display: block;
+				@include mixins.sizing(100%, 100%);
+				border: 0;
+			}
+		}
+		.overlay-stream-label {
+			min-height: 1.5em;
+			margin: theme.$spacing-x2 0 0 0;
+			text-align: center;
+			font-family: theme.$font-family-header;
+			font-size: $overlay-label-font-size;
+		}
+	}

@@ -1,0 +1,51 @@
+// Local Sass modules
+@use '@displaycoffee/styles/functions';
+@use '@displaycoffee/styles/mixins';
+@use '_core/styles/_theme';
+
+//// LEVEL BAR
+//// --------------------------------------------------------------------------
+
+	// Style block
+
+	.level-bar {
+		.level-bar-label, .level-bar-outof {
+			min-width: 1px;
+		}
+		.level-bar-label {
+			@include mixins.flex(0 1 auto);
+			padding: 0 theme.$spacing-x2 0 0;
+		}
+		.level-bar-outof {
+			@include mixins.flex(1 1 0%);
+			@include mixins.sizing(100%, 20px);
+			max-width: 600px;
+			border: 2px solid theme.$color-border;
+			background-color: theme.$color-level-bar-outer-x1;
+			background-image: linear-gradient(theme.$color-level-bar-outer-x3 0%, theme.$color-level-bar-outer-x2 50%, theme.$color-level-bar-outer-x1 75%);
+			position: relative;
+			overflow: hidden;
+			.level-bar-progress, .level-bar-shadow {
+				@include mixins.sizing(100%, 100%);
+			}
+			.level-bar-progress {
+				background-color: theme.$color-level-bar-inner-x1;
+				background-image: linear-gradient(theme.$color-level-bar-inner-x3 0%, theme.$color-level-bar-inner-x2 50%, theme.$color-level-bar-inner-x1 75%);
+			}
+			.level-bar-shadow {
+				border: 2px solid theme.$color-level-bar-border;
+				border-top-width: 3px;
+				border-bottom-color: theme.$color-level-bar-border-bottom;
+				@include mixins.position($type: absolute, $left: 0, $top: 0);
+			}
+		}
+	}
+	@include mixins.respond(theme.$breakpoint-md) {
+		.level-bar {
+			@include mixins.flex-layout((flex-flow: row nowrap, align-items: center));
+			.level-bar-outof {
+				@include mixins.position($type: relative, $top: -3px);
+				width: auto;
+			}
+		}
+	}

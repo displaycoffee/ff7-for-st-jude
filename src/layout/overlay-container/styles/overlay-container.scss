@@ -1,0 +1,19 @@
+// Local Sass modules
+@use '@displaycoffee/styles/functions';
+@use '@displaycoffee/styles/mixins';
+@use '_core/styles/_theme';
+
+//// OVERLAY CONTAINER
+//// --------------------------------------------------------------------------
+//// Note: overlays are OBS browser sources, so they skip the site layout.
+
+	// Style block
+
+	body.page-overlay, body.page-overlay-widget {
+		min-height: 0;
+		padding: 0;
+		overflow: hidden;
+	}
+	body.page-overlay-widget {
+		background-color: transparent;
+	}

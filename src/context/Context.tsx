@@ -41,12 +41,12 @@ const queryClient = new QueryClient({
 export const Context = createContext({} as ContextValuesType);
 
 /* Create Context wrapper */
-export const ContextProvider = ({ children }: ContextProps) => {
+export const ContextProvider = ({ children, live = true }: ContextProps) => {
 	// Set content state
 	const [content, dispatch] = useReducer(contentUtils.reducer, contentUtils.initialState);
 
 	// Refresh content whenever the API reports a Tiltify update
-	const refresh = useLiveUpdates(queryClient, content, campaigns.current, dispatch);
+	const refresh = useLiveUpdates(queryClient, content, campaigns.current, dispatch, live);
 
 	// Set colors panel state (shared by the button in navigation and the panel in the container)
 	const [isColorsOpen, setIsColorsOpen] = useState(false);

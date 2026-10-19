@@ -1,0 +1,27 @@
+/* Styles */
+import '@/layout/container/styles/container.scss';
+import './styles/overlay-container.scss';
+
+/* Packages */
+import { Outlet } from '@tanstack/react-router';
+
+/* Scripts */
+import { useBodyClass } from '@displaycoffee/scripts/hooks-tanstack';
+
+/* Components */
+import { Colors } from '@/components/colors/Colors';
+import { ErrorBoundary } from '@/components/error-boundary/ErrorBoundary';
+
+export const OverlayContainer = () => {
+	// Set body class using custom hook (page-overlay or page-overlay-widget)
+	useBodyClass('overlay');
+
+	return (
+		<ErrorBoundary message={<p>Something went wrong loading the overlay.</p>}>
+			{/* Adds the window gradient styles */}
+			<Colors showButton={false} />
+
+			<Outlet />
+		</ErrorBoundary>
+	);
+};

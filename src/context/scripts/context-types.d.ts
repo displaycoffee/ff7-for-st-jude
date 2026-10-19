@@ -22,6 +22,7 @@ type ContextValues = {
 
 type Context = {
 	children: ReactNode;
+	live?: boolean;
 };
 
 /* Export types */

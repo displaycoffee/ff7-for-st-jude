@@ -58,8 +58,49 @@ export const refreshContent = async (
 	if (rewardsData) dispatch({ type: 'rewards_loaded', values: rewardsData });
 };
 
-/* Listen for Tiltify webhook events from the API and refresh content when something changes */
-export const useLiveUpdates = (queryClient: QueryClient, content: ContentType, current: CampaignType, dispatch: Dispatch<ContentActionType>) => {
+/* Listen for Tiltify webhook events from the API and call onUpdate once they settle */
+export const useEventStream = (onUpdate: () => void, enabled = true) => {
+	// Keep the latest callback in a ref so the connection doesn't reopen every render
+	const onUpdateRef = useRef(onUpdate);
+	useEffect(() => {
+		onUpdateRef.current = onUpdate;
+	});
+
+	useEffect(() => {
+		if (!enabled) return;
+
+		let timer: ReturnType<typeof setTimeout>;
+		let connected = false;
+
+		const queueUpdate = () => {
+			clearTimeout(timer);
+			timer = setTimeout(() => onUpdateRef.current(), debounce);
+		};
+
+		// EventSource reconnects on its own if the connection drops
+		const source = new EventSource(variables.api.events);
+		source.addEventListener('update', queueUpdate);
+		source.addEventListener('open', () => {
+			// After a reconnect, update in case events were missed while disconnected
+			if (connected) queueUpdate();
+			connected = true;
+		});
+
+		return () => {
+			clearTimeout(timer);
+			source.close();
+		};
+	}, [enabled]);
+};
+
+/* Refresh site content when something changes on Tiltify */
+export const useLiveUpdates = (
+	queryClient: QueryClient,
+	content: ContentType,
+	current: CampaignType,
+	dispatch: Dispatch<ContentActionType>,
+	enabled = true,
+) => {
 	// Keep the latest content in a ref so the connection doesn't reopen every time content changes
 	const contentRef = useRef(content);
 	useEffect(() => {
@@ -92,29 +133,7 @@ export const useLiveUpdates = (queryClient: QueryClient, content: ContentType, c
 		})();
 	}, [queryClient, current, dispatch]);
 
-	useEffect(() => {
-		let timer: ReturnType<typeof setTimeout>;
-		let connected = false;
-
-		const queueRefresh = () => {
-			clearTimeout(timer);
-			timer = setTimeout(refresh, debounce);
-		};
-
-		// EventSource reconnects on its own if the connection drops
-		const source = new EventSource(variables.api.events);
-		source.addEventListener('update', queueRefresh);
-		source.addEventListener('open', () => {
-			// After a reconnect, refresh in case updates were missed while disconnected
-			if (connected) queueRefresh();
-			connected = true;
-		});
-
-		return () => {
-			clearTimeout(timer);
-			source.close();
-		};
-	}, [refresh]);
+	useEventStream(refresh, enabled);
 
 	return refresh;
 };
