@@ -39,6 +39,7 @@ function RouteComponent() {
 	const searchStr = useLocation({ select: (location) => location.searchStr });
 	const searchParams = new URLSearchParams(searchStr);
 	const logo = searchParams.get('logo') ? searchParams.get('logo') != 'false' : true;
+	const sound = searchParams.get('sound') != 'false';
 	const user = searchParams.get('user') ?? undefined;
 	const streamsParam = searchParams.get('streams');
 	const sortParam = searchParams.get('sort');
@@ -61,7 +62,9 @@ function RouteComponent() {
 		.filter(Boolean);
 	// ?fill=false shows only the listed streams (ignored without ?streams=, so the overlay is never empty)
 	const fill = searchParams.get('fill') != 'false' || listed.length == 0;
-	const channels = [...listed, ...(fill ? ranked.flatMap((support) => (support.channel ? [support.channel] : [])) : [])];
+	// Fill skips the ?user= participant, so their overlay doesn't show their own stream (listing them in ?streams= still does)
+	const filled = ranked.filter((support) => support.username.toLowerCase() != user?.toLowerCase());
+	const channels = [...listed, ...(fill ? filled.flatMap((support) => (support.channel ? [support.channel] : [])) : [])];
 
 	// Only show channels connected to a supporting campaign (unless testing), labeled with the Tiltify username
 	const streams = channels
@@ -111,7 +114,7 @@ function RouteComponent() {
 					))}
 				</div>
 
-				<Widget logo={logo} user={user} />
+				<Widget logo={logo} sound={sound} user={user} />
 			</div>
 		</>
 	);

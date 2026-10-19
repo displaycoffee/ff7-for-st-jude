@@ -3,6 +3,7 @@ import './styles/widget.scss';
 
 /* Packages */
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 
 /* Scripts */
 import type { WidgetProps } from './scripts/widget-types';
@@ -13,8 +14,11 @@ import { useAppContext } from '@/context/scripts/context-hooks';
 /* Components */
 import { LevelBar } from '@/components/level-bar/LevelBar';
 
+/* Static variables */
+const donationSound = '/assets/sounds/victory-fanfare.mp3';
+
 export const Widget = (props: WidgetProps) => {
-	const { logo = true, user } = props;
+	const { logo = true, sound = true, user } = props;
 	const { campaigns, utils, variables } = useAppContext();
 	const { current } = campaigns;
 
@@ -36,6 +40,29 @@ export const Widget = (props: WidgetProps) => {
 
 	// Refetch whenever Tiltify reports an update, keeping the current values on screen meanwhile
 	useEventStream(() => void refetch(), !notFound);
+
+	// Play the fanfare when a new donation comes in, but not for the one already there when the page loads
+	// Note: undefined until the first fetch finishes, null when there are no donations yet
+	const latestId = widget ? (widget.latest?.id ?? null) : undefined;
+	const previousIdRef = useRef<string | null | undefined>(undefined);
+	const audioRef = useRef<HTMLAudioElement | null>(null);
+
+	useEffect(() => {
+		if (latestId === undefined) {
+			return;
+		}
+
+		const previousId = previousIdRef.current;
+		previousIdRef.current = latestId;
+
+		if (sound && latestId && previousId !== undefined && latestId != previousId) {
+			audioRef.current ??= new Audio(donationSound);
+			audioRef.current.currentTime = 0;
+
+			// Browsers block sound until the page is clicked (OBS doesn't), so a blocked play is fine to ignore
+			audioRef.current.play().catch(() => undefined);
+		}
+	}, [latestId, sound]);
 
 	if (notFound) {
 		return (
