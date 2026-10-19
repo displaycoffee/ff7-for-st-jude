@@ -1,5 +1,6 @@
 /* Type definitions */
 type Widget = {
+	logo?: boolean;
 	user?: string;
 };
 

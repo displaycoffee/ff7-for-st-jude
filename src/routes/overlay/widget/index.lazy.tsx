@@ -15,13 +15,15 @@ export const Route = createLazyFileRoute('/overlay/widget/')({
 function RouteComponent() {
 	// Read the raw query string, since the router would parse a numeric username as a number
 	const searchStr = useLocation({ select: (location) => location.searchStr });
-	const user = new URLSearchParams(searchStr).get('user') ?? undefined;
+	const searchParams = new URLSearchParams(searchStr);
+	const logo = searchParams.get('logo') ? searchParams.get('logo') != 'false' : true;
+	const user = searchParams.get('user') ?? undefined;
 
 	return (
 		<>
 			<Title title={title} />
 
-			<Widget user={user} />
+			<Widget logo={logo} user={user} />
 		</>
 	);
 }
