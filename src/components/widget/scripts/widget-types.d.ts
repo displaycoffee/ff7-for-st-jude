@@ -1,5 +1,7 @@
 /* Type definitions */
 type Widget = {
+	logo?: boolean;
+	sound?: boolean;
 	user?: string;
 };
 

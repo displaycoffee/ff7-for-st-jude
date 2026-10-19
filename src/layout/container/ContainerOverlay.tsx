@@ -1,6 +1,5 @@
 /* Styles */
-import '@/layout/container/styles/container.scss';
-import './styles/overlay-container.scss';
+import './styles/container-overlay.scss';
 
 /* Packages */
 import { Outlet } from '@tanstack/react-router';
@@ -12,7 +11,7 @@ import { useBodyClass } from '@displaycoffee/scripts/hooks-tanstack';
 import { Colors } from '@/components/colors/Colors';
 import { ErrorBoundary } from '@/components/error-boundary/ErrorBoundary';
 
-export const OverlayContainer = () => {
+export const ContainerOverlay = () => {
 	// Set body class using custom hook (page-overlay or page-overlay-widget)
 	useBodyClass('overlay');
 

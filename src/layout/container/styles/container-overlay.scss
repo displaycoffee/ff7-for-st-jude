@@ -3,7 +3,13 @@
 @use '@displaycoffee/styles/mixins';
 @use '_core/styles/_theme';
 
-//// OVERLAY CONTAINER
+//// CONTAINER
+//// --------------------------------------------------------------------------
+//// Note: import all the main container styles.
+
+	@use 'container';
+
+//// CONTAINER - OVERLAY
 //// --------------------------------------------------------------------------
 //// Note: overlays are OBS browser sources, so they skip the site layout.
 
@@ -14,6 +20,9 @@
 		padding: 0;
 		overflow: hidden;
 	}
+	// Widget sits at the bottom of the source, so it grows upward when a comment wraps
 	body.page-overlay-widget {
+		@include mixins.flex-layout((flex-flow: column nowrap, justify-content: flex-end));
+		min-height: 100vh;
 		background-color: transparent;
 	}

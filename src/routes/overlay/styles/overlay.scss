@@ -33,11 +33,7 @@
 		.overlay-stream-frame {
 			aspect-ratio: 16 / 9;
 			overflow: hidden;
-			iframe {
-				display: block;
-				@include mixins.sizing(100%, 100%);
-				border: 0;
-			}
+			@include mixins.border-radius(10px);
 		}
 		.overlay-stream-label {
 			min-height: 1.5em;

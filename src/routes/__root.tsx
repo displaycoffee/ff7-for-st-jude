@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 /* Components */
 import { ContextProvider } from '@/context/Context';
 import { Container } from '@/layout/container/Container';
-import { OverlayContainer } from '@/layout/overlay-container/OverlayContainer';
+import { ContainerOverlay } from '@/layout/container/ContainerOverlay';
 
 export const Route = createRootRoute({
 	component: RootComponent,
@@ -20,7 +20,7 @@ function RootComponent() {
 		<>
 			<ContextProvider live={!isOverlay}>
 				{isOverlay ? (
-					<OverlayContainer />
+					<ContainerOverlay />
 				) : (
 					<>
 						<Container />
