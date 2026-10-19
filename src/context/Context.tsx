@@ -7,6 +7,7 @@ import { createContext, useReducer, useState } from 'react';
 import type { ContextProps, ContextValuesType } from './scripts/context-types';
 import { content as contentUtils } from './scripts/content';
 import { campaigns } from '@/_core/scripts/campaigns';
+import { useLiveUpdates } from '@/_core/scripts/live';
 import { theme } from '@/_core/scripts/theme';
 import { utils, utilsBrowser } from '@/_core/scripts/utils';
 import { variables } from '@/_core/scripts/variables';
@@ -44,6 +45,9 @@ export const ContextProvider = ({ children }: ContextProps) => {
 	// Set content state
 	const [content, dispatch] = useReducer(contentUtils.reducer, contentUtils.initialState);
 
+	// Refresh content whenever the API reports a Tiltify update
+	const refresh = useLiveUpdates(queryClient, content, campaigns.current, dispatch);
+
 	// Set colors panel state (shared by the button in navigation and the panel in the container)
 	const [isColorsOpen, setIsColorsOpen] = useState(false);
 
@@ -51,6 +55,7 @@ export const ContextProvider = ({ children }: ContextProps) => {
 	const values: ContextValuesType = {
 		content,
 		dispatch,
+		refresh,
 		isColorsOpen,
 		setIsColorsOpen,
 		campaigns,

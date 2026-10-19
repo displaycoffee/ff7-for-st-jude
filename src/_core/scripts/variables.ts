@@ -10,6 +10,7 @@ export const variables: VariablesType = {
 	api: {
 		campaigns: `${api}/api/public/campaigns`,
 		teams: `${api}/api/public/team_campaigns`,
+		events: `${api}/api/events`,
 	},
 	paths: {
 		basename: typeof window == 'object' && window.location.pathname.includes(directory) ? directory : '',
