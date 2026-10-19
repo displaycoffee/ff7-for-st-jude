@@ -294,6 +294,7 @@ type SupportingRaw = {
 	};
 	name: string;
 	slug: string;
+	status: string;
 	user: {
 		username: string;
 		url: string;

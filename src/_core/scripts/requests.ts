@@ -105,7 +105,7 @@ export const requests: RequestsType = {
 	},
 	milestones: async ({ queryKey }: QueryFunctionContext) => {
 		// queryKey: ['milestones', campaign, number]
-		const current = queryKey[1] as CampaignType;
+		const current = queryKey[1] as SupportingType;
 		const queryIndex = queryKey[2] as number;
 
 		// Storage for milestones data
@@ -132,13 +132,15 @@ export const requests: RequestsType = {
 					username: current.name,
 					links: [
 						{
-							label: `Contribute to ${current.name}`,
+							label: `Contribute to ${current.username}`,
 							url: current.campaign,
 						},
 					],
 				};
 
-				milestones.push(milestonesData);
+				// Only show active milestones
+				const isVisible = milestonesData.active;
+				if (isVisible) milestones.push(milestonesData);
 			});
 		}
 
@@ -146,7 +148,7 @@ export const requests: RequestsType = {
 	},
 	polls: async ({ queryKey }: QueryFunctionContext) => {
 		// queryKey: ['polls', campaign, number]
-		const current = queryKey[1] as CampaignType;
+		const current = queryKey[1] as SupportingType;
 		const queryIndex = queryKey[2] as number;
 
 		// Storage for polls data
@@ -174,7 +176,7 @@ export const requests: RequestsType = {
 					username: current.name,
 					links: [
 						{
-							label: `Vote at ${current.name}`,
+							label: `Vote at ${current.username}`,
 							url: current.campaign,
 						},
 					],
@@ -183,7 +185,9 @@ export const requests: RequestsType = {
 				// Re-check active state
 				pollsData.active = utils.setActive('polls', pollsData);
 
-				polls.push(pollsData);
+				// Only show active polls
+				const isVisible = pollsData.active;
+				if (isVisible) polls.push(pollsData);
 			});
 		}
 
@@ -191,7 +195,7 @@ export const requests: RequestsType = {
 	},
 	rewards: async ({ queryKey }: QueryFunctionContext) => {
 		// queryKey: ['rewards', campaign, number]
-		const current = queryKey[1] as CampaignType;
+		const current = queryKey[1] as SupportingType;
 		const queryIndex = queryKey[2] as number;
 
 		// Storage for rewards data
@@ -223,7 +227,7 @@ export const requests: RequestsType = {
 					username: current.name,
 					links: [
 						{
-							label: `Redeem at ${current.name}`,
+							label: `Redeem at ${current.username}`,
 							url: current.campaign,
 						},
 					],
@@ -232,7 +236,9 @@ export const requests: RequestsType = {
 				// Re-check active state
 				rewardsData.active = utils.setActive('rewards', rewardsData);
 
-				rewards.push(rewardsData);
+				// Only show active rewards, plus upcoming ones so they get their "starts" message
+				const isVisible = rewardsData.active || rewardsData.upcoming;
+				if (isVisible) rewards.push(rewardsData);
 			});
 		}
 
@@ -255,35 +261,37 @@ export const requests: RequestsType = {
 		if (json && json.data) {
 			// Add details to supporting data
 			json.data.forEach((data: SupportingRawType, index: number) => {
-				const username = data.user.username.trim();
-				const campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
+				if (data.status != 'unpublished') {
+					const username = data.user.username.trim();
+					const campaign = `${variables.urls.tiltify}${data.user.url}/${data.slug}`;
 
-				// Format supporting data
-				const supportingData = {
-					id: data.id,
-					amounts: utils.getAmounts(data),
-					campaign: campaign,
-					channel: data?.livestream?.type == 'twitch' ? data.livestream.channel : undefined,
-					key: `supporting-${data.id.split('-')[0]}-${index}`,
-					name: data.name,
-					username: username,
-					links: [
-						{
-							label: `Support ${username}`,
-							url: campaign,
-						},
-					],
-				};
+					// Format supporting data
+					const supportingData = {
+						id: data.id,
+						amounts: utils.getAmounts(data),
+						campaign: campaign,
+						channel: data?.livestream?.type == 'twitch' ? data.livestream.channel : undefined,
+						key: `supporting-${data.id.split('-')[0]}-${index}`,
+						name: data.name,
+						username: username,
+						links: [
+							{
+								label: `Support ${username}`,
+								url: campaign,
+							},
+						],
+					};
 
-				// If live stream is available, add if
-				if (data?.livestream?.type == 'twitch') {
-					supportingData.links.unshift({
-						label: 'Watch stream',
-						url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
-					});
+					// If live stream is available, add if
+					if (data?.livestream?.type == 'twitch') {
+						supportingData.links.unshift({
+							label: 'Watch stream',
+							url: `https://${data.livestream.type}.tv/${data.livestream.channel}`,
+						});
+					}
+
+					supporting.push(supportingData);
 				}
-
-				supporting.push(supportingData);
 			});
 		}
 
