@@ -21,7 +21,7 @@ const title = 'Overlay';
 /* Static variables */
 const options = {
 	count: 6,
-	quality: 480, // max video height, the tiles are only about 330px tall
+	quality: 360, // max video height, the tiles are only about 330px tall
 	gap: 1000, // wait after a player is ready before starting the next
 	fallback: 8000, // start the next player anyway if one never reports ready
 	allowAny: import.meta.env.DEV, // let ?streams= show channels outside the campaign, for testing
