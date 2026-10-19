@@ -91,12 +91,6 @@ export const content = {
 					}
 					break;
 				}
-				case 'content_reset': {
-					action.keys.forEach((key) => {
-						draft[key] = { fetched: false, values: [] };
-					});
-					break;
-				}
 			}
 
 			// Totals come from the campaign, so keep them in step whenever it and the supporting campaigns are available

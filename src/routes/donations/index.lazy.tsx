@@ -13,15 +13,12 @@ import { DonationsSection } from '@/components/donations-section/DonationsSectio
 /* Page title */
 const title = 'Donations';
 
-/* Static variables */
-const timeout = false; // 60000 == one minute
-
 export const Route = createLazyFileRoute('/donations/')({
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	const { campaigns, utils, queryClient, content, dispatch } = useAppContext();
+	const { campaigns, utils, content, dispatch } = useAppContext();
 	const { supporting, campaign, donations } = content;
 	const { current } = campaigns;
 
@@ -62,23 +59,6 @@ function RouteComponent() {
 		donationsStatus.success,
 		donations.fetched,
 	]);
-
-	useEffect(() => {
-		if (timeout) {
-			const interval = setInterval(() => {
-				// Reset queries
-				void queryClient.resetQueries({ queryKey: ['donations'] });
-
-				// Reset and set content state
-				dispatch({ type: 'content_reset', keys: ['donations'] });
-			}, timeout);
-
-			return () => {
-				// Clear interval to prevent memory leaks
-				clearInterval(interval);
-			};
-		}
-	}, [queryClient, dispatch]);
 
 	return (
 		<>

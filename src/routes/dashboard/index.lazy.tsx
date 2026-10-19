@@ -22,14 +22,13 @@ const title = 'Dashboard';
 /* Static variables */
 const truncateLimit = 75;
 const scrollToOffset = 100;
-const refreshableTypes = ['donations', 'milestones', 'polls', 'rewards'] as const;
 
 export const Route = createLazyFileRoute('/dashboard/')({
 	component: RouteComponent,
 });
 
 function RouteComponent() {
-	const { campaigns, utils, variables, queryClient, content, dispatch } = useAppContext();
+	const { campaigns, utils, variables, content, dispatch, refresh } = useAppContext();
 	const { supporting, campaign, donations, milestones, polls, rewards } = content;
 	const { current } = campaigns;
 
@@ -126,16 +125,9 @@ function RouteComponent() {
 								label={'Refresh'}
 								variant={'link'}
 								onClick={(e) => {
-									// Refresh content
+									// Refresh content in place
 									e.preventDefault();
-
-									// Reset queries for each refreshable data type
-									refreshableTypes.forEach((type) => {
-										void queryClient.resetQueries({ queryKey: [type] });
-									});
-
-									// Reset content state for each refreshable data type
-									dispatch({ type: 'content_reset', keys: [...refreshableTypes] });
+									refresh();
 								}}
 							/>
 						</li>

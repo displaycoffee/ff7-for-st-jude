@@ -102,6 +102,7 @@ type Variables = {
 	api: {
 		campaigns: string;
 		teams: string;
+		events: string;
 	};
 	paths: {
 		basename: string;
@@ -140,8 +141,7 @@ type ContentAction =
 	| { type: 'donations_loaded'; values: Donations[] }
 	| { type: 'milestones_loaded'; values: Milestones[] }
 	| { type: 'polls_loaded'; values: Polls[] }
-	| { type: 'rewards_loaded'; values: Rewards[] }
-	| { type: 'content_reset'; keys: ('donations' | 'milestones' | 'polls' | 'rewards')[] };
+	| { type: 'rewards_loaded'; values: Rewards[] };
 
 type Content = {
 	totals: {

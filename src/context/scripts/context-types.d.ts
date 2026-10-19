@@ -6,6 +6,7 @@ import type { Dispatch, ReactNode, SetStateAction } from 'react';
 type ContextValues = {
 	content: ContentType;
 	dispatch: Dispatch<ContentActionType>;
+	refresh: () => void;
 	isColorsOpen: boolean;
 	setIsColorsOpen: Dispatch<SetStateAction<boolean>>;
 	campaigns: {

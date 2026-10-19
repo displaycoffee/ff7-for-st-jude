@@ -6,6 +6,14 @@ import { useQuery, useQueries } from '@tanstack/react-query';
 import { requests } from './requests';
 import { utils } from './utils';
 
+/* Supporting campaigns are shown highest raised first */
+export const sortSupporting = (data: SupportingType[] | undefined) =>
+	data && data.length !== 0 ? utils.sort(data, (item) => item.amounts.total_amount_raised, 'desc') : [];
+
+/* Merged milestones, polls, and rewards are shown by end date (milestones by amount instead, since they don't have an end date) */
+export const sortMerged = (key: string, data: (MilestonesType | PollsType | RewardsType)[]) =>
+	data && data.length !== 0 ? utils.sort(data, (item) => (key == 'milestones' ? item.amounts.amount : item.milliseconds), 'asc') : [];
+
 export const useReactQuery = (key: string, content: ContentType, current: CampaignType) => {
 	// Get donations data if supporting is available and if not in cache or if totals have changed
 	const { campaign, donations, supporting } = content;
@@ -45,15 +53,8 @@ export const useReactQuery = (key: string, content: ContentType, current: Campai
 	let fetchedData = data;
 
 	if (key == 'supporting') {
-		// Set initial supporting data
-		const supportingData = data as SupportingType[];
-
-		// Re-sort supporting data
-		const sortedData =
-			supportingData && supportingData.length !== 0 ? utils.sort(supportingData, (item) => item.amounts.total_amount_raised, 'desc') : [];
-
 		// Set fetched data after sorting
-		fetchedData = sortedData;
+		fetchedData = sortSupporting(data as SupportingType[]);
 	}
 
 	return [fetchedData, { fetched: isFetched, pending: isPending, success: isSuccess }];
@@ -100,11 +101,8 @@ export const useReactQueries = (key: string, content: ContentType) => {
 	const waiting = !supporting.fetched;
 	const noQueries = queryValues.length === 0;
 
-	// Re-sort merged data by end date (milestones by amount instead, since they don't have an end date)
-	const sortedData =
-		data && data.length !== 0 ? utils.sort(data, (item) => (key == 'milestones' ? item.amounts.amount : item.milliseconds), 'asc') : [];
 	return [
-		sortedData,
+		sortMerged(key, data),
 		{
 			fetched: !waiting && (noQueries || (checkFetched && isFetched[0])),
 			pending: waiting || (!noQueries && checkPending && isPending[0]),
