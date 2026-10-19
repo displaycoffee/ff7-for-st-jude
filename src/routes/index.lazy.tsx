@@ -14,6 +14,7 @@ import { useAppContext } from '@/context/scripts/context-hooks';
 import { LinkExternal, Section, SectionNotFound, SectionParagraph, SectionLinks, Skeleton } from '@/components/blocks/Blocks';
 import { Button } from '@/components/forms/Forms';
 import { Icon } from '@/components/icons/Icons';
+import { LevelBar } from '@/components/level-bar/LevelBar';
 
 /* Ways to sort previous campaigns */
 /* Note: campaigns sort by number since the id is a random uuid */
@@ -95,22 +96,11 @@ function RouteComponent() {
 
 				<div className="level-bar-raised flex-nowrap">
 					<strong>Raised:</strong>
-					<div className="level-bar">
-						<div className="level-bar-label">
-							{utils.formatCurrency(totals.amountRaised)} out of {utils.formatCurrency(totals.goal)}
-						</div>
-
-						<div className="level-bar-outof">
-							<div
-								className="level-bar-progress"
-								style={{
-									width: totals.amountRaised && totals.goal ? `${(totals.amountRaised / totals.goal) * 100}%` : `0%`,
-								}}
-							></div>
-
-							<div className="level-bar-shadow"></div>
-						</div>
-					</div>
+					<LevelBar
+						raised={totals.amountRaised}
+						goal={totals.goal}
+						label={`${utils.formatCurrency(totals.amountRaised)} out of ${utils.formatCurrency(totals.goal)}`}
+					/>
 				</div>
 
 				<SectionLinks links={current.links} />

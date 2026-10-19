@@ -263,6 +263,7 @@ export const requests: RequestsType = {
 					id: data.id,
 					amounts: utils.getAmounts(data),
 					campaign: campaign,
+					channel: data?.livestream?.type == 'twitch' ? data.livestream.channel : undefined,
 					key: `supporting-${data.id.split('-')[0]}-${index}`,
 					name: data.name,
 					username: username,
@@ -287,5 +288,39 @@ export const requests: RequestsType = {
 		}
 
 		return supporting;
+	},
+	widget: async ({ queryKey }: QueryFunctionContext) => {
+		// queryKey: ['widget', campaign, supporting campaign or null for the team campaign]
+		const current = queryKey[1] as CampaignType;
+		const support = queryKey[2] as SupportingType | null;
+
+		// Supporting campaigns and the team campaign live under different endpoints
+		const url = support ? `${variables.api.campaigns}/${support.id}` : `${variables.api.teams}/${current.id}`;
+
+		// Fetch campaign totals and the latest donation (donations come back newest first)
+		const [campaignResponse, donationsResponse] = await Promise.all([
+			fetch(url, parameters.tiltify.options()),
+			fetch(`${url}/donations?limit=1`, parameters.tiltify.options()),
+		]);
+		const campaignJson = (await campaignResponse.json()) as ResponseBodyType<AmountsRawType>;
+		const donationsJson = (await donationsResponse.json()) as ResponseBodyType<DonationsRawType[]>;
+
+		// Check for API errors
+		throwError(campaignJson);
+
+		// Format latest donation data
+		const latest = donationsJson?.data?.[0];
+
+		return {
+			amounts: utils.getAmounts(campaignJson?.data),
+			latest: latest
+				? {
+						amounts: utils.getAmounts(latest),
+						comment: latest?.donor_comment || false,
+						from: latest.donor_name,
+						id: latest.id,
+					}
+				: null,
+		};
 	},
 };

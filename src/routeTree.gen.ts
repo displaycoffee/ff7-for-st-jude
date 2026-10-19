@@ -15,9 +15,11 @@ import { Route as rootRouteImport } from './routes/__root'
 const IndexLazyRouteImport = createFileRoute('/')()
 const DashboardIndexLazyRouteImport = createFileRoute('/dashboard/')()
 const DonationsIndexLazyRouteImport = createFileRoute('/donations/')()
+const OverlayIndexLazyRouteImport = createFileRoute('/overlay/')()
 const ParticipantGuideIndexLazyRouteImport = createFileRoute(
   '/participant-guide/',
 )()
+const OverlayWidgetIndexLazyRouteImport = createFileRoute('/overlay/widget/')()
 
 const IndexLazyRoute = IndexLazyRouteImport.update({
   id: '/',
@@ -38,6 +40,11 @@ const DonationsIndexLazyRoute = DonationsIndexLazyRouteImport.update({
 } as any).lazy(() =>
   import('./routes/donations/index.lazy').then((d) => d.Route),
 )
+const OverlayIndexLazyRoute = OverlayIndexLazyRouteImport.update({
+  id: '/overlay/',
+  path: '/overlay/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/overlay/index.lazy').then((d) => d.Route))
 const ParticipantGuideIndexLazyRoute =
   ParticipantGuideIndexLazyRouteImport.update({
     id: '/participant-guide/',
@@ -46,39 +53,73 @@ const ParticipantGuideIndexLazyRoute =
   } as any).lazy(() =>
     import('./routes/participant-guide/index.lazy').then((d) => d.Route),
   )
+const OverlayWidgetIndexLazyRoute = OverlayWidgetIndexLazyRouteImport.update({
+  id: '/overlay/widget/',
+  path: '/overlay/widget/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/overlay/widget/index.lazy').then((d) => d.Route),
+)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/dashboard/': typeof DashboardIndexLazyRoute
   '/donations/': typeof DonationsIndexLazyRoute
+  '/overlay/': typeof OverlayIndexLazyRoute
   '/participant-guide/': typeof ParticipantGuideIndexLazyRoute
+  '/overlay/widget/': typeof OverlayWidgetIndexLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/dashboard': typeof DashboardIndexLazyRoute
   '/donations': typeof DonationsIndexLazyRoute
+  '/overlay': typeof OverlayIndexLazyRoute
   '/participant-guide': typeof ParticipantGuideIndexLazyRoute
+  '/overlay/widget': typeof OverlayWidgetIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
   '/dashboard/': typeof DashboardIndexLazyRoute
   '/donations/': typeof DonationsIndexLazyRoute
+  '/overlay/': typeof OverlayIndexLazyRoute
   '/participant-guide/': typeof ParticipantGuideIndexLazyRoute
+  '/overlay/widget/': typeof OverlayWidgetIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard/' | '/donations/' | '/participant-guide/'
+  fullPaths:
+    | '/'
+    | '/dashboard/'
+    | '/donations/'
+    | '/overlay/'
+    | '/participant-guide/'
+    | '/overlay/widget/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/donations' | '/participant-guide'
-  id: '__root__' | '/' | '/dashboard/' | '/donations/' | '/participant-guide/'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/donations'
+    | '/overlay'
+    | '/participant-guide'
+    | '/overlay/widget'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard/'
+    | '/donations/'
+    | '/overlay/'
+    | '/participant-guide/'
+    | '/overlay/widget/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   DashboardIndexLazyRoute: typeof DashboardIndexLazyRoute
   DonationsIndexLazyRoute: typeof DonationsIndexLazyRoute
+  OverlayIndexLazyRoute: typeof OverlayIndexLazyRoute
   ParticipantGuideIndexLazyRoute: typeof ParticipantGuideIndexLazyRoute
+  OverlayWidgetIndexLazyRoute: typeof OverlayWidgetIndexLazyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -104,11 +145,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DonationsIndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/overlay/': {
+      id: '/overlay/'
+      path: '/overlay'
+      fullPath: '/overlay/'
+      preLoaderRoute: typeof OverlayIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/participant-guide/': {
       id: '/participant-guide/'
       path: '/participant-guide'
       fullPath: '/participant-guide/'
       preLoaderRoute: typeof ParticipantGuideIndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/overlay/widget/': {
+      id: '/overlay/widget/'
+      path: '/overlay/widget'
+      fullPath: '/overlay/widget/'
+      preLoaderRoute: typeof OverlayWidgetIndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -118,7 +173,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   DashboardIndexLazyRoute: DashboardIndexLazyRoute,
   DonationsIndexLazyRoute: DonationsIndexLazyRoute,
+  OverlayIndexLazyRoute: OverlayIndexLazyRoute,
   ParticipantGuideIndexLazyRoute: ParticipantGuideIndexLazyRoute,
+  OverlayWidgetIndexLazyRoute: OverlayWidgetIndexLazyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

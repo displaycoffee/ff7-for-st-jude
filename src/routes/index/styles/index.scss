@@ -12,38 +12,16 @@
 		text-align: center;
 		font-style: italic;
 	}
-	.level-bar-raised strong, .level-bar-raised .level-bar, .level-bar .level-bar-label, .level-bar .level-bar-outof {
-		min-width: 1px;
-	}
-	.level-bar-raised strong, .level-bar .level-bar-label {
-		@include mixins.flex(0 1 auto);
-		padding: 0 theme.$spacing-x2 0 0;
-	}
-	.level-bar-raised .level-bar, .level-bar .level-bar-outof {
-		@include mixins.flex(1 1 0%);
-	}
-	.level-bar {
-		.level-bar-outof {		
-			@include mixins.sizing(100%, 20px);
-			max-width: 600px;
-			border: 2px solid theme.$color-border;
-			background-color: theme.$color-level-bar-outer-x1;
-			background-image: linear-gradient(theme.$color-level-bar-outer-x3 0%, theme.$color-level-bar-outer-x2 50%, theme.$color-level-bar-outer-x1 75%);
-			position: relative;
-			overflow: hidden;
-			.level-bar-progress, .level-bar-shadow {
-				@include mixins.sizing(100%, 100%);
-			}
-			.level-bar-progress {
-				background-color: theme.$color-level-bar-inner-x1;
-				background-image: linear-gradient(theme.$color-level-bar-inner-x3 0%, theme.$color-level-bar-inner-x2 50%, theme.$color-level-bar-inner-x1 75%);
-			}
-			.level-bar-shadow {
-				border: 2px solid theme.$color-level-bar-border;
-				border-top-width: 3px;
-				border-bottom-color: theme.$color-level-bar-border-bottom;
-				@include mixins.position($type: absolute, $left: 0, $top: 0);
-			}
+	.level-bar-raised {
+		strong, .level-bar {
+			min-width: 1px;
+		}
+		strong {
+			@include mixins.flex(0 1 auto);
+			padding: 0 theme.$spacing-x2 0 0;
+		}
+		.level-bar {
+			@include mixins.flex(1 1 0%);
 		}
 	}
 	.section-supporting-campaigns {
@@ -103,15 +81,6 @@
 					@include mixins.position($type: relative, $top: -1px);
 					@include mixins.transition(transform 0.3s ease);
 				}
-			}
-		}
-	}
-	@include mixins.respond(theme.$breakpoint-md) {
-		.level-bar {
-			@include mixins.flex-layout((flex-flow: row nowrap, align-items: center));
-			.level-bar-outof {
-				@include mixins.position($type: relative, $top: -3px);
-				width: auto;
 			}
 		}
 	}

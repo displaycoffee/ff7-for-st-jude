@@ -276,6 +276,7 @@ type RewardsRequest = [Rewards[], Statuses];
 type Supporting = {
 	amounts: Amounts;
 	campaign: string;
+	channel?: string;
 	id: string;
 	key: string;
 	links: Links[];
@@ -301,6 +302,17 @@ type SupportingRaw = {
 
 type SupportingRequest = [Supporting[], Statuses];
 
+/* Overlay type definitions */
+type Widget = {
+	amounts: Amounts;
+	latest: {
+		amounts: Amounts;
+		comment: string | boolean;
+		from: string;
+		id: string;
+	} | null;
+};
+
 /* Request type definitions */
 type Fetched = {
 	fetched: boolean;
@@ -319,6 +331,7 @@ type Requests = {
 	polls: (context: QueryFunctionContext) => Promise<Polls[]>;
 	rewards: (context: QueryFunctionContext) => Promise<Rewards[]>;
 	supporting: (context: QueryFunctionContext) => Promise<Supporting[]>;
+	widget: (context: QueryFunctionContext) => Promise<Widget>;
 };
 
 type ResponseError = {
@@ -407,6 +420,9 @@ declare global {
 	type SupportingRequestType = SupportingRequest;
 
 	type SupportingRawType = SupportingRaw;
+
+	// Declare global overlay types
+	type WidgetType = Widget;
 
 	// Declare global request types
 	type QueryKeyType = QueryKey;

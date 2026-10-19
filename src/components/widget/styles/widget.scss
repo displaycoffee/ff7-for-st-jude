@@ -1,0 +1,79 @@
+// Local Sass modules
+@use '@displaycoffee/styles/functions';
+@use '@displaycoffee/styles/mixins';
+@use '_core/styles/_theme';
+
+//// WIDGET
+//// --------------------------------------------------------------------------
+
+	// Configuration
+
+	$widget-font-size: 20px; // sized to be readable on a 1920x1080 stream
+	$widget-latest-width: 36%; // width of latest donation column
+	$widget-highlight-duration: 3s; // how long a new donation stays highlighted
+
+	// Style block
+
+	.widget {
+		@include mixins.flex-layout((flex-flow: row nowrap, align-items: center));
+		@include mixins.gap(theme.$spacing-x8);
+		font-size: $widget-font-size;
+		line-height: 1.5;
+		p {
+			margin: 0;
+		}
+		.widget-campaign, .widget-latest {
+			@include mixins.flex(0 0 auto);
+			min-width: 1px;
+		}
+		.widget-campaign {
+			.widget-title {
+				font-family: theme.$font-family-header;
+				margin: 0 0 theme.$spacing-x2 0;
+			}
+		}
+		.widget-level-bar {
+			@include mixins.flex(1 1 0%);
+			@include mixins.flex-layout((flex-flow: column nowrap, align-items: stretch));
+			min-width: 1px;
+			.level-bar-label {
+				padding: 0 0 theme.$spacing-x2 0;
+			}
+			.level-bar-outof {
+				@include mixins.flex(0 0 auto);
+				top: 0;
+				width: 100%;
+				max-width: none;
+				height: 28px;
+			}
+		}
+		.widget-latest {
+			width: $widget-latest-width;
+			padding: theme.$spacing-x2 theme.$spacing-x4;
+			@include mixins.border-radius(6px);
+			animation: widget-highlight $widget-highlight-duration ease-out;
+			.widget-latest-comment {
+				margin: theme.$spacing-x2 0 0 0;
+				font-style: italic;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+		}
+		@media (prefers-reduced-motion: reduce) {
+			.widget-latest {
+				animation: none;
+			}
+		}
+	}
+	@keyframes widget-highlight {
+		0%, 60% {
+			background-color: theme.$color-gradient-section-bg;
+			box-shadow: 0 0 0 2px theme.$color-focus;
+		}
+		100% {
+			background-color: transparent;
+			box-shadow: 0 0 0 2px transparent;
+		}
+	}
