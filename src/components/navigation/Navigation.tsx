@@ -16,7 +16,7 @@ import { Colors } from '@/components/colors/Colors';
 import { LinkExternal, List } from '@/components/blocks/Blocks';
 
 export const Navigation = (props: NavigationComponentProps) => {
-	const { data, disableTransition, label, location } = props;
+	const { data, direction = 'horizontal', disableTransition, label, location } = props;
 	const { utilsBrowser } = useAppContext();
 	const navigationList = Array.isArray(data) ? data : navigationUtils.get.list(data);
 	const navigationLinkClass = 'navigation-link';
@@ -30,7 +30,7 @@ export const Navigation = (props: NavigationComponentProps) => {
 	return navigationList.length != 0 ? (
 		<nav className={`navigation navigation-${location}`} aria-label={label} ref={navigationRef}>
 			<div className="navigation-fixed">
-				<List className={'navigation-list'} variant={'ul-unstyled'}>
+				<List className={`navigation-list navigation-list-${direction}`} variant={'ul-unstyled'}>
 					{navigationList.map((nav, index) => {
 						return (
 							<Fragment key={nav.id}>

@@ -48,7 +48,13 @@ export const Container = () => {
 					<Navigation data={navigationHeader} disableTransition={true} label={'Header Navigation'} location={'header'} />
 				) : (
 					<Slideout options={slideoutOptions}>
-						<Navigation data={navigationHeader} disableTransition={true} label={'Mobile Navigation'} location={'slideout'} />
+						<Navigation
+							data={navigationHeader}
+							direction={'vertical'}
+							disableTransition={true}
+							label={'Mobile Navigation'}
+							location={'slideout'}
+						/>
 					</Slideout>
 				)}
 
