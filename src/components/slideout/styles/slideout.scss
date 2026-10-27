@@ -91,13 +91,8 @@
 			max-height: calc(100% - ($slideout-header + $slideout-spacing));
 			.navigation {
 				.navigation-list {
-					display: block;
 					.navigation-list-item {
 						font-size: functions.em(16px, rem);
-						margin: 0  0 theme.$spacing-x4 0;
-						&:last-child {
-							margin-bottom: 0;
-						}
 						a, button, .pointer {
 							cursor: url('/assets/images/theme/hand-cursor-left.svg') 8 8, pointer;
 						}
