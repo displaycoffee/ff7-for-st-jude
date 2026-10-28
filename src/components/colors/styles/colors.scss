@@ -12,6 +12,7 @@
 	.overlay.colors {
 		width: calc(100% - calc(theme.$spacing-x4 * 2));
 		max-width: 500px;
+		margin: auto; // keeps it centered since the dialog renders inside .container, and .container > * can load after overlay.scss
 		background-color: transparent;
 		.overlay-content {
 			padding: 0;
