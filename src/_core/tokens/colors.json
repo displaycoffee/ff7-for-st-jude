@@ -42,7 +42,7 @@
 		"link": { "$value": "#00e6e6" },
 		"link-hover": { "$value": "#e6e6e6" },
 		"link-underline": { "$value": "#11e57a" },
-		"link-underline-hover": { "$value": "#e6e6e6" },
+		"link-underline-hover": { "$value": "inherit" },
 		"level-bar-border": { "$value": "color-mix(in srgb, {color.black} 30%, transparent)" },
 		"level-bar-border-bottom": { "$value": "color-mix(in srgb, {color.black} 10%, transparent)" },
 		"level-bar-inner-x1": { "$value": "#da9d9a" },

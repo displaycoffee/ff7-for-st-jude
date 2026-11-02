@@ -48,7 +48,7 @@
 		"link": "#00e6e6",
 		"link-hover": "#e6e6e6",
 		"link-underline": "#11e57a",
-		"link-underline-hover": "#e6e6e6",
+		"link-underline-hover": "inherit",
 		"level-bar-border": "color-mix(in srgb, #000000 30%, transparent)",
 		"level-bar-border-bottom": "color-mix(in srgb, #000000 10%, transparent)",
 		"level-bar-inner-x1": "#da9d9a",

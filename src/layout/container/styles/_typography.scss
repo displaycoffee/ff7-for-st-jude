@@ -138,6 +138,13 @@
 			&:active, &:hover {
 				color: theme.$color-link;
 			}
+			&:not(.no-decoration) {
+				&:not(:has(.button-label)) {
+					&, &:active, &:hover {
+						text-decoration-thickness: 3px;
+					}
+				}
+			}
 		}
 	}
 	h1, .h1 {
