@@ -33,6 +33,7 @@
 		text-decoration: none;
 	}
 	mark {
+		padding: calc(theme.$spacing-x1 / 2) theme.$spacing-x1;
 		background: theme.$color-highlight;
 		color: theme.$color-highlight-body;
 	}
